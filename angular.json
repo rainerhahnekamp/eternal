@@ -86,7 +86,10 @@
               "apps/eternal/tsconfig.app.json",
               "apps/eternal/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/eternal/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/eternal/**"
+            ]
           }
         },
         "test": {
@@ -121,8 +124,13 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["apps/eternal-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/eternal-e2e/**"]
+            "tsConfig": [
+              "apps/eternal-e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/eternal-e2e/**"
+            ]
           }
         }
       }
@@ -140,7 +148,10 @@
               "libs/customer/feature/tsconfig.lib.json",
               "libs/customer/feature/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/customer/feature/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/customer/feature/**"
+            ]
           }
         },
         "test": {
@@ -168,7 +179,10 @@
               "libs/customer/data/tsconfig.lib.json",
               "libs/customer/data/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/customer/data/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/customer/data/**"
+            ]
           }
         },
         "test": {
@@ -196,7 +210,10 @@
               "libs/customer/ui/tsconfig.lib.json",
               "libs/customer/ui/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/customer/ui/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/customer/ui/**"
+            ]
           }
         },
         "test": {
@@ -228,7 +245,10 @@
               "libs/booking/data/tsconfig.lib.json",
               "libs/booking/data/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/booking/data/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/booking/data/**"
+            ]
           }
         },
         "test": {
@@ -256,7 +276,10 @@
               "libs/user/data/tsconfig.lib.json",
               "libs/user/data/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/user/data/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/user/data/**"
+            ]
           }
         },
         "test": {
@@ -284,7 +307,10 @@
               "libs/review/data/tsconfig.lib.json",
               "libs/review/data/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/review/data/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/review/data/**"
+            ]
           }
         },
         "test": {
@@ -312,7 +338,10 @@
               "libs/testing/tsconfig.lib.json",
               "libs/testing/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/testing/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!libs/testing/**"
+            ]
           }
         },
         "test": {
@@ -323,11 +352,75 @@
             "passWithNoTests": true,
             "setupFile": "libs/testing/src/test-setup.ts"
           }
+        },
+        "storybook": {
+          "builder": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "port": 4400,
+            "config": {
+              "configFolder": "libs/testing/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "builder": "@nrwl/storybook:build",
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "outputPath": "dist/storybook/testing",
+            "config": {
+              "configFolder": "libs/testing/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
         }
       },
       "schematics": {
         "@nrwl/angular:component": {
           "styleext": "scss"
+        }
+      }
+    },
+    "testing-e2e": {
+      "root": "apps/testing-e2e",
+      "sourceRoot": "apps/testing-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/testing-e2e/cypress.json",
+            "tsConfig": "apps/testing-e2e/tsconfig.e2e.json",
+            "devServerTarget": "testing:storybook"
+          },
+          "configurations": {
+            "ci": {
+              "devServerTarget": "testing:storybook:ci"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "apps/testing-e2e/.eslintrc",
+            "tsConfig": [
+              "apps/testing-e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/testing-e2e/**"
+            ]
+          }
         }
       }
     }

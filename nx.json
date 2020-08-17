@@ -12,32 +12,57 @@
   },
   "projects": {
     "eternal": {
-      "tags": ["type: app"]
+      "tags": [
+        "type: app"
+      ]
     },
     "eternal-e2e": {
       "tags": [],
-      "implicitDependencies": ["eternal"]
+      "implicitDependencies": [
+        "eternal"
+      ]
     },
     "customer-feature": {
-      "tags": ["scope: customer", "type: feature"]
+      "tags": [
+        "scope: customer",
+        "type: feature"
+      ]
     },
     "customer-data": {
-      "tags": ["scope: customer", "type: data"]
+      "tags": [
+        "scope: customer",
+        "type: data"
+      ]
     },
     "customer-ui": {
-      "tags": ["scope: customer", "type: ui"]
+      "tags": [
+        "scope: customer",
+        "type: ui"
+      ]
     },
     "booking-data": {
-      "tags": ["scope: booking", "type: data"]
+      "tags": [
+        "scope: booking",
+        "type: data"
+      ]
     },
     "user-data": {
-      "tags": ["scope: user", "type: data"]
+      "tags": [
+        "scope: user",
+        "type: data"
+      ]
     },
     "review-data": {
       "tags": []
     },
     "testing": {
       "tags": []
+    },
+    "testing-e2e": {
+      "tags": [],
+      "implicitDependencies": [
+        "testing"
+      ]
     }
   }
 }

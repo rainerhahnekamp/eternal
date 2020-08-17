@@ -19,6 +19,7 @@ import { HomeComponent } from './home/home.component';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de-AT';
 import { CustomerModule } from '@eternal/customer/feature';
+import { TestingModule } from '@eternal/testing';
 
 registerLocaleData(localeDe, 'de-AT');
 
@@ -43,7 +44,8 @@ registerLocaleData(localeDe, 'de-AT');
     EffectsModule.forRoot([]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     ReactiveFormsModule,
-    FormlyModule.forRoot()
+    FormlyModule.forRoot(),
+    TestingModule
   ],
   providers: [
     {
