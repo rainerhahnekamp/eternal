@@ -1,41 +1,48 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test Address input should check layout with input 1`] = `
-<eternal-address
-  addressLookup={[Function AddressLookup]}
-  formBuilder={[Function FormBuilder]}
-  formGroup={[Function FormGroup]}
->
-  <form
-    class="ng-untouched ng-pristine ng-valid"
-    novalidate=""
-  >
-    <input
-      class="ng-untouched ng-pristine ng-valid"
-      formcontrolname="street"
-    />
-    <input
-      class="ng-untouched ng-pristine ng-valid"
-      formcontrolname="streetNumber"
-    />
-  </form>
-</eternal-address>
-`;
-
 exports[`Test Address input should check the snapshot 1`] = `
 <eternal-address
-  addressLookup={[Function AddressLookup]}
+  addressLookup="null"
+  countries={[Function Array]}
   formBuilder={[Function FormBuilder]}
+  title={[Function String]}
 >
-  <form
+  <p>
+    
+  </p><form
     novalidate=""
   >
     <input
-      formcontrolname="from"
+      data-test="street"
+      formcontrolname="street"
+      name="street"
+      placeholder="street"
     />
     <input
-      formcontrolname="to"
+      formcontrolname="streetNumber"
+      name="streetNumber"
+      placeholder="street number"
     />
+    <input
+      formcontrolname="zip"
+      name="zip"
+      placeholder="zip"
+    />
+    <input
+      formcontrolname="city"
+      name="city"
+      placeholder="city"
+    />
+    <select
+      formcontrolname="country"
+    >
+      
+    </select>
+    <button
+      type="submit"
+    >
+      Submit
+    </button>
   </form>
 </eternal-address>
 `;

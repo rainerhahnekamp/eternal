@@ -1,6 +1,11 @@
 <p>{{ title }}</p>
-<form [formGroup]="formGroup">
-  <input formControlName="street" name="street" placeholder="street" />
+<form (ngSubmit)="search()" [formGroup]="formGroup">
+  <input
+    formControlName="street"
+    name="street"
+    placeholder="street"
+    data-test="street"
+  />
   <input
     formControlName="streetNumber"
     name="streetNumber"
@@ -8,4 +13,13 @@
   />
   <input formControlName="zip" name="zip" placeholder="zip" />
   <input formControlName="city" name="city" placeholder="city" />
+  <select formControlName="country">
+    <option *ngFor="let country of countries" [value]="country.value">{{
+      country.name
+    }}</option>
+  </select>
+  <button type="button">Submit</button>
 </form>
+<p *ngIf="lookupResult$ | async as lookupResult" data-test="lookup-result">
+  {{ lookupResult }}
+</p>
