@@ -7,7 +7,7 @@ import { delay, tap } from 'rxjs/operators';
 import { AddressLookup } from '../address-lookup.service';
 import { Address, AddressComponent } from './address.component';
 
-describe('Test Address input', () => {
+describe.skip('Test Address input', () => {
   // mocking
   it('should check if search calls service', () => {
     const lookup = jest.fn<Observable<boolean>, [Address]>(() => of(true));

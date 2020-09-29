@@ -1,3 +1,5 @@
+const presetPuppeteer = require('jest-puppeteer/jest-preset.json');
+
 module.exports = {
   name: 'testing',
   preset: '../../jest.config.js',
@@ -7,4 +9,9 @@ module.exports = {
     'jest-preset-angular/build/AngularSnapshotSerializer.js',
     'jest-preset-angular/build/HTMLCommentSerializer.js'
   ]
+};
+
+module.exports = {
+  ...module.exports,
+  ...presetPuppeteer
 };
