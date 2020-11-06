@@ -17,3 +17,5 @@ git merge 04-comp-tests
 
 git checkout 06-e2e
 git merge 05-visual-regression
+
+git checkout master
