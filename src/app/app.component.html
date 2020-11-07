@@ -1,9 +1,10 @@
 <div class="main">
   <mat-toolbar color="primary"
-    ><mat-toolbar-row>
+  >
+    <mat-toolbar-row>
       <a routerLink="/">
         <h1>
-          <img src="/assets/logo.png" alt="Eteneral" />
+          <img alt="Eteneral" src="/assets/logo.png"/>
           Unforgettable Holidays
         </h1>
       </a>
@@ -20,6 +21,8 @@
         </li>
       </ul>
     </mat-drawer>
-    <mat-drawer-content><router-outlet></router-outlet> </mat-drawer-content>
+    <mat-drawer-content>
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
   </mat-drawer-container>
 </div>
