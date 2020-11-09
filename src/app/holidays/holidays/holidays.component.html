@@ -1,15 +1,17 @@
 <div class="container">
-  <mat-card *ngFor="let holiday of holidays">
-    <mat-card-header>
-      <mat-card-title>{{ holiday.title }}</mat-card-title>
-      <mat-card-subtitle>{{ holiday.teaser }}</mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image [src]="holiday.imageUrl" [alt]="holiday.title" />
-    <mat-card-content>
-      {{ holiday.description }}
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button>BOOK</button>
-    </mat-card-actions>
-  </mat-card>
+  <ng-container *ngrxLet="holidays$; let holidays">
+    <mat-card *ngFor="let holiday of holidays">
+      <mat-card-header>
+        <mat-card-title>{{ holiday.title }}</mat-card-title>
+        <mat-card-subtitle>{{ holiday.teaser }}</mat-card-subtitle>
+      </mat-card-header>
+      <img [alt]="holiday.title" [src]="holiday.imageUrl" mat-card-image/>
+      <mat-card-content>
+        {{ holiday.description }}
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button>BOOK</button>
+      </mat-card-actions>
+    </mat-card>
+  </ng-container>
 </div>

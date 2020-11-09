@@ -1,4 +1,4 @@
-import { Holiday } from './holiday';
+import {Holiday} from '../holiday';
 
 export const holidays: Holiday[] = [
   {
@@ -16,7 +16,7 @@ export const holidays: Holiday[] = [
     id: 2,
     title: 'China',
     teaser: 'China Highlights in 10 days',
-    description: "Discover China's most famous highlights",
+    description: 'Discover China\'s most famous highlights',
     imageUrl: 'assets/China.jpg',
     typeId: 1,
     durationInDays: 12,
