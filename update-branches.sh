@@ -1,24 +1,23 @@
 set -e
 
-git checkout 01-setup
-git merge master -m "merge from master"
+git  checkout master
 
-git checkout 02-unit-tests-a
-git merge 01-setup -m "merge from 01-setup"
+branches=(master 01-setup 02-unit-tests-a 03-unit-tests-b 04-comp-tests 05-ngrx-tests 06-visual-regression 07-e2e)
+previous=
+current=
 
-git checkout 03-unit-tests-b
-git merge 02-unit-tests-a -m "merge from 02-unit-tests-a"
+for branch in ${branches[*]}; do
+  previous=$current
+  current=$next
+  next=$branch
 
-git checkout 04-comp-tests
-git merge 03-unit-tests-b -m "merge from 03-unit-tests-b"
+  if [ ! $current = "" ]
+  then
+    git checkout $current
+    git merge $previous $current -m merge
 
-git checkout 05-ngrx-tests
-git merge 04-comp-tests -m "merge from 04-compt-tests"
+  fi;
 
-git checkout 06-visual-regression
-git merge 05-ngrx-tests -m "merge from 05-ngrx-tests"
-
-git checkout 07-e2e
-git merge 06-visual-regression -m "merge from 06-visual-regression"
+done
 
 git checkout master
