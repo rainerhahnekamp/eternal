@@ -15,9 +15,7 @@ for branch in ${branches[*]}; do
   then
     git checkout $current
     git merge $previous $current -m merge
-
   fi;
-
 done
 
 git checkout master
