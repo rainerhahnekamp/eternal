@@ -1,6 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de-AT';
 import { LOCALE_ID, NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -23,6 +24,7 @@ registerLocaleData(localeDe, 'de-AT');
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    MatButtonModule,
     MatSidenavModule,
     MatToolbarModule,
     RouterModule.forRoot(APP_ROUTES),
