@@ -18,4 +18,7 @@ for branch in ${branches[*]}; do
   fi;
 done
 
+git checkout $branch
+git merge $current $branch -m merge
+
 git checkout master
