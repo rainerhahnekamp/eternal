@@ -5,20 +5,18 @@ export const APP_ROUTES: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: HomeComponent,
+    component: HomeComponent
   },
   {
     path: 'home',
-    redirectTo: '',
+    redirectTo: ''
   },
   {
     path: 'customer',
-    loadChildren: () =>
-      import('./customer/customer.module').then((m) => m.CustomerModule),
+    loadChildren: () => import('./customer/customer.module').then((m) => m.CustomerModule)
   },
   {
     path: 'holidays',
-    loadChildren: () =>
-      import('./holidays/holidays.module').then((m) => m.HolidaysModule),
-  },
+    loadChildren: () => import('./holidays/holidays.module').then((m) => m.HolidaysModule)
+  }
 ];

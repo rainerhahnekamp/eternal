@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
-import {holidaysActions} from '../+state/holidays.actions';
-import {fromHolidays} from '../+state/holidays.selectors';
-import {Holiday} from '../holiday';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { holidaysActions } from '../+state/holidays.actions';
+import { fromHolidays } from '../+state/holidays.selectors';
+import { Holiday } from '../holiday';
 
 @Component({
   selector: 'eternal-holidays',
@@ -13,8 +13,7 @@ import {Holiday} from '../holiday';
 export class HolidaysComponent implements OnInit {
   holidays$: Observable<Holiday[]>;
 
-  constructor(private store: Store) {
-  }
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.store.dispatch(holidaysActions.findHolidays());

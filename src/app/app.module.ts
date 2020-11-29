@@ -31,19 +31,19 @@ registerLocaleData(localeDe, 'de-AT');
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument(),
-    FormlyModule.forRoot({ extras: { lazyRender: true } }),
+    FormlyModule.forRoot({ extras: { lazyRender: true } })
   ],
   providers: [
     {
       provide: MAT_DATE_LOCALE,
-      useValue: 'de-AT',
+      useValue: 'de-AT'
     },
     { provide: LOCALE_ID, useValue: 'de-AT' },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: { appearance: 'outline' },
-    },
+      useValue: { appearance: 'outline' }
+    }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

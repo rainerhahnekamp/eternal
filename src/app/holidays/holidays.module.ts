@@ -17,11 +17,11 @@ import { HolidaysComponent } from './holidays/holidays.component';
     RouterModule.forChild([
       {
         path: '',
-        component: HolidaysComponent,
-      },
+        component: HolidaysComponent
+      }
     ]),
     StoreModule.forFeature(holidaysFeatureKey, holidaysReducer),
-    ReactiveComponentModule,
-  ],
+    ReactiveComponentModule
+  ]
 })
 export class HolidaysModule {}

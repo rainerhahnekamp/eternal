@@ -13,10 +13,7 @@ export class MockedHttpClient {
     return this.sortCustomers().pipe(this.logRequest('GET', url));
   }
 
-  post(
-    url: string,
-    customer: Customer
-  ): Observable<{ customers: Customer[]; id: number }> {
+  post(url: string, customer: Customer): Observable<{ customers: Customer[]; id: number }> {
     const nextId = this.getNextId();
     this.customers.push({ ...customer, id: nextId });
     return this.sortCustomers().pipe(

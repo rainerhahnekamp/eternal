@@ -37,25 +37,25 @@ import { MockedHttpClient } from './mocked-http-client.service';
         children: [
           {
             path: '',
-            component: CustomersComponent,
+            component: CustomersComponent
           },
           { path: 'new', component: CustomerComponent, data: { mode: 'new' } },
           {
             path: ':id',
             component: CustomerComponent,
-            data: { mode: 'edit' },
-          },
-        ],
-      },
+            data: { mode: 'edit' }
+          }
+        ]
+      }
     ]),
     StoreModule.forFeature(customerFeatureKey, reducer),
-    EffectsModule.forFeature([CustomerEffects]),
+    EffectsModule.forFeature([CustomerEffects])
   ],
   providers: [
     {
       provide: HttpClient,
-      useClass: MockedHttpClient,
-    },
-  ],
+      useClass: MockedHttpClient
+    }
+  ]
 })
 export class CustomerModule {}
