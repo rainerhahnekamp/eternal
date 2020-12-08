@@ -1,5 +1,5 @@
 # Angular Workshop Testing
 
-You start the Angular application as every other by running `npm run start`.
+You start the Angular application as every other by running `npm run start`. Prior to that, download all the dependencies by `npx yarn`.
 
-To run the backend, you will need Java >= 14. You can run it with `./mvnw spring-boot:run`
+
