@@ -12,8 +12,8 @@
     "lint": "ng lint",
     "e2e": "cypress open",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
-    "storybook": "yarn docs:json && start-storybook -p 6006 --no-dll",
-    "build-storybook": "yarn docs:json && build-storybook --no-dll"
+    "storybook": "yarn docs:json && start-storybook -p 6006",
+    "build-storybook": "yarn docs:json && build-storybook"
   },
   "private": true,
   "dependencies": {
@@ -48,12 +48,12 @@
     "@angular/compiler-cli": "~10.1.6",
     "@babel/core": "^7.12.3",
     "@compodoc/compodoc": "^1.1.11",
-    "@storybook/addon-actions": "^6.0.28",
-    "@storybook/addon-essentials": "^6.0.28",
-    "@storybook/addon-links": "^6.0.28",
+    "@storybook/addon-actions": "^6.1.10",
+    "@storybook/addon-essentials": "^6.1.10",
+    "@storybook/addon-links": "^6.1.10",
     "@storybook/addon-storyshots": "^6.0.28",
     "@storybook/addon-storyshots-puppeteer": "^6.0.28",
-    "@storybook/angular": "^6.0.28",
+    "@storybook/angular": "^6.1.10",
     "@types/expect-puppeteer": "^4.4.4",
     "@types/jest": "26.0.15",
     "@types/jest-environment-puppeteer": "^4.4.0",
