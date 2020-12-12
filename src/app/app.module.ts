@@ -1,4 +1,5 @@
 import { registerLocaleData } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de-AT';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,6 +28,7 @@ registerLocaleData(localeDe, 'de-AT');
     MatButtonModule,
     MatSidenavModule,
     MatToolbarModule,
+    HttpClientModule,
     RouterModule.forRoot(APP_ROUTES),
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
