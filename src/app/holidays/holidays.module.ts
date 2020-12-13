@@ -5,7 +5,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { ReactiveComponentModule } from '@ngrx/component';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { HolidaysEffects } from './+state/holidays.effects';
 import { holidaysFeatureKey, holidaysReducer } from './+state/holidays.reducer';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { RequestInfoComponent } from './request-info/request-info.component';
@@ -28,6 +30,7 @@ import { RequestInfoComponent } from './request-info/request-info.component';
       },
     ]),
     StoreModule.forFeature(holidaysFeatureKey, holidaysReducer),
+    EffectsModule.forFeature([HolidaysEffects]),
     ReactiveComponentModule,
   ],
 })
