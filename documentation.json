@@ -1,0 +1,3246 @@
+{
+  "pipes": [],
+  "interfaces": [
+    {
+      "name": "Address",
+      "id": "interface-Address-a0c3ef36bfd7c1060046703d52ae6dab",
+      "file": "src/app/address-lookuper.service.ts",
+      "type": "interface",
+      "sourceCode": "import { HttpClient, HttpParams } from '@angular/common/http';\r\nimport { Injectable } from '@angular/core';\r\nimport { Observable } from 'rxjs';\r\nimport { map } from 'rxjs/operators';\r\n\r\ninterface Address {\r\n  street: string;\r\n  streetNumber: string;\r\n  zip?: string;\r\n  city?: string;\r\n}\r\n\r\n@Injectable({ providedIn: 'root' })\r\nexport class AddressLookuper {\r\n  constructor(private httpClient: HttpClient) {}\r\n\r\n  lookup(query: string): Observable<boolean> {\r\n    const address = this.parse(query);\r\n    if (!address.streetNumber) {\r\n      throw new Error('Address without street number');\r\n    }\r\n\r\n    return this.httpClient\r\n      .get<string[]>('https://nominatim.openstreetmap.org/search.php', {\r\n        params: new HttpParams()\r\n          .set('format', 'jsonv2')\r\n          .set('street', address.street + ' ' + address.streetNumber),\r\n      })\r\n      .pipe(map((addresses) => addresses.length > 0));\r\n  }\r\n\r\n  parse(query: string): Address {\r\n    const shortPattern = /^([\\w\\s]+)\\s(\\d+)$/;\r\n    const longPattern = /^([\\w\\s]+)\\s(\\d+),\\s(\\d+)\\s(\\w+)$/;\r\n\r\n    if (query.match(shortPattern)) {\r\n      const [, street, streetNumber] = query.match(shortPattern);\r\n      return { street, streetNumber };\r\n    } else if (query.match(longPattern)) {\r\n      const [, street, streetNumber, zip, city] = query.match(longPattern);\r\n      return { street, streetNumber, zip, city };\r\n    }\r\n    return { street: '', streetNumber: '' };\r\n  }\r\n\r\n  coverageCheck() {\r\n    console.log('untested');\r\n  }\r\n}\r\n",
+      "properties": [
+        {
+          "name": "city",
+          "type": "string",
+          "optional": true,
+          "description": "",
+          "line": 10
+        },
+        {
+          "name": "street",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 7
+        },
+        {
+          "name": "streetNumber",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 8
+        },
+        {
+          "name": "zip",
+          "type": "string",
+          "optional": true,
+          "description": "",
+          "line": 9
+        }
+      ],
+      "indexSignatures": [],
+      "kind": 150,
+      "methods": []
+    },
+    {
+      "name": "Customer",
+      "id": "interface-Customer-1d3473320270a53b21004a67ac9f5fdd",
+      "file": "src/app/customer/customer.ts",
+      "type": "interface",
+      "sourceCode": "export interface Customer {\r\n  id: number;\r\n  firstname: string;\r\n  name: string;\r\n  country: string;\r\n  birthdate: string;\r\n}\r\n",
+      "properties": [
+        {
+          "name": "birthdate",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 6
+        },
+        {
+          "name": "country",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 5
+        },
+        {
+          "name": "firstname",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 3
+        },
+        {
+          "name": "id",
+          "type": "number",
+          "optional": false,
+          "description": "",
+          "line": 2
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 4
+        }
+      ],
+      "indexSignatures": [],
+      "kind": 150,
+      "methods": []
+    },
+    {
+      "name": "CustomerAppState",
+      "id": "interface-CustomerAppState-0271a4e8852387e267114c169bc8d7e4",
+      "file": "src/app/customer/+state/customer.reducer.ts",
+      "type": "interface",
+      "sourceCode": "import { Customer } from '../customer';\r\nimport { createReducer, Action, on } from '@ngrx/store';\r\nimport { CustomerActions } from './customer.actions';\r\n\r\nexport const customerFeatureKey = 'Customer';\r\n\r\nexport interface State {\r\n  customers: Customer[];\r\n}\r\n\r\nexport interface CustomerAppState {\r\n  [customerFeatureKey]: State;\r\n}\r\n\r\nexport const initialState: State = {\r\n  customers: []\r\n};\r\n\r\nconst CustomerReducer = createReducer<State>(\r\n  initialState,\r\n  on(CustomerActions.loaded, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  })),\r\n  on(CustomerActions.added, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  })),\r\n  on(CustomerActions.updated, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  })),\r\n  on(CustomerActions.removed, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  }))\r\n);\r\n\r\nexport function reducer(state: State | undefined, action: Action) {\r\n  return CustomerReducer(state, action);\r\n}\r\n",
+      "properties": [
+        {
+          "name": "customerFeatureKey",
+          "type": "State",
+          "optional": false,
+          "description": "",
+          "line": 12
+        }
+      ],
+      "indexSignatures": [],
+      "kind": 150,
+      "methods": []
+    },
+    {
+      "name": "Holiday",
+      "id": "interface-Holiday-9ac2af9529d2be3dc71dc3ee070b8d8f",
+      "file": "src/app/holidays/holiday.ts",
+      "type": "interface",
+      "sourceCode": "export interface Holiday {\r\n  id: number;\r\n  title: string;\r\n  teaser: string;\r\n  description: string;\r\n  imageUrl: string;\r\n  typeId: number;\r\n  durationInDays: number;\r\n  minCount: number;\r\n  maxCount: number;\r\n}\r\n",
+      "properties": [
+        {
+          "name": "description",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 5
+        },
+        {
+          "name": "durationInDays",
+          "type": "number",
+          "optional": false,
+          "description": "",
+          "line": 8
+        },
+        {
+          "name": "id",
+          "type": "number",
+          "optional": false,
+          "description": "",
+          "line": 2
+        },
+        {
+          "name": "imageUrl",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 6
+        },
+        {
+          "name": "maxCount",
+          "type": "number",
+          "optional": false,
+          "description": "",
+          "line": 10
+        },
+        {
+          "name": "minCount",
+          "type": "number",
+          "optional": false,
+          "description": "",
+          "line": 9
+        },
+        {
+          "name": "teaser",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 4
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 3
+        },
+        {
+          "name": "typeId",
+          "type": "number",
+          "optional": false,
+          "description": "",
+          "line": 7
+        }
+      ],
+      "indexSignatures": [],
+      "kind": 150,
+      "methods": []
+    },
+    {
+      "name": "Holiday",
+      "id": "interface-Holiday-594e195a3c2793e022cf4065fd0bcae9-1",
+      "file": "src/app/holidays/holiday-card/holiday-card.component.ts",
+      "type": "interface",
+      "sourceCode": "import {Component, Input} from '@angular/core';\r\n\r\ninterface Holiday {\r\n  id: number;\r\n  title: string;\r\n  teaser: string;\r\n  description: string;\r\n  imageUrl: string;\r\n  typeId: number;\r\n  durationInDays: number;\r\n  minCount: number;\r\n  maxCount: number;\r\n}\r\n\r\n@Component({\r\n  selector: 'app-holiday-card',\r\n  templateUrl: './holiday-card.component.html',\r\n  styleUrls: ['./holiday-card.component.scss']\r\n})\r\nexport class HolidayCardComponent {\r\n  @Input() holiday: Holiday;\r\n}\r\n",
+      "properties": [
+        {
+          "name": "description",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 7
+        },
+        {
+          "name": "durationInDays",
+          "type": "number",
+          "optional": false,
+          "description": "",
+          "line": 10
+        },
+        {
+          "name": "id",
+          "type": "number",
+          "optional": false,
+          "description": "",
+          "line": 4
+        },
+        {
+          "name": "imageUrl",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 8
+        },
+        {
+          "name": "maxCount",
+          "type": "number",
+          "optional": false,
+          "description": "",
+          "line": 12
+        },
+        {
+          "name": "minCount",
+          "type": "number",
+          "optional": false,
+          "description": "",
+          "line": 11
+        },
+        {
+          "name": "teaser",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 6
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 5
+        },
+        {
+          "name": "typeId",
+          "type": "number",
+          "optional": false,
+          "description": "",
+          "line": 9
+        }
+      ],
+      "indexSignatures": [],
+      "kind": 150,
+      "methods": [],
+      "isDuplicate": true,
+      "duplicateId": 1,
+      "duplicateName": "Holiday-1"
+    },
+    {
+      "name": "HolidaysState",
+      "id": "interface-HolidaysState-ffba13c72f55999f5d0d3bd67193bb02",
+      "file": "src/app/holidays/+state/holidays.reducer.ts",
+      "type": "interface",
+      "sourceCode": "import {createReducer, on} from '@ngrx/store';\r\nimport {Holiday} from '../holiday';\r\nimport {holidays} from './data';\r\nimport {holidaysActions} from './holidays.actions';\r\n\r\nexport const holidaysFeatureKey = 'holiday';\r\n\r\nexport interface HolidaysState {\r\n  holidays: Holiday[];\r\n}\r\n\r\nconst initialState: HolidaysState = {holidays: []};\r\n\r\nexport const holidaysReducer = createReducer<HolidaysState>(initialState, on(holidaysActions.findHolidays, state => ({\r\n  ...state,\r\n  holidays\r\n})));\r\n",
+      "properties": [
+        {
+          "name": "holidays",
+          "type": "Holiday[]",
+          "optional": false,
+          "description": "",
+          "line": 9
+        }
+      ],
+      "indexSignatures": [],
+      "kind": 150,
+      "methods": []
+    },
+    {
+      "name": "State",
+      "id": "interface-State-0271a4e8852387e267114c169bc8d7e4",
+      "file": "src/app/customer/+state/customer.reducer.ts",
+      "type": "interface",
+      "sourceCode": "import { Customer } from '../customer';\r\nimport { createReducer, Action, on } from '@ngrx/store';\r\nimport { CustomerActions } from './customer.actions';\r\n\r\nexport const customerFeatureKey = 'Customer';\r\n\r\nexport interface State {\r\n  customers: Customer[];\r\n}\r\n\r\nexport interface CustomerAppState {\r\n  [customerFeatureKey]: State;\r\n}\r\n\r\nexport const initialState: State = {\r\n  customers: []\r\n};\r\n\r\nconst CustomerReducer = createReducer<State>(\r\n  initialState,\r\n  on(CustomerActions.loaded, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  })),\r\n  on(CustomerActions.added, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  })),\r\n  on(CustomerActions.updated, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  })),\r\n  on(CustomerActions.removed, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  }))\r\n);\r\n\r\nexport function reducer(state: State | undefined, action: Action) {\r\n  return CustomerReducer(state, action);\r\n}\r\n",
+      "properties": [
+        {
+          "name": "customers",
+          "type": "Customer[]",
+          "optional": false,
+          "description": "",
+          "line": 8
+        }
+      ],
+      "indexSignatures": [],
+      "kind": 150,
+      "methods": []
+    }
+  ],
+  "injectables": [
+    {
+      "name": "AddressLookuper",
+      "id": "injectable-AddressLookuper-a0c3ef36bfd7c1060046703d52ae6dab",
+      "file": "src/app/address-lookuper.service.ts",
+      "properties": [],
+      "methods": [
+        {
+          "name": "coverageCheck",
+          "args": [],
+          "optional": false,
+          "returnType": "void",
+          "typeParameters": [],
+          "line": 46
+        },
+        {
+          "name": "lookup",
+          "args": [
+            {
+              "name": "query",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "returnType": "Observable<boolean>",
+          "typeParameters": [],
+          "line": 17,
+          "jsdoctags": [
+            {
+              "name": "query",
+              "type": "string",
+              "tagName": {
+                "text": "param"
+              }
+            }
+          ]
+        },
+        {
+          "name": "parse",
+          "args": [
+            {
+              "name": "query",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "returnType": "Address",
+          "typeParameters": [],
+          "line": 32,
+          "jsdoctags": [
+            {
+              "name": "query",
+              "type": "string",
+              "tagName": {
+                "text": "param"
+              }
+            }
+          ]
+        }
+      ],
+      "description": "",
+      "sourceCode": "import { HttpClient, HttpParams } from '@angular/common/http';\r\nimport { Injectable } from '@angular/core';\r\nimport { Observable } from 'rxjs';\r\nimport { map } from 'rxjs/operators';\r\n\r\ninterface Address {\r\n  street: string;\r\n  streetNumber: string;\r\n  zip?: string;\r\n  city?: string;\r\n}\r\n\r\n@Injectable({ providedIn: 'root' })\r\nexport class AddressLookuper {\r\n  constructor(private httpClient: HttpClient) {}\r\n\r\n  lookup(query: string): Observable<boolean> {\r\n    const address = this.parse(query);\r\n    if (!address.streetNumber) {\r\n      throw new Error('Address without street number');\r\n    }\r\n\r\n    return this.httpClient\r\n      .get<string[]>('https://nominatim.openstreetmap.org/search.php', {\r\n        params: new HttpParams()\r\n          .set('format', 'jsonv2')\r\n          .set('street', address.street + ' ' + address.streetNumber),\r\n      })\r\n      .pipe(map((addresses) => addresses.length > 0));\r\n  }\r\n\r\n  parse(query: string): Address {\r\n    const shortPattern = /^([\\w\\s]+)\\s(\\d+)$/;\r\n    const longPattern = /^([\\w\\s]+)\\s(\\d+),\\s(\\d+)\\s(\\w+)$/;\r\n\r\n    if (query.match(shortPattern)) {\r\n      const [, street, streetNumber] = query.match(shortPattern);\r\n      return { street, streetNumber };\r\n    } else if (query.match(longPattern)) {\r\n      const [, street, streetNumber, zip, city] = query.match(longPattern);\r\n      return { street, streetNumber, zip, city };\r\n    }\r\n    return { street: '', streetNumber: '' };\r\n  }\r\n\r\n  coverageCheck() {\r\n    console.log('untested');\r\n  }\r\n}\r\n",
+      "constructorObj": {
+        "name": "constructor",
+        "description": "",
+        "args": [
+          {
+            "name": "httpClient",
+            "type": "HttpClient"
+          }
+        ],
+        "line": 14,
+        "jsdoctags": [
+          {
+            "name": "httpClient",
+            "type": "HttpClient",
+            "tagName": {
+              "text": "param"
+            }
+          }
+        ]
+      },
+      "type": "injectable"
+    },
+    {
+      "name": "CustomerEffects",
+      "id": "injectable-CustomerEffects-6ef01065f18178d5910196e692a581a4",
+      "file": "src/app/customer/+state/customer.effects.ts",
+      "properties": [
+        {
+          "name": "addCustomer$",
+          "defaultValue": "createEffect(() =>\r\n    this.actions$.pipe(\r\n      ofType(CustomerActions.add),\r\n      concatMap(({ customer }) =>\r\n        this.http.post<Customer[]>(this.baseUrl, customer)\r\n      ),\r\n      map(customers => CustomerActions.added({ customers })),\r\n      tap(() => this.router.navigateByUrl('/customer'))\r\n    )\r\n  )",
+          "type": "",
+          "optional": false,
+          "description": "",
+          "line": 26
+        },
+        {
+          "name": "baseUrl",
+          "defaultValue": "'https://local.eternal.com/api/customer'",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 11,
+          "modifierKind": [
+            112
+          ]
+        },
+        {
+          "name": "loadCustomers$",
+          "defaultValue": "createEffect(() =>\r\n    this.actions$.pipe(\r\n      ofType(CustomerActions.load),\r\n      switchMap(() => this.http.get<Customer[]>(this.baseUrl)),\r\n      map(customers => CustomerActions.loaded({ customers }))\r\n    )\r\n  )",
+          "type": "",
+          "optional": false,
+          "description": "",
+          "line": 18
+        },
+        {
+          "name": "removeCustomer$",
+          "defaultValue": "createEffect(() =>\r\n    this.actions$.pipe(\r\n      ofType(CustomerActions.remove),\r\n      concatMap(({ customer }) =>\r\n        this.http.delete<Customer[]>(`${this.baseUrl}/${customer.id}`)\r\n      ),\r\n      map(customers => CustomerActions.removed({ customers })),\r\n      tap(() => this.router.navigateByUrl('/customer'))\r\n    )\r\n  )",
+          "type": "",
+          "optional": false,
+          "description": "",
+          "line": 48
+        },
+        {
+          "name": "updateCustomer$",
+          "defaultValue": "createEffect(() =>\r\n    this.actions$.pipe(\r\n      ofType(CustomerActions.update),\r\n      concatMap(({ customer }) =>\r\n        this.http.put<Customer[]>(this.baseUrl, customer)\r\n      ),\r\n      map(customers => CustomerActions.updated({ customers })),\r\n      tap(() => this.router.navigateByUrl('/customer'))\r\n    )\r\n  )",
+          "type": "",
+          "optional": false,
+          "description": "",
+          "line": 37
+        }
+      ],
+      "methods": [],
+      "description": "",
+      "sourceCode": "import { HttpClient } from '@angular/common/http';\r\nimport { Injectable } from '@angular/core';\r\nimport { Actions, createEffect, ofType } from '@ngrx/effects';\r\nimport { map, switchMap, tap, concatMap } from 'rxjs/operators';\r\nimport { Customer } from '../customer';\r\nimport { CustomerActions } from './customer.actions';\r\nimport { Router } from '@angular/router';\r\n\r\n@Injectable()\r\nexport class CustomerEffects {\r\n  private baseUrl = 'https://local.eternal.com/api/customer';\r\n  constructor(\r\n    private actions$: Actions,\r\n    private http: HttpClient,\r\n    private router: Router\r\n  ) {}\r\n\r\n  loadCustomers$ = createEffect(() =>\r\n    this.actions$.pipe(\r\n      ofType(CustomerActions.load),\r\n      switchMap(() => this.http.get<Customer[]>(this.baseUrl)),\r\n      map(customers => CustomerActions.loaded({ customers }))\r\n    )\r\n  );\r\n\r\n  addCustomer$ = createEffect(() =>\r\n    this.actions$.pipe(\r\n      ofType(CustomerActions.add),\r\n      concatMap(({ customer }) =>\r\n        this.http.post<Customer[]>(this.baseUrl, customer)\r\n      ),\r\n      map(customers => CustomerActions.added({ customers })),\r\n      tap(() => this.router.navigateByUrl('/customer'))\r\n    )\r\n  );\r\n\r\n  updateCustomer$ = createEffect(() =>\r\n    this.actions$.pipe(\r\n      ofType(CustomerActions.update),\r\n      concatMap(({ customer }) =>\r\n        this.http.put<Customer[]>(this.baseUrl, customer)\r\n      ),\r\n      map(customers => CustomerActions.updated({ customers })),\r\n      tap(() => this.router.navigateByUrl('/customer'))\r\n    )\r\n  );\r\n\r\n  removeCustomer$ = createEffect(() =>\r\n    this.actions$.pipe(\r\n      ofType(CustomerActions.remove),\r\n      concatMap(({ customer }) =>\r\n        this.http.delete<Customer[]>(`${this.baseUrl}/${customer.id}`)\r\n      ),\r\n      map(customers => CustomerActions.removed({ customers })),\r\n      tap(() => this.router.navigateByUrl('/customer'))\r\n    )\r\n  );\r\n}\r\n",
+      "constructorObj": {
+        "name": "constructor",
+        "description": "",
+        "args": [
+          {
+            "name": "actions$",
+            "type": "Actions"
+          },
+          {
+            "name": "http",
+            "type": "HttpClient"
+          },
+          {
+            "name": "router",
+            "type": "Router"
+          }
+        ],
+        "line": 11,
+        "jsdoctags": [
+          {
+            "name": "actions$",
+            "type": "Actions",
+            "tagName": {
+              "text": "param"
+            }
+          },
+          {
+            "name": "http",
+            "type": "HttpClient",
+            "tagName": {
+              "text": "param"
+            }
+          },
+          {
+            "name": "router",
+            "type": "Router",
+            "tagName": {
+              "text": "param"
+            }
+          }
+        ]
+      },
+      "type": "injectable"
+    },
+    {
+      "name": "MockedHttpClient",
+      "id": "injectable-MockedHttpClient-863293ec824d1b068346ac2d1e7f9aa3",
+      "file": "src/app/customer/mocked-http-client.service.ts",
+      "properties": [
+        {
+          "name": "customers",
+          "defaultValue": "originalCustomers",
+          "type": "",
+          "optional": false,
+          "description": "",
+          "line": 10,
+          "modifierKind": [
+            112
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "name": "delete",
+          "args": [
+            {
+              "name": "url",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "returnType": "Observable<Customer[]>",
+          "typeParameters": [],
+          "line": 38,
+          "jsdoctags": [
+            {
+              "name": "url",
+              "type": "string",
+              "tagName": {
+                "text": "param"
+              }
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "args": [
+            {
+              "name": "url",
+              "type": "string"
+            }
+          ],
+          "optional": false,
+          "returnType": "Observable<Customer[]>",
+          "typeParameters": [],
+          "line": 12,
+          "jsdoctags": [
+            {
+              "name": "url",
+              "type": "string",
+              "tagName": {
+                "text": "param"
+              }
+            }
+          ]
+        },
+        {
+          "name": "getNextId",
+          "args": [],
+          "optional": false,
+          "returnType": "any",
+          "typeParameters": [],
+          "line": 65
+        },
+        {
+          "name": "logRequest",
+          "args": [
+            {
+              "name": "httpMethod",
+              "type": "string"
+            },
+            {
+              "name": "url",
+              "type": "string"
+            },
+            {
+              "name": "body",
+              "type": "any",
+              "optional": true
+            }
+          ],
+          "optional": false,
+          "returnType": "(observable: any) => any",
+          "typeParameters": [],
+          "line": 49,
+          "modifierKind": [
+            112
+          ],
+          "jsdoctags": [
+            {
+              "name": "httpMethod",
+              "type": "string",
+              "tagName": {
+                "text": "param"
+              }
+            },
+            {
+              "name": "url",
+              "type": "string",
+              "tagName": {
+                "text": "param"
+              }
+            },
+            {
+              "name": "body",
+              "type": "any",
+              "optional": true,
+              "tagName": {
+                "text": "param"
+              }
+            }
+          ]
+        },
+        {
+          "name": "post",
+          "args": [
+            {
+              "name": "url",
+              "type": "string"
+            },
+            {
+              "name": "customer",
+              "type": "Customer"
+            }
+          ],
+          "optional": false,
+          "returnType": "Observable<literal type>",
+          "typeParameters": [],
+          "line": 16,
+          "jsdoctags": [
+            {
+              "name": "url",
+              "type": "string",
+              "tagName": {
+                "text": "param"
+              }
+            },
+            {
+              "name": "customer",
+              "type": "Customer",
+              "tagName": {
+                "text": "param"
+              }
+            }
+          ]
+        },
+        {
+          "name": "put",
+          "args": [
+            {
+              "name": "url",
+              "type": "string"
+            },
+            {
+              "name": "customer",
+              "type": "Customer"
+            }
+          ],
+          "optional": false,
+          "returnType": "Observable<Customer[]>",
+          "typeParameters": [],
+          "line": 28,
+          "jsdoctags": [
+            {
+              "name": "url",
+              "type": "string",
+              "tagName": {
+                "text": "param"
+              }
+            },
+            {
+              "name": "customer",
+              "type": "Customer",
+              "tagName": {
+                "text": "param"
+              }
+            }
+          ]
+        },
+        {
+          "name": "sortCustomers",
+          "args": [],
+          "optional": false,
+          "returnType": "Observable<Customer[]>",
+          "typeParameters": [],
+          "line": 44,
+          "modifierKind": [
+            112
+          ]
+        }
+      ],
+      "description": "",
+      "sourceCode": "import { Injectable } from '@angular/core';\r\nimport { sortBy } from 'lodash-es';\r\nimport { Observable, of } from 'rxjs';\r\nimport { delay, tap, map } from 'rxjs/operators';\r\nimport { Customer } from './customer';\r\nimport { customers as originalCustomers } from './data';\r\n\r\n@Injectable()\r\nexport class MockedHttpClient {\r\n  private customers = originalCustomers;\r\n\r\n  get(url: string): Observable<Customer[]> {\r\n    return this.sortCustomers().pipe(this.logRequest('GET', url));\r\n  }\r\n\r\n  post(\r\n    url: string,\r\n    customer: Customer\r\n  ): Observable<{ customers: Customer[]; id: number }> {\r\n    const nextId = this.getNextId();\r\n    this.customers.push({ ...customer, id: nextId });\r\n    return this.sortCustomers().pipe(\r\n      map((customers) => ({ customers, id: nextId })),\r\n      this.logRequest('POST', url, customer)\r\n    );\r\n  }\r\n\r\n  put(url: string, customer: Customer): Observable<Customer[]> {\r\n    this.customers = this.customers.map((c) => {\r\n      if (c.id === customer.id) {\r\n        return customer;\r\n      }\r\n      return c;\r\n    });\r\n    return this.sortCustomers().pipe(this.logRequest('PUT', url, customer));\r\n  }\r\n\r\n  delete(url: string): Observable<Customer[]> {\r\n    const id = Number(url.match(/(\\d+)$/)[0]);\r\n    this.customers = this.customers.filter((customer) => customer.id !== id);\r\n    return this.sortCustomers().pipe(this.logRequest('DELETE', url));\r\n  }\r\n\r\n  private sortCustomers(): Observable<Customer[]> {\r\n    const customers = sortBy(this.customers, 'name');\r\n    return of(customers).pipe();\r\n  }\r\n\r\n  private logRequest(httpMethod: string, url: string, body?: any) {\r\n    return (observable: Observable<any>) =>\r\n      observable.pipe(\r\n        delay(Math.random() * 1000),\r\n        tap((response) => {\r\n          console.group('Mocked Http Client');\r\n          console.log(`${httpMethod}: ${url}`);\r\n          if (body) {\r\n            console.log(`Body: ${JSON.stringify(body)}`);\r\n          }\r\n          console.log(response);\r\n          console.groupEnd();\r\n        })\r\n      );\r\n  }\r\n\r\n  getNextId() {\r\n    return Math.max(...this.customers.map((customer) => customer.id)) + 1;\r\n  }\r\n}\r\n",
+      "type": "injectable"
+    }
+  ],
+  "classes": [
+    {
+      "name": "AppPage",
+      "id": "class-AppPage-a0db91bfa3b9914e9048612074084ee6",
+      "file": "e2e/src/app.po.ts",
+      "type": "class",
+      "sourceCode": "import { browser, by, element } from 'protractor';\n\nexport class AppPage {\n  navigateTo(): Promise<unknown> {\n    return browser.get(browser.baseUrl) as Promise<unknown>;\n  }\n\n  getTitleText(): Promise<string> {\n    return element(by.css('app-root .content span')).getText() as Promise<string>;\n  }\n}\n",
+      "properties": [],
+      "methods": [
+        {
+          "name": "getTitleText",
+          "args": [],
+          "optional": false,
+          "returnType": "Promise<string>",
+          "typeParameters": [],
+          "line": 8
+        },
+        {
+          "name": "navigateTo",
+          "args": [],
+          "optional": false,
+          "returnType": "Promise<unknown>",
+          "typeParameters": [],
+          "line": 4
+        }
+      ],
+      "indexSignatures": [],
+      "inputsClass": [],
+      "outputsClass": [],
+      "hostBindings": [],
+      "hostListeners": []
+    }
+  ],
+  "directives": [],
+  "components": [
+    {
+      "name": "AddressComponent",
+      "id": "component-AddressComponent-1e4fdb1b5a29b64a5c5063fb4938488a",
+      "file": "src/app/address/address.component.ts",
+      "encapsulation": [],
+      "entryComponents": [],
+      "inputs": [],
+      "outputs": [],
+      "providers": [],
+      "selector": "app-address",
+      "styleUrls": [
+        "./address.component.scss"
+      ],
+      "styles": [],
+      "templateUrl": [
+        "./address.component.html"
+      ],
+      "viewProviders": [],
+      "inputsClass": [
+        {
+          "name": "address",
+          "line": 16,
+          "type": "string"
+        }
+      ],
+      "outputsClass": [],
+      "propertiesClass": [
+        {
+          "name": "formGroup",
+          "type": "FormGroup",
+          "optional": false,
+          "description": "",
+          "line": 13
+        },
+        {
+          "name": "lookupResult$",
+          "type": "Observable<string>",
+          "optional": false,
+          "description": "",
+          "line": 18
+        },
+        {
+          "name": "submitter$",
+          "defaultValue": "new Subject<void>()",
+          "type": "",
+          "optional": false,
+          "description": "",
+          "line": 17
+        },
+        {
+          "name": "title",
+          "defaultValue": "'Address Validation'",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 14
+        }
+      ],
+      "methodsClass": [
+        {
+          "name": "ngOnInit",
+          "args": [],
+          "optional": false,
+          "returnType": "void",
+          "typeParameters": [],
+          "line": 25
+        },
+        {
+          "name": "search",
+          "args": [],
+          "optional": false,
+          "returnType": "void",
+          "typeParameters": [],
+          "line": 39
+        }
+      ],
+      "hostBindings": [],
+      "hostListeners": [],
+      "description": "",
+      "rawdescription": "",
+      "type": "component",
+      "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\r\nimport { FormBuilder, FormGroup } from '@angular/forms';\r\nimport { Observable, Subject } from 'rxjs';\r\nimport { map, switchMap, tap } from 'rxjs/operators';\r\nimport { AddressLookuper } from '../address-lookuper.service';\r\n\r\n@Component({\r\n  selector: 'app-address',\r\n  templateUrl: './address.component.html',\r\n  styleUrls: ['./address.component.scss'],\r\n})\r\nexport class AddressComponent implements OnInit {\r\n  formGroup: FormGroup;\r\n  title = 'Address Validation';\r\n\r\n  @Input() address: string;\r\n  submitter$ = new Subject<void>();\r\n  lookupResult$: Observable<string>;\r\n\r\n  constructor(\r\n    private lookuper: AddressLookuper,\r\n    private formBuilder: FormBuilder\r\n  ) {}\r\n\r\n  ngOnInit() {\r\n    this.formGroup = this.formBuilder.group({\r\n      address: [],\r\n    });\r\n    if (this.address) {\r\n      this.formGroup.setValue({ addresss: this.address });\r\n    }\r\n\r\n    this.lookupResult$ = this.submitter$.pipe(\r\n      switchMap(() => this.lookuper.lookup(this.formGroup.value.address)),\r\n      map((found) => (found ? 'Address found' : 'Address not found'))\r\n    );\r\n  }\r\n\r\n  search() {\r\n    this.submitter$.next();\r\n  }\r\n}\r\n",
+      "assetsDirs": [],
+      "styleUrlsData": [
+        {
+          "data": "",
+          "styleUrl": "./address.component.scss"
+        }
+      ],
+      "stylesData": "",
+      "constructorObj": {
+        "name": "constructor",
+        "description": "",
+        "args": [
+          {
+            "name": "lookuper",
+            "type": "AddressLookuper"
+          },
+          {
+            "name": "formBuilder",
+            "type": "FormBuilder"
+          }
+        ],
+        "line": 18,
+        "jsdoctags": [
+          {
+            "name": "lookuper",
+            "type": "AddressLookuper",
+            "tagName": {
+              "text": "param"
+            }
+          },
+          {
+            "name": "formBuilder",
+            "type": "FormBuilder",
+            "tagName": {
+              "text": "param"
+            }
+          }
+        ]
+      },
+      "implements": [
+        "OnInit"
+      ],
+      "templateData": "<p>{{ title }}</p>\r\n<form (ngSubmit)=\"search()\" [formGroup]=\"formGroup\">\r\n  <input formControlName=\"address\" placeholder=\"address\" data-test=\"address\" />\r\n  <button type=\"submit\">Submit</button>\r\n</form>\r\n<p *ngIf=\"lookupResult$ | async as lookupResult\" data-test=\"lookup-result\">\r\n  {{ lookupResult }}\r\n</p>\r\n"
+    },
+    {
+      "name": "AppComponent",
+      "id": "component-AppComponent-a2772acf31b2d87affcdc74069e649ca",
+      "file": "src/app/app.component.ts",
+      "encapsulation": [],
+      "entryComponents": [],
+      "inputs": [],
+      "outputs": [],
+      "providers": [],
+      "selector": "app-root",
+      "styleUrls": [
+        "./app.component.scss"
+      ],
+      "styles": [],
+      "templateUrl": [
+        "./app.component.html"
+      ],
+      "viewProviders": [],
+      "inputsClass": [],
+      "outputsClass": [],
+      "propertiesClass": [
+        {
+          "name": "title",
+          "defaultValue": "'testing'",
+          "type": "string",
+          "optional": false,
+          "description": "",
+          "line": 9
+        }
+      ],
+      "methodsClass": [],
+      "hostBindings": [],
+      "hostListeners": [],
+      "description": "",
+      "rawdescription": "",
+      "type": "component",
+      "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.scss']\n})\nexport class AppComponent {\n  title = 'testing';\n}\n",
+      "assetsDirs": [],
+      "styleUrlsData": [
+        {
+          "data": "div.main {\r\n  max-width: 1280px;\r\n  margin: 0 auto;\r\n  display: flex;\r\n  flex-direction: column;\r\n  justify-content: stretch;\r\n\r\n  mat-toolbar {\r\n    &.mat-primary {\r\n      background: #2193b0;\r\n    }\r\n\r\n    a {\r\n      text-decoration: none;\r\n      color: inherit;\r\n\r\n      h1 {\r\n        display: flex;\r\n        align-items: center;\r\n\r\n        img {\r\n          width: 4em;\r\n          height: auto;\r\n          padding-right: 1em;\r\n        }\r\n      }\r\n    }\r\n  }\r\n\r\n  mat-drawer-container {\r\n    flex: 1 1 auto;\r\n    min-height: 25em;\r\n\r\n    mat-drawer {\r\n      background: #fafafa;\r\n    }\r\n\r\n    ul {\r\n      padding: 0;\r\n      text-align: center;\r\n\r\n      li {\r\n        list-style-type: none;\r\n        padding: 1em;\r\n      }\r\n    }\r\n\r\n    mat-drawer-content {\r\n      padding: 1em;\r\n    }\r\n  }\r\n}\r\n",
+          "styleUrl": "./app.component.scss"
+        }
+      ],
+      "stylesData": "",
+      "templateData": "<div class=\"main\">\r\n  <mat-toolbar color=\"primary\"\r\n  >\r\n    <mat-toolbar-row>\r\n      <a routerLink=\"/\">\r\n        <h1>\r\n          <img alt=\"Eteneral\" src=\"/assets/logo.png\"/>\r\n          Unforgettable Holidays\r\n        </h1>\r\n      </a>\r\n    </mat-toolbar-row>\r\n  </mat-toolbar>\r\n  <mat-drawer-container autosize>\r\n    <mat-drawer mode=\"side\" opened>\r\n      <ul>\r\n        <li>\r\n          <a mat-raised-button routerLink=\"/holidays\">Holidays</a>\r\n        </li>\r\n        <li>\r\n          <a mat-raised-button routerLink=\"/customer\">Customers</a>\r\n        </li>\r\n      </ul>\r\n    </mat-drawer>\r\n    <mat-drawer-content>\r\n      <router-outlet></router-outlet>\r\n    </mat-drawer-content>\r\n  </mat-drawer-container>\r\n</div>\r\n"
+    },
+    {
+      "name": "ButtonComponent",
+      "id": "component-ButtonComponent-44f2f1e1b3a1e0ebc1e0edafd90d05c0",
+      "file": "src/stories/button.component.ts",
+      "encapsulation": [],
+      "entryComponents": [],
+      "inputs": [],
+      "outputs": [],
+      "providers": [],
+      "selector": "storybook-button",
+      "styleUrls": [
+        "./button.css"
+      ],
+      "styles": [],
+      "template": "<button   type=\"button\"\n   (click)=\"onClick.emit($event)\"\n   [ngClass]=\"classes\"\n   [ngStyle]=\"{ 'background-color': backgroundColor }\"\n >\n   {{ label }}\n </button>",
+      "templateUrl": [],
+      "viewProviders": [],
+      "inputsClass": [
+        {
+          "name": "backgroundColor",
+          "description": "<p>What background color to use</p>\n",
+          "line": 26,
+          "type": "string"
+        },
+        {
+          "name": "label",
+          "defaultValue": "'Button'",
+          "description": "<p>Button contents</p>\n",
+          "line": 40
+        },
+        {
+          "name": "primary",
+          "defaultValue": "false",
+          "description": "<p>Is this the principal call to action on the page?</p>\n",
+          "line": 20
+        },
+        {
+          "name": "size",
+          "defaultValue": "'medium'",
+          "description": "<p>How large should the button be?</p>\n",
+          "line": 32,
+          "type": "\"small\" | \"medium\" | \"large\""
+        }
+      ],
+      "outputsClass": [
+        {
+          "name": "onClick",
+          "defaultValue": "new EventEmitter<Event>()",
+          "description": "<p>Optional click handler</p>\n",
+          "line": 46,
+          "type": "EventEmitter"
+        }
+      ],
+      "propertiesClass": [],
+      "methodsClass": [],
+      "hostBindings": [],
+      "hostListeners": [],
+      "description": "",
+      "rawdescription": "",
+      "type": "component",
+      "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'storybook-button',\r\n  template: ` <button\r\n    type=\"button\"\r\n    (click)=\"onClick.emit($event)\"\r\n    [ngClass]=\"classes\"\r\n    [ngStyle]=\"{ 'background-color': backgroundColor }\"\r\n  >\r\n    {{ label }}\r\n  </button>`,\r\n  styleUrls: ['./button.css'],\r\n})\r\nexport default class ButtonComponent {\r\n  /**\r\n   * Is this the principal call to action on the page?\r\n   */\r\n  @Input()\r\n  primary = false;\r\n\r\n  /**\r\n   * What background color to use\r\n   */\r\n  @Input()\r\n  backgroundColor?: string;\r\n\r\n  /**\r\n   * How large should the button be?\r\n   */\r\n  @Input()\r\n  size: 'small' | 'medium' | 'large' = 'medium';\r\n\r\n  /**\r\n   * Button contents\r\n   *\r\n   * @required\r\n   */\r\n  @Input()\r\n  label = 'Button';\r\n\r\n  /**\r\n   * Optional click handler\r\n   */\r\n  @Output()\r\n  onClick = new EventEmitter<Event>();\r\n\r\n  public get classes(): string[] {\r\n    const mode = this.primary ? 'storybook-button--primary' : 'storybook-button--secondary';\r\n\r\n    return ['storybook-button', `storybook-button--${this.size}`, mode];\r\n  }\r\n}\r\n",
+      "assetsDirs": [],
+      "styleUrlsData": [
+        {
+          "data": ".storybook-button {\r\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\r\n  font-weight: 700;\r\n  border: 0;\r\n  border-radius: 3em;\r\n  cursor: pointer;\r\n  display: inline-block;\r\n  line-height: 1;\r\n}\r\n.storybook-button--primary {\r\n  color: white;\r\n  background-color: #1ea7fd;\r\n}\r\n.storybook-button--secondary {\r\n  color: #333;\r\n  background-color: transparent;\r\n  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;\r\n}\r\n.storybook-button--small {\r\n  font-size: 12px;\r\n  padding: 10px 16px;\r\n}\r\n.storybook-button--medium {\r\n  font-size: 14px;\r\n  padding: 11px 20px;\r\n}\r\n.storybook-button--large {\r\n  font-size: 16px;\r\n  padding: 12px 24px;\r\n}\r\n",
+          "styleUrl": "./button.css"
+        }
+      ],
+      "stylesData": "",
+      "accessors": {
+        "classes": {
+          "name": "classes",
+          "getSignature": {
+            "name": "classes",
+            "type": "[]",
+            "returnType": "string[]",
+            "line": 48
+          }
+        }
+      }
+    },
+    {
+      "name": "CustomerComponent",
+      "id": "component-CustomerComponent-a6a512336b61f486cceea1192a3717c3",
+      "file": "src/app/customer/customer/customer.component.ts",
+      "encapsulation": [],
+      "entryComponents": [],
+      "inputs": [],
+      "outputs": [],
+      "providers": [],
+      "styleUrls": [
+        "./customer.component.scss"
+      ],
+      "styles": [],
+      "templateUrl": [
+        "./customer.component.html"
+      ],
+      "viewProviders": [],
+      "inputsClass": [],
+      "outputsClass": [],
+      "propertiesClass": [
+        {
+          "name": "customer$",
+          "type": "Observable<Customer>",
+          "optional": false,
+          "description": "",
+          "line": 22
+        },
+        {
+          "name": "fields",
+          "type": "FormlyFieldConfig[]",
+          "optional": false,
+          "description": "",
+          "line": 23
+        },
+        {
+          "name": "formGroup",
+          "defaultValue": "new FormGroup({})",
+          "type": "",
+          "optional": false,
+          "description": "",
+          "line": 21
+        }
+      ],
+      "methodsClass": [
+        {
+          "name": "ngOnInit",
+          "args": [],
+          "optional": false,
+          "returnType": "void",
+          "typeParameters": [],
+          "line": 29
+        },
+        {
+          "name": "remove",
+          "args": [
+            {
+              "name": "customer",
+              "type": "Customer"
+            }
+          ],
+          "optional": false,
+          "returnType": "void",
+          "typeParameters": [],
+          "line": 65,
+          "jsdoctags": [
+            {
+              "name": "customer",
+              "type": "Customer",
+              "tagName": {
+                "text": "param"
+              }
+            }
+          ]
+        },
+        {
+          "name": "submit",
+          "args": [
+            {
+              "name": "customer",
+              "type": "Customer"
+            }
+          ],
+          "optional": false,
+          "returnType": "void",
+          "typeParameters": [],
+          "line": 55,
+          "jsdoctags": [
+            {
+              "name": "customer",
+              "type": "Customer",
+              "tagName": {
+                "text": "param"
+              }
+            }
+          ]
+        }
+      ],
+      "hostBindings": [],
+      "hostListeners": [],
+      "description": "",
+      "rawdescription": "",
+      "type": "component",
+      "sourceCode": "import { HttpClient } from '@angular/common/http';\r\nimport { Component, OnInit } from '@angular/core';\r\nimport { FormGroup } from '@angular/forms';\r\nimport { ActivatedRoute, Router } from '@angular/router';\r\nimport { Store } from '@ngrx/store';\r\nimport { FormlyFieldConfig } from '@ngx-formly/core';\r\nimport { formly } from 'ngx-formly-helpers';\r\nimport { Observable, of } from 'rxjs';\r\nimport { filter, map } from 'rxjs/operators';\r\nimport { CustomerActions } from '../+state/customer.actions';\r\nimport { CustomerAppState } from '../+state/customer.reducer';\r\nimport { fromCustomer } from '../+state/customer.selectors';\r\nimport { countries } from '../countries';\r\nimport { Customer } from '../customer';\r\n\r\n@Component({\r\n  templateUrl: './customer.component.html',\r\n  styleUrls: ['./customer.component.scss']\r\n})\r\nexport class CustomerComponent implements OnInit {\r\n  formGroup = new FormGroup({});\r\n  customer$: Observable<Customer>;\r\n  fields: FormlyFieldConfig[];\r\n  constructor(\r\n    private store: Store<CustomerAppState>,\r\n    private route: ActivatedRoute\r\n  ) {}\r\n\r\n  ngOnInit() {\r\n    this.fields = [\r\n      formly.requiredText('firstname', 'Firstname'),\r\n      formly.requiredText('name', 'Name'),\r\n      formly.requiredSelect('country', 'Country', countries),\r\n      formly.requiredDate('birthdate', 'Birthdate')\r\n    ];\r\n    this.store.dispatch(CustomerActions.load());\r\n    if (this.route.snapshot.data.mode === 'new') {\r\n      this.customer$ = of({\r\n        id: 0,\r\n        firstname: '',\r\n        name: '',\r\n        country: null,\r\n        birthdate: null\r\n      });\r\n    } else {\r\n      this.customer$ = this.store\r\n        .select(fromCustomer.selectById, Number(this.route.snapshot.params.id))\r\n        .pipe(\r\n          filter(customer => !!customer),\r\n          map(customer => ({ ...customer }))\r\n        );\r\n    }\r\n  }\r\n\r\n  submit(customer: Customer) {\r\n    if (this.formGroup.valid) {\r\n      if (customer.id) {\r\n        this.store.dispatch(CustomerActions.update({ customer }));\r\n      } else {\r\n        this.store.dispatch(CustomerActions.add({ customer }));\r\n      }\r\n    }\r\n  }\r\n\r\n  remove(customer: Customer) {\r\n    if (confirm(`Really delete ${customer}?`)) {\r\n      this.store.dispatch(CustomerActions.remove({ customer }));\r\n    }\r\n  }\r\n}\r\n",
+      "assetsDirs": [],
+      "styleUrlsData": [
+        {
+          "data": "form {\r\n  width: 20em;\r\n  .buttons {\r\n    display: flex;\r\n    justify-content: space-evenly;\r\n  }\r\n}\r\n",
+          "styleUrl": "./customer.component.scss"
+        }
+      ],
+      "stylesData": "",
+      "constructorObj": {
+        "name": "constructor",
+        "description": "",
+        "args": [
+          {
+            "name": "store",
+            "type": "Store<CustomerAppState>"
+          },
+          {
+            "name": "route",
+            "type": "ActivatedRoute"
+          }
+        ],
+        "line": 23,
+        "jsdoctags": [
+          {
+            "name": "store",
+            "type": "Store<CustomerAppState>",
+            "tagName": {
+              "text": "param"
+            }
+          },
+          {
+            "name": "route",
+            "type": "ActivatedRoute",
+            "tagName": {
+              "text": "param"
+            }
+          }
+        ]
+      },
+      "implements": [
+        "OnInit"
+      ],
+      "templateData": "<form\r\n  [formGroup]=\"formGroup\"\r\n  *ngIf=\"customer$ | async as customer\"\r\n  (ngSubmit)=\"submit(customer)\"\r\n>\r\n  <formly-form\r\n    [form]=\"formGroup\"\r\n    [fields]=\"fields\"\r\n    [model]=\"customer\"\r\n  ></formly-form>\r\n  <div class=\"buttons\">\r\n    <a mat-raised-button [routerLink]=\"['..']\">Back</a>\r\n    <button\r\n      mat-raised-button\r\n      color=\"warn\"\r\n      type=\"button\"\r\n      (click)=\"remove(customer)\"\r\n    >\r\n      Delete\r\n    </button>\r\n    <button mat-raised-button color=\"primary\" type=\"submit\">Save</button>\r\n  </div>\r\n</form>\r\n"
+    },
+    {
+      "name": "CustomersComponent",
+      "id": "component-CustomersComponent-a773d5a02b91816130c8492cb6c2a556",
+      "file": "src/app/customer/customers/customers.component.ts",
+      "encapsulation": [],
+      "entryComponents": [],
+      "inputs": [],
+      "outputs": [],
+      "providers": [],
+      "styleUrls": [
+        "./customers.component.scss"
+      ],
+      "styles": [],
+      "templateUrl": [
+        "./customers.component.html"
+      ],
+      "viewProviders": [],
+      "inputsClass": [],
+      "outputsClass": [],
+      "propertiesClass": [
+        {
+          "name": "customers$",
+          "type": "Observable<Customer[]>",
+          "optional": false,
+          "description": "",
+          "line": 14
+        }
+      ],
+      "methodsClass": [
+        {
+          "name": "ngOnInit",
+          "args": [],
+          "optional": false,
+          "returnType": "void",
+          "typeParameters": [],
+          "line": 18
+        }
+      ],
+      "hostBindings": [],
+      "hostListeners": [],
+      "description": "",
+      "rawdescription": "",
+      "type": "component",
+      "sourceCode": "import { Component, OnInit } from '@angular/core';\r\nimport { Observable } from 'rxjs';\r\nimport { Customer } from '../customer';\r\nimport { CustomerAppState } from '../+state/customer.reducer';\r\nimport { CustomerActions } from '../+state/customer.actions';\r\nimport { fromCustomer } from '../+state/customer.selectors';\r\nimport { Store } from '@ngrx/store';\r\n\r\n@Component({\r\n  templateUrl: './customers.component.html',\r\n  styleUrls: ['./customers.component.scss']\r\n})\r\nexport class CustomersComponent implements OnInit {\r\n  customers$: Observable<Customer[]>;\r\n\r\n  constructor(private store: Store<CustomerAppState>) {}\r\n\r\n  ngOnInit() {\r\n    this.store.dispatch(CustomerActions.load());\r\n    this.customers$ = this.store.select(fromCustomer.selectAll);\r\n  }\r\n}\r\n",
+      "assetsDirs": [],
+      "styleUrlsData": [
+        {
+          "data": "div.row {\r\n  overflow: auto;\r\n\r\n  &.header {\r\n    font-weight: bold;\r\n  }\r\n  > p {\r\n    float: left;\r\n    text-align: center;\r\n    margin: 0.5em 0;\r\n    &.edit {\r\n      width: 2em;\r\n    }\r\n    &.name {\r\n      width: 11em;\r\n    }\r\n    &.country {\r\n      width: 4em;\r\n    }\r\n    &.birthdate {\r\n      width: 8em;\r\n    }\r\n  }\r\n}\r\n",
+          "styleUrl": "./customers.component.scss"
+        }
+      ],
+      "stylesData": "",
+      "constructorObj": {
+        "name": "constructor",
+        "description": "",
+        "args": [
+          {
+            "name": "store",
+            "type": "Store<CustomerAppState>"
+          }
+        ],
+        "line": 14,
+        "jsdoctags": [
+          {
+            "name": "store",
+            "type": "Store<CustomerAppState>",
+            "tagName": {
+              "text": "param"
+            }
+          }
+        ]
+      },
+      "implements": [
+        "OnInit"
+      ],
+      "templateData": "<h2>Customers</h2>\r\n<p>\r\n  <a mat-raised-button color=\"primary\" [routerLink]=\"['.', 'new']\"\r\n    >Add Customer</a\r\n  >\r\n</p>\r\n<div *ngIf=\"customers$ | async as customers\">\r\n  <div class=\"row header\">\r\n    <p class=\"edit\">&nbsp;</p>\r\n    <p class=\"name\">Name</p>\r\n    <p class=\"country\">Country</p>\r\n    <p class=\"birthdate\">Date of Birth</p>\r\n  </div>\r\n  <ng-container *ngIf=\"customers.length > 0; else noCustomers\">\r\n    <div class=\"row\" *ngFor=\"let customer of customers\">\r\n      <p class=\"edit\">\r\n        <a [routerLink]=\"['.', customer.id]\"><mat-icon>edit</mat-icon></a>\r\n      </p>\r\n      <p class=\"name\">{{ customer.firstname }} {{ customer.name }}</p>\r\n      <p class=\"country\">{{ customer.country }}</p>\r\n      <p class=\"birthdate\">{{ customer.birthdate | date }}</p>\r\n    </div>\r\n  </ng-container>\r\n  <ng-template #noCustomers>\r\n    <p>We don't have any customers yet 😥</p>\r\n  </ng-template>\r\n</div>\r\n"
+    },
+    {
+      "name": "HeaderComponent",
+      "id": "component-HeaderComponent-c349aa42f2121da4b5737d60a50fa413",
+      "file": "src/stories/header.component.ts",
+      "encapsulation": [],
+      "entryComponents": [],
+      "inputs": [],
+      "outputs": [],
+      "providers": [],
+      "selector": "storybook-header",
+      "styleUrls": [
+        "./header.css"
+      ],
+      "styles": [],
+      "template": "<header>    <div class=\"wrapper\">\n      <div>\n        <svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z\"\n              fill=\"#FFF\"\n            />\n            <path\n              d=\"M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z\"\n              fill=\"#555AB9\"\n            />\n            <path\n              d=\"M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z\"\n              fill=\"#91BAF8\"\n            />\n          </g>\n        </svg>\n        <h1>Acme</h1>\n      </div>\n      <div>\n        <storybook-button\n          *ngIf=\"user\"\n          size=\"small\"\n          (onClick)=\"onLogout.emit($event)\"\n          label=\"Log out\"\n        ></storybook-button>\n        <storybook-button\n          *ngIf=\"!user\"\n          size=\"small\"\n          (onClick)=\"onLogin.emit($event)\"\n          label=\"Log in\"\n        ></storybook-button>\n        <storybook-button\n          *ngIf=\"!user\"\n          primary\n          size=\"small\"\n          (onClick)=\"onCreateAccount.emit($event)\"\n          label=\"Sign up\"\n        ></storybook-button>\n      </div>\n    </div>\n  </header>",
+      "templateUrl": [],
+      "viewProviders": [],
+      "inputsClass": [
+        {
+          "name": "user",
+          "defaultValue": "null",
+          "line": 53,
+          "type": "unknown"
+        }
+      ],
+      "outputsClass": [
+        {
+          "name": "onCreateAccount",
+          "defaultValue": "new EventEmitter<Event>()",
+          "line": 62,
+          "type": "EventEmitter"
+        },
+        {
+          "name": "onLogin",
+          "defaultValue": "new EventEmitter<Event>()",
+          "line": 56,
+          "type": "EventEmitter"
+        },
+        {
+          "name": "onLogout",
+          "defaultValue": "new EventEmitter<Event>()",
+          "line": 59,
+          "type": "EventEmitter"
+        }
+      ],
+      "propertiesClass": [],
+      "methodsClass": [],
+      "hostBindings": [],
+      "hostListeners": [],
+      "description": "",
+      "rawdescription": "",
+      "type": "component",
+      "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'storybook-header',\r\n  template: `<header>\r\n    <div class=\"wrapper\">\r\n      <div>\r\n        <svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\">\r\n          <g fill=\"none\" fillRule=\"evenodd\">\r\n            <path\r\n              d=\"M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z\"\r\n              fill=\"#FFF\"\r\n            />\r\n            <path\r\n              d=\"M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z\"\r\n              fill=\"#555AB9\"\r\n            />\r\n            <path\r\n              d=\"M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z\"\r\n              fill=\"#91BAF8\"\r\n            />\r\n          </g>\r\n        </svg>\r\n        <h1>Acme</h1>\r\n      </div>\r\n      <div>\r\n        <storybook-button\r\n          *ngIf=\"user\"\r\n          size=\"small\"\r\n          (onClick)=\"onLogout.emit($event)\"\r\n          label=\"Log out\"\r\n        ></storybook-button>\r\n        <storybook-button\r\n          *ngIf=\"!user\"\r\n          size=\"small\"\r\n          (onClick)=\"onLogin.emit($event)\"\r\n          label=\"Log in\"\r\n        ></storybook-button>\r\n        <storybook-button\r\n          *ngIf=\"!user\"\r\n          primary\r\n          size=\"small\"\r\n          (onClick)=\"onCreateAccount.emit($event)\"\r\n          label=\"Sign up\"\r\n        ></storybook-button>\r\n      </div>\r\n    </div>\r\n  </header>`,\r\n  styleUrls: ['./header.css'],\r\n})\r\nexport default class HeaderComponent {\r\n  @Input()\r\n  user: unknown = null;\r\n\r\n  @Output()\r\n  onLogin = new EventEmitter<Event>();\r\n\r\n  @Output()\r\n  onLogout = new EventEmitter<Event>();\r\n\r\n  @Output()\r\n  onCreateAccount = new EventEmitter<Event>();\r\n}\r\n",
+      "assetsDirs": [],
+      "styleUrlsData": [
+        {
+          "data": ".wrapper {\r\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\r\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\r\n  padding: 15px 20px;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n}\r\n\r\nsvg {\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\nh1 {\r\n  font-weight: 900;\r\n  font-size: 20px;\r\n  line-height: 1;\r\n  margin: 6px 0 6px 10px;\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\nbutton + button {\r\n  margin-left: 10px;\r\n}\r\n",
+          "styleUrl": "./header.css"
+        }
+      ],
+      "stylesData": ""
+    },
+    {
+      "name": "HolidayCardComponent",
+      "id": "component-HolidayCardComponent-594e195a3c2793e022cf4065fd0bcae9",
+      "file": "src/app/holidays/holiday-card/holiday-card.component.ts",
+      "encapsulation": [],
+      "entryComponents": [],
+      "inputs": [],
+      "outputs": [],
+      "providers": [],
+      "selector": "app-holiday-card",
+      "styleUrls": [
+        "./holiday-card.component.scss"
+      ],
+      "styles": [],
+      "templateUrl": [
+        "./holiday-card.component.html"
+      ],
+      "viewProviders": [],
+      "inputsClass": [
+        {
+          "name": "holiday",
+          "line": 21,
+          "type": "Holiday"
+        }
+      ],
+      "outputsClass": [],
+      "propertiesClass": [],
+      "methodsClass": [],
+      "hostBindings": [],
+      "hostListeners": [],
+      "description": "",
+      "rawdescription": "",
+      "type": "component",
+      "sourceCode": "import {Component, Input} from '@angular/core';\r\n\r\ninterface Holiday {\r\n  id: number;\r\n  title: string;\r\n  teaser: string;\r\n  description: string;\r\n  imageUrl: string;\r\n  typeId: number;\r\n  durationInDays: number;\r\n  minCount: number;\r\n  maxCount: number;\r\n}\r\n\r\n@Component({\r\n  selector: 'app-holiday-card',\r\n  templateUrl: './holiday-card.component.html',\r\n  styleUrls: ['./holiday-card.component.scss']\r\n})\r\nexport class HolidayCardComponent {\r\n  @Input() holiday: Holiday;\r\n}\r\n",
+      "assetsDirs": [],
+      "styleUrlsData": [
+        {
+          "data": "",
+          "styleUrl": "./holiday-card.component.scss"
+        }
+      ],
+      "stylesData": "",
+      "templateData": "<mat-card>\r\n  <mat-card-header>\r\n    <mat-card-title>{{ holiday.title }}</mat-card-title>\r\n    <mat-card-subtitle>{{ holiday.teaser }}</mat-card-subtitle>\r\n  </mat-card-header>\r\n  <img [alt]=\"holiday.title\" [src]=\"holiday.imageUrl\" mat-card-image/>\r\n  <mat-card-content>\r\n    {{ holiday.description }}\r\n  </mat-card-content>\r\n  <mat-card-actions>\r\n    <button mat-raised-button>BOOK</button>\r\n  </mat-card-actions>\r\n</mat-card>\r\n\r\n"
+    },
+    {
+      "name": "HolidaysComponent",
+      "id": "component-HolidaysComponent-5c9e89a033d96dc4f8e1edd67d6415f3",
+      "file": "src/app/holidays/holidays/holidays.component.ts",
+      "encapsulation": [],
+      "entryComponents": [],
+      "inputs": [],
+      "outputs": [],
+      "providers": [],
+      "selector": "eternal-holidays",
+      "styleUrls": [
+        "./holidays.component.scss"
+      ],
+      "styles": [],
+      "templateUrl": [
+        "./holidays.component.html"
+      ],
+      "viewProviders": [],
+      "inputsClass": [],
+      "outputsClass": [],
+      "propertiesClass": [
+        {
+          "name": "holidays$",
+          "type": "Observable<Holiday[]>",
+          "optional": false,
+          "description": "",
+          "line": 14
+        }
+      ],
+      "methodsClass": [
+        {
+          "name": "ngOnInit",
+          "args": [],
+          "optional": false,
+          "returnType": "void",
+          "typeParameters": [],
+          "line": 19
+        }
+      ],
+      "hostBindings": [],
+      "hostListeners": [],
+      "description": "",
+      "rawdescription": "",
+      "type": "component",
+      "sourceCode": "import {Component, OnInit} from '@angular/core';\r\nimport {Store} from '@ngrx/store';\r\nimport {Observable} from 'rxjs';\r\nimport {holidaysActions} from '../+state/holidays.actions';\r\nimport {fromHolidays} from '../+state/holidays.selectors';\r\nimport {Holiday} from '../holiday';\r\n\r\n@Component({\r\n  selector: 'eternal-holidays',\r\n  templateUrl: './holidays.component.html',\r\n  styleUrls: ['./holidays.component.scss']\r\n})\r\nexport class HolidaysComponent implements OnInit {\r\n  holidays$: Observable<Holiday[]>;\r\n\r\n  constructor(private store: Store) {\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.store.dispatch(holidaysActions.findHolidays());\r\n    this.holidays$ = this.store.select(fromHolidays.get);\r\n  }\r\n}\r\n",
+      "assetsDirs": [],
+      "styleUrlsData": [
+        {
+          "data": "div.container {\r\n  display: flex;\r\n  justify-content: space-evenly;\r\n  flex-wrap: wrap;\r\n\r\n  app-holiday-card {\r\n    display: flex;\r\n    flex: 1 0 232px;\r\n    max-width: 400px;\r\n    margin: 2em;\r\n  }\r\n}\r\n",
+          "styleUrl": "./holidays.component.scss"
+        }
+      ],
+      "stylesData": "",
+      "constructorObj": {
+        "name": "constructor",
+        "description": "",
+        "args": [
+          {
+            "name": "store",
+            "type": "Store"
+          }
+        ],
+        "line": 14,
+        "jsdoctags": [
+          {
+            "name": "store",
+            "type": "Store",
+            "tagName": {
+              "text": "param"
+            }
+          }
+        ]
+      },
+      "implements": [
+        "OnInit"
+      ],
+      "templateData": "<div class=\"container\">\r\n  <ng-container *ngrxLet=\"holidays$; let holidays\">\r\n    <app-holiday-card *ngFor=\"let holiday of holidays\"\r\n                      [holiday]=\"holiday\"></app-holiday-card>\r\n  </ng-container>\r\n</div>\r\n"
+    },
+    {
+      "name": "HomeComponent",
+      "id": "component-HomeComponent-321debd7330dcb03f7b8d80736b1d0fb",
+      "file": "src/app/home/home.component.ts",
+      "encapsulation": [],
+      "entryComponents": [],
+      "inputs": [],
+      "outputs": [],
+      "providers": [],
+      "selector": "eternal-home",
+      "styleUrls": [
+        "./home.component.css"
+      ],
+      "styles": [],
+      "templateUrl": [
+        "./home.component.html"
+      ],
+      "viewProviders": [],
+      "inputsClass": [],
+      "outputsClass": [],
+      "propertiesClass": [],
+      "methodsClass": [
+        {
+          "name": "ngOnInit",
+          "args": [],
+          "optional": false,
+          "returnType": "void",
+          "typeParameters": [],
+          "line": 12
+        }
+      ],
+      "hostBindings": [],
+      "hostListeners": [],
+      "description": "",
+      "rawdescription": "",
+      "type": "component",
+      "sourceCode": "import { Component, OnInit } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'eternal-home',\r\n  templateUrl: './home.component.html',\r\n  styleUrls: ['./home.component.css']\r\n})\r\nexport class HomeComponent implements OnInit {\r\n\r\n  constructor() { }\r\n\r\n  ngOnInit(): void {\r\n  }\r\n\r\n}\r\n",
+      "assetsDirs": [],
+      "styleUrlsData": [
+        {
+          "data": "",
+          "styleUrl": "./home.component.css"
+        }
+      ],
+      "stylesData": "",
+      "constructorObj": {
+        "name": "constructor",
+        "description": "",
+        "args": [],
+        "line": 8
+      },
+      "implements": [
+        "OnInit"
+      ],
+      "templateData": "<p>\r\n  Eternal is an imaginary travel agency and is used as training application for\r\n  Angular developers.\r\n</p>\r\n<p>\r\n  You can click around, do whatever you want but don't expect to be able to book\r\n  a real holiday 😉.\r\n</p>\r\n"
+    },
+    {
+      "name": "PageComponent",
+      "id": "component-PageComponent-caf3f2fce2bf7356cf7ccd76b8a88482",
+      "file": "src/stories/page.component.ts",
+      "encapsulation": [],
+      "entryComponents": [],
+      "inputs": [],
+      "outputs": [],
+      "providers": [],
+      "selector": "storybook-page",
+      "styleUrls": [
+        "./page.css"
+      ],
+      "styles": [],
+      "template": "<article>    <storybook-header\n      [user]=\"user\"\n      (onLogout)=\"onLogout.emit($event)\"\n      (onLogin)=\"onLogin.emit($event)\"\n      (onCreateAccount)=\"onCreateAccount.emit($event)\"\n    ></storybook-header>\n    <section>\n      <h2>Pages in Storybook</h2>\n      <p>\n        We recommend building UIs with a\n        <a href=\"https://componentdriven.org\" target=\"_blank\" rel=\"noopener noreferrer\">\n          <strong>component-driven</strong>\n        </a>\n        process starting with atomic components and ending with pages.\n      </p>\n      <p>\n        Render pages with mock data. This makes it easy to build and review page states without\n        needing to navigate to them in your app. Here are some handy patterns for managing page data\n        in Storybook:\n      </p>\n      <ul>\n        <li>\n          Use a higher-level connected component. Storybook helps you compose such data from the\n          \"args\" of child component stories\n        </li>\n        <li>\n          Assemble data in the page component from your services. You can mock these services out\n          using Storybook.\n        </li>\n      </ul>\n      <p>\n        Get a guided tutorial on component-driven development at\n        <a href=\"https://www.learnstorybook.com\" target=\"_blank\" rel=\"noopener noreferrer\">\n          Learn Storybook\n        </a>\n        . Read more in the\n        <a href=\"https://storybook.js.org/docs\" target=\"_blank\" rel=\"noopener noreferrer\">\n          docs\n        </a>\n        .\n      </p>\n      <div class=\"tip-wrapper\">\n        <span class=\"tip\">Tip</span> Adjust the width of the canvas with the\n        <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M1.5 5.2h4.8c.3 0 .5.2.5.4v5.1c-.1.2-.3.3-.4.3H1.4a.5.5 0 01-.5-.4V5.7c0-.3.2-.5.5-.5zm0-2.1h6.9c.3 0 .5.2.5.4v7a.5.5 0 01-1 0V4H1.5a.5.5 0 010-1zm0-2.1h9c.3 0 .5.2.5.4v9.1a.5.5 0 01-1 0V2H1.5a.5.5 0 010-1zm4.3 5.2H2V10h3.8V6.2z\"\n              id=\"a\"\n              fill=\"#999\"\n            />\n          </g>\n        </svg>\n        Viewports addon in the toolbar\n      </div>\n    </section>\n  </article>",
+      "templateUrl": [],
+      "viewProviders": [],
+      "inputsClass": [
+        {
+          "name": "user",
+          "defaultValue": "null",
+          "line": 66,
+          "type": "unknown"
+        }
+      ],
+      "outputsClass": [
+        {
+          "name": "onCreateAccount",
+          "defaultValue": "new EventEmitter<Event>()",
+          "line": 75,
+          "type": "EventEmitter"
+        },
+        {
+          "name": "onLogin",
+          "defaultValue": "new EventEmitter<Event>()",
+          "line": 69,
+          "type": "EventEmitter"
+        },
+        {
+          "name": "onLogout",
+          "defaultValue": "new EventEmitter<Event>()",
+          "line": 72,
+          "type": "EventEmitter"
+        }
+      ],
+      "propertiesClass": [],
+      "methodsClass": [],
+      "hostBindings": [],
+      "hostListeners": [],
+      "description": "",
+      "rawdescription": "",
+      "type": "component",
+      "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'storybook-page',\r\n  template: `<article>\r\n    <storybook-header\r\n      [user]=\"user\"\r\n      (onLogout)=\"onLogout.emit($event)\"\r\n      (onLogin)=\"onLogin.emit($event)\"\r\n      (onCreateAccount)=\"onCreateAccount.emit($event)\"\r\n    ></storybook-header>\r\n    <section>\r\n      <h2>Pages in Storybook</h2>\r\n      <p>\r\n        We recommend building UIs with a\r\n        <a href=\"https://componentdriven.org\" target=\"_blank\" rel=\"noopener noreferrer\">\r\n          <strong>component-driven</strong>\r\n        </a>\r\n        process starting with atomic components and ending with pages.\r\n      </p>\r\n      <p>\r\n        Render pages with mock data. This makes it easy to build and review page states without\r\n        needing to navigate to them in your app. Here are some handy patterns for managing page data\r\n        in Storybook:\r\n      </p>\r\n      <ul>\r\n        <li>\r\n          Use a higher-level connected component. Storybook helps you compose such data from the\r\n          \"args\" of child component stories\r\n        </li>\r\n        <li>\r\n          Assemble data in the page component from your services. You can mock these services out\r\n          using Storybook.\r\n        </li>\r\n      </ul>\r\n      <p>\r\n        Get a guided tutorial on component-driven development at\r\n        <a href=\"https://www.learnstorybook.com\" target=\"_blank\" rel=\"noopener noreferrer\">\r\n          Learn Storybook\r\n        </a>\r\n        . Read more in the\r\n        <a href=\"https://storybook.js.org/docs\" target=\"_blank\" rel=\"noopener noreferrer\">\r\n          docs\r\n        </a>\r\n        .\r\n      </p>\r\n      <div class=\"tip-wrapper\">\r\n        <span class=\"tip\">Tip</span> Adjust the width of the canvas with the\r\n        <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\r\n          <g fill=\"none\" fillRule=\"evenodd\">\r\n            <path\r\n              d=\"M1.5 5.2h4.8c.3 0 .5.2.5.4v5.1c-.1.2-.3.3-.4.3H1.4a.5.5 0 01-.5-.4V5.7c0-.3.2-.5.5-.5zm0-2.1h6.9c.3 0 .5.2.5.4v7a.5.5 0 01-1 0V4H1.5a.5.5 0 010-1zm0-2.1h9c.3 0 .5.2.5.4v9.1a.5.5 0 01-1 0V2H1.5a.5.5 0 010-1zm4.3 5.2H2V10h3.8V6.2z\"\r\n              id=\"a\"\r\n              fill=\"#999\"\r\n            />\r\n          </g>\r\n        </svg>\r\n        Viewports addon in the toolbar\r\n      </div>\r\n    </section>\r\n  </article>`,\r\n  styleUrls: ['./page.css'],\r\n})\r\nexport default class PageComponent {\r\n  @Input()\r\n  user: unknown = null;\r\n\r\n  @Output()\r\n  onLogin = new EventEmitter<Event>();\r\n\r\n  @Output()\r\n  onLogout = new EventEmitter<Event>();\r\n\r\n  @Output()\r\n  onCreateAccount = new EventEmitter<Event>();\r\n}\r\n\r\n// export const Page = ({ user, onLogin, onLogout, onCreateAccount }) => (\r\n//   <article>\r\n//     <Header user={user} onLogin={onLogin} onLogout={onLogout} onCreateAccount={onCreateAccount} />\r\n\r\n// );\r\n// Page.propTypes = {\r\n//   user: PropTypes.shape({}),\r\n//   onLogin: PropTypes.func.isRequired,\r\n//   onLogout: PropTypes.func.isRequired,\r\n//   onCreateAccount: PropTypes.func.isRequired,\r\n// };\r\n\r\n// Page.defaultProps = {\r\n//   user: null,\r\n// };\r\n",
+      "assetsDirs": [],
+      "styleUrlsData": [
+        {
+          "data": "section {\r\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\r\n  font-size: 14px;\r\n  line-height: 24px;\r\n  padding: 48px 20px;\r\n  margin: 0 auto;\r\n  max-width: 600px;\r\n  color: #333;\r\n}\r\n\r\nh2 {\r\n  font-weight: 900;\r\n  font-size: 32px;\r\n  line-height: 1;\r\n  margin: 0 0 4px;\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\np {\r\n  margin: 1em 0;\r\n}\r\n\r\na {\r\n  text-decoration: none;\r\n  color: #1ea7fd;\r\n}\r\n\r\nul {\r\n  padding-left: 30px;\r\n  margin: 1em 0;\r\n}\r\n\r\nli {\r\n  margin-bottom: 8px;\r\n}\r\n\r\n.tip {\r\n  display: inline-block;\r\n  border-radius: 1em;\r\n  font-size: 11px;\r\n  line-height: 12px;\r\n  font-weight: 700;\r\n  background: #e7fdd8;\r\n  color: #66bf3c;\r\n  padding: 4px 12px;\r\n  margin-right: 10px;\r\n  vertical-align: top;\r\n}\r\n\r\n.tip-wrapper {\r\n  font-size: 13px;\r\n  line-height: 20px;\r\n  margin-top: 40px;\r\n  margin-bottom: 40px;\r\n}\r\n\r\n.tip-wrapper svg {\r\n  display: inline-block;\r\n  height: 12px;\r\n  width: 12px;\r\n  margin-right: 4px;\r\n  vertical-align: top;\r\n  margin-top: 3px;\r\n}\r\n\r\n.tip-wrapper svg path {\r\n  fill: #1ea7fd;\r\n}\r\n",
+          "styleUrl": "./page.css"
+        }
+      ],
+      "stylesData": ""
+    }
+  ],
+  "modules": [
+    {
+      "name": "AppModule",
+      "children": [
+        {
+          "type": "providers",
+          "elements": []
+        },
+        {
+          "type": "declarations",
+          "elements": [
+            {
+              "name": "AddressComponent"
+            },
+            {
+              "name": "AppComponent"
+            },
+            {
+              "name": "HomeComponent"
+            }
+          ]
+        },
+        {
+          "type": "imports",
+          "elements": [
+            {
+              "name": "CustomerModule"
+            },
+            {
+              "name": "HolidaysModule"
+            }
+          ]
+        },
+        {
+          "type": "exports",
+          "elements": []
+        },
+        {
+          "type": "bootstrap",
+          "elements": [
+            {
+              "name": "AppComponent"
+            }
+          ]
+        },
+        {
+          "type": "classes",
+          "elements": []
+        }
+      ]
+    },
+    {
+      "name": "CustomerModule",
+      "children": [
+        {
+          "type": "providers",
+          "elements": []
+        },
+        {
+          "type": "declarations",
+          "elements": [
+            {
+              "name": "CustomerComponent"
+            },
+            {
+              "name": "CustomersComponent"
+            }
+          ]
+        },
+        {
+          "type": "imports",
+          "elements": []
+        },
+        {
+          "type": "exports",
+          "elements": []
+        },
+        {
+          "type": "bootstrap",
+          "elements": []
+        },
+        {
+          "type": "classes",
+          "elements": []
+        }
+      ]
+    },
+    {
+      "name": "HolidaysModule",
+      "children": [
+        {
+          "type": "providers",
+          "elements": []
+        },
+        {
+          "type": "declarations",
+          "elements": [
+            {
+              "name": "HolidayCardComponent"
+            },
+            {
+              "name": "HolidaysComponent"
+            }
+          ]
+        },
+        {
+          "type": "imports",
+          "elements": []
+        },
+        {
+          "type": "exports",
+          "elements": []
+        },
+        {
+          "type": "bootstrap",
+          "elements": []
+        },
+        {
+          "type": "classes",
+          "elements": []
+        }
+      ]
+    }
+  ],
+  "miscellaneous": {
+    "variables": [
+      {
+        "name": "add",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.actions.ts",
+        "type": "",
+        "defaultValue": "createAction('[Customer] Add', props<{ customer: Customer }>())"
+      },
+      {
+        "name": "added",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.actions.ts",
+        "type": "",
+        "defaultValue": "createAction(\r\n  '[Customer] Added',\r\n  props<{ customers: Customer[] }>()\r\n)"
+      },
+      {
+        "name": "configureTests",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "test-config.helper.ts",
+        "type": "",
+        "defaultValue": "(configure: ConfigureFn, compilerOptions: CompilerOptions = {}) => {\r\n  const compilerConfig: CompilerOptions = {\r\n    preserveWhitespaces: false,\r\n    ...compilerOptions,\r\n  };\r\n\r\n  const configuredTestBed = TestBed.configureCompiler(compilerConfig);\r\n\r\n  configure(configuredTestBed);\r\n\r\n  return configuredTestBed.compileComponents().then(() => configuredTestBed);\r\n}"
+      },
+      {
+        "name": "countries",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/countries.ts",
+        "type": "",
+        "defaultValue": "[\r\n  ['AT', 'Austria'],\r\n  ['CA', 'Canada'],\r\n  ['CH', 'Switzerland'],\r\n  ['CN', 'China'],\r\n  ['CZ', 'Czechia'],\r\n  ['DE', 'Germany'],\r\n  ['DK', 'Denmark'],\r\n  ['ES', 'Spain'],\r\n  ['FR', 'France'],\r\n  ['HU', 'Hungary'],\r\n  ['IN', 'India'],\r\n  ['IT', 'Italy'],\r\n  ['NL', 'Netherlands'],\r\n  ['NO', 'Norway'],\r\n  ['RU', 'Russia'],\r\n  ['SE', 'Sweden'],\r\n  ['UK', 'United Kingdom'],\r\n  ['US', 'USA']\r\n].map(([value, label]) => ({ value, label }))"
+      },
+      {
+        "name": "CustomerActions",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.actions.ts",
+        "type": "object",
+        "defaultValue": "{\r\n  load,\r\n  loaded,\r\n  add,\r\n  added,\r\n  update,\r\n  updated,\r\n  remove,\r\n  removed\r\n}"
+      },
+      {
+        "name": "customerFeatureKey",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.reducer.ts",
+        "type": "string",
+        "defaultValue": "'Customer'"
+      },
+      {
+        "name": "CustomerReducer",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.reducer.ts",
+        "type": "",
+        "defaultValue": "createReducer<State>(\r\n  initialState,\r\n  on(CustomerActions.loaded, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  })),\r\n  on(CustomerActions.added, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  })),\r\n  on(CustomerActions.updated, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  })),\r\n  on(CustomerActions.removed, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  }))\r\n)"
+      },
+      {
+        "name": "customers",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/data.ts",
+        "type": "Customer[]",
+        "defaultValue": "[\r\n  {\r\n    id: 1,\r\n    firstname: 'Hugo',\r\n    name: 'Brandt',\r\n    country: 'AT',\r\n    birthdate: '1974-05-12'\r\n  },\r\n  {\r\n    id: 2,\r\n    firstname: 'Natalia',\r\n    name: 'Rusnov',\r\n    country: 'RU',\r\n    birthdate: '1965-08-09'\r\n  },\r\n  {\r\n    id: 3,\r\n    firstname: 'Fernandez',\r\n    name: 'Rodriguez',\r\n    country: 'ES',\r\n    birthdate: '2001-01-05'\r\n  },\r\n  {\r\n    id: 4,\r\n    firstname: 'Li',\r\n    name: 'Qian',\r\n    country: 'CN',\r\n    birthdate: '1991-12-05'\r\n  },\r\n  {\r\n    id: 5,\r\n    firstname: 'Kakani',\r\n    name: 'Bhattacharjee',\r\n    country: 'IN',\r\n    birthdate: '1989-10-11'\r\n  },\r\n  {\r\n    id: 6,\r\n    firstname: 'Paul',\r\n    name: 'Sullivan',\r\n    country: 'UK',\r\n    birthdate: '1995-05-31'\r\n  },\r\n  {\r\n    id: 6,\r\n    firstname: 'Samantha',\r\n    name: 'Jones',\r\n    country: 'US',\r\n    birthdate: '2005-07-15'\r\n  },\r\n  {\r\n    id: 7,\r\n    firstname: 'Renate',\r\n    name: 'Hoffmann',\r\n    country: 'DE',\r\n    birthdate: '1987-11-15'\r\n  },\r\n  {\r\n    id: 8,\r\n    firstname: 'Angelika',\r\n    name: 'Hoffmann',\r\n    country: 'DE',\r\n    birthdate: '1987-11-15'\r\n  },\r\n  {\r\n    id: 9,\r\n    firstname: 'Jean-Paul',\r\n    name: 'Néro',\r\n    country: 'FR',\r\n    birthdate: '1955-09-21'\r\n  },\r\n  {\r\n    id: 10,\r\n    firstname: 'Stefanie',\r\n    name: 'Niederrein',\r\n    country: 'AT',\r\n    birthdate: '1997-03-12'\r\n  },\r\n  {\r\n    id: 11,\r\n    firstname: 'Denise',\r\n    name: 'Keller',\r\n    country: 'CH',\r\n    birthdate: '1998-07-01'\r\n  },\r\n  {\r\n    id: 12,\r\n    firstname: 'Johan',\r\n    name: 'Driekamp',\r\n    country: 'NL',\r\n    birthdate: '1958-09-12'\r\n  },\r\n  {\r\n    id: 13,\r\n    firstname: 'Estefanía',\r\n    name: 'Sánchez',\r\n    country: 'ES',\r\n    birthdate: '1985-10-10'\r\n  },\r\n  {\r\n    id: 14,\r\n    firstname: 'John',\r\n    name: 'Harrison',\r\n    country: 'UK',\r\n    birthdate: '1977-05-20'\r\n  },\r\n  {\r\n    id: 15,\r\n    firstname: 'Helene',\r\n    name: 'Ford',\r\n    country: 'CA',\r\n    birthdate: '1969-03-04'\r\n  },\r\n  {\r\n    id: 16,\r\n    firstname: 'Jan',\r\n    name: 'Janáček',\r\n    country: 'CZ',\r\n    birthdate: '2002-01-02'\r\n  },\r\n  {\r\n    id: 17,\r\n    firstname: 'Knut',\r\n    name: 'Eggen',\r\n    country: 'NO',\r\n    birthdate: '1999-07-17'\r\n  },\r\n  {\r\n    id: 18,\r\n    firstname: 'Oskar',\r\n    name: 'Sjögren',\r\n    country: 'SE',\r\n    birthdate: '1961-03-22'\r\n  },\r\n  {\r\n    id: 19,\r\n    firstname: 'Timéa',\r\n    name: 'Szabó',\r\n    country: 'HU',\r\n    birthdate: '1969-01-26'\r\n  },\r\n  {\r\n    id: 20,\r\n    firstname: 'Latitia',\r\n    name: 'Bellitissa',\r\n    country: 'IT',\r\n    birthdate: '2002-05-30'\r\n  },\r\n  {\r\n    id: 21,\r\n    firstname: 'Bjørn',\r\n    name: 'Larsson',\r\n    country: 'DK',\r\n    birthdate: '1964-11-11'\r\n  }\r\n]"
+      },
+      {
+        "name": "environment",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/environments/environment.ts",
+        "type": "object",
+        "defaultValue": "{\n  production: false\n}"
+      },
+      {
+        "name": "environment",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/environments/environment.prod.ts",
+        "type": "object",
+        "defaultValue": "{\n  production: true\n}"
+      },
+      {
+        "name": "findHolidays",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/holidays/+state/holidays.actions.ts",
+        "type": "",
+        "defaultValue": "createAction('[Holidays] Find')"
+      },
+      {
+        "name": "findHolidaysSuccess",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/holidays/+state/holidays.actions.ts",
+        "type": "",
+        "defaultValue": "createAction('[Holidays] Find Success')"
+      },
+      {
+        "name": "fromCustomer",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.selectors.ts",
+        "type": "object",
+        "defaultValue": "{\r\n  selectAll,\r\n  selectById\r\n}"
+      },
+      {
+        "name": "fromHolidays",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/holidays/+state/holidays.selectors.ts",
+        "type": "object",
+        "defaultValue": "{\r\n  get: createSelector(stateSelector, ({holidays}) => holidays)\r\n}"
+      },
+      {
+        "name": "Holiday",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/holidays/holiday-card/holiday-card.component.stories.ts",
+        "type": "",
+        "defaultValue": "Template.bind({})"
+      },
+      {
+        "name": "holidays",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/holidays/+state/data.ts",
+        "type": "Holiday[]",
+        "defaultValue": "[\r\n  {\r\n    id: 1,\r\n    title: 'Angkor Wat',\r\n    teaser: 'Discover forgotten temples',\r\n    description: 'Angkor Wat in Cambodia',\r\n    imageUrl: 'assets/AngkorWat.jpg',\r\n    typeId: 1,\r\n    durationInDays: 3,\r\n    minCount: 5,\r\n    maxCount: 12\r\n  },\r\n  {\r\n    id: 2,\r\n    title: 'China',\r\n    teaser: 'China Highlights in 10 days',\r\n    description: 'Discover China\\'s most famous highlights',\r\n    imageUrl: 'assets/China.jpg',\r\n    typeId: 1,\r\n    durationInDays: 12,\r\n    minCount: 8,\r\n    maxCount: 15\r\n  },\r\n  {\r\n    id: 3,\r\n    title: 'Austrian Rush',\r\n    teaser: 'From East to West, from North to South in just 6 days',\r\n    description:\r\n      'Get to know different aspects of Austria. Hike mountains in Tyrol, relax in Burgenland, enjoy the rich culture of Vienna, Salzburg, Graz or Innsbruck',\r\n    imageUrl: 'assets/AustrianRush.jpg',\r\n    typeId: 2,\r\n    durationInDays: 14,\r\n    minCount: 2,\r\n    maxCount: 10\r\n  }\r\n]"
+      },
+      {
+        "name": "holidaysActions",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/holidays/+state/holidays.actions.ts",
+        "type": "object",
+        "defaultValue": "{\r\n  findHolidays, findHolidaysSuccess\r\n}"
+      },
+      {
+        "name": "holidaysFeatureKey",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/holidays/+state/holidays.reducer.ts",
+        "type": "string",
+        "defaultValue": "'holiday'"
+      },
+      {
+        "name": "holidaysReducer",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/holidays/+state/holidays.reducer.ts",
+        "type": "",
+        "defaultValue": "createReducer<HolidaysState>(initialState, on(holidaysActions.findHolidays, state => ({\r\n  ...state,\r\n  holidays\r\n})))"
+      },
+      {
+        "name": "initialState",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/holidays/+state/holidays.reducer.ts",
+        "type": "HolidaysState",
+        "defaultValue": "{holidays: []}"
+      },
+      {
+        "name": "initialState",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.reducer.ts",
+        "type": "State",
+        "defaultValue": "{\r\n  customers: []\r\n}"
+      },
+      {
+        "name": "Large",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/stories/Button.stories.ts",
+        "type": "",
+        "defaultValue": "Template.bind({})"
+      },
+      {
+        "name": "load",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.actions.ts",
+        "type": "",
+        "defaultValue": "createAction('[Customer] Load')"
+      },
+      {
+        "name": "loaded",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.actions.ts",
+        "type": "",
+        "defaultValue": "createAction(\r\n  '[Customer] Loaded',\r\n  props<{ customers: Customer[] }>()\r\n)"
+      },
+      {
+        "name": "LoggedIn",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/stories/Header.stories.ts",
+        "type": "",
+        "defaultValue": "Template.bind({})"
+      },
+      {
+        "name": "LoggedIn",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/stories/Page.stories.ts",
+        "type": "",
+        "defaultValue": "Template.bind({})"
+      },
+      {
+        "name": "LoggedOut",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/stories/Header.stories.ts",
+        "type": "",
+        "defaultValue": "Template.bind({})"
+      },
+      {
+        "name": "LoggedOut",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/stories/Page.stories.ts",
+        "type": "",
+        "defaultValue": "Template.bind({})"
+      },
+      {
+        "name": "mock",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "setup-jest.ts",
+        "type": "",
+        "defaultValue": "() => {\r\n  let storage: { [key: string]: string } = {};\r\n  return {\r\n    getItem: (key: string) => (key in storage ? storage[key] : null),\r\n    setItem: (key: string, value: string) => (storage[key] = value || ''),\r\n    removeItem: (key: string) => delete storage[key],\r\n    clear: () => (storage = {}),\r\n  };\r\n}"
+      },
+      {
+        "name": "Normal",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/address/address.component.stories.ts",
+        "type": "",
+        "defaultValue": "Template.bind({})"
+      },
+      {
+        "name": "Primary",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/stories/Button.stories.ts",
+        "type": "",
+        "defaultValue": "Template.bind({})"
+      },
+      {
+        "name": "remove",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.actions.ts",
+        "type": "",
+        "defaultValue": "createAction(\r\n  '[Customer] Remove',\r\n  props<{ customer: Customer }>()\r\n)"
+      },
+      {
+        "name": "removed",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.actions.ts",
+        "type": "",
+        "defaultValue": "createAction(\r\n  '[CUSTOMER] Removed',\r\n  props<{ customers: Customer[] }>()\r\n)"
+      },
+      {
+        "name": "Secondary",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/stories/Button.stories.ts",
+        "type": "",
+        "defaultValue": "Template.bind({})"
+      },
+      {
+        "name": "selectAll",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.selectors.ts",
+        "type": "",
+        "defaultValue": "createSelector(selectCustomerState, state => state.customers)"
+      },
+      {
+        "name": "selectById",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.selectors.ts",
+        "type": "",
+        "defaultValue": "createSelector(selectAll, (state: Customer[], id: number) =>\r\n  state.find(p => p.id === id)\r\n)"
+      },
+      {
+        "name": "selectCustomerState",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.selectors.ts",
+        "type": "",
+        "defaultValue": "createFeatureSelector<State>(customerFeatureKey)"
+      },
+      {
+        "name": "Small",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/stories/Button.stories.ts",
+        "type": "",
+        "defaultValue": "Template.bind({})"
+      },
+      {
+        "name": "stateSelector",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/holidays/+state/holidays.selectors.ts",
+        "type": "",
+        "defaultValue": "createFeatureSelector<HolidaysState>(holidaysFeatureKey)"
+      },
+      {
+        "name": "Template",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/stories/Button.stories.ts",
+        "type": "Story<Button>",
+        "defaultValue": "(args: Button) => ({\r\n  component: Button,\r\n  props: args,\r\n})"
+      },
+      {
+        "name": "Template",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/stories/Header.stories.ts",
+        "type": "Story<Header>",
+        "defaultValue": "(args: Header) => ({\r\n  component: Header,\r\n  props: args,\r\n})"
+      },
+      {
+        "name": "Template",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/stories/Page.stories.ts",
+        "type": "Story<Page>",
+        "defaultValue": "(args: Page) => ({\r\n  component: Page,\r\n  props: args,\r\n})"
+      },
+      {
+        "name": "Template",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/address/address.component.stories.ts",
+        "type": "Story<AddressComponent>",
+        "defaultValue": "(args: AddressComponent) => ({\r\n  component: AddressComponent, props: args\r\n})"
+      },
+      {
+        "name": "Template",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/holidays/holiday-card/holiday-card.component.stories.ts",
+        "type": "Story<HolidayCardComponent>",
+        "defaultValue": "(args: HolidayCardArgs) => {\r\n  return {\r\n    component: HolidayCardComponent,\r\n    props: {\r\n      ...args,\r\n      holiday: {\r\n        title: args.title,\r\n        description: args.description,\r\n        teaser: args.teaser,\r\n        imageUrl: args.imageUrl,\r\n      },\r\n    },\r\n  };\r\n}"
+      },
+      {
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "setup-jest-vr.ts",
+        "type": "",
+        "defaultValue": "require('jest-image-snapshot')"
+      },
+      {
+        "name": "update",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.actions.ts",
+        "type": "",
+        "defaultValue": "createAction(\r\n  '[Customer] Update',\r\n  props<{ customer: Customer }>()\r\n)"
+      },
+      {
+        "name": "updated",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/customer/+state/customer.actions.ts",
+        "type": "",
+        "defaultValue": "createAction(\r\n  '[Customer] Updated',\r\n  props<{ customers: Customer[] }>()\r\n)"
+      },
+      {
+        "name": "urls",
+        "ctype": "miscellaneous",
+        "subtype": "variable",
+        "file": "src/app/holidays/holiday-card/holiday-card.component.stories.ts",
+        "type": "[]",
+        "defaultValue": "[\r\n  'https://eternal-app.s3.eu-central-1.amazonaws.com/assets/AngkorWatSmall.jpg',\r\n  'https://eternal-app.s3.eu-central-1.amazonaws.com/assets/AustrianRushSmall.jpg',\r\n  'https://eternal-app.s3.eu-central-1.amazonaws.com/assets/ChinaSmall.jpg',\r\n]"
+      }
+    ],
+    "functions": [
+      {
+        "name": "reducer",
+        "file": "src/app/customer/+state/customer.reducer.ts",
+        "ctype": "miscellaneous",
+        "subtype": "function",
+        "description": "",
+        "args": [
+          {
+            "name": "state"
+          },
+          {
+            "name": "action"
+          }
+        ],
+        "jsdoctags": [
+          {
+            "name": "state",
+            "tagName": {
+              "text": "param"
+            }
+          },
+          {
+            "name": "action",
+            "tagName": {
+              "text": "param"
+            }
+          }
+        ]
+      }
+    ],
+    "typealiases": [
+      {
+        "name": "CompilerOptions",
+        "ctype": "miscellaneous",
+        "subtype": "typealias",
+        "rawtype": "Partial<literal type>",
+        "file": "test-config.helper.ts",
+        "description": "",
+        "kind": 161
+      },
+      {
+        "name": "ConfigureFn",
+        "ctype": "miscellaneous",
+        "subtype": "typealias",
+        "rawtype": "function",
+        "file": "test-config.helper.ts",
+        "description": "",
+        "kind": 162
+      },
+      {
+        "name": "HolidayCardArgs",
+        "ctype": "miscellaneous",
+        "subtype": "typealias",
+        "rawtype": "",
+        "file": "src/app/holidays/holiday-card/holiday-card.component.stories.ts",
+        "description": "",
+        "kind": 169
+      }
+    ],
+    "enumerations": [],
+    "groupedVariables": {
+      "src/app/customer/+state/customer.actions.ts": [
+        {
+          "name": "add",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.actions.ts",
+          "type": "",
+          "defaultValue": "createAction('[Customer] Add', props<{ customer: Customer }>())"
+        },
+        {
+          "name": "added",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.actions.ts",
+          "type": "",
+          "defaultValue": "createAction(\r\n  '[Customer] Added',\r\n  props<{ customers: Customer[] }>()\r\n)"
+        },
+        {
+          "name": "CustomerActions",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.actions.ts",
+          "type": "object",
+          "defaultValue": "{\r\n  load,\r\n  loaded,\r\n  add,\r\n  added,\r\n  update,\r\n  updated,\r\n  remove,\r\n  removed\r\n}"
+        },
+        {
+          "name": "load",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.actions.ts",
+          "type": "",
+          "defaultValue": "createAction('[Customer] Load')"
+        },
+        {
+          "name": "loaded",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.actions.ts",
+          "type": "",
+          "defaultValue": "createAction(\r\n  '[Customer] Loaded',\r\n  props<{ customers: Customer[] }>()\r\n)"
+        },
+        {
+          "name": "remove",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.actions.ts",
+          "type": "",
+          "defaultValue": "createAction(\r\n  '[Customer] Remove',\r\n  props<{ customer: Customer }>()\r\n)"
+        },
+        {
+          "name": "removed",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.actions.ts",
+          "type": "",
+          "defaultValue": "createAction(\r\n  '[CUSTOMER] Removed',\r\n  props<{ customers: Customer[] }>()\r\n)"
+        },
+        {
+          "name": "update",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.actions.ts",
+          "type": "",
+          "defaultValue": "createAction(\r\n  '[Customer] Update',\r\n  props<{ customer: Customer }>()\r\n)"
+        },
+        {
+          "name": "updated",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.actions.ts",
+          "type": "",
+          "defaultValue": "createAction(\r\n  '[Customer] Updated',\r\n  props<{ customers: Customer[] }>()\r\n)"
+        }
+      ],
+      "test-config.helper.ts": [
+        {
+          "name": "configureTests",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "test-config.helper.ts",
+          "type": "",
+          "defaultValue": "(configure: ConfigureFn, compilerOptions: CompilerOptions = {}) => {\r\n  const compilerConfig: CompilerOptions = {\r\n    preserveWhitespaces: false,\r\n    ...compilerOptions,\r\n  };\r\n\r\n  const configuredTestBed = TestBed.configureCompiler(compilerConfig);\r\n\r\n  configure(configuredTestBed);\r\n\r\n  return configuredTestBed.compileComponents().then(() => configuredTestBed);\r\n}"
+        }
+      ],
+      "src/app/customer/countries.ts": [
+        {
+          "name": "countries",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/countries.ts",
+          "type": "",
+          "defaultValue": "[\r\n  ['AT', 'Austria'],\r\n  ['CA', 'Canada'],\r\n  ['CH', 'Switzerland'],\r\n  ['CN', 'China'],\r\n  ['CZ', 'Czechia'],\r\n  ['DE', 'Germany'],\r\n  ['DK', 'Denmark'],\r\n  ['ES', 'Spain'],\r\n  ['FR', 'France'],\r\n  ['HU', 'Hungary'],\r\n  ['IN', 'India'],\r\n  ['IT', 'Italy'],\r\n  ['NL', 'Netherlands'],\r\n  ['NO', 'Norway'],\r\n  ['RU', 'Russia'],\r\n  ['SE', 'Sweden'],\r\n  ['UK', 'United Kingdom'],\r\n  ['US', 'USA']\r\n].map(([value, label]) => ({ value, label }))"
+        }
+      ],
+      "src/app/customer/+state/customer.reducer.ts": [
+        {
+          "name": "customerFeatureKey",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.reducer.ts",
+          "type": "string",
+          "defaultValue": "'Customer'"
+        },
+        {
+          "name": "CustomerReducer",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.reducer.ts",
+          "type": "",
+          "defaultValue": "createReducer<State>(\r\n  initialState,\r\n  on(CustomerActions.loaded, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  })),\r\n  on(CustomerActions.added, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  })),\r\n  on(CustomerActions.updated, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  })),\r\n  on(CustomerActions.removed, (state, { customers }) => ({\r\n    ...state,\r\n    customers\r\n  }))\r\n)"
+        },
+        {
+          "name": "initialState",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.reducer.ts",
+          "type": "State",
+          "defaultValue": "{\r\n  customers: []\r\n}"
+        }
+      ],
+      "src/app/customer/data.ts": [
+        {
+          "name": "customers",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/data.ts",
+          "type": "Customer[]",
+          "defaultValue": "[\r\n  {\r\n    id: 1,\r\n    firstname: 'Hugo',\r\n    name: 'Brandt',\r\n    country: 'AT',\r\n    birthdate: '1974-05-12'\r\n  },\r\n  {\r\n    id: 2,\r\n    firstname: 'Natalia',\r\n    name: 'Rusnov',\r\n    country: 'RU',\r\n    birthdate: '1965-08-09'\r\n  },\r\n  {\r\n    id: 3,\r\n    firstname: 'Fernandez',\r\n    name: 'Rodriguez',\r\n    country: 'ES',\r\n    birthdate: '2001-01-05'\r\n  },\r\n  {\r\n    id: 4,\r\n    firstname: 'Li',\r\n    name: 'Qian',\r\n    country: 'CN',\r\n    birthdate: '1991-12-05'\r\n  },\r\n  {\r\n    id: 5,\r\n    firstname: 'Kakani',\r\n    name: 'Bhattacharjee',\r\n    country: 'IN',\r\n    birthdate: '1989-10-11'\r\n  },\r\n  {\r\n    id: 6,\r\n    firstname: 'Paul',\r\n    name: 'Sullivan',\r\n    country: 'UK',\r\n    birthdate: '1995-05-31'\r\n  },\r\n  {\r\n    id: 6,\r\n    firstname: 'Samantha',\r\n    name: 'Jones',\r\n    country: 'US',\r\n    birthdate: '2005-07-15'\r\n  },\r\n  {\r\n    id: 7,\r\n    firstname: 'Renate',\r\n    name: 'Hoffmann',\r\n    country: 'DE',\r\n    birthdate: '1987-11-15'\r\n  },\r\n  {\r\n    id: 8,\r\n    firstname: 'Angelika',\r\n    name: 'Hoffmann',\r\n    country: 'DE',\r\n    birthdate: '1987-11-15'\r\n  },\r\n  {\r\n    id: 9,\r\n    firstname: 'Jean-Paul',\r\n    name: 'Néro',\r\n    country: 'FR',\r\n    birthdate: '1955-09-21'\r\n  },\r\n  {\r\n    id: 10,\r\n    firstname: 'Stefanie',\r\n    name: 'Niederrein',\r\n    country: 'AT',\r\n    birthdate: '1997-03-12'\r\n  },\r\n  {\r\n    id: 11,\r\n    firstname: 'Denise',\r\n    name: 'Keller',\r\n    country: 'CH',\r\n    birthdate: '1998-07-01'\r\n  },\r\n  {\r\n    id: 12,\r\n    firstname: 'Johan',\r\n    name: 'Driekamp',\r\n    country: 'NL',\r\n    birthdate: '1958-09-12'\r\n  },\r\n  {\r\n    id: 13,\r\n    firstname: 'Estefanía',\r\n    name: 'Sánchez',\r\n    country: 'ES',\r\n    birthdate: '1985-10-10'\r\n  },\r\n  {\r\n    id: 14,\r\n    firstname: 'John',\r\n    name: 'Harrison',\r\n    country: 'UK',\r\n    birthdate: '1977-05-20'\r\n  },\r\n  {\r\n    id: 15,\r\n    firstname: 'Helene',\r\n    name: 'Ford',\r\n    country: 'CA',\r\n    birthdate: '1969-03-04'\r\n  },\r\n  {\r\n    id: 16,\r\n    firstname: 'Jan',\r\n    name: 'Janáček',\r\n    country: 'CZ',\r\n    birthdate: '2002-01-02'\r\n  },\r\n  {\r\n    id: 17,\r\n    firstname: 'Knut',\r\n    name: 'Eggen',\r\n    country: 'NO',\r\n    birthdate: '1999-07-17'\r\n  },\r\n  {\r\n    id: 18,\r\n    firstname: 'Oskar',\r\n    name: 'Sjögren',\r\n    country: 'SE',\r\n    birthdate: '1961-03-22'\r\n  },\r\n  {\r\n    id: 19,\r\n    firstname: 'Timéa',\r\n    name: 'Szabó',\r\n    country: 'HU',\r\n    birthdate: '1969-01-26'\r\n  },\r\n  {\r\n    id: 20,\r\n    firstname: 'Latitia',\r\n    name: 'Bellitissa',\r\n    country: 'IT',\r\n    birthdate: '2002-05-30'\r\n  },\r\n  {\r\n    id: 21,\r\n    firstname: 'Bjørn',\r\n    name: 'Larsson',\r\n    country: 'DK',\r\n    birthdate: '1964-11-11'\r\n  }\r\n]"
+        }
+      ],
+      "src/environments/environment.ts": [
+        {
+          "name": "environment",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/environments/environment.ts",
+          "type": "object",
+          "defaultValue": "{\n  production: false\n}"
+        }
+      ],
+      "src/environments/environment.prod.ts": [
+        {
+          "name": "environment",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/environments/environment.prod.ts",
+          "type": "object",
+          "defaultValue": "{\n  production: true\n}"
+        }
+      ],
+      "src/app/holidays/+state/holidays.actions.ts": [
+        {
+          "name": "findHolidays",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/holidays/+state/holidays.actions.ts",
+          "type": "",
+          "defaultValue": "createAction('[Holidays] Find')"
+        },
+        {
+          "name": "findHolidaysSuccess",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/holidays/+state/holidays.actions.ts",
+          "type": "",
+          "defaultValue": "createAction('[Holidays] Find Success')"
+        },
+        {
+          "name": "holidaysActions",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/holidays/+state/holidays.actions.ts",
+          "type": "object",
+          "defaultValue": "{\r\n  findHolidays, findHolidaysSuccess\r\n}"
+        }
+      ],
+      "src/app/customer/+state/customer.selectors.ts": [
+        {
+          "name": "fromCustomer",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.selectors.ts",
+          "type": "object",
+          "defaultValue": "{\r\n  selectAll,\r\n  selectById\r\n}"
+        },
+        {
+          "name": "selectAll",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.selectors.ts",
+          "type": "",
+          "defaultValue": "createSelector(selectCustomerState, state => state.customers)"
+        },
+        {
+          "name": "selectById",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.selectors.ts",
+          "type": "",
+          "defaultValue": "createSelector(selectAll, (state: Customer[], id: number) =>\r\n  state.find(p => p.id === id)\r\n)"
+        },
+        {
+          "name": "selectCustomerState",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/customer/+state/customer.selectors.ts",
+          "type": "",
+          "defaultValue": "createFeatureSelector<State>(customerFeatureKey)"
+        }
+      ],
+      "src/app/holidays/+state/holidays.selectors.ts": [
+        {
+          "name": "fromHolidays",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/holidays/+state/holidays.selectors.ts",
+          "type": "object",
+          "defaultValue": "{\r\n  get: createSelector(stateSelector, ({holidays}) => holidays)\r\n}"
+        },
+        {
+          "name": "stateSelector",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/holidays/+state/holidays.selectors.ts",
+          "type": "",
+          "defaultValue": "createFeatureSelector<HolidaysState>(holidaysFeatureKey)"
+        }
+      ],
+      "src/app/holidays/holiday-card/holiday-card.component.stories.ts": [
+        {
+          "name": "Holiday",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/holidays/holiday-card/holiday-card.component.stories.ts",
+          "type": "",
+          "defaultValue": "Template.bind({})"
+        },
+        {
+          "name": "Template",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/holidays/holiday-card/holiday-card.component.stories.ts",
+          "type": "Story<HolidayCardComponent>",
+          "defaultValue": "(args: HolidayCardArgs) => {\r\n  return {\r\n    component: HolidayCardComponent,\r\n    props: {\r\n      ...args,\r\n      holiday: {\r\n        title: args.title,\r\n        description: args.description,\r\n        teaser: args.teaser,\r\n        imageUrl: args.imageUrl,\r\n      },\r\n    },\r\n  };\r\n}"
+        },
+        {
+          "name": "urls",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/holidays/holiday-card/holiday-card.component.stories.ts",
+          "type": "[]",
+          "defaultValue": "[\r\n  'https://eternal-app.s3.eu-central-1.amazonaws.com/assets/AngkorWatSmall.jpg',\r\n  'https://eternal-app.s3.eu-central-1.amazonaws.com/assets/AustrianRushSmall.jpg',\r\n  'https://eternal-app.s3.eu-central-1.amazonaws.com/assets/ChinaSmall.jpg',\r\n]"
+        }
+      ],
+      "src/app/holidays/+state/data.ts": [
+        {
+          "name": "holidays",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/holidays/+state/data.ts",
+          "type": "Holiday[]",
+          "defaultValue": "[\r\n  {\r\n    id: 1,\r\n    title: 'Angkor Wat',\r\n    teaser: 'Discover forgotten temples',\r\n    description: 'Angkor Wat in Cambodia',\r\n    imageUrl: 'assets/AngkorWat.jpg',\r\n    typeId: 1,\r\n    durationInDays: 3,\r\n    minCount: 5,\r\n    maxCount: 12\r\n  },\r\n  {\r\n    id: 2,\r\n    title: 'China',\r\n    teaser: 'China Highlights in 10 days',\r\n    description: 'Discover China\\'s most famous highlights',\r\n    imageUrl: 'assets/China.jpg',\r\n    typeId: 1,\r\n    durationInDays: 12,\r\n    minCount: 8,\r\n    maxCount: 15\r\n  },\r\n  {\r\n    id: 3,\r\n    title: 'Austrian Rush',\r\n    teaser: 'From East to West, from North to South in just 6 days',\r\n    description:\r\n      'Get to know different aspects of Austria. Hike mountains in Tyrol, relax in Burgenland, enjoy the rich culture of Vienna, Salzburg, Graz or Innsbruck',\r\n    imageUrl: 'assets/AustrianRush.jpg',\r\n    typeId: 2,\r\n    durationInDays: 14,\r\n    minCount: 2,\r\n    maxCount: 10\r\n  }\r\n]"
+        }
+      ],
+      "src/app/holidays/+state/holidays.reducer.ts": [
+        {
+          "name": "holidaysFeatureKey",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/holidays/+state/holidays.reducer.ts",
+          "type": "string",
+          "defaultValue": "'holiday'"
+        },
+        {
+          "name": "holidaysReducer",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/holidays/+state/holidays.reducer.ts",
+          "type": "",
+          "defaultValue": "createReducer<HolidaysState>(initialState, on(holidaysActions.findHolidays, state => ({\r\n  ...state,\r\n  holidays\r\n})))"
+        },
+        {
+          "name": "initialState",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/holidays/+state/holidays.reducer.ts",
+          "type": "HolidaysState",
+          "defaultValue": "{holidays: []}"
+        }
+      ],
+      "src/stories/Button.stories.ts": [
+        {
+          "name": "Large",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/stories/Button.stories.ts",
+          "type": "",
+          "defaultValue": "Template.bind({})"
+        },
+        {
+          "name": "Primary",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/stories/Button.stories.ts",
+          "type": "",
+          "defaultValue": "Template.bind({})"
+        },
+        {
+          "name": "Secondary",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/stories/Button.stories.ts",
+          "type": "",
+          "defaultValue": "Template.bind({})"
+        },
+        {
+          "name": "Small",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/stories/Button.stories.ts",
+          "type": "",
+          "defaultValue": "Template.bind({})"
+        },
+        {
+          "name": "Template",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/stories/Button.stories.ts",
+          "type": "Story<Button>",
+          "defaultValue": "(args: Button) => ({\r\n  component: Button,\r\n  props: args,\r\n})"
+        }
+      ],
+      "src/stories/Header.stories.ts": [
+        {
+          "name": "LoggedIn",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/stories/Header.stories.ts",
+          "type": "",
+          "defaultValue": "Template.bind({})"
+        },
+        {
+          "name": "LoggedOut",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/stories/Header.stories.ts",
+          "type": "",
+          "defaultValue": "Template.bind({})"
+        },
+        {
+          "name": "Template",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/stories/Header.stories.ts",
+          "type": "Story<Header>",
+          "defaultValue": "(args: Header) => ({\r\n  component: Header,\r\n  props: args,\r\n})"
+        }
+      ],
+      "src/stories/Page.stories.ts": [
+        {
+          "name": "LoggedIn",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/stories/Page.stories.ts",
+          "type": "",
+          "defaultValue": "Template.bind({})"
+        },
+        {
+          "name": "LoggedOut",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/stories/Page.stories.ts",
+          "type": "",
+          "defaultValue": "Template.bind({})"
+        },
+        {
+          "name": "Template",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/stories/Page.stories.ts",
+          "type": "Story<Page>",
+          "defaultValue": "(args: Page) => ({\r\n  component: Page,\r\n  props: args,\r\n})"
+        }
+      ],
+      "setup-jest.ts": [
+        {
+          "name": "mock",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "setup-jest.ts",
+          "type": "",
+          "defaultValue": "() => {\r\n  let storage: { [key: string]: string } = {};\r\n  return {\r\n    getItem: (key: string) => (key in storage ? storage[key] : null),\r\n    setItem: (key: string, value: string) => (storage[key] = value || ''),\r\n    removeItem: (key: string) => delete storage[key],\r\n    clear: () => (storage = {}),\r\n  };\r\n}"
+        }
+      ],
+      "src/app/address/address.component.stories.ts": [
+        {
+          "name": "Normal",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/address/address.component.stories.ts",
+          "type": "",
+          "defaultValue": "Template.bind({})"
+        },
+        {
+          "name": "Template",
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "src/app/address/address.component.stories.ts",
+          "type": "Story<AddressComponent>",
+          "defaultValue": "(args: AddressComponent) => ({\r\n  component: AddressComponent, props: args\r\n})"
+        }
+      ],
+      "setup-jest-vr.ts": [
+        {
+          "ctype": "miscellaneous",
+          "subtype": "variable",
+          "file": "setup-jest-vr.ts",
+          "type": "",
+          "defaultValue": "require('jest-image-snapshot')"
+        }
+      ]
+    },
+    "groupedFunctions": {
+      "src/app/customer/+state/customer.reducer.ts": [
+        {
+          "name": "reducer",
+          "file": "src/app/customer/+state/customer.reducer.ts",
+          "ctype": "miscellaneous",
+          "subtype": "function",
+          "description": "",
+          "args": [
+            {
+              "name": "state"
+            },
+            {
+              "name": "action"
+            }
+          ],
+          "jsdoctags": [
+            {
+              "name": "state",
+              "tagName": {
+                "text": "param"
+              }
+            },
+            {
+              "name": "action",
+              "tagName": {
+                "text": "param"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "groupedEnumerations": {},
+    "groupedTypeAliases": {
+      "test-config.helper.ts": [
+        {
+          "name": "CompilerOptions",
+          "ctype": "miscellaneous",
+          "subtype": "typealias",
+          "rawtype": "Partial<literal type>",
+          "file": "test-config.helper.ts",
+          "description": "",
+          "kind": 161
+        },
+        {
+          "name": "ConfigureFn",
+          "ctype": "miscellaneous",
+          "subtype": "typealias",
+          "rawtype": "function",
+          "file": "test-config.helper.ts",
+          "description": "",
+          "kind": 162
+        }
+      ],
+      "src/app/holidays/holiday-card/holiday-card.component.stories.ts": [
+        {
+          "name": "HolidayCardArgs",
+          "ctype": "miscellaneous",
+          "subtype": "typealias",
+          "rawtype": "",
+          "file": "src/app/holidays/holiday-card/holiday-card.component.stories.ts",
+          "description": "",
+          "kind": 169
+        }
+      ]
+    }
+  },
+  "routes": [],
+  "coverage": {
+    "count": 1,
+    "status": "low",
+    "files": [
+      {
+        "filePath": "e2e/src/app.po.ts",
+        "type": "class",
+        "linktype": "classe",
+        "name": "AppPage",
+        "coveragePercent": 0,
+        "coverageCount": "0/3",
+        "status": "low"
+      },
+      {
+        "filePath": "setup-jest-vr.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "setup-jest.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "mock",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/address-lookuper.service.ts",
+        "type": "injectable",
+        "linktype": "injectable",
+        "name": "AddressLookuper",
+        "coveragePercent": 0,
+        "coverageCount": "0/5",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/address-lookuper.service.ts",
+        "type": "interface",
+        "linktype": "interface",
+        "name": "Address",
+        "coveragePercent": 0,
+        "coverageCount": "0/5",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/address/address.component.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "Normal",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/address/address.component.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "Template",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/address/address.component.ts",
+        "type": "component",
+        "linktype": "component",
+        "name": "AddressComponent",
+        "coveragePercent": 0,
+        "coverageCount": "0/9",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/app.component.ts",
+        "type": "component",
+        "linktype": "component",
+        "name": "AppComponent",
+        "coveragePercent": 0,
+        "coverageCount": "0/2",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.actions.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "add",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.actions.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "added",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.actions.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "CustomerActions",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.actions.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "load",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.actions.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "loaded",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.actions.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "remove",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.actions.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "removed",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.actions.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "update",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.actions.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "updated",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.effects.ts",
+        "type": "injectable",
+        "linktype": "injectable",
+        "name": "CustomerEffects",
+        "coveragePercent": 0,
+        "coverageCount": "0/7",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.reducer.ts",
+        "type": "interface",
+        "linktype": "interface",
+        "name": "CustomerAppState",
+        "coveragePercent": 0,
+        "coverageCount": "0/2",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.reducer.ts",
+        "type": "interface",
+        "linktype": "interface",
+        "name": "State",
+        "coveragePercent": 0,
+        "coverageCount": "0/2",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.reducer.ts",
+        "type": "function",
+        "linksubtype": "function",
+        "name": "reducer",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.reducer.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "customerFeatureKey",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.reducer.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "CustomerReducer",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.reducer.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "initialState",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.selectors.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "fromCustomer",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.selectors.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "selectAll",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.selectors.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "selectById",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/+state/customer.selectors.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "selectCustomerState",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/countries.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "countries",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/customer.ts",
+        "type": "interface",
+        "linktype": "interface",
+        "name": "Customer",
+        "coveragePercent": 0,
+        "coverageCount": "0/6",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/customer/customer.component.ts",
+        "type": "component",
+        "linktype": "component",
+        "name": "CustomerComponent",
+        "coveragePercent": 0,
+        "coverageCount": "0/8",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/customers/customers.component.ts",
+        "type": "component",
+        "linktype": "component",
+        "name": "CustomersComponent",
+        "coveragePercent": 0,
+        "coverageCount": "0/4",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/data.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "customers",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/customer/mocked-http-client.service.ts",
+        "type": "injectable",
+        "linktype": "injectable",
+        "name": "MockedHttpClient",
+        "coveragePercent": 0,
+        "coverageCount": "0/9",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/+state/data.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "holidays",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/+state/holidays.actions.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "findHolidays",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/+state/holidays.actions.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "findHolidaysSuccess",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/+state/holidays.actions.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "holidaysActions",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/+state/holidays.reducer.ts",
+        "type": "interface",
+        "linktype": "interface",
+        "name": "HolidaysState",
+        "coveragePercent": 0,
+        "coverageCount": "0/2",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/+state/holidays.reducer.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "holidaysFeatureKey",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/+state/holidays.reducer.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "holidaysReducer",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/+state/holidays.reducer.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "initialState",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/+state/holidays.selectors.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "fromHolidays",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/+state/holidays.selectors.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "stateSelector",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/holiday-card/holiday-card.component.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "Holiday",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/holiday-card/holiday-card.component.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "Template",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/holiday-card/holiday-card.component.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "urls",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/holiday-card/holiday-card.component.ts",
+        "type": "component",
+        "linktype": "component",
+        "name": "HolidayCardComponent",
+        "coveragePercent": 0,
+        "coverageCount": "0/2",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/holiday-card/holiday-card.component.ts",
+        "type": "interface",
+        "linktype": "interface",
+        "name": "Holiday",
+        "coveragePercent": 0,
+        "coverageCount": "0/10",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/holiday.ts",
+        "type": "interface",
+        "linktype": "interface",
+        "name": "Holiday",
+        "coveragePercent": 0,
+        "coverageCount": "0/10",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/holidays/holidays/holidays.component.ts",
+        "type": "component",
+        "linktype": "component",
+        "name": "HolidaysComponent",
+        "coveragePercent": 0,
+        "coverageCount": "0/4",
+        "status": "low"
+      },
+      {
+        "filePath": "src/app/home/home.component.ts",
+        "type": "component",
+        "linktype": "component",
+        "name": "HomeComponent",
+        "coveragePercent": 0,
+        "coverageCount": "0/3",
+        "status": "low"
+      },
+      {
+        "filePath": "src/environments/environment.prod.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "environment",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/environments/environment.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "environment",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/stories/Button.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "Large",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/stories/Button.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "Primary",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/stories/Button.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "Secondary",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/stories/Button.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "Small",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/stories/Button.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "Template",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/stories/Header.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "LoggedIn",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/stories/Header.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "LoggedOut",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/stories/Header.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "Template",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/stories/Page.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "LoggedIn",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/stories/Page.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "LoggedOut",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/stories/Page.stories.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "Template",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      },
+      {
+        "filePath": "src/stories/button.component.ts",
+        "type": "component",
+        "linktype": "component",
+        "name": "ButtonComponent",
+        "coveragePercent": 83,
+        "coverageCount": "5/6",
+        "status": "very-good"
+      },
+      {
+        "filePath": "src/stories/header.component.ts",
+        "type": "component",
+        "linktype": "component",
+        "name": "HeaderComponent",
+        "coveragePercent": 0,
+        "coverageCount": "0/5",
+        "status": "low"
+      },
+      {
+        "filePath": "src/stories/page.component.ts",
+        "type": "component",
+        "linktype": "component",
+        "name": "PageComponent",
+        "coveragePercent": 0,
+        "coverageCount": "0/5",
+        "status": "low"
+      },
+      {
+        "filePath": "test-config.helper.ts",
+        "type": "variable",
+        "linktype": "miscellaneous",
+        "linksubtype": "variable",
+        "name": "configureTests",
+        "coveragePercent": 0,
+        "coverageCount": "0/1",
+        "status": "low"
+      }
+    ]
+  }
+}

@@ -12,7 +12,7 @@
     "lint": "ng lint",
     "e2e": "cypress open",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
-    "storybook": "yarn docs:json && start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006",
     "build-storybook": "yarn docs:json && build-storybook"
   },
   "private": true,
