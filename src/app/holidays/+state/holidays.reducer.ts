@@ -1,6 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
 import { Holiday } from '../holiday';
-import { holidays } from './data';
 import { holidaysActions } from './holidays.actions';
 
 export const holidaysFeatureKey = 'holiday';
@@ -13,8 +12,8 @@ const initialState: HolidaysState = { holidays: [] };
 
 export const holidaysReducer = createReducer<HolidaysState>(
   initialState,
-  on(holidaysActions.findHolidays, (state) => ({
+  on(holidaysActions.findHolidaysSuccess, (state, { holidays }) => ({
     ...state,
-    holidays
+    holidays,
   }))
 );
