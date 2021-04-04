@@ -1,22 +1,29 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Customer } from '../customer';
-import { CustomerAppState } from '../+state/customer.reducer';
 import { CustomerActions } from '../+state/customer.actions';
 import { fromCustomer } from '../+state/customer.selectors';
-import { Store } from '@ngrx/store';
+import { Customer } from '../customer';
 
 @Component({
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.scss']
 })
 export class CustomersComponent implements OnInit {
-  customers$: Observable<Customer[]>;
+  data$: Observable<{ customers: Customer[]; currentPage: number; pageCount: number }>;
 
-  constructor(private store: Store<CustomerAppState>) {}
+  constructor(private store: Store) {}
 
   ngOnInit() {
     this.store.dispatch(CustomerActions.load());
-    this.customers$ = this.store.select(fromCustomer.selectAll);
+    this.data$ = this.store.select(fromCustomer.selectCustomersAndPage);
+  }
+
+  previousPage() {
+    this.store.dispatch(CustomerActions.previousPage());
+  }
+
+  nextPage() {
+    this.store.dispatch(CustomerActions.nextPage());
   }
 }
