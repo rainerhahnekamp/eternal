@@ -4,15 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.5.RELEASE</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <groupId>com.rh</groupId>
+    <artifactId>eternal-parent</artifactId>
+    <version>0.1.0</version>
   </parent>
-  <groupId>com.rh</groupId>
-  <artifactId>eternal-app</artifactId>
+
+  <artifactId>backend</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>eternal</name>
+  <name>eternal-backend</name>
   <description>Eternal</description>
 
   <properties>
@@ -69,8 +68,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>14</source>
-          <target>14</target>
+          <source>11</source>
+          <target>11</target>
         </configuration>
       </plugin>
     </plugins>
