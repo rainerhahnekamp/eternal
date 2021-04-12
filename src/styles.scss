@@ -59,3 +59,15 @@ body {
 a {
   color: #2193b0;
 }
+
+mat-checkbox + mat-checkbox, mat-radio-button + mat-radio-button {
+  margin-left: 1.5em;
+}
+
+.content-width {
+  width: 450px;
+}
+
+.centered {
+  text-align: center;
+}

@@ -1,13 +1,7 @@
 <div class="main">
-  <mat-toolbar color="primary"
-  >
+  <mat-toolbar color="primary">
     <mat-toolbar-row>
-      <a routerLink="/">
-        <h1>
-          <img alt="Eteneral" src="/assets/logo.png"/>
-          Unforgettable Holidays
-        </h1>
-      </a>
+      <app-header></app-header>
     </mat-toolbar-row>
   </mat-toolbar>
   <mat-drawer-container autosize>
@@ -22,6 +16,10 @@
       </ul>
     </mat-drawer>
     <mat-drawer-content>
+      <mat-progress-bar
+        *ngIf="!(userService.loaded$ | async)"
+        mode="indeterminate"
+      ></mat-progress-bar>
       <router-outlet></router-outlet>
     </mat-drawer-content>
   </mat-drawer-container>

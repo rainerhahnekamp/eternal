@@ -1,11 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { concatMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { BASE_URL } from '../../shared/base-url.token';
 import { Customer } from '../customer';
 import { CustomerActions } from './customer.actions';
 import { fromCustomer } from './customer.selectors';
@@ -13,7 +12,7 @@ import { fromCustomer } from './customer.selectors';
 @Injectable()
 export class CustomerEffects {
   private pageSize = '10';
-  private url = `${this.baseUrl}/customer`;
+  private url = '/customer';
   add$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CustomerActions.add),
@@ -43,8 +42,7 @@ export class CustomerEffects {
     private actions$: Actions,
     private store: Store,
     private http: HttpClient,
-    private router: Router,
-    @Inject(BASE_URL) private baseUrl: string
+    private router: Router
   ) {}
 
   private fetchCustomers = <T>(

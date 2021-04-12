@@ -1,0 +1,16 @@
+<div class="content-width">
+  <h2>Sign In</h2>
+  <form
+    (ngSubmit)="handleSubmit()"
+    *ngIf="!(signedIn$ | async); else success"
+    [formGroup]="formGroup"
+  >
+    <formly-form [fields]="fields" [form]="formGroup" [model]="{}"></formly-form>
+    <div class="centered">
+      <button color="primary" data-test="btn-sign-in-submit" mat-raised-button type="submit">
+        Sign-In
+      </button>
+    </div>
+  </form>
+  <ng-template #success><h3 data-test="sign-in-successful">You are signed in</h3></ng-template>
+</div>
