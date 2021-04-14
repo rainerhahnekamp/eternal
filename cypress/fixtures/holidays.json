@@ -1,10 +1,8 @@
-{
-  "holidays": [
-    {
-      "title": "Unicorn",
-      "teaser": "You found One Piece",
-      "imageUrl": "https://eternal-app.s3.eu-central-1.amazonaws.com/assets/OnePiece.png",
-      "description": "Congratulations, you finally found Unicorn. Roger would be proud of you."
-    }
-  ]
-}
+[
+  {
+    "title": "Unicorn",
+    "teaser": "You found One Piece",
+    "imageUrl": "/holiday/OnePiece.png",
+    "description": "Congratulations, you finally found Unicorn. Roger would be proud of you."
+  }
+]

@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { formly } from 'ngx-formly-helpers';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { UserService } from '../../shared/user.service';
 
 @Component({
@@ -22,7 +21,7 @@ export class SignInComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    this.signedIn$ = this.userService.signedIn$.pipe(tap(console.log));
+    this.signedIn$ = this.userService.signedIn$;
   }
 
   handleSubmit() {

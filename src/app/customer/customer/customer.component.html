@@ -1,4 +1,9 @@
-<form (ngSubmit)="submit(customer)" *ngIf="customer$ | async as customer" [formGroup]="formGroup">
+<form
+  (ngSubmit)="submit(customer)"
+  *ngIf="customer$ | async as customer"
+  [formGroup]="formGroup"
+  class="app-customer"
+>
   <formly-form [fields]="fields" [form]="formGroup" [model]="customer"></formly-form>
   <div class="buttons">
     <a [routerLink]="['..']" mat-raised-button>Back</a>

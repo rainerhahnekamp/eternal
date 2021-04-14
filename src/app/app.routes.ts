@@ -22,6 +22,10 @@ export const APP_ROUTES: Routes = [
       {
         path: 'holidays',
         loadChildren: () => import('./holidays/holidays.module').then((m) => m.HolidaysModule)
+      },
+      {
+        path: 'diary',
+        loadChildren: () => import('./diary/diary.module').then((m) => m.DiaryModule)
       }
     ]
   }

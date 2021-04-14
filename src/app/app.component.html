@@ -6,12 +6,15 @@
   </mat-toolbar>
   <mat-drawer-container autosize>
     <mat-drawer mode="side" opened>
-      <ul>
+      <ul *ngIf="userService.loaded$ | async">
         <li>
-          <a mat-raised-button routerLink="/holidays">Holidays</a>
+          <a data-test="btn-holidays" mat-raised-button routerLink="/holidays">Holidays</a>
         </li>
         <li>
-          <a mat-raised-button routerLink="/customer">Customers</a>
+          <a data-test="btn-customers" mat-raised-button routerLink="/customer">Customers</a>
+        </li>
+        <li *ngIf="userService.signedIn$ | async">
+          <a data-test="btn-diary" mat-raised-button routerLink="/diary">Diary</a>
         </li>
       </ul>
     </mat-drawer>

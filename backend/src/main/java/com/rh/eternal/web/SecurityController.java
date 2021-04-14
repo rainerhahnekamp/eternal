@@ -3,7 +3,7 @@ package com.rh.eternal.web;
 import com.rh.eternal.db.entity.UserEntity;
 import com.rh.eternal.db.repository.UserRepository;
 import com.rh.eternal.domain.User;
-import com.rh.eternal.web.request.LoginRequest;
+import com.rh.eternal.web.request.SignInRequest;
 import com.rh.eternal.web.request.SignUpRequest;
 import com.rh.eternal.web.response.SignUpResponse;
 import lombok.extern.log4j.Log4j2;
@@ -73,10 +73,10 @@ public class SecurityController {
   }
 
   @PostMapping("sign-in")
-  public User signIn(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+  public User signIn(@RequestBody SignInRequest signInRequest, HttpServletRequest request) {
     UsernamePasswordAuthenticationToken authenticationToken =
         new UsernamePasswordAuthenticationToken(
-            loginRequest.getEmail(), loginRequest.getPassword());
+            signInRequest.getEmail(), signInRequest.getPassword());
     Authentication authentication = authenticationManager.authenticate(authenticationToken);
     SecurityContext securityContext = SecurityContextHolder.getContext();
     securityContext.setAuthentication(authentication);
@@ -87,9 +87,10 @@ public class SecurityController {
         new Principal() {
           @Override
           public String getName() {
-            return loginRequest.getEmail();
+            return signInRequest.getEmail();
           }
         };
+
     return this.getUserInfo(principal);
   }
 

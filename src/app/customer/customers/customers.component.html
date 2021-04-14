@@ -1,6 +1,8 @@
 <h2>Customers</h2>
 <p>
-  <a [routerLink]="['.', 'new']" color="primary" mat-raised-button>Add Customer</a>
+  <a [routerLink]="['.', 'new']" color="primary" data-test="btn-customers-add" mat-raised-button
+    >Add Customer</a
+  >
 </p>
 <div *ngIf="data$ | async as data" class="customers">
   <div class="row header">
@@ -10,7 +12,7 @@
     <p class="birthdate">Date of Birth</p>
   </div>
   <ng-container *ngIf="data.customers.length > 0; else noCustomers">
-    <div *ngFor="let customer of data.customers" class="row">
+    <div *ngFor="let customer of data.customers" class="row" data-test="row-customer">
       <p class="edit">
         <a [routerLink]="['.', customer.id]">
           <mat-icon>edit</mat-icon>
@@ -22,10 +24,14 @@
     </div>
     <div class="paginator">
       <button [disabled]="data.currentPage == 0" mat-raised-button>
-        <mat-icon (click)="previousPage()"> arrow_back</mat-icon>
+        <mat-icon (click)="previousPage()" data-test="btn-customers-back"> arrow_back </mat-icon>
       </button>
       {{ data.currentPage + 1 }}
-      <button [disabled]="data.currentPage >= data.pageCount - 1" mat-raised-button>
+      <button
+        [disabled]="data.currentPage >= data.pageCount - 1"
+        data-test="btn-customers-next"
+        mat-raised-button
+      >
         <mat-icon (click)="nextPage()">arrow_forward</mat-icon>
       </button>
     </div>
