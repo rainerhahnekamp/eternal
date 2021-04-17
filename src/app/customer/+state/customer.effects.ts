@@ -1,10 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
-import { concatMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { Customer } from '../customer';
 import { CustomerActions } from './customer.actions';
 import { fromCustomer } from './customer.selectors';
@@ -49,9 +49,7 @@ export class CustomerEffects {
     observable: Observable<T>
   ): Observable<{ customers: Customer[]; pageCount: number }> =>
     observable.pipe(
-      concatMap((a) =>
-        of(a).pipe(withLatestFrom(this.store.select(fromCustomer.selectCurrentPage)))
-      ),
+      concatLatestFrom(() => this.store.select(fromCustomer.selectCurrentPage)),
       switchMap(([, page]) =>
         this.http.get<{ content: Customer[]; totalPages: number }>(this.url, {
           params: new HttpParams().append('page', '' + page).append('pageSize', this.pageSize)
