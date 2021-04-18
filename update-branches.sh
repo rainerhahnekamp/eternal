@@ -2,7 +2,7 @@ set -e
 
 git  checkout 01-setup
 
-branches=(01-setup 02-unit-tests-a 03-unit-tests-b 04-unit-tests-rxjs 05-comp-tests 06-comp-tests-material 07-comp-tests-harnesses 08-ngrx-tests 09-visual-regression 10-storybook 11-e2e-basic)
+branches=(01-setup 02-unit-tests-a 03-unit-tests-b 04-unit-tests-rxjs 05-comp-tests 06-comp-tests-material 07-comp-tests-harnesses 08-ngrx-tests 09-visual-regression 10-storybook 11-e2e-basic 12-e2e-advanced)
 previous=
 current=
 
