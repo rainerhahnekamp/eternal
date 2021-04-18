@@ -100,7 +100,7 @@ class FormlyFields {
 
   private radio(name: string, value: string, componentName: string) {
     cy.get(`${componentName} .formly-${name} input[value=${value}]`)
-      .parent('div.mat-radio-container')
+      .parents('mat-radio-button')
       .click();
   }
 
