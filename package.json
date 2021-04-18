@@ -1,9 +1,15 @@
 {
-  "name": "testing",
-  "version": "0.0.0",
+  "name": "angular-testing-workshop",
+  "version": "1.3.0",
+  "author": {
+    "name": "Rainer Hahnekamp",
+    "email": "rainer.hahnekamp@angulararchitects.io"
+  },
+  "homepage": "https://angulararchitects.io",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
+    "start:dev-local": "ng serve --host 0.0.0.0 -c dev-local",
     "build": "ng build",
     "test": "jest",
     "test:watch": "jest --watch",

@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { flatten } from 'lodash';
+import { flatten } from 'lodash-es';
 import { diaryActions } from './diary.actions';
 
 export const diaryFeatureKey = 'diary';
