@@ -3360,13 +3360,6 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@ngrx/component@^11.1.0":
-  version "11.1.0"
-  resolved "https://registry.yarnpkg.com/@ngrx/component/-/component-11.1.0.tgz#d74d62c0346dc0c71f0aec1b79700b1c3bd8c2a4"
-  integrity sha512-gSqnveMk3fUTLeFyfde2CCWgSd4HzHOT4BuzRgBr27fZnAWVykeYWDPKhD+8oqHKj4MYjTO0i6NmS7U1da0V3Q==
-  dependencies:
-    tslib "^2.0.0"
-
 "@ngrx/effects@^11.1.0":
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-11.1.0.tgz#0a1fdc2f80aed187b68a85e503003c27171e4986"

@@ -34,7 +34,6 @@
     "@angular/platform-browser-dynamic": "~11.2.10",
     "@angular/router": "~11.2.10",
     "@briebug/jest-schematic": "^3.0.0",
-    "@ngrx/component": "^11.1.0",
     "@ngrx/effects": "^11.1.0",
     "@ngrx/store": "^11.1.0",
     "@ngrx/store-devtools": "^11.1.0",
