@@ -1,8 +1,8 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { Customer } from '../customer';
 import { CustomerActions } from './customer.actions';
 
-export const customerFeatureKey = 'Customer';
+export const customerFeatureKey = 'customer';
 
 export interface State {
   customers: Customer[];
@@ -20,7 +20,7 @@ export const initialState: State = {
   pageCount: 0
 };
 
-const CustomerReducer = createReducer<State>(
+export const customerReducer = createReducer<State>(
   initialState,
   on(CustomerActions.load, (state) => ({ ...state, currentPage: 0 })),
   on(CustomerActions.loaded, (state, { customers, pageCount }) => ({
@@ -32,9 +32,14 @@ const CustomerReducer = createReducer<State>(
     ...state,
     customers
   })),
-  on(CustomerActions.updated, (state, { customers }) => ({
+  on(CustomerActions.updated, (state, { customer }) => ({
     ...state,
-    customers
+    customers: state.customers.map((c) => {
+      if (c.id === customer.id) {
+        return customer;
+      }
+      return c;
+    })
   })),
   on(CustomerActions.removed, (state, { customers }) => ({
     ...state,
@@ -57,7 +62,3 @@ const CustomerReducer = createReducer<State>(
     })
   )
 );
-
-export function reducer(state: State | undefined, action: Action) {
-  return CustomerReducer(state, action);
-}

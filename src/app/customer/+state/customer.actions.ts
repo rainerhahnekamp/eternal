@@ -11,7 +11,7 @@ const add = createAction('[Customer] Add', props<{ customer: Customer }>());
 const added = createAction('[Customer] Added', props<{ customers: Customer[] }>());
 
 const update = createAction('[Customer] Update', props<{ customer: Customer }>());
-const updated = createAction('[Customer] Updated', props<{ customers: Customer[] }>());
+const updated = createAction('[Customer] Updated', props<{ customer: Customer }>());
 
 const remove = createAction('[Customer] Remove', props<{ customer: Customer }>());
 const removed = createAction('[Customer] Removed', props<{ customers: Customer[] }>());

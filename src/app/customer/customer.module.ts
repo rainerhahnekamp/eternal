@@ -12,7 +12,7 @@ import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { CustomerEffects } from './+state/customer.effects';
-import { customerFeatureKey, reducer } from './+state/customer.reducer';
+import { customerFeatureKey, customerReducer } from './+state/customer.reducer';
 import { CustomerComponent } from './customer/customer.component';
 import { CustomersComponent } from './customers/customers.component';
 
@@ -45,7 +45,7 @@ import { CustomersComponent } from './customers/customers.component';
         ]
       }
     ]),
-    StoreModule.forFeature(customerFeatureKey, reducer),
+    StoreModule.forFeature(customerFeatureKey, customerReducer),
     EffectsModule.forFeature([CustomerEffects])
   ]
 })

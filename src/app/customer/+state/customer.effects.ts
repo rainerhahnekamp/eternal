@@ -24,8 +24,8 @@ export class CustomerEffects {
   update = createEffect(() =>
     this.actions$.pipe(
       ofType(CustomerActions.update),
-      concatMap(({ customer }) => this.http.put<Customer[]>(this.url, customer)),
-      map((customers) => CustomerActions.updated({ customers })),
+      concatMap(({ customer }) => this.http.put<Customer>(this.url, customer)),
+      map((customer) => CustomerActions.updated({ customer })),
       tap(() => this.router.navigateByUrl('/customer'))
     )
   );
