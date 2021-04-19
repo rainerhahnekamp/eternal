@@ -2,10 +2,8 @@ import { registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de-AT';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,20 +17,18 @@ import { AppComponent } from './app.component';
 import { APP_ROUTES } from './app.routes';
 import { BaseUrlInterceptor } from './core/base-url.interceptor';
 import { CoreModule } from './core/core.module';
-import { HeaderComponent } from './core/header/header.component';
+import { LoadingInterceptor } from './core/loading.interceptor';
 import { HomeComponent } from './home/home.component';
 import { SharedModule } from './shared/shared.module';
 
 registerLocaleData(localeDe, 'de-AT');
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, HeaderComponent],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
-    MatButtonModule,
-    MatProgressBarModule,
     MatSidenavModule,
     MatToolbarModule,
     HttpClientModule,
@@ -57,6 +53,7 @@ registerLocaleData(localeDe, 'de-AT');
       useValue: 'de-AT'
     },
     { provide: HTTP_INTERCEPTORS, multi: true, useClass: BaseUrlInterceptor },
+    { provide: HTTP_INTERCEPTORS, multi: true, useClass: LoadingInterceptor },
     { provide: LOCALE_ID, useValue: 'de-AT' },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,

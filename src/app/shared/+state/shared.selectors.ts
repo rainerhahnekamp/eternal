@@ -12,8 +12,14 @@ const selectSignedIn = createSelector(
   (user, loaded) => loaded && !user?.anonymous
 );
 
+const selectActiveHttpRequest = createSelector(
+  featureSelector,
+  ({ activeHttpRequest }) => activeHttpRequest
+);
+
 export const fromShared = {
   selectUser,
   selectLoaded,
-  selectSignedIn
+  selectSignedIn,
+  selectActiveHttpRequest
 };

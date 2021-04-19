@@ -10,11 +10,17 @@ const signInUser = createAction(
 const signInUserSuccess = createAction('[Shared] Sign-In User Success', props<{ user: User }>());
 const signOutUser = createAction('[Shared] Sign-Out User');
 const signOutUserSuccess = createAction('[Shared] Sign-Out User Success', props<{ user: User }>());
+
+const httpRequestStarted = createAction('[Shared] Http Request Started');
+const httpRequestEnded = createAction('[Shared] Http Request Ended');
+
 export const sharedActions = {
   loadUser,
   loadUserSuccess,
   signInUser,
   signInUserSuccess,
   signOutUser,
-  signOutUserSuccess
+  signOutUserSuccess,
+  httpRequestStarted,
+  httpRequestEnded
 };

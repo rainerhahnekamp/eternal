@@ -6,23 +6,10 @@
   </mat-toolbar>
   <mat-drawer-container autosize>
     <mat-drawer mode="side" opened>
-      <ul *ngIf="userService.loaded$ | async">
-        <li>
-          <a data-test="btn-holidays" mat-raised-button routerLink="/holidays">Holidays</a>
-        </li>
-        <li>
-          <a data-test="btn-customers" mat-raised-button routerLink="/customer">Customers</a>
-        </li>
-        <li *ngIf="userService.signedIn$ | async">
-          <a data-test="btn-diary" mat-raised-button routerLink="/diary">Diary</a>
-        </li>
-      </ul>
+      <app-sidemenu></app-sidemenu>
     </mat-drawer>
     <mat-drawer-content>
-      <mat-progress-bar
-        *ngIf="!(userService.loaded$ | async)"
-        mode="indeterminate"
-      ></mat-progress-bar>
+      <app-loader></app-loader>
       <router-outlet></router-outlet>
     </mat-drawer-content>
   </mat-drawer-container>
