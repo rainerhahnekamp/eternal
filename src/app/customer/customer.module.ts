@@ -13,11 +13,12 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { CustomerEffects } from './+state/customer.effects';
 import { customerFeatureKey, customerReducer } from './+state/customer.reducer';
+import { CustomerPipe } from './customer.pipe';
 import { CustomerComponent } from './customer/customer.component';
 import { CustomersComponent } from './customers/customers.component';
 
 @NgModule({
-  declarations: [CustomersComponent, CustomerComponent],
+  declarations: [CustomersComponent, CustomerComponent, CustomerPipe],
   imports: [
     CommonModule,
     ReactiveFormsModule,
