@@ -11,6 +11,7 @@ export const APP_ROUTES: Routes = [
         path: '',
         component: HomeComponent
       },
+      { path: 'home', redirectTo: '' },
       {
         path: 'security',
         loadChildren: () => import('./security/security.module').then((m) => m.SecurityModule)
