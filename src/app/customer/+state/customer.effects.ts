@@ -16,8 +16,8 @@ export class CustomerEffects {
   add$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CustomerActions.add),
-      concatMap(({ customer }) => this.http.post<Customer[]>(this.url, customer)),
-      map((customers) => CustomerActions.added({ customers })),
+      concatMap(({ customer }) => this.http.post<Customer>(this.url, customer)),
+      map((customer) => CustomerActions.added({ customer })),
       tap(() => this.router.navigateByUrl('/customer'))
     )
   );
@@ -32,8 +32,10 @@ export class CustomerEffects {
   remove = createEffect(() =>
     this.actions$.pipe(
       ofType(CustomerActions.remove),
-      concatMap(({ customer }) => this.http.delete<Customer[]>(`${this.url}/${customer.id}`)),
-      map((customers) => CustomerActions.removed({ customers })),
+      concatMap(({ customer }) =>
+        this.http.delete<void>(`${this.url}/${customer.id}`).pipe(map(() => customer))
+      ),
+      map((customer) => CustomerActions.removed({ customer })),
       tap(() => this.router.navigateByUrl('/customer'))
     )
   );

@@ -8,13 +8,13 @@ const loaded = createAction(
 );
 
 const add = createAction('[Customer] Add', props<{ customer: Customer }>());
-const added = createAction('[Customer] Added', props<{ customers: Customer[] }>());
+const added = createAction('[Customer] Added', props<{ customer: Customer }>());
 
 const update = createAction('[Customer] Update', props<{ customer: Customer }>());
 const updated = createAction('[Customer] Updated', props<{ customer: Customer }>());
 
 const remove = createAction('[Customer] Remove', props<{ customer: Customer }>());
-const removed = createAction('[Customer] Removed', props<{ customers: Customer[] }>());
+const removed = createAction('[Customer] Removed', props<{ customer: Customer }>());
 
 const nextPage = createAction('[Customer] Next Page');
 const nextPageSuccess = createAction(

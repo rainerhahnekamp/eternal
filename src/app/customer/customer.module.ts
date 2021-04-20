@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,14 +12,22 @@ import { StoreModule } from '@ngrx/store';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
+import { environment } from '../../environments/environment';
 import { CustomerEffects } from './+state/customer.effects';
 import { customerFeatureKey, customerReducer } from './+state/customer.reducer';
 import { CustomerPipe } from './customer.pipe';
 import { CustomerComponent } from './customer/customer.component';
 import { CustomersComponent } from './customers/customers.component';
+import { MockedHttpClient } from './mocked-http-client';
 
 @NgModule({
   declarations: [CustomersComponent, CustomerComponent, CustomerPipe],
+  providers: [
+    {
+      provide: HttpClient,
+      useClass: environment.mockHttp ? MockedHttpClient : HttpClient
+    }
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

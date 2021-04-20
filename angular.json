@@ -39,6 +39,14 @@
                 }
               ]
             },
+            "mock-http": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.mock-http.ts"
+                }
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -77,6 +85,9 @@
           "configurations": {
             "dev-local": {
               "browserTarget": "testing:build:dev-local"
+            },
+            "mock-http": {
+              "browserTarget": "testing:build:mock-http"
             },
             "production": {
               "browserTarget": "testing:build:production"

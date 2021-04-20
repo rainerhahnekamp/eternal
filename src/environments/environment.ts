@@ -4,6 +4,7 @@
 
 export const environment = {
   baseUrl: 'http://api.eternal-holidays.net',
+  mockHttp: false,
   production: false
 };
 

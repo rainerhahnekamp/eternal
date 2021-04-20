@@ -10,6 +10,7 @@
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
     "start:dev-local": "ng serve --host 0.0.0.0 -c dev-local",
+    "start:mock-http": "ng serve --host 0.0.0.0 -c mock-http",
     "build": "ng build",
     "test": "jest",
     "test:watch": "jest --watch",

@@ -28,9 +28,9 @@ export const customerReducer = createReducer<State>(
     customers,
     pageCount
   })),
-  on(CustomerActions.added, (state, { customers }) => ({
+  on(CustomerActions.added, (state, { customer }) => ({
     ...state,
-    customers
+    customers: [...state.customers, customer]
   })),
   on(CustomerActions.updated, (state, { customer }) => ({
     ...state,
@@ -41,9 +41,9 @@ export const customerReducer = createReducer<State>(
       return c;
     })
   })),
-  on(CustomerActions.removed, (state, { customers }) => ({
+  on(CustomerActions.removed, (state, { customer }) => ({
     ...state,
-    customers
+    customers: state.customers.filter((c) => c.id !== customer.id)
   })),
   on(CustomerActions.previousPage, (state) => ({
     ...state,
