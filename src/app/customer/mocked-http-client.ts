@@ -8,7 +8,7 @@ import { customers as originalCustomers } from './data';
 
 @Injectable()
 export class MockedHttpClient {
-  private customers = originalCustomers;
+  private customers = sortBy(originalCustomers, 'name');
   private pageSize = 10;
 
   get(url: string, options: { params: HttpParams }): Observable<Customer[]> {
@@ -45,12 +45,11 @@ export class MockedHttpClient {
   }
 
   private sortCustomers(page: number): Observable<{ content: Customer[]; totalPages: number }> {
-    const customers = sortBy(this.customers, 'name');
     const end = (page + 1) * this.pageSize;
     const start = end - this.pageSize;
     return of({
-      content: customers.slice(start, end),
-      totalPages: Math.ceil(customers.length / this.pageSize)
+      content: this.customers.slice(start, end),
+      totalPages: Math.ceil(this.customers.length / this.pageSize)
     });
   }
 
