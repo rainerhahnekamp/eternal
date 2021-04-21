@@ -20,13 +20,21 @@ class Customers {
     return cy.getByAttr('row-customer').should('contain', customer);
   }
 
+  verifyCustomerDoesNotExist(customer: string) {
+    return cy.getByAttr('row-customer').should('not.contain', customer);
+  }
+
   clickCustomer(customer: string) {
     this.verifyCustomer(customer);
-    cy.getByAttr('row-customer').contains(customer).click();
+    cy.get('div').contains(customer).siblings('.edit').click();
   }
 
   add() {
     cy.getByAttr('btn-customers-add').click();
+  }
+
+  delete() {
+    cy.get('button').contains('Delete').click();
   }
 
   submitForm(firstname: string, name: string, country: string, birthdate: Date) {
