@@ -39,11 +39,11 @@
                 }
               ]
             },
-            "mock-http": {
+            "non-mock": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.mock-http.ts"
+                  "with": "src/environments/environment.non-mock.ts"
                 }
               ]
             },
@@ -86,8 +86,8 @@
             "dev-local": {
               "browserTarget": "testing:build:dev-local"
             },
-            "mock-http": {
-              "browserTarget": "testing:build:mock-http"
+            "non-mock": {
+              "browserTarget": "testing:build:non-mock"
             },
             "production": {
               "browserTarget": "testing:build:production"
