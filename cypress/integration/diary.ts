@@ -34,10 +34,6 @@ describe('Diary', () => {
     };
   };
 
-  before(() => {
-    cy.clearCookies();
-  });
-
   it('should verify diary with sign-up POMs', () => {
     const data = createSignUpData();
     cy.visit('');
