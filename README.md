@@ -5,6 +5,10 @@ start the Angular application via `npm run start`.
 
 `https://api.eternal-holidays.net` acts as the default backend.
 
+---
+
+If the backend is not reachable you also run the backend locally (see below).
+
 ### System Check
 
 To verify everything is working, you can run following commands:
@@ -22,13 +26,5 @@ as database. The db file is located in `backend/db.mv.db`.
 
 Execute `./mvnw spring-boot:run -pl backend`. You require at least Java 1.8.
 
-You also have to replace the `baseUrl` property in `environment.ts`.
-
-
-
-
-
-
-
-
-
+You also have to replace the `baseUrl` property in `environment.ts` or just
+run `npm run start:dev-local`.
