@@ -28,23 +28,7 @@ export const customerReducer = createReducer<State>(
     customers,
     pageCount
   })),
-  on(CustomerActions.added, (state, { customer }) => ({
-    ...state,
-    customers: [...state.customers, customer]
-  })),
-  on(CustomerActions.updated, (state, { customer }) => ({
-    ...state,
-    customers: state.customers.map((c) => {
-      if (c.id === customer.id) {
-        return customer;
-      }
-      return c;
-    })
-  })),
-  on(CustomerActions.removed, (state, { customer }) => ({
-    ...state,
-    customers: state.customers.filter((c) => c.id !== customer.id)
-  })),
+  on(CustomerActions.added, CustomerActions.updated, CustomerActions.removed, () => initialState),
   on(CustomerActions.previousPage, (state) => ({
     ...state,
     currentPage: state.currentPage - 1
