@@ -16,7 +16,7 @@ To verify everything is working, you can run following commands:
 - Unit Tests: `npm run test`
   Tests with Puppeteer: `npm run test:vr`
 - Storybook: `npm run storybook`
-- Cypress: `npm run e2e`
+- Cypress: `npm run e2e:watch`
 - optional: Backend (see notes below): `mvnw spring-boot:run -pl backend`
 
 ### Local Backend
