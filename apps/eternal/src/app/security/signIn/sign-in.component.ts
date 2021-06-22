@@ -6,8 +6,7 @@ import { UserService } from '../../shared/user.service';
 
 @Component({
   selector: 'app-sign-in',
-  templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.scss']
+  templateUrl: './sign-in.component.html'
 })
 export class SignInComponent {
   formGroup = new FormGroup({});
