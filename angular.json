@@ -17,10 +17,7 @@
             "polyfills": "apps/eternal/src/polyfills.ts",
             "tsConfig": "apps/eternal/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "apps/eternal/src/favicon.ico",
-              "apps/eternal/src/assets"
-            ],
+            "assets": ["apps/eternal/src/favicon.ico", "apps/eternal/src/assets"],
             "styles": ["apps/eternal/src/styles.scss"],
             "scripts": []
           },
@@ -78,10 +75,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/eternal/src/**/*.ts",
-              "apps/eternal/src/**/*.html"
-            ]
+            "lintFilePatterns": ["apps/eternal/src/**/*.ts", "apps/eternal/src/**/*.html"]
           }
         },
         "test": {
@@ -90,6 +84,37 @@
           "options": {
             "jestConfig": "apps/eternal/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "storybook": {
+          "builder": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "port": 4400,
+            "config": {
+              "configFolder": "apps/eternal/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "builder": "@nrwl/storybook:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "outputPath": "dist/storybook/eternal",
+            "config": {
+              "configFolder": "apps/eternal/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
           }
         }
       }

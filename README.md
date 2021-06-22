@@ -28,3 +28,21 @@ Execute `./mvnw spring-boot:run -pl backend`. You require at least Java 1.8.
 
 You also have to replace the `baseUrl` property in `environment.ts` or just
 run `npm run start:dev-local`.
+
+### Full Rewrite from Scratch
+
+If you have the desire to fully rebuild the system from scratch with an Angular
+application build from scratch, following commands should be executed:
+
+```bash
+yarn add @ngrx/store @ngrx/effects @ngrx/store-devtools @ngx-formly/core @ngx-formly/material lodash-es
+
+yarn add -D date-fns @ngneat/spectator ng-mocks jest-image-snapshot jest-puppeteer ngx-build-plus rxjs-marbles puppeteer puppeteer-full-page-screenshot @nrwl/storybook
+
+yarn add -D @types/lodash-es @types/expect-puppeteer @types/jest-environment-puppeteer @types/jest-image-snapshot @types/puppeteer
+
+npx ng g @nrwl/angular:storybook-configuration eternal
+
+yarn
+
+```
