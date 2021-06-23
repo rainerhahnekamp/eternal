@@ -1,13 +1,14 @@
 # Angular Workshop Testing
 
-After cloning the project and `yarn` for downloading the dependencies, you can
-start the Angular application via `npm run start`.
+After cloning the project, run `yarn` for downloading the dependencies. Verify
+that the applications starts with `npm run start`.
 
 `https://api.eternal-holidays.net` acts as the default backend.
 
 ---
 
-If the backend is not reachable you also run the backend locally (see below).
+If the backend is not reachable you can also run the backend locally (see below)
+.
 
 ### System Check
 
@@ -15,7 +16,8 @@ To verify everything is working, you can run following commands:
 
 - Unit Tests: `npm run test`
   Tests with Puppeteer: `npm run test:vr`
-- Storybook: `npm run storybook`
+- Storybook: `npm run storybook` (Storybook should start
+  on http://localhost:6000)
 - Cypress: `npm run e2e:watch`
 - optional: Backend (see notes below): `mvnw spring-boot:run -pl backend`
 
