@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "allowJs": true,
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
