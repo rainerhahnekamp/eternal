@@ -22,6 +22,22 @@
             "scripts": []
           },
           "configurations": {
+            "dev-local": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/eternal/src/environments/environment.ts",
+                  "with": "apps/eternal/src/environments/environment.dev-local.ts"
+                }
+              ]
+            },
+            "non-mock": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/eternal/src/environments/environment.ts",
+                  "with": "apps/eternal/src/environments/environment.non-mock.ts"
+                }
+              ]
+            },
             "production": {
               "budgets": [
                 {
@@ -62,6 +78,9 @@
             },
             "development": {
               "browserTarget": "eternal:build:development"
+            },
+            "non-mock": {
+              "browserTarget": "eternal:build:non-mock"
             }
           },
           "defaultConfiguration": "development"
@@ -134,6 +153,9 @@
           "configurations": {
             "production": {
               "devServerTarget": "eternal:serve:production"
+            },
+            "non-mock": {
+              "devServerTarget": "eternal:serve:non-mock"
             }
           }
         },
