@@ -1,12 +1,12 @@
 import { format } from 'date-fns';
 
-export interface FieldConfig {
-  radio?: string[];
-  date?: string[];
-  select?: string[];
-  multicheckbox?: string[];
-  multiSelect?: string[];
-  textarea?: string[];
+export interface FieldConfig<T> {
+  radio?: (keyof T)[];
+  date?: (keyof T)[];
+  select?: (keyof T)[];
+  multicheckbox?: (keyof T)[];
+  multiSelect?: (keyof T)[];
+  textarea?: (keyof T)[];
 }
 
 type FieldConfigType =
@@ -19,42 +19,54 @@ type FieldConfigType =
   | 'textarea';
 
 class FormlyFields {
-  checkCreationValidation(
-    values: { [key: string]: any },
-    url: string,
-    fields: FieldConfig,
-    componentName: string
-  ) {
-    values.forEach((field, index, array) => {
-      this.fillIn(field, fields, componentName);
-    });
-  }
+  // checkCreationValidation(
+  //   values: { [key: string]: any },
+  //   url: string,
+  //   fields: FieldConfig,
+  //   componentName: string
+  // ) {
+  //   values.forEach((field, index, array) => {
+  //     this.fillIn(field, fields, componentName);
+  //   });
+  // }
 
-  fillIn(values: { [key: string]: any }, fields: FieldConfig, componentName: string) {
-    Object.entries(this.getMap(values, fields)).forEach(([fieldName, fieldConfigType]) => {
+  fillIn<T>(values: T, fields: FieldConfig<T>, componentName: string) {
+    const fieldMap = this.getMap(values, fields);
+    fieldMap.forEach((fieldConfigType, fieldName) => {
       const value = values[fieldName];
-      switch (fieldConfigType) {
-        case 'input':
-          this.input(fieldName, value, componentName);
-          break;
-        case 'textarea':
-          this.textarea(fieldName, value, componentName);
-          break;
-        case 'select':
-          this.select(fieldName, value, componentName);
-          break;
-        case 'radio':
-          this.radio(fieldName, value, componentName);
-          break;
-        case 'date':
-          this.date(fieldName, value, componentName);
-          break;
-        case 'multicheckbox':
-          this.multicheckbox(fieldName, value, componentName);
-          break;
-        case 'multiSelect':
-          this.multiSelect(fieldName, value, componentName);
-          break;
+
+      if (value instanceof Date && fieldConfigType === 'date') {
+        this.date(fieldName, value, componentName);
+        return;
+      }
+
+      if (typeof value === 'string') {
+        switch (fieldConfigType) {
+          case 'input':
+            this.input(fieldName, value, componentName);
+            break;
+          case 'textarea':
+            this.textarea(fieldName, value, componentName);
+            break;
+          case 'select':
+            this.select(fieldName, value, componentName);
+            break;
+          case 'radio':
+            this.radio(fieldName, value, componentName);
+            break;
+        }
+        return;
+      }
+
+      if (value instanceof Array) {
+        switch (fieldConfigType) {
+          case 'multicheckbox':
+            this.multicheckbox(fieldName, value, componentName);
+            break;
+          case 'multiSelect':
+            this.multiSelect(fieldName, value, componentName);
+            break;
+        }
       }
     });
   }
@@ -63,58 +75,59 @@ class FormlyFields {
     return cy.get(`.formly-${name} input`);
   }
 
-  private getMap(values: { [key: string]: any }, fields: FieldConfig) {
-    const returner: { [key: string]: FieldConfigType } = {};
-    Object.keys(values).forEach((key) => {
+  private getMap<T>(values: T, fields: FieldConfig<T>): Map<keyof T, FieldConfigType> {
+    const returner = new Map<keyof T, FieldConfigType>();
+    Object.keys(values).forEach((k) => {
+      const key: keyof T = k as keyof T;
       if (fields.select && fields.select.includes(key)) {
-        returner[key] = 'select';
+        returner.set(key, 'select');
       } else if (fields.radio && fields.radio.includes(key)) {
-        returner[key] = 'radio';
+        returner.set(key, 'radio');
       } else if (fields.date && fields.date.includes(key)) {
-        returner[key] = 'date';
+        returner.set(key, 'date');
       } else if (fields.multiSelect && fields.multiSelect.includes(key)) {
-        returner[key] = 'multiSelect';
+        returner.set(key, 'multiSelect');
       } else if (fields.textarea && fields.textarea.includes(key)) {
-        returner[key] = 'textarea';
+        returner.set(key, 'textarea');
       } else if (fields.multicheckbox && fields.multicheckbox.includes(key)) {
-        returner[key] = 'multicheckbox';
+        returner.set(key, 'multicheckbox');
       } else {
-        returner[key] = 'input';
+        returner.set(key, 'input');
       }
     });
     return returner;
   }
 
-  private input(name: string, value: string, componentName: string) {
+  private input<T>(name: keyof T, value: string, componentName: string) {
     cy.get(`${componentName} .formly-${name} input`).clear().type(value);
   }
 
-  private textarea(name: string, value: string, componentName: string) {
+  private textarea<T>(name: keyof T, value: string, componentName: string) {
     cy.get(`${componentName} .formly-${name} textarea`).clear().type(value);
   }
 
-  private select(name: string, value: string, componentName: string) {
+  private select<T>(name: keyof T, value: string, componentName: string) {
     cy.get(`${componentName} .formly-${name}`).click();
     cy.get('.mat-option-text').contains(value).click();
   }
 
-  private radio(name: string, value: string, componentName: string) {
+  private radio<T>(name: keyof T, value: string, componentName: string) {
     cy.get(`${componentName} .formly-${name} input[value=${value}]`)
       .parents('mat-radio-button')
       .click();
   }
 
-  private date(name: string, value: Date, componentName: string) {
+  private date<T>(name: keyof T, value: Date, componentName: string) {
     cy.get(`${componentName} .formly-${name} input`).type(format(value, 'dd.MM.yyyy'));
   }
 
-  private multicheckbox(name: string, values: string[], componentName: string) {
+  private multicheckbox<T>(name: keyof T, values: string[], componentName: string) {
     values.forEach((value) => {
       cy.get(`${componentName} .formly-${name} label`).contains(value).click();
     });
   }
 
-  private multiSelect(name: string, values: string[], componentName: string) {
+  private multiSelect<T>(name: keyof T, values: string[], componentName: string) {
     values.forEach((value) => {
       cy.get(`${componentName} .formly-${name}`).click();
       cy.get('.mat-option-text').contains(value).click();

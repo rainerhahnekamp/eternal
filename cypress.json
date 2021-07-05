@@ -1,6 +1,0 @@
-{
-  "baseUrl": "http://localhost:4200",
-  "env": {
-    "apiUrl": "https://api.eternal-holidays.net"
-  }
-}
