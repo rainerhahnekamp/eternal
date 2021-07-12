@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RequestInfo Component should check the snapshot 1`] = `
+<app-request-info
+  address=""
+  formBuilder={[Function FormBuilder]}
+  formGroup={[Function FormGroup]}
+  lookuper="null"
+  submitter$={[Function Subject]}
+  title={[Function String]}
+>
+  <h2>
+    
+  </h2><p>
+     Please fill in your address and below and we will send you a brochure with more information.
+  
+  </p><form
+    novalidate=""
+  >
+    <input
+      data-test="address"
+      formcontrolname="address"
+      placeholder="address"
+    />
+    <button
+      data-test="btn-search"
+      type="submit"
+    >
+      Send
+    </button>
+  </form>
+</app-request-info>
+`;
