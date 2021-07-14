@@ -160,6 +160,9 @@
             },
             "non-mock": {
               "devServerTarget": "eternal:serve:non-mock"
+            },
+            "dev-local": {
+              "devServerTarget": "eternal:serve:dev-local"
             }
           }
         },
