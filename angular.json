@@ -28,7 +28,8 @@
                   "replace": "apps/eternal/src/environments/environment.ts",
                   "with": "apps/eternal/src/environments/environment.dev-local.ts"
                 }
-              ]
+              ],
+              "optimization": false
             },
             "non-mock": {
               "fileReplacements": [
@@ -81,6 +82,9 @@
             },
             "non-mock": {
               "browserTarget": "eternal:build:non-mock"
+            },
+            "dev-local": {
+              "browserTarget": "eternal:build:dev-local"
             }
           },
           "defaultConfiguration": "development"
