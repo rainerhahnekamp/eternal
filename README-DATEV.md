@@ -26,9 +26,6 @@ as database. The db file is located in `backend/db.mv.db`.
 In IntelliJ you can open the backend folder as a new project or right-click on the pom.xml file in the backend directory, and select 'Add as maven project' if
 it can't start via Run configuration "EternalApplication".
 
-You also have to replace the `baseUrl` property in `environment.ts` or just
-run `npm run start:dev-local`.
-
 ---
 
 ### System Check
