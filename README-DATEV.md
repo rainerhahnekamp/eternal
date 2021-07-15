@@ -14,23 +14,9 @@ After cloning the project and using
  npm install
 ```
 for downloading the dependencies, you can
-start the Angular application via `npm run start`.
-
-`https://api.eternal-holidays.net` acts as the default backend.
+start the Angular application via `npm run start:dev-local`.
 
 ---
-
-If the backend is not reachable you also run the backend locally (see below).
-
-### System Check
-
-To verify everything is working, you can run following commands:
-
-- Unit Tests: `npm run test`
-  Tests with Puppeteer: `npm run test:vr`
-- Storybook: `npm run storybook`
-- Cypress: `npm run e2e`
-- optional: Backend (see notes below):
 
 ### Local Backend
 
@@ -42,3 +28,16 @@ it can't start via Run configuration "EternalApplication".
 
 You also have to replace the `baseUrl` property in `environment.ts` or just
 run `npm run start:dev-local`.
+
+---
+
+### System Check
+
+To verify everything is working, you can run following commands:
+
+- Unit Tests: `npm run test`
+  Tests with Puppeteer: `npm run test:vr`
+- Storybook: `npm run storybook`
+- Cypress: `npm run e2e`
+- optional: Backend (see notes below):
+
