@@ -36,5 +36,4 @@ To verify everything is working, you can run following commands:
   Tests with Puppeteer: `npm run test:vr`
 - Storybook: `npm run storybook`
 - Cypress: `npm run e2e`
-- optional: Backend (see notes below):
 
