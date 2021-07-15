@@ -107,7 +107,7 @@ class FormlyFields {
   }
 
   private select<T>(name: keyof T, value: string, componentName: string) {
-    cy.get(`${componentName} .formly-${name}`).click();
+    cy.get(`${componentName} .formly-${name} mat-select`).click();
     cy.get('.mat-option-text').contains(value).click();
   }
 
@@ -129,7 +129,7 @@ class FormlyFields {
 
   private multiSelect<T>(name: keyof T, values: string[], componentName: string) {
     values.forEach((value) => {
-      cy.get(`${componentName} .formly-${name}`).click();
+      cy.get(`${componentName} .formly-${name} mat-select`).click();
       cy.get('.mat-option-text').contains(value).click();
       cy.get('.cdk-overlay-backdrop').click(-50, -50, { force: true });
     });
