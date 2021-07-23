@@ -2665,6 +2665,11 @@
   dependencies:
     core-js "^2.5.7"
 
+"@jscutlery/cypress-harness@^0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@jscutlery/cypress-harness/-/cypress-harness-0.3.5.tgz#a9607dc07928d0e39b0434a525a131b34bd6f0b6"
+  integrity sha512-kSa91TaVe2IXor6xS2kYnQ8CoO7AGmICGSCEJl3o2PPYXf1AvTuDU4sqBN3XT6kbSo13e81KFkKHq1YGA1cgyQ==
+
 "@jsdevtools/coverage-istanbul-loader@3.0.5":
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/@jsdevtools/coverage-istanbul-loader/-/coverage-istanbul-loader-3.0.5.tgz#2a4bc65d0271df8d4435982db4af35d81754ee26"
@@ -7289,6 +7294,11 @@ cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
+
+cypress-pipe@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/cypress-pipe/-/cypress-pipe-2.0.0.tgz#577df7a70a8603d89a96dfe4092a605962181af8"
+  integrity sha512-KW9s+bz4tFLucH3rBGfjW+Q12n7S4QpUSSyxiGrgPOfoHlbYWzAGB3H26MO0VTojqf9NVvfd5Kt0MH5XMgbfyg==
 
 cypress@^7.6.0:
   version "7.6.0"

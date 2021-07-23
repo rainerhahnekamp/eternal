@@ -41,7 +41,7 @@ yarn add @ngrx/store @ngrx/effects @ngrx/store-devtools @ngx-formly/core @ngx-fo
 
 yarn add -D date-fns @ngneat/spectator ng-mocks jest-image-snapshot jest-puppeteer ngx-build-plus rxjs-marbles puppeteer puppeteer-full-page-screenshot @nrwl/storybook
 
-yarn add -D @types/lodash-es @types/expect-puppeteer @types/jest-environment-puppeteer @types/jest-image-snapshot @types/puppeteer
+yarn add -D @types/lodash-es @types/expect-puppeteer @types/jest-environment-puppeteer @types/jest-image-snapshot @types/puppeteer @jscutlery/cypress-harness cypress-pipe
 
 npx ng g @nrwl/angular:storybook-configuration eternal
 
