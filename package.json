@@ -12,6 +12,8 @@
     "start:dev-local": "ng serve --host 0.0.0.0 -c dev-local",
     "start:non-mock": "ng serve --host 0.0.0.0 -c non-mock",
     "storybook": "nx run eternal:storybook",
+    "storybook:build": "nx run eternal:build-storybook",
+    "storybook:build:run": "npx serve dist/storybook/eternal",
     "build": "ng build",
     "test": "jest",
     "test:watch": "jest --watch",
