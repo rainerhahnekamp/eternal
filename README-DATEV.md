@@ -4,12 +4,11 @@
 
 First unzip `\\bk.datev.de\dfs\COO\CCD\QM\Public\AngularWorkshop\cypress.zip` into `%localAppdata%\Cypress\Cache\7.7.0`.
 
-Set the environment variable `PUPPETEER_EXECUTABLE_PATH` to `C:\Program Files\Google\Chrome\Application\chrome.exe` without any ' or " !
-
 ## Starting
 
 After cloning the project and using
 ```
+ set PUPPETEER_EXECUTABLE_PATH=C:\Program Files\Google\Chrome\Application\chrome.exe
  set PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
  npm install
 ```
@@ -36,4 +35,9 @@ To verify everything is working, you can run following commands:
   Tests with Puppeteer: `npm run test:vr`
 - Storybook: `npm run storybook`
 - Cypress: `npm run e2e`
+
+### E2E Tests in den Übungen
+
+Please start the E2E Tests for the Lab section with: e2e:dev-local
+On BK2.0 VDIs please use the Browser Elektron, the browsers Firefox and Chrome are currently not working on BK2.0 VDIs. (We currently fixing this)
 
