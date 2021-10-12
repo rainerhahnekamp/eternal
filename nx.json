@@ -1,5 +1,5 @@
 {
-  "npmScope": "nx-testing",
+  "npmScope": "eternal",
   "affected": {
     "defaultBase": "master"
   },
@@ -14,17 +14,14 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e", "build-storybook"]
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e",
+          "build-storybook"
+        ]
       }
-    }
-  },
-  "projects": {
-    "eternal": {
-      "tags": []
-    },
-    "eternal-e2e": {
-      "tags": [],
-      "implicitDependencies": ["eternal"]
     }
   },
   "targetDependencies": {
@@ -34,5 +31,14 @@
         "projects": "dependencies"
       }
     ]
+  },
+  "projects": {
+    "eternal": {
+      "tags": []
+    },
+    "eternal-e2e": {
+      "tags": [],
+      "implicitDependencies": ["eternal"]
+    }
   }
 }
