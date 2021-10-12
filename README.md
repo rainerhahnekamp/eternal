@@ -39,9 +39,11 @@ application build from scratch, following commands should be executed:
 ```bash
 npx ng add  @angular/material
 
-yarn add @ngrx/store @ngrx/effects @ngrx/store-devtools @ngx-formly/core @ngx-formly/material lodash-es
+yarn add @ngrx/store @ngrx/effects @ngrx/store-devtools @ngx-formly/core @ngx-formly/material ngx-formly-helpers lodash-es
 
 yarn add -D date-fns @ngneat/spectator ng-mocks jest-image-snapshot jest-puppeteer ngx-build-plus rxjs-marbles puppeteer
+
+yarn add -D tailwindcss postcss
 
 yarn add -D @types/lodash-es @types/expect-puppeteer @types/jest-environment-puppeteer @types/jest-image-snapshot @types/puppeteer @jscutlery/cypress-harness cypress-pipe cypress-plugin-snapshots
 
