@@ -24,4 +24,6 @@ public class HolidayEntity {
   private Integer durationInDays;
   private Integer minCount;
   private Integer maxCount;
+  private Boolean onSale;
+  private Boolean soldOut;
 }
