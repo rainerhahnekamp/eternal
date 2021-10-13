@@ -3,7 +3,7 @@
 - Tailwind
 - Harnesses in Cypress
 - Snapshots in Cypress
-- jest-auto-mocks
+- jest-auto-spies
 
 ## 1.4.0
 
