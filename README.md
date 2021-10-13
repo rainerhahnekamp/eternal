@@ -17,7 +17,7 @@ To verify everything is working, you can run following commands:
 - Unit Tests: `npm run test`
   Tests with Puppeteer: `npm run test:vr`
 - Storybook: `npm run storybook` (Storybook should start
-  on http://localhost:6000)
+  on http://localhost:4400)
 - Cypress: `npm run e2e:watch`
 - optional: Backend (see notes below): `mvnw spring-boot:run -pl backend`
 
@@ -37,15 +37,36 @@ If you have the desire to fully rebuild the system from scratch with an Angular
 application build from scratch, following commands should be executed:
 
 ```bash
-npx ng add  @angular/material
+npx ng add @angular/material
 
-yarn add @ngrx/store @ngrx/effects @ngrx/store-devtools @ngx-formly/core @ngx-formly/material ngx-formly-helpers lodash-es
+# NgRx
+yarn add @ngrx/store @ngrx/effects @ngrx/store-devtools
 
-yarn add -D date-fns @ngneat/spectator ng-mocks jest-image-snapshot jest-puppeteer ngx-build-plus rxjs-marbles puppeteer
+# Forms
+yarn add @ngx-formly/core @ngx-formly/material ngx-formly-helpers 
 
+# Utility libs
+yarn add lodash-es date-fns
+
+# Tailwind
 yarn add -D tailwindcss postcss
 
-yarn add -D @types/lodash-es @types/expect-puppeteer @types/jest-environment-puppeteer @types/jest-image-snapshot @types/puppeteer @jscutlery/cypress-harness cypress-pipe cypress-plugin-snapshots
+# Testing Boilerplate
+yarn add -D @ngneat/spectator ng-mocks ngx-build-plus @types/lodash-es
 
+# RxJs Marbles
+yarn add -D rxjs-marbles
+
+# Component Harnesses in Cypress
+yarn add -D @jscutlery/cypress-harness cypress-pipe
+
+# Visual Regression - Puppeteer
+yarn add -D jest-image-snapshot jest-puppeteer puppeteer @types/expect-puppeteer @types/jest-environment-puppeteer @types/jest-image-snapshot @types/puppeteer
+
+# Enable Storybook
 npx ng g @nrwl/angular:storybook-configuration eternal
+
+# Visual Regression - Cypress
+yarn add cypress-plugin-snapshots 
+
 ```
