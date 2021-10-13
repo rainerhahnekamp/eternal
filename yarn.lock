@@ -1726,6 +1726,13 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
+"@hirez_io/auto-spies-core@1.6.4":
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/@hirez_io/auto-spies-core/-/auto-spies-core-1.6.4.tgz#43532321a99179adb8f0c06cb032c5547412c06f"
+  integrity sha512-L19L46AbetyFYBRJqHpbvSoG5BZBa6I7r8ozD1gtOTpaEwRbIuYigD4MD2bP+o2lqlLxS9fVDscr4cwLszdwZw==
+  dependencies:
+    serialize-javascript "5.0.1"
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -10218,6 +10225,13 @@ jasmine-marbles@~0.8.4:
   dependencies:
     lodash "^4.17.20"
 
+jest-auto-spies@^1.6.6:
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/jest-auto-spies/-/jest-auto-spies-1.6.6.tgz#e2a5a29d0833bf38ff47b697de9f0aba86c93448"
+  integrity sha512-5UEa0ik8uoFosEhSRtypbGXSqPT7hgp1hCtAHujxGvZnN0k0X7/peQ+UYbIaJc9yn4OPEZQfJwuCbQ1339MwWw==
+  dependencies:
+    "@hirez_io/auto-spies-core" "1.6.4"
+
 jest-changed-files@^27.2.5:
   version "27.2.5"
   resolved "https://registry.yarnpkg.com/jest-changed-files/-/jest-changed-files-27.2.5.tgz#9dfd550d158260bcb6fa80aff491f5647f7daeca"
@@ -14915,17 +14929,17 @@ send@0.17.1:
     range-parser "~1.2.1"
     statuses "~1.5.0"
 
+serialize-javascript@5.0.1, serialize-javascript@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-5.0.1.tgz#7886ec848049a462467a97d3d918ebb2aaf934f4"
+  integrity sha512-SaaNal9imEO737H2c05Og0/8LUXG7EnsZyMa8MzkmuHoELfT6txuj0cMqRj6zfPKnmQ1yasR4PCJc8x+M4JSPA==
+  dependencies:
+    randombytes "^2.1.0"
+
 serialize-javascript@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-4.0.0.tgz#b525e1238489a5ecfc42afacc3fe99e666f4b1aa"
   integrity sha512-GaNA54380uFefWghODBWEGisLZFj00nS5ACs6yHa9nLqlLpVLO8ChDGeKRjZnV4Nh4n0Qi7nhYZD/9fCPzEqkw==
-  dependencies:
-    randombytes "^2.1.0"
-
-serialize-javascript@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-5.0.1.tgz#7886ec848049a462467a97d3d918ebb2aaf934f4"
-  integrity sha512-SaaNal9imEO737H2c05Og0/8LUXG7EnsZyMa8MzkmuHoELfT6txuj0cMqRj6zfPKnmQ1yasR4PCJc8x+M4JSPA==
   dependencies:
     randombytes "^2.1.0"
 
