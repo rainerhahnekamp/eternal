@@ -51,11 +51,14 @@ yarn add lodash-es date-fns
 # Tailwind
 yarn add -D tailwindcss postcss
 
-# Testing Boilerplate
-yarn add -D @ngneat/spectator ng-mocks ngx-build-plus @types/lodash-es
+# Auto-Spies
+yarn add -D jest-auto-spies
 
 # RxJs Marbles
 yarn add -D rxjs-marbles
+
+# Testing Boilerplate
+yarn add -D @ngneat/spectator ng-mocks ngx-build-plus @types/lodash-es
 
 # Component Harnesses in Cypress
 yarn add -D @jscutlery/cypress-harness cypress-pipe
