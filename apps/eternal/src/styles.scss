@@ -1,5 +1,9 @@
 @import "~@angular/material/theming";
 
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
 @include mat-core();
 
 $palette: (
@@ -48,7 +52,6 @@ $candy-app-theme: mat-light-theme(
 
 body {
   margin: 0;
-  opacity: 0.9;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-image: url("/assets/large-bg.jpg");
   background-image: linear-gradient(white, white), url("/assets/large-bg.jpg");
@@ -70,4 +73,10 @@ mat-checkbox + mat-checkbox, mat-radio-button + mat-radio-button {
 
 .centered {
   text-align: center;
+}
+
+
+h2 {
+  font-weight: bold;
+  font-size: 125%;
 }

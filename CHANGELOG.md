@@ -1,3 +1,10 @@
+## 1.5.0
+
+- Tailwind
+- Harnesses in Cypress
+- Snapshots in Cypress
+- jest-auto-spies
+
 ## 1.4.0
 
 - Migration to nx 12

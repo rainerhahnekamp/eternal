@@ -5,7 +5,7 @@
       "projectType": "application",
       "root": "apps/eternal",
       "sourceRoot": "apps/eternal/src",
-      "prefix": "nx-testing",
+      "prefix": "eternal",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -80,6 +80,9 @@
             "development": {
               "browserTarget": "eternal:build:development"
             },
+            "dev-local": {
+              "browserTarget": "eternal:build:dev-local"
+            },
             "non-mock": {
               "browserTarget": "eternal:build:non-mock"
             },
@@ -151,8 +154,8 @@
           "builder": "@nrwl/cypress:cypress",
           "options": {
             "cypressConfig": "apps/eternal-e2e/cypress.json",
-            "tsConfig": "apps/eternal-e2e/tsconfig.e2e.json",
-            "devServerTarget": "eternal:serve:development"
+            "devServerTarget": "eternal:serve:development",
+            "tsConfig": "apps/eternal-e2e/tsconfig.json"
           },
           "configurations": {
             "production": {
@@ -168,6 +171,7 @@
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["apps/eternal-e2e/**/*.{js,ts}"]
           }

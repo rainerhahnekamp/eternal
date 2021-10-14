@@ -1,11 +1,24 @@
 const rootMain = require('../../../.storybook/main');
 
-rootMain.core = { ...rootMain.core, builder: 'webpack5' };
+module.exports = {
+  ...rootMain,
 
-// Use the following syntax to add addons!
-// rootMain.addons.push('');
-rootMain.stories.push(
-  ...['../src/app/**/*.stories.mdx', '../src/app/**/*.stories.@(js|jsx|ts|tsx)']
-);
+  core: { ...rootMain.core, builder: 'webpack5' },
 
-module.exports = rootMain;
+  stories: [
+    ...rootMain.stories,
+    '../src/app/**/*.stories.mdx',
+    '../src/app/**/*.stories.@(js|jsx|ts|tsx)',
+  ],
+  addons: [...rootMain.addons],
+  webpackFinal: async (config, { configType }) => {
+    // apply any global webpack configs that might have been specified in .storybook/main.js
+    if (rootMain.webpackFinal) {
+      config = await rootMain.webpackFinal(config, { configType });
+    }
+
+    // add your own webpack tweaks if needed
+
+    return config;
+  },
+};

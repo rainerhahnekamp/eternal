@@ -1,13 +1,26 @@
-<mat-card *ngIf="holiday">
+<mat-card
+  *ngIf="holiday"
+  [attr.data-test]="'holiday-' + holiday.id"
+  [ngClass]="{ 'sold-out': holiday.soldOut }"
+  class="my-4 mx-4"
+>
   <mat-card-header>
     <mat-card-title>{{ holiday.title }}</mat-card-title>
-    <mat-card-subtitle>{{ holiday.teaser }}</mat-card-subtitle>
+    <mat-card-subtitle class="h-8">{{ holiday.teaser }}</mat-card-subtitle>
   </mat-card-header>
-  <img [alt]="holiday.title" [src]="holiday.imageUrl" appDontLeaveMe mat-card-image />
-  <mat-card-content>
+  <figure>
+    <img [alt]="holiday.title" [src]="holiday.imageUrl" appDontLeaveMe class="max-w-none" />
+    <div class="badge-overlay">
+      <span *ngIf="holiday.onSale" class="top-left badge">On Sale</span>
+      <span *ngIf="holiday.soldOut" class="middle-full badge">Sold out</span>
+    </div>
+  </figure>
+  <mat-card-content class="h-16 overflow-clip overflow-hidden">
     {{ holiday.description }}
   </mat-card-content>
-  <mat-card-actions>
-    <a [routerLink]="['.', 'request-info', holiday.id]" mat-raised-button>More Information</a>
+  <mat-card-actions class="justify-evenly">
+    <a [routerLink]="['./request-info', holiday.id]" data-test="btn-brochure" mat-raised-button>
+      Get a Brochure
+    </a>
   </mat-card-actions>
 </mat-card>
