@@ -1,12 +1,12 @@
 set -e
 
-git  checkout 01-setup
+git checkout master
 
-branches=(01-setup 02-unit-tests-a 03-unit-tests-b 03-unit-tests-rxjs 04-comp-tests 04-comp-tests-material 04-comp-tests-harnesses 05-ngrx-tests 06-visual-regression 07-storybook 08-e2e)
+branches=(master 01-unit-tests-basic 02-unit-tests-advanced 03-rxjs-marbles 04-ngrx 05-comp-tests-basic 06-comp-tests-advanced 07-integration-tests 08-e2e-tests-basic 09-e2e-tests-advanced)
 
 for branch in ${branches[*]}; do
   git checkout $branch
   git push -u origin HEAD
 done
 
-git checkout 01-setup
+git checkout master
