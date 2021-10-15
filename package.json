@@ -22,6 +22,7 @@
     "lint": "nx workspace-lint && ng lint",
     "e2e": "ng e2e --skip-serve --headless",
     "e2e:watch": "ng e2e --watch",
+    "e2e:dev-local": "ng e2e --watch -c dev-local",
     "e2e:non-mock": "ng e2e --watch -c non-mock",
     "affected:apps": "nx affected:apps",
     "affected:libs": "nx affected:libs",
