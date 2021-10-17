@@ -16,8 +16,10 @@ import { FormlyModule } from '@ngx-formly/core';
 import { AppComponent } from './app.component';
 import { APP_ROUTES } from './app.routes';
 import { BaseUrlInterceptor } from './core/base-url.interceptor';
-import { CoreModule } from './core/core.module';
+import { HeaderComponentModule } from './core/header/header.component';
+import { LoaderComponentModule } from './core/loader/loader.component';
 import { LoadingInterceptor } from './core/loading.interceptor';
+import { SidemenuComponentModule } from './core/sidemenu/sidemenu.component';
 import { HomeComponent } from './home/home.component';
 import { SharedModule } from './shared/shared.module';
 
@@ -28,7 +30,6 @@ registerLocaleData(localeDe, 'de-AT');
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    CoreModule,
     MatSidenavModule,
     MatToolbarModule,
     HttpClientModule,
@@ -45,7 +46,10 @@ registerLocaleData(localeDe, 'de-AT');
           message: 'This field is mandatory'
         }
       ]
-    })
+    }),
+    HeaderComponentModule,
+    SidemenuComponentModule,
+    LoaderComponentModule
   ],
   providers: [
     {
