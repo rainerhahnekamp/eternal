@@ -26,7 +26,7 @@ export const APP_ROUTES: Routes = [
       },
       {
         path: 'diary',
-        loadChildren: () => import('./diary/diary.module').then((m) => m.DiaryModule)
+        loadChildren: () => import('./diary/diary.routes.module').then((m) => m.DiaryRoutesModule)
       }
     ]
   }
