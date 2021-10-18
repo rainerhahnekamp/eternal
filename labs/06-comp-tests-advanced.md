@@ -7,7 +7,6 @@
 - [7. Bonus: Pipe Testing with Spectator](#7-bonus-pipe-testing-with-spectator)
 - [8. Bonus: Directive Testing with Spectator](#8-bonus-directive-testing-with-spectator)
 - [9. Bonus: Verify multiple input change](#9-bonus-verify-multiple-input-change)
-- [10. Bonus: Upgrade all other Component Tests to Harnesses](#10-bonus-upgrade-all-other-component-tests-to-harnesses)
 
 # 1. Nested Components - Stubs
 
@@ -27,13 +26,26 @@ Let's pop up the request information screen. We will enhance the input and submi
 <button color="primary" data-test="btn-search" mat-raised-button type="submit">Send</button>
 ```
 
-2. Also make sure that `MatInputModule` and `MatIconModule` are imported into the holidays module.
+2. Also make sure that `MatFormFieldModule`, `MatInputModule` and `MatIconModule` are imported into the holidays module.
 
-3. Add a unit test with the prefix `only`.
+3. Open **holidays/request-info/request-info.component.temp.spec.ts** and add `skip` to the `describe` command. It should read:
+
+```typescript
+describe.skip('RequestInfo Component Temporary', () => {
+  // ...
+});
+```
+
+4. Add a unit test with the prefix `only`.
 
 **holidays/request-info/request-info.component.spec.ts**
 
 ```typescript
+const noMaterialCheck = {
+  provide: MATERIAL_SANITY_CHECKS,
+  useValue: false
+};
+
 it.only('should mock components', () => {
   // tslint:disable-next-line:component-selector
   @Component({ selector: 'mat-form-field', template: '' })
@@ -54,26 +66,18 @@ it.only('should mock components', () => {
   const fixture = TestBed.configureTestingModule({
     declarations: [RequestInfoComponent, MatFormField, MatHint, MatIcon, MatLabel],
     imports: [ReactiveFormsModule],
-    providers: [{ provide: AddressLookuper, useValue: null }]
+    providers: [{ provide: AddressLookuper, useValue: null }, noMaterialCheck]
   }).createComponent(RequestInfoComponent);
 
   fixture.detectChanges();
 });
 ```
 
-To verify that the test turns red, just don't add one of the modules to `imports` property.
+To verify that the test turns red, don't add one of the components to the `declarations` property.
 
 # 2. Nested Components - Mocked
 
 As in the first exercise, but this team use the method `MockComponent(ComponentClass)` from `ng-mocks` in the `declarations` property of the `TestingModule`.
-
-You have to modify the jest configuration prior to that.
-
-**/apps/eternal/jest.config.js**
-
-Add following property to the configuration:
-
-`testRunner: 'jest-jasmine2'`
 
 <details>
 <summary>Show Solution</summary>
@@ -90,7 +94,7 @@ it.only('should mock components with ng-mocks', () => {
       MockComponent(MatLabel)
     ],
     imports: [ReactiveFormsModule],
-    providers: [{ provide: AddressLookuper, useValue: null }]
+    providers: [{ provide: AddressLookuper, useValue: null }, noMaterialCheck]
   }).createComponent(RequestInfoComponent);
 
   fixture.detectChanges();
@@ -105,7 +109,9 @@ it.only('should mock components with ng-mocks', () => {
 
 We would have to refactor the configuration of the TestModule for all our other unit tests. To avoid high cohesion, we did not use a common setup function, i.e. `beforeEach`. Instead, we will provide a customisable factory method for the test's module configuration.
 
-Mark the test _should find an address_ also with `only`. Apply the newly created factory method to it.
+Remove the `only` commands so that all tests in **request-info.component.spec.ts** are run.
+
+Apply the newly created factory method the **should find an address** test.
 
 1. Create a new method inside **request-info.component.spec.ts**.
 
@@ -120,7 +126,7 @@ const testModuleMetadata: TestModuleMetadata = {
     NoopAnimationsModule,
     ReactiveFormsModule
   ],
-  providers: [{ provide: AddressLookuper, useValue: null }]
+  providers: [{ provide: AddressLookuper, useValue: null }, noMaterialCheck]
 };
 
 const createFixture = (config: TestModuleMetadata = {}) =>
@@ -136,13 +142,13 @@ const createFixture = (config: TestModuleMetadata = {}) =>
 **request-info.component.spec.ts**
 
 ```typescript
-it.only('should find an address', fakeAsync(() => {
+it('should find an address', fakeAsync(() => {
   const lookuper = {
     lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
   };
 
   const fixture = createFixture({
-    providers: [{ provide: AddressLookuper, useValue: lookuper }]
+    providers: [{ provide: AddressLookuper, useValue: lookuper }, noMaterialCheck]
   });
   const input = fixture.debugElement.query(By.css('[data-test=address]'))
     .nativeElement as HTMLInputElement;
@@ -180,14 +186,14 @@ Create a harness for the address component.
 **request-info.component.harness.ts**
 
 ```typescript
-import { AsyncFactoryFn, ComponentHarness, TestElement } from '@angular/cdk/testing';
+import { ComponentHarness } from '@angular/cdk/testing';
 
 export class RequestInfoComponentHarness extends ComponentHarness {
   static hostSelector = 'app-request-info';
   protected getTitle = this.locatorFor('h2');
-  protected getInput = this.attrLocator('address');
-  protected getButton = this.locatorFor('button[type=submit]');
-  protected getLookupResult = this.attrLocator('lookup-result');
+  protected getInput = this.locatorFor('[data-test=address]');
+  protected getButton = this.locatorFor('[data-test=btn-search]');
+  protected getLookupResult = this.locatorFor('[data-test=lookup-result]');
 
   async submit(): Promise<void> {
     const button = await this.getButton();
@@ -204,10 +210,6 @@ export class RequestInfoComponentHarness extends ComponentHarness {
     const p = await this.getLookupResult();
     return p.text();
   }
-
-  protected attrLocator(tag: string): AsyncFactoryFn<TestElement> {
-    return this.locatorFor(`[data-test=${tag}]`);
-  }
 }
 ```
 
@@ -222,7 +224,15 @@ it('should find an address', async () => {
   };
   const fixture = TestBed.configureTestingModule({
     ...testModuleMetadata,
-    ...{ providers: [{ provide: AddressLookuper, useValue: lookuper }] }
+    ...{
+      providers: [
+        {
+          provide: AddressLookuper,
+          useValue: lookuper
+        },
+        noMaterialCheck
+      ]
+    }
   }).createComponent(RequestInfoComponent);
 
   const harness = await TestbedHarnessEnvironment.harnessForFixture(
@@ -267,7 +277,7 @@ You will also have to update the `writeAddress` method. Turns out that it suppor
 <p>
 
 ```typescript
-import { AsyncFactoryFn, ComponentHarness, TestElement } from '@angular/cdk/testing';
+import { ComponentHarness } from '@angular/cdk/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
 
@@ -276,7 +286,7 @@ export class RequestInfoComponentHarness extends ComponentHarness {
   protected getTitle = this.locatorFor('h2');
   protected getInput = this.locatorFor(MatInputHarness);
   protected getButton = this.locatorFor(MatButtonHarness);
-  protected getLookupResult = this.attrLocator('lookup-result');
+  protected getLookupResult = this.locatorFor('[data-test=lookup-result]');
 
   async submit(): Promise<void> {
     const button = await this.getButton();
@@ -292,10 +302,6 @@ export class RequestInfoComponentHarness extends ComponentHarness {
     const p = await this.getLookupResult();
     return p.text();
   }
-
-  protected attrLocator(tag: string): AsyncFactoryFn<TestElement> {
-    return this.locatorFor(`[data-test=${tag}]`);
-  }
 }
 ```
 
@@ -304,7 +310,7 @@ export class RequestInfoComponentHarness extends ComponentHarness {
 
 # 6: Harness with multiple elements
 
-Add a further button with type `button` in the request-info's template. It must be \*_before_+ the submit button. Verify that the **should find an adresss** fails.
+Add a further button with type `button` in the request-info's template. It must be BEFORE the submit button. Verify that the **should find an adresss** fails.
 
 Upgrade the `getButton` method in the harness so that it find the right one:
 
@@ -440,36 +446,37 @@ it('should revert to original after 1.5 seconds', fakeAsync(() => {
 
 # 9. Bonus: Verify multiple input change
 
-We want to verify, if the input field is updated, if the input value for address changes multiple times. `ngOnChanges` is not executed automatically but we use a wrapper method instead.
+We want to verify, if the input field is updated, if the input value for address changes multiple times. `ngOnChanges` is not executed automatically but we use a wrapper component instead.
+
+**holidays/request-info/request-info.component.spec.ts**
 
 ```typescript
-it('should verify the address input two times', async () => {
+it('should verify ngOnChanges with address', async () => {
   @Component({
-    template: "<app-request-info [address]='address'></app-request-info>"
+    template: ` <app-request-info [address]="address"></app-request-info>`
   })
   class WrapperComponent {
-    address: string = 'Domgasse 5';
+    address = 'Domgasse 15';
   }
 
-  await createFixtureAndHarness({
-    ...testModuleMetadata,
-    declarations: [WrapperComponent, RequestInfoComponent]
-  });
-  const wrapperFixture = TestBed.createComponent(WrapperComponent);
-  const field = wrapperFixture.debugElement.query(By.css('[data-test=address]'))
-    .nativeElement as HTMLInputElement;
+  const fixture = TestBed.configureTestingModule({
+    declarations: [WrapperComponent, RequestInfoComponent],
+    imports: testModuleMetadata.imports,
+    providers: testModuleMetadata.providers
+  }).createComponent(WrapperComponent);
 
-  wrapperFixture.componentInstance.address = 'Domgasse 5';
-  wrapperFixture.detectChanges();
-  expect(field.value).toBe('Domgasse 5');
+  const harness = await TestbedHarnessEnvironment.harnessForFixture(
+    fixture,
+    RequestInfoComponentHarness
+  );
 
-  wrapperFixture.componentInstance.address = 'Domgasse 15';
-  wrapperFixture.detectChanges();
-  expect(field.value).toBe('Domgasse 15');
+  expect(await harness.getAddress()).toBe('Domgasse 15');
+  fixture.componentInstance.address = 'Domgasse 5';
+  expect(await harness.getAddress()).toBe('Domgasse 5');
 });
 ```
 
-This test should fail. Make the required updates in the component.
+This test should fail. Make the required updates in the component and the harness `getAddress()`.
 
 <details>
 <summary>Show Solution</summary>
@@ -491,9 +498,3 @@ You have to move the part where it sets the form value from `ngOnInit` to `ngOnC
 
 </p>
 </details>
-
-# 10. Bonus: Upgrade all other Component Tests to Harnesses
-
-- You will have to find a way how to combine `async` with `fakeAsync`
-- You will have extend the harness itself with further methods
-- You might want to think about reducing the redundance of fetching the harness all the time.

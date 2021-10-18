@@ -20,17 +20,17 @@ export class RequestInfoComponent implements OnInit, OnChanges {
 
   constructor(private formBuilder: FormBuilder, private lookuper: AddressLookuper) {}
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.address) {
+      this.formGroup.setValue({ address: this.address });
+    }
+  }
+
   ngOnInit(): void {
     this.lookupResult$ = this.submitter$.pipe(
       switchMap(() => this.lookuper.lookup(this.formGroup.value.address)),
       map((found) => (found ? 'Brochure sent' : 'Address not found'))
     );
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.address) {
-      this.formGroup.setValue({ address: this.address });
-    }
   }
 
   search(): void {

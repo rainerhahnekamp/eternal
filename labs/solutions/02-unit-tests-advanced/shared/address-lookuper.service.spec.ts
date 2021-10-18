@@ -2,7 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { waitForAsync } from '@angular/core/testing';
 import { createSpyFromClass } from 'jest-auto-spies';
 import { asyncScheduler, Observable, of, scheduled } from 'rxjs';
-import { marbles } from 'rxjs-marbles/jest';
 import { AddressLookuper } from './address-lookuper.service';
 import { assertType } from './assert-type';
 
@@ -92,16 +91,4 @@ describe('Address Lookuper', () => {
     expect(url).toBe('https://nominatim.openstreetmap.org/search.php');
     expect(params).toEqual(new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'));
   });
-
-  it(
-    'should use rxjs-marbles',
-    marbles((m) => {
-      const httpClient = assertType<HttpClient>({
-        get: () => m.cold('150ms r', { r: [true] })
-      });
-      const lookuper = new AddressLookuper(httpClient);
-      const isValid$ = lookuper.lookup('Domgasse 5');
-      m.expect(isValid$).toBeObservable('150ms t', { t: true });
-    })
-  );
 });

@@ -11,13 +11,19 @@ Create a unit test that only mocks the `HttpClient`. Everything else, like the A
 
 The test below is missing the code where the `HttpTestingController` steps in. Implement it.
 
+**holidays/request-info/request-info.component.spec.ts**
+
 ```typescript
 it('should only mock the HttpClient', async () => {
-  const { harness } = await createFixtureAndHarness({
+  const fixture = createFixture({
     imports: [...(testModuleMetadata.imports || []), HttpClientTestingModule],
-    providers: []
+    providers: [noMaterialCheck]
   });
   const controller = TestBed.inject(HttpTestingController);
+  const harness = await TestbedHarnessEnvironment.harnessForFixture(
+    fixture,
+    RequestInfoComponentHarness
+  );
 
   await harness.writeAddress('Domgasse 5');
   await harness.submit();
@@ -33,8 +39,7 @@ it('should only mock the HttpClient', async () => {
 <p>
 
 ```typescript
-const [request] = controller.match((req) => !!req.url.match(/nominatim/));
-request.flush([[]]);
+controller.expectOne((req) => !!req.url.match(/nominatim/)).flush([true]);
 ```
 
 </p>
@@ -92,7 +97,7 @@ In your testing module you just need to setup ngrx as usually (by importing the 
 
 ```typescript
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
 import { holidaysActions } from './holidays.actions';
@@ -101,30 +106,30 @@ import { holidaysFeatureKey, holidaysReducer } from './holidays.reducer';
 import { fromHolidays } from './holidays.selectors';
 
 describe('Full ngrx Test', () => {
-  it('should load holidays', (done) => {
-    TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({ [holidaysFeatureKey]: holidaysReducer }),
-        EffectsModule.forRoot([HolidaysEffects]),
-        HttpClientTestingModule
-      ]
-    });
+  it(
+    'should load holidays',
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          StoreModule.forRoot({ [holidaysFeatureKey]: holidaysReducer }),
+          EffectsModule.forRoot([HolidaysEffects]),
+          HttpClientTestingModule
+        ]
+      });
 
-    const store = TestBed.inject(Store);
-    const controller = TestBed.inject(HttpTestingController);
-    store.dispatch(holidaysActions.findHolidays());
+      const store = TestBed.inject(Store);
+      const controller = TestBed.inject(HttpTestingController);
+      store.dispatch(holidaysActions.findHolidays());
 
-    const [request] = controller.match((req) => req.url.includes('/holiday'));
-    request.flush([
-      { id: 1, title: 'Mountains' },
-      { id: 2, title: 'Ocean' }
-    ]);
+      const [request] = controller.match((req) => req.url.includes('/holiday'));
+      request.flush([
+        { id: 1, title: 'Mountains' },
+        { id: 2, title: 'Ocean' }
+      ]);
 
-    store.select(fromHolidays.get).subscribe((holidays) => {
-      expect(holidays).toHaveLength(2);
-      done();
-    });
-  });
+      store.select(fromHolidays.get).subscribe((holidays) => expect(holidays).toHaveLength(2));
+    })
+  );
 });
 ```
 
@@ -153,6 +158,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -189,7 +195,8 @@ describe('Holiday Component', () => {
             component: RequestInfoComponent
           }
         ])
-      ]
+      ],
+      providers: [{ provide: MATERIAL_SANITY_CHECKS, useValue: false }]
     }).createComponent(HolidaysComponent);
 
     const controller = TestBed.inject(HttpTestingController);

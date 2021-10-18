@@ -1,20 +1,17 @@
 import { parseAddress } from './parse-address';
 
 export class AddressLookuper {
-  addresses: string[] = [];
+  addresses: string[];
 
-  constructor(addressesProvider: () => string[]) {
-    this.addresses = addressesProvider();
+  constructor(addressesSupplier: () => string[]) {
+    this.addresses = addressesSupplier();
   }
 
   lookup(query: string): boolean {
-    if (!parseAddress(query)) {
-      throw new Error('Address without street number');
-    }
-
+    parseAddress(query);
     return this.addresses.some((address) => address.startsWith(query));
   }
 
-  /* istanbul ignore next */
-  noob() {}
+  // istanbul ignore next
+  noop() {}
 }

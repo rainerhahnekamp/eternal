@@ -1,67 +1,39 @@
-- [1. Observable Injection](#1-observable-injection)
+- [1. Parameterised Test](#1-parameterised-test)
 - [2. HttpClient Injection](#2-httpclient-injection)
 - [3. Test Mock](#3-test-mock)
 - [4. No internal check against addresses](#4-no-internal-check-against-addresses)
 - [5. Bonus: Assertive Stub](#5-bonus-assertive-stub)
-- [6. Bonus: Mock parse function](#6-bonus-mock-parse-function)
-- [7. Bonus: Http Interceptor](#7-bonus-http-interceptor)
+- [6. Bonus: `jest-auto-spies`](#6-bonus-jest-auto-spies)
+- [7: Bonus: Use `mock` property of `jest.fn`](#7-bonus-use-mock-property-of-jestfn)
+- [8. Bonus: Mock parse function](#8-bonus-mock-parse-function)
+- [9. Bonus: Http Interceptor](#9-bonus-http-interceptor)
 
 In this lab, we are going to upgrade our lookuper to use the API of nominatim (OpenStreet Map).
 
-# 1. Observable Injection
+First of all remove the test **should work with short query input and long address store**. Nominatim itself will do the matching.
 
-First of all remove the test **should work with short query input and long address store**. We don't require it anymore because the actual lookup will be done by the API.
+# 1. Parameterised Test
 
-The type of the `AddressLookuper`'s constructor argument should be changed to an Observable: `Observable<string[]>`. The method `lookup` must therefore return an `Observable<boolean>`.
-
-Update the tests first and then the implemenation. The first tests must be transformed into a parameterised test (`it.each`) well.
+Change the **should pass addresses in the constructor** to a parameterised test. Its name should be **should return $expected for $query**. ` $expected` and ` $address` should be the parameters.
 
 <details>
 <summary>Show Solution</summary>
 <p>
 
-**shared/address-lookuper.service.spec.ts**
-
 ```typescript
-import { asyncScheduler, of, scheduled } from 'rxjs';
-import { AddressLookuper } from './address-lookuper.service';
-import DoneCallback = jest.DoneCallback;
-
-describe('Address Lookuper', () => {
-  it.each<any>([
-    [true, 'Domgasse 5'],
-    [false, 'Domgasse 15']
-  ])(`should return %s for %s`, (expected: boolean, query: string, done: DoneCallback) => {
-    const lookuper = new AddressLookuper(scheduled([['Domgasse 5']], asyncScheduler));
-    lookuper.lookup(query).subscribe((isValid) => {
-      expect(isValid).toBe(expected);
-      done();
-    });
-  });
-
-  it('should throw an error if no street number is given', () => {
-    const lookuper = new AddressLookuper(of([]));
-
-    expect(() => lookuper.lookup('Domgasse')).toThrowError('Address without street number');
-  });
-});
-```
-
-**shared/address-lookuper.service.ts**
-
-```typescript
-export class AddressLookuper {
-  constructor(private addresses$: Observable<string[]>) {}
-
-  lookup(query: string): Observable<boolean> {
-    if (!parseAddress(query)) {
-      throw new Error('Address without street number');
-    }
-
-    return this.addresses$.pipe(
-      map((addresses) => addresses.some((address) => address.startsWith(query)))
-    );
+for (let { query, expected } of [
+  { query: 'Domgasse 5', expected: true },
+  {
+    query: 'Domgasse 15',
+    expected: false
   }
+]) {
+  it(`should return ${expected} for ${query}`, () => {
+    const addresses = ['Domgasse 5, 1010 Wien'];
+    const lookuper = new AddressLookuper(() => addresses);
+
+    expect(lookuper.lookup(query)).toBe(expected);
+  });
 }
 ```
 
@@ -70,20 +42,20 @@ export class AddressLookuper {
 
 # 2. HttpClient Injection
 
-We have identified nominatim as the geo service we want to use. It offers a free HTTP interface.
+We pick Nominatim as our GeoService. It offers a free HTTP API.
 
-The `AddressLookuper`'s constructor will use Angular's `HttpClient` to fetch the adresses. We will have to mock that.
+The `AddressLookuper`'s constructor will use Angular's `HttpClient` to connect to Nominatim. We will have to stub the `HttpClient`.
 
-No need for additional tests. Use the existing ones. You don't have to use `jest.fn()` or `jest.spyOn()` because we don't need to assert the communication with the mock.
+No need for additional tests. Adapt the existing ones.
 
 <details>
 <summary>Show Solution</summary>
 <p>
 
-**shared/mock.ts**
+**shared/assert-type.ts**
 
 ```typescript
-export function mock<T>(object: unknown): T {
+export function assertType<T>(object: unknown = undefined): T {
   return object as T;
 }
 ```
@@ -91,16 +63,26 @@ export function mock<T>(object: unknown): T {
 **shared/address-lookuper.service.spec.ts**
 
 ```typescript
-import { mock } from './mock';
+import { assertType } from './assert-type';
 // ...
-it(`should return %s for %s`, (expected: boolean, query: string, done: DoneCallback) => {
-  const httpClient = mock<HttpClient>({ get: () => scheduled([['Domgasse 5']], asyncScheduler) }); // <- add this
-  const lookuper = new AddressLookuper(httpClient); // <- replace existing lookuper instantation with this
-});
+for (let { query, expected } of [
+  { query: 'Domgasse 5', expected: true },
+  { query: 'Domgasse 15', expected: false }
+]) {
+  it(
+    `should return ${expected} for ${query}`,
+    waitForAsync(() => {
+      const httpClient = assertType<HttpClient>({
+        get: () => scheduled([['Domgasse 5']], asyncScheduler)
+      });
+      const lookuper = new AddressLookuper(httpClient);
 
-it('should throw an error if no street number is given', () => {
-  const lookuper = new AddressLookuper(mock<HttpClient>(null)); // <- replace existing instantiation
-});
+      lookuper.lookup(query).subscribe((isValid) => {
+        expect(isValid).toBe(expected);
+      });
+    })
+  );
+}
 ```
 
 **shared/address-lookuper.service.ts**
@@ -110,15 +92,13 @@ export class AddressLookuper {
   constructor(private httpClient: HttpClient) {}
 
   lookup(query: string): Observable<boolean> {
-    if (!parseAddress(query)) {
-      throw new Error('Address without street number');
-    }
-
+    parseAddress(query);
     return this.httpClient
       .get<string[]>('')
       .pipe(map((addresses) => addresses.some((address) => address.startsWith(query))));
   }
-}
+
+  ...
 ```
 
 </p>
@@ -142,9 +122,10 @@ Create a new test that verifies the mocked is called in the right way.
 
 ```typescript
 it('should call nominatim with right parameters', () => {
-  const httpClient = { get: jest.fn((url: string, options: { params: HttpParams }) => of([])) };
-  const lookuper = new AddressLookuper(mock<HttpClient>(httpClient));
+  const httpClient = { get: jest.fn() };
+  httpClient.get.mockReturnValue(of([]));
 
+  const lookuper = new AddressLookuper(assertType<HttpClient>(httpClient));
   lookuper.lookup('Domgasse 5');
 
   expect(httpClient.get).toHaveBeenCalledWith('https://nominatim.openstreetmap.org/search.php', {
@@ -159,7 +140,7 @@ it('should call nominatim with right parameters', () => {
 // inside the lookup method
 return this.httpClient
   .get<string[]>('https://nominatim.openstreetmap.org/search.php', {
-    params: new HttpParams().set('format', 'jsonv2').set('q', query)
+    params: new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5')
   })
   .pipe(map((addresses) => addresses.some((address) => address.startsWith(query))));
 ```
@@ -169,15 +150,47 @@ return this.httpClient
 
 # 4. No internal check against addresses
 
-At the moment, we lookup the address in Nominatim's response. Nominatim already does the lookup for us. It response contains only addresses that match the query. All we have to do, is to check if we get an empty array as response or not.
+We match the addresses internally, i.e `address.startsWith(query)`. That's not required because Nominatim does this already. It returns an array that contains only matched addresses. All we have to do, is to check if that array is empty or not.
 
-Instead of paramterise the query, the parameter should be the response (`string[]`). The query can be a static value like `Domgasse 5`.
+Implement this new behaviour by adapting the parameterised test.
 
 <details>
 <summary>Show Solution</summary>
 <p>
 
-Final solution in the **solutions** directory.
+**shared/address-lookuper.service.spec.ts**
+
+```typescript
+for (let { response, expected } of [
+  { response: [undefined], expected: true },
+  { response: [], expected: false }
+]) {
+  it(
+    `should return ${expected} for ${response}`,
+    waitForAsync(() => {
+      const httpClient = assertType<HttpClient>({
+        get: () => scheduled([response], asyncScheduler)
+      });
+      const lookuper = new AddressLookuper(httpClient);
+
+      lookuper.lookup('Domgasse 5').subscribe((isValid) => {
+        expect(isValid).toBe(expected);
+      });
+    })
+  );
+}
+```
+
+**shared/address-lookuper.service.ts**
+
+```typescript
+// inside the lookup method
+return this.httpClient
+  .get<undefined[]>('https://nominatim.openstreetmap.org/search.php', {
+    params: new HttpParams().set('format', 'jsonv2').set('q', query)
+  })
+  .pipe(map((response) => response.length > 0));
+```
 
 </p>
 </details>
@@ -192,7 +205,7 @@ Try to come up with a stub for the `HttpClient` that also asserts that the right
 
 ```typescript
 it(`should have an assertive stub`, (done) => {
-  const httpClientStub = mock<HttpClient>({
+  const httpClientStub = assertType<HttpClient>({
     get(url: string, options: { params: HttpParams }) {
       expect(url).toBe('https://nominatim.openstreetmap.org/search.php');
       expect(options.params).toEqual(
@@ -215,45 +228,32 @@ it(`should have an assertive stub`, (done) => {
 </p>
 </details>
 
-# 6. Bonus: Mock parse function
+# 6. Bonus: `jest-auto-spies`
 
-Create a new test file for the lookuper. In that test mock `parseAddress` via `jest.mock` so it doesn't throw an error on invalid queries.
+Use the installed library jest-auto-spies to verify the behaviour of the HttpClient. jest-auto-spies instantiates a new object and replaces all its methods with `jest.fn`.
+
+You can apply it on `HttpClient` by
+
+```typescript
+const httpClient = createSpyFromClass(HttpClient);
+```
+
+You will see that `httpClient.get`can then be used as any other `jest.fn`.
 
 <details>
 <summary>Show Solution</summary>
 <p>
 
-**Note:** The mock directory must have underscores.
-
-**shared/\_\_mocks\_\_/parse-address.ts**
-
 ```typescript
-import { Address } from '../address';
+it('should test http with jest-auto-spies', () => {
+  const httpClient = createSpyFromClass(HttpClient);
+  httpClient.get.mockReturnValue(of([]));
 
-export function parseAddress(query: string): Address {
-  return { street: 'Domgasse', streetNumber: '5' };
-}
-```
+  const lookuper = new AddressLookuper(httpClient);
+  lookuper.lookup('Domgasse 5');
 
-**shared/address-lookuper-pure.service.spec.ts**
-
-```typescript
-import { HttpClient } from '@angular/common/http';
-import { of } from 'rxjs';
-import { AddressLookuper } from './address-lookuper.service';
-
-jest.mock('./parse-address');
-
-describe('Address Lookuper', () => {
-  it('should work with invalid addresses', (done) => {
-    const lookuper = new AddressLookuper(
-      mock<HttpClient>({ get: () => of(['']) })
-    );
-
-    lookuper.lookup('Domgasse').subscribe((isValid) => {
-      expect(isValid).toBe(true);
-      done();
-    });
+  expect(httpClient.get).toHaveBeenCalledWith('https://nominatim.openstreetmap.org/search.php', {
+    params: new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5')
   });
 });
 ```
@@ -261,16 +261,88 @@ describe('Address Lookuper', () => {
 </p>
 </details>
 
-# 7. Bonus: Http Interceptor
+# 7: Bonus: Use `mock` property of `jest.fn`
+
+Write another version of the mocked "should call nominatim with right parameters" test. This time, don't use the matcher `hasBeenCalledWith` but get the passed arguments from the `mock` property of your stub and match against them.
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+```typescript
+it('should call nominatim with right parameters, (mock property version)', () => {
+  const httpClient = {
+    get: jest.fn<Observable<undefined[]>, [string, { params: HttpParams }]>()
+  };
+  httpClient.get.mockReturnValue(of([]));
+  const lookuper = new AddressLookuper(assertType<HttpClient>(httpClient));
+  lookuper.lookup('Domgasse 5');
+
+  const [url, { params }] = httpClient.get.mock.calls[0];
+  expect(url).toBe('https://nominatim.openstreetmap.org/search.php');
+  expect(params).toEqual(new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'));
+});
+```
+
+</p>
+</details>
+
+# 8. Bonus: Mock parse function
+
+Create a new test file for the lookuper. In that test mock `parseAddress` via `jest.mock` so it doesn't throw an error on invalid queries.
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+**shared/address-lookuper.service.pure.spec.ts**
+
+```typescript
+import { HttpClient } from '@angular/common/http';
+import { waitForAsync } from '@angular/core/testing';
+import { of } from 'rxjs';
+import { AddressLookuper } from './address-lookuper.service';
+import { assertType } from './assert-type';
+
+jest.mock('./parse-address', () => ({
+  parseAddress: () => {}
+}));
+
+describe('Address Lookuper', () => {
+  it(
+    'should work with invalid addresses',
+    waitForAsync(() => {
+      const lookuper = new AddressLookuper(
+        assertType<HttpClient>({ get: () => of(['']) })
+      );
+
+      lookuper.lookup('Domgasse').subscribe((isValid) => {
+        expect(isValid).toBe(true);
+      });
+    })
+  );
+});
+```
+
+</p>
+</details>
+
+# 9. Bonus: Http Interceptor
 
 - We create an Http Interceptor that adds a new http header when the nominatim endpoint is called. The header's key is `NominatimId` and the value `0129`.
 
+**core/nominatim.interceptor.ts**
+
 ```typescript
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class NominatimInterceptor implements HttpInterceptor {
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (req.url.match(/nominatim\.openstreetmap\.org/)) {
       return next.handle(req.clone({ setHeaders: { NominatimId: '0129' } }));
     }
@@ -290,7 +362,7 @@ export class NominatimInterceptor implements HttpInterceptor {
 
 ```typescript
 import { HttpHandler, HttpRequest } from '@angular/common/http';
-import { mock } from './mock';
+import { assertType } from '../shared/assert-type';
 import { NominatimInterceptor } from './nominatim.interceptor';
 
 describe('NominatimService', () => {
@@ -300,7 +372,7 @@ describe('NominatimService', () => {
       handle: jest.fn<void, [HttpRequest<unknown>]>()
     };
 
-    new NominatimInterceptor().intercept(req, mock<HttpHandler>(next));
+    new NominatimInterceptor().intercept(req, assertType<HttpHandler>(next));
     const clonedReq = next.handle.mock.calls[0][0];
     expect(clonedReq.headers.get('NominatimId')).toBe('0129');
   });
@@ -311,7 +383,7 @@ describe('NominatimService', () => {
       handle: jest.fn<void, [HttpRequest<unknown>]>()
     };
 
-    new NominatimInterceptor().intercept(req, mock<HttpHandler>(next));
+    new NominatimInterceptor().intercept(req, assertType<HttpHandler>(next));
     const clonedReq = next.handle.mock.calls[0][0];
     expect(clonedReq.headers.has('NominatimId')).toBe(false);
   });

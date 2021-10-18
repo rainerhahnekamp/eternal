@@ -4,8 +4,9 @@
 - [4. Query Counter](#4-query-counter)
 - [5. Custom Operator: filterTruthy](#5-custom-operator-filtertruthy)
 - [6. AddressLookuper](#6-addresslookuper)
-- [7. Bonus: Asynchronity](#7-bonus-asynchronity)
-- [8. Bonus: Proofing Higher Order Observable](#8-bonus-proofing-higher-order-observable)
+- [7. Error](#7-error)
+- [8. Bonus: Asynchronity](#8-bonus-asynchronity)
+- [9. Bonus: Proofing Higher Order Observable](#9-bonus-proofing-higher-order-observable)
 
 If not explicitly said otherwise, all test should be done with the `rxjs-marbles` library.
 
@@ -236,10 +237,10 @@ Try to apply rxjs-marbles in the AddressLookuper service. You should not require
 it(
   'should use rxjs-marbles',
   marbles((m) => {
-    const httpClient = {
+    const httpClient = assertType<HttpClient>({
       get: () => m.cold('150ms r', { r: [true] })
-    };
-    const lookuper = new AddressLookuper((httpClient as unknown) as HttpClient);
+    });
+    const lookuper = new AddressLookuper(httpClient);
     const isValid$ = lookuper.lookup('Domgasse 5');
     m.expect(isValid$).toBeObservable('150ms t', { t: true });
   })
@@ -249,7 +250,32 @@ it(
 </p>
 </details>
 
-# 7. Bonus: Asynchronity
+# 7. Error
+
+The `first` operator throws an `EmptyError` if it hits a completed observable. Make a test to verify that.
+
+An error has the symbol `#` and the third parameter of `toBeObservable` is reserved for the error object.
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+```typescript
+test(
+  'error with first operator on completed',
+  marbles((m) => {
+    const source$ = m.cold('|');
+    const destination$ = source$.pipe(first());
+
+    m.expect(destination$).toBeObservable('#', undefined, new EmptyError());
+  })
+);
+```
+
+</p>
+</details>
+
+# 8. Bonus: Asynchronity
 
 For this exercise, you CANNOT use `rxjs-marbles`.
 
@@ -294,7 +320,7 @@ test('asynchronicity', (done) => {
 </p>
 </details>
 
-# 8. Bonus: Proofing Higher Order Observable
+# 9. Bonus: Proofing Higher Order Observable
 
 Write tests for all 4 major higher order observable and proof their behaviour:
 

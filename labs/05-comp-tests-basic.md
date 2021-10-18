@@ -9,6 +9,8 @@
 
 In this lab, we will integrate the address lookuper into the request-info component.
 
+Exercises 1-4 are only temporary. That's we put them into into a separate spec file.
+
 **holidays/request-info/request-info.component.ts**:
 
 Inject the addressLookuper service into the component:
@@ -35,6 +37,8 @@ One test should check if the title can be changed and the other one should set a
 
 This one misses change detection. Find the right place and add it.
 
+**holidays/request-info/request-info.component.temp.spec.ts**
+
 ```typescript
 import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -42,7 +46,7 @@ import { By } from '@angular/platform-browser';
 import { AddressLookuper } from '../../shared/address-lookuper.service';
 import { RequestInfoComponent } from './request-info.component';
 
-describe('RequestInfo Component', () => {
+describe('RequestInfo Component Temporary', () => {
   it('should check the title', () => {
     const fixture = TestBed.configureTestingModule({
       declarations: [RequestInfoComponent],
@@ -106,6 +110,8 @@ The css selector is `[data-test=address]`
 
 Mock the Lookup service so that it returns no results. Verify that it shows the right message.
 
+**holidays/request-info/request-info.component.temp.spec.ts**
+
 ```typescript
 it('should fail on no input', fakeAsync(() => {
   expect.hasAssertions();
@@ -146,6 +152,8 @@ expect(lookupResult.textContent).toContain('Address not found');
 
 # 3. DOM Interaction
 
+**holidays/request-info/request-info.component.temp.spec.ts**
+
 Interact with the DOM by clicking on the submit button.
 
 ```typescript
@@ -169,7 +177,9 @@ it('should trigger search on click', fakeAsync(() => {
 
 # 4. Snapshotting
 
-Write a test with Jest's snapshotting feature. Play a little bit with the interactive update feature by changing some small things in the template and try the interactive update via the CLI.
+**holidays/request-info/request-info.component.temp.spec.ts**
+
+Write a test with Jest's snapshotting feature. Try out the interactive update feature by calling the change detection before doing the same snapshot.
 
 ```typescript
 it('should check the snapshot', () => {
@@ -191,44 +201,55 @@ The mocked lookuper should true when the query is for "Domgasse 5" and false if 
 
 For positive address lookups, the message should say "Brochure sent". Call that test **should find an address**.
 
+Place this test into a new file: **holidays/request-info/request-info.component.spec.ts**
+
 <details>
 <summary>Show Solution</summary>
 <p>
 
 ```typescript
-it('should find an address', fakeAsync(() => {
-  const lookuper = {
-    lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
-  };
-  const fixture = TestBed.configureTestingModule({
-    declarations: [RequestInfoComponent],
-    imports: [ReactiveFormsModule],
-    providers: [{ provide: AddressLookuper, useValue: lookuper }]
-  }).createComponent(RequestInfoComponent);
-  const input = fixture.debugElement.query(By.css('[data-test=address]'))
-    .nativeElement as HTMLInputElement;
-  const button = fixture.debugElement.query(By.css('[data-test=btn-search]'))
-    .nativeElement as HTMLButtonElement;
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { asyncScheduler, scheduled } from 'rxjs';
+import { AddressLookuper } from '../../shared/address-lookuper.service';
+import { RequestInfoComponent } from './request-info.component';
 
-  fixture.detectChanges();
-  input.value = 'Domgasse 15';
-  input.dispatchEvent(new Event('input'));
-  button.click();
-  tick();
-  fixture.detectChanges();
-  const lookupResult = fixture.debugElement.query(By.css('[data-test=lookup-result]'))
-    .nativeElement as HTMLElement;
+describe('Request Info Component', () => {
+  it('should find an address', fakeAsync(() => {
+    const lookuper = {
+      lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
+    };
+    const fixture = TestBed.configureTestingModule({
+      declarations: [RequestInfoComponent],
+      imports: [ReactiveFormsModule],
+      providers: [{ provide: AddressLookuper, useValue: lookuper }]
+    }).createComponent(RequestInfoComponent);
+    const input = fixture.debugElement.query(By.css('[data-test=address]'))
+      .nativeElement as HTMLInputElement;
+    const button = fixture.debugElement.query(By.css('[data-test=btn-search]'))
+      .nativeElement as HTMLButtonElement;
 
-  expect(lookupResult.textContent).toContain('Address not found');
+    fixture.detectChanges();
+    input.value = 'Domgasse 15';
+    input.dispatchEvent(new Event('input'));
+    button.click();
+    tick();
+    fixture.detectChanges();
+    const lookupResult = fixture.debugElement.query(By.css('[data-test=lookup-result]'))
+      .nativeElement as HTMLElement;
 
-  input.value = 'Domgasse 5';
-  input.dispatchEvent(new Event('input'));
-  button.click();
-  tick();
-  fixture.detectChanges();
+    expect(lookupResult.textContent).toContain('Address not found');
 
-  expect(lookupResult.textContent).toContain('Brochure sent');
-}));
+    input.value = 'Domgasse 5';
+    input.dispatchEvent(new Event('input'));
+    button.click();
+    tick();
+    fixture.detectChanges();
+
+    expect(lookupResult.textContent).toContain('Brochure sent');
+  }));
+});
 ```
 
 </p>
@@ -243,26 +264,28 @@ Create a unit test version for the **should find an address**. This means no `Te
 <p>
 
 ```typescript
-it('should test as unit test', (done) => {
-  const formBuilder = {
-    group: () => ({ value: { address: 'Domgasse 5' } })
-  };
-  const lookuper = {
-    lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
-  };
-  const component = new RequestInfoComponent(
-    mock<FormBuilder>(formBuilder),
-    mock<AddressLookuper>(lookuper)
-  );
+it(
+  'should test as unit test',
+  waitForAsync(() => {
+    const formBuilder = {
+      group: () => ({ value: { address: 'Domgasse 5' } })
+    };
+    const lookuper = {
+      lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
+    };
+    const component = new RequestInfoComponent(
+      assertType<FormBuilder>(formBuilder),
+      assertType<AddressLookuper>(lookuper)
+    );
 
-  component.ngOnInit();
-  component.lookupResult$?.subscribe((message) => {
-    expect(message).toBe('Brochure sent');
-    done();
-  });
+    component.ngOnInit();
+    component.lookupResult$?.subscribe((message) => {
+      expect(message).toBe('Brochure sent');
+    });
 
-  component.search();
-});
+    component.search();
+  })
+);
 ```
 
 </p>
@@ -271,6 +294,8 @@ it('should test as unit test', (done) => {
 # 7: Bonus: Setting @Input
 
 Create a component test which is setting the address input value and verify it is shown in the text field.
+
+This test should be part in **holidays/request-info/request-info.component.temp.spec.ts**
 
 **Be aware**: There is a bug in the implementation.
 
@@ -304,13 +329,15 @@ it('verify that the address input sets the field value', fakeAsync(() => {
 
 Write a test where you don't mock the `AddressLookuper` but only the `HttpClient`.
 
+Add that test to **holidays/request-info/request-info.component.temp.spec.ts**
+
 <details>
 <summary>Show Solution</summary>
 <p>
 
 ```typescript
 it('should do an integration test', fakeAsync(() => {
-  const httpClient = mock<HttpClient>({ get: () => of([true]) });
+  const httpClient = assertType<HttpClient>({ get: () => of([true]) });
   const fixture = TestBed.configureTestingModule({
     declarations: [RequestInfoComponent],
     imports: [ReactiveFormsModule],

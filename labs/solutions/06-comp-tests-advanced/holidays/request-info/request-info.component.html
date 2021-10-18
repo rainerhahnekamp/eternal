@@ -9,7 +9,7 @@
       <mat-hint>Please enter your address</mat-hint>
     </mat-form-field>
   </p>
-  <button data-test="btn-cancel" mat-raised-button type="button">Cancel</button>
+  <button mat-raised-button type="button">Cancel</button>
   <button color="primary" data-test="btn-search" mat-raised-button type="submit">Send</button>
 </form>
 <p *ngIf="lookupResult$ | async as lookupResult" data-test="lookup-result">

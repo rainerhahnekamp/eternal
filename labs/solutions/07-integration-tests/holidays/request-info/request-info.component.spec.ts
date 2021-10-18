@@ -1,23 +1,26 @@
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
-import { TestBed, TestModuleMetadata } from '@angular/core/testing';
+import { TestBed, TestModuleMetadata, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 import { MatFormField, MatFormFieldModule, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MockComponent } from 'ng-mocks';
-import { asyncScheduler, of, scheduled } from 'rxjs';
+import { asyncScheduler, Observable, scheduled } from 'rxjs';
 import { AddressLookuper } from '../../shared/address-lookuper.service';
-import { mock } from '../../shared/mock';
+import { assertType } from '../../shared/assert-type';
 import { RequestInfoComponent } from './request-info.component';
-import { RequestInfoComponentHarness } from './request-info.harness.component';
+import { RequestInfoComponentHarness } from './request-info.component.harnes';
 
-describe('RequestInfo Component', () => {
+describe('Request Info Component', () => {
+  const noMaterialCheck = {
+    provide: MATERIAL_SANITY_CHECKS,
+    useValue: false
+  };
   const testModuleMetadata: TestModuleMetadata = {
     declarations: [RequestInfoComponent],
     imports: [
@@ -28,157 +31,13 @@ describe('RequestInfo Component', () => {
       NoopAnimationsModule,
       ReactiveFormsModule
     ],
-    providers: [{ provide: AddressLookuper, useValue: null }]
+    providers: [{ provide: AddressLookuper, useValue: null }, noMaterialCheck]
   };
 
-  const createFixtureAndHarness = async (config: TestModuleMetadata = {}) => {
-    const fixture = TestBed.configureTestingModule({
-      ...testModuleMetadata,
-      ...config
-    }).createComponent(RequestInfoComponent);
-    const harness = await TestbedHarnessEnvironment.harnessForFixture(
-      fixture,
-      RequestInfoComponentHarness
+  const createFixture = (config: TestModuleMetadata = {}) =>
+    TestBed.configureTestingModule({ ...testModuleMetadata, ...config }).createComponent(
+      RequestInfoComponent
     );
-    return { fixture, harness };
-  };
-
-  it('should check the title', async () => {
-    const { fixture } = await createFixtureAndHarness();
-
-    const title = fixture.debugElement.query(By.css('h2')).nativeElement as HTMLElement;
-    expect(title.textContent).toBe('Request More Information');
-
-    fixture.componentInstance.title = 'Test Title';
-    fixture.detectChanges();
-
-    expect(title.textContent).toBe('Test Title');
-  });
-
-  it('should check input fields have right values', async () => {
-    const { fixture } = await createFixtureAndHarness();
-    const component = fixture.componentInstance;
-    fixture.detectChanges();
-
-    component.formGroup.patchValue({
-      address: 'Hauptstraße 5'
-    });
-    const address = fixture.debugElement.query(By.css('[data-test=address]'))
-      .nativeElement as HTMLInputElement;
-
-    expect(address.value).toBe('Hauptstraße 5');
-  });
-
-  it('should fail on no input', async () => {
-    const { fixture, harness } = await createFixtureAndHarness({
-      providers: [
-        {
-          provide: AddressLookuper,
-          useValue: {
-            lookup: () => scheduled([false], asyncScheduler)
-          }
-        }
-      ]
-    });
-
-    await harness.submit();
-    expect(await harness.getResult()).toBe('Address not found');
-  });
-
-  it('should trigger search on click', async () => {
-    const lookuper = { lookup: jest.fn(() => scheduled([false], asyncScheduler)) };
-    const { harness } = await createFixtureAndHarness({
-      providers: [
-        {
-          provide: AddressLookuper,
-          useValue: lookuper
-        }
-      ]
-    });
-
-    await harness.submit();
-    expect(lookuper.lookup).toHaveBeenCalled();
-  });
-
-  it('should check the snapshot', async () => {
-    const { fixture } = await createFixtureAndHarness();
-    expect(fixture).toMatchSnapshot();
-  });
-
-  it('should find an address', async () => {
-    const lookuper = {
-      lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
-    };
-    const { harness } = await createFixtureAndHarness({
-      providers: [{ provide: AddressLookuper, useValue: lookuper }]
-    });
-
-    await harness.writeAddress('Domgasse 15');
-    await harness.submit();
-    expect(await harness.getResult()).toBe('Address not found');
-
-    await harness.writeAddress('Domgasse 5');
-    await harness.submit();
-    expect(await harness.getResult()).toBe('Brochure sent');
-  });
-
-  it('should test as unit test', (done) => {
-    const formBuilder = {
-      group: () => ({ value: { address: 'Domgasse 5' } })
-    };
-    const lookuper = {
-      lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
-    };
-    const component = new RequestInfoComponent(
-      mock<FormBuilder>(formBuilder),
-      mock<AddressLookuper>(lookuper)
-    );
-
-    component.ngOnInit();
-    component.lookupResult$?.subscribe((message) => {
-      expect(message).toBe('Brochure sent');
-      done();
-    });
-
-    component.search();
-  });
-
-  it('should verify the address input two times', async () => {
-    @Component({
-      template: "<app-request-info [address]='address'></app-request-info>"
-    })
-    class WrapperComponent {
-      address: string = 'Domgasse 5';
-    }
-
-    await createFixtureAndHarness({
-      ...testModuleMetadata,
-      declarations: [WrapperComponent, RequestInfoComponent]
-    });
-    const wrapperFixture = TestBed.createComponent(WrapperComponent);
-    const field = wrapperFixture.debugElement.query(By.css('[data-test=address]'))
-      .nativeElement as HTMLInputElement;
-
-    wrapperFixture.componentInstance.address = 'Domgasse 5';
-    wrapperFixture.detectChanges();
-    expect(field.value).toBe('Domgasse 5');
-
-    wrapperFixture.componentInstance.address = 'Domgasse 15';
-    wrapperFixture.detectChanges();
-    expect(field.value).toBe('Domgasse 15');
-  });
-
-  it('should do an integration test', async () => {
-    const httpClient = mock<HttpClient>({ get: () => of([true]) });
-    const { harness } = await createFixtureAndHarness({
-      providers: [{ provide: HttpClient, useValue: httpClient }]
-    });
-
-    await harness.writeAddress('Domgasse 15');
-    await harness.submit();
-    expect(await harness.getResult()).toBe('Brochure sent');
-  });
-
   it('should mock components', () => {
     // tslint:disable-next-line:component-selector
     @Component({ selector: 'mat-form-field', template: '' })
@@ -199,7 +58,7 @@ describe('RequestInfo Component', () => {
     const fixture = TestBed.configureTestingModule({
       declarations: [RequestInfoComponent, MatFormField, MatHint, MatIcon, MatLabel],
       imports: [ReactiveFormsModule],
-      providers: [{ provide: AddressLookuper, useValue: null }]
+      providers: [{ provide: AddressLookuper, useValue: null }, noMaterialCheck]
     }).createComponent(RequestInfoComponent);
 
     fixture.detectChanges();
@@ -215,25 +74,105 @@ describe('RequestInfo Component', () => {
         MockComponent(MatLabel)
       ],
       imports: [ReactiveFormsModule],
-      providers: [{ provide: AddressLookuper, useValue: null }]
+      providers: [{ provide: AddressLookuper, useValue: null }, noMaterialCheck]
     }).createComponent(RequestInfoComponent);
 
     fixture.detectChanges();
     expect(true).toBe(true);
   });
 
+  it('should find an address', async () => {
+    const lookuper = {
+      lookup: jest.fn<Observable<boolean>, [string]>((query) =>
+        scheduled([query === 'Domgasse 5'], asyncScheduler)
+      )
+    };
+    const fixture = TestBed.configureTestingModule({
+      ...testModuleMetadata,
+      ...{
+        providers: [
+          {
+            provide: AddressLookuper,
+            useValue: lookuper
+          },
+          noMaterialCheck
+        ]
+      }
+    }).createComponent(RequestInfoComponent);
+
+    const harness = await TestbedHarnessEnvironment.harnessForFixture(
+      fixture,
+      RequestInfoComponentHarness
+    );
+
+    await harness.writeAddress('Domgasse 15');
+    await harness.submit();
+    const message = await harness.getResult();
+    expect(message).toBe('Address not found');
+    await harness.writeAddress('Domgasse 5');
+    await harness.submit();
+
+    return expect(harness.getResult()).resolves.toBe('Brochure sent');
+  });
+
+  it(
+    'should test as unit test',
+    waitForAsync(() => {
+      const formBuilder = {
+        group: () => ({ value: { address: 'Domgasse 5' } })
+      };
+      const lookuper = {
+        lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
+      };
+      const component = new RequestInfoComponent(
+        assertType<FormBuilder>(formBuilder),
+        assertType<AddressLookuper>(lookuper)
+      );
+
+      component.ngOnInit();
+      component.lookupResult$?.subscribe((message) => {
+        expect(message).toBe('Brochure sent');
+      });
+
+      component.search();
+    })
+  );
+
+  it('should verify ngOnChanges with address', async () => {
+    @Component({
+      template: ` <app-request-info [address]="address"></app-request-info>`
+    })
+    class WrapperComponent {
+      address = 'Domgasse 15';
+    }
+
+    createFixture({ declarations: [WrapperComponent, RequestInfoComponent] });
+    const fixture = TestBed.createComponent(WrapperComponent);
+    const harness = await TestbedHarnessEnvironment.harnessForFixture(
+      fixture,
+      RequestInfoComponentHarness
+    );
+
+    expect(await harness.getAddress()).toBe('Domgasse 15');
+    fixture.componentInstance.address = 'Domgasse 5';
+    expect(await harness.getAddress()).toBe('Domgasse 5');
+  });
+
   it('should only mock the HttpClient', async () => {
-    const { harness } = await createFixtureAndHarness({
+    const fixture = createFixture({
       imports: [...(testModuleMetadata.imports || []), HttpClientTestingModule],
-      providers: []
+      providers: [noMaterialCheck]
     });
     const controller = TestBed.inject(HttpTestingController);
+    const harness = await TestbedHarnessEnvironment.harnessForFixture(
+      fixture,
+      RequestInfoComponentHarness
+    );
 
     await harness.writeAddress('Domgasse 5');
     await harness.submit();
 
-    const [request] = controller.match((req) => !!req.url.match(/nominatim/));
-    request.flush([[]]);
+    controller.expectOne((req) => !!req.url.match(/nominatim/)).flush([true]);
 
     expect(await harness.getResult()).toBe('Brochure sent');
   });

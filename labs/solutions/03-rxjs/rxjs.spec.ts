@@ -1,4 +1,4 @@
-import { combineLatest, Observable, of } from 'rxjs';
+import { combineLatest, EmptyError, Observable, of } from 'rxjs';
 import { marbles } from 'rxjs-marbles/jest';
 import {
   concatMap,
@@ -101,6 +101,16 @@ describe('RxJs', () => {
         observable.pipe(filter((data) => !!data));
       const destination = source.pipe(filterTruthy);
       m.expect(destination).toBeObservable('-----f', { f: 1 });
+    })
+  );
+
+  test(
+    'error with first operator on completed',
+    marbles((m) => {
+      const source$ = m.cold('|');
+      const destination$ = source$.pipe(first());
+
+      m.expect(destination$).toBeObservable('#', undefined, new EmptyError());
     })
   );
 
