@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { UserLoaderGuard } from './core/user-loader.guard';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './home.component';
 
 export const APP_ROUTES: Routes = [
   {

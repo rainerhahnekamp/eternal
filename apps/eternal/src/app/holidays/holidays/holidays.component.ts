@@ -3,7 +3,7 @@ import { Component, NgModule, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { holidaysActions } from '../+state/holidays.actions';
 import { fromHolidays } from '../+state/holidays.selectors';
-import { HolidayCardComponentModule } from '../holiday-card/holiday-card.component';
+import { HolidayCardComponentModule } from '../holiday-card/holiday-card.component.module';
 
 @Component({
   selector: 'eternal-holidays',

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 type UserType = 'customer' | 'agent';
 
@@ -12,6 +13,7 @@ export interface BasicData {
 })
 export class BasicComponent {
   @Output() next = new EventEmitter<BasicData>();
+  formGroup = new FormGroup({});
 
   handleUserType(userType: UserType) {
     this.next.emit({ userType });

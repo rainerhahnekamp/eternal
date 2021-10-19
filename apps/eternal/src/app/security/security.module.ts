@@ -1,13 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatStepperModule } from '@angular/material/stepper';
 import { RouterModule } from '@angular/router';
-import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { ActivateComponent } from './activate/activate.component';
 import { ActivateComponentModule } from './activate/activate.component.module';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -29,16 +21,7 @@ import { SignInComponentModule } from './signIn/sign-in.component.module';
           { path: 'activate/:id', component: ActivateComponent }
         ]
       }
-    ]),
-    MatButtonModule,
-    MatIconModule,
-    MatInputModule,
-    MatStepperModule,
-    MatDatepickerModule,
-    MatRippleModule,
-    FormlyMatDatepickerModule,
-    MatNativeDateModule,
-    ReactiveFormsModule
+    ])
   ]
 })
 export class SecurityModule {}

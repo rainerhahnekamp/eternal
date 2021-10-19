@@ -20,13 +20,13 @@ import { HeaderComponentModule } from './core/header/header.component';
 import { LoaderComponentModule } from './core/loader/loader.component';
 import { LoadingInterceptor } from './core/loading.interceptor';
 import { SidemenuComponentModule } from './core/sidemenu/sidemenu.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponentModule } from './home.component';
 import { SharedModule } from './shared/shared.module';
 
 registerLocaleData(localeDe, 'de-AT');
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -48,6 +48,7 @@ registerLocaleData(localeDe, 'de-AT');
       ]
     }),
     HeaderComponentModule,
+    HomeComponentModule,
     SidemenuComponentModule,
     LoaderComponentModule
   ],
