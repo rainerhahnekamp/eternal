@@ -5,8 +5,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { environment } from '../../environments/environment';
 import { CustomerEffects } from './+state/customer.effects';
-import { customerFeatureKey, customerReducer } from './+state/customer.reducer';
-import { CustomerComponent, CustomerComponentModule } from './customer/customer.component';
+import { customerFeature } from './+state/customer.reducer';
+import { CustomerComponent } from './customer/customer.component';
+import { CustomerComponentModule } from './customer/customer.component.module';
 import { CustomersComponent, CustomersComponentModule } from './customers/customers.component';
 import { MockedHttpClient } from './mocked-http-client';
 
@@ -37,7 +38,7 @@ import { MockedHttpClient } from './mocked-http-client';
         ]
       }
     ]),
-    StoreModule.forFeature(customerFeatureKey, customerReducer),
+    StoreModule.forFeature(customerFeature),
     EffectsModule.forFeature([CustomerEffects])
   ]
 })

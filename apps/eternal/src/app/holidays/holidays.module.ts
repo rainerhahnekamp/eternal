@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { HolidaysEffects } from './+state/holidays.effects';
-import { holidaysFeatureKey, holidaysReducer } from './+state/holidays.reducer';
+import { holidaysFeature } from './+state/holidays.reducer';
 import { HolidaysComponent, HolidaysComponentModule } from './holidays/holidays.component';
 import {
   RequestInfoComponent,
@@ -24,7 +24,7 @@ import {
         component: RequestInfoComponent
       }
     ]),
-    StoreModule.forFeature(holidaysFeatureKey, holidaysReducer),
+    StoreModule.forFeature(holidaysFeature),
     EffectsModule.forFeature([HolidaysEffects])
   ]
 })

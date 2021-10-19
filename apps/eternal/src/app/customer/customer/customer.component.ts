@@ -1,19 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { Component, NgModule } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Component } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { FormlyMaterialModule } from '@ngx-formly/material';
-import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { formly } from 'ngx-formly-helpers';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { CustomerActions } from '../+state/customer.actions';
-import { CustomerAppState } from '../+state/customer.reducer';
 import { fromCustomer } from '../+state/customer.selectors';
 import { countries } from '../countries';
 import { Customer } from '../customer';
@@ -27,7 +20,7 @@ export class CustomerComponent {
   customer$: Observable<Customer>;
   fields: FormlyFieldConfig[];
 
-  constructor(private store: Store<CustomerAppState>, private route: ActivatedRoute) {
+  constructor(private store: Store, private route: ActivatedRoute) {
     this.fields = [
       formly.requiredText('firstname', 'Firstname'),
       formly.requiredText('name', 'Name'),
@@ -78,20 +71,3 @@ export class CustomerComponent {
     return customer$.pipe(filter(customerGuard));
   }
 }
-
-@NgModule({
-  declarations: [CustomerComponent],
-  exports: [CustomerComponent],
-  imports: [
-    CommonModule,
-    FormlyModule.forChild(),
-    FormlyMaterialModule,
-    FormlyMatDatepickerModule,
-    ReactiveFormsModule,
-    RouterModule,
-    MatButtonModule,
-    MatDatepickerModule,
-    MatNativeDateModule
-  ]
-})
-export class CustomerComponentModule {}

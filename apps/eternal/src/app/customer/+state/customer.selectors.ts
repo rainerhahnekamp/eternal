@@ -1,17 +1,13 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { createSelector } from '@ngrx/store';
 import { Customer } from '../customer';
-import { customerFeatureKey, State } from './customer.reducer';
+import { customerFeature } from './customer.reducer';
 
-const selectCustomerState = createFeatureSelector<State>(customerFeatureKey);
-
-const selectAll = createSelector(selectCustomerState, (state) => state.customers);
+const selectAll = customerFeature.selectCustomers;
 
 const selectById = (id: number) =>
   createSelector(selectAll, (state: Customer[]) => state.find((p) => p.id === id));
 
-const selectCurrentPage = createSelector(selectCustomerState, (state) => state.currentPage);
-
-const selectPageCount = createSelector(selectCustomerState, (state) => state.pageCount);
+const { selectCurrentPage, selectPageCount } = customerFeature;
 
 const selectCustomersAndPage = createSelector(
   selectAll,

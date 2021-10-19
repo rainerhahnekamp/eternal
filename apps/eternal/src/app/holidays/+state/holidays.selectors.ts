@@ -1,8 +1,5 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { holidaysFeatureKey, HolidaysState } from './holidays.reducer';
-
-const stateSelector = createFeatureSelector<HolidaysState>(holidaysFeatureKey);
+import { holidaysFeature } from './holidays.reducer';
 
 export const fromHolidays = {
-  get: createSelector(stateSelector, ({ holidays }) => holidays)
+  get: holidaysFeature.selectHolidays
 };
