@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Component, EventEmitter, NgModule, Output } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { formly } from 'ngx-formly-helpers';
-import { countries } from '../../../customer/countries';
-import { SignUpForm } from '../sign-up-form';
+import { countries } from '../../customer/countries';
+import { SignUpForm } from './sign-up-form';
 
 export interface DetailData {
   firstname: string;
@@ -21,8 +21,12 @@ export interface DetailData {
 
 @Component({
   selector: 'app-sign-up-detail',
-  templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.scss']
+  template: `
+    <form (ngSubmit)="handleSubmit()" [formGroup]="formGroup">
+      <formly-form [fields]="fields" [form]="formGroup" [model]="{}"></formly-form>
+      <ng-content></ng-content>
+    </form>
+  `
 })
 export class DetailComponent implements SignUpForm {
   @Output() next = new EventEmitter<DetailData>();
@@ -47,3 +51,10 @@ export class DetailComponent implements SignUpForm {
     }
   }
 }
+
+@NgModule({
+  declarations: [DetailComponent],
+  exports: [DetailComponent],
+  imports: [ReactiveFormsModule, FormlyModule]
+})
+export class DetailComponentModule {}

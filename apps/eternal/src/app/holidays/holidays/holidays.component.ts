@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { holidaysActions } from '../+state/holidays.actions';
 import { fromHolidays } from '../+state/holidays.selectors';
+import { HolidayCardComponentModule } from '../holiday-card/holiday-card.component';
 
 @Component({
   selector: 'eternal-holidays',
@@ -17,3 +19,10 @@ export class HolidaysComponent implements OnInit {
     this.store.dispatch(holidaysActions.findHolidays());
   }
 }
+
+@NgModule({
+  declarations: [HolidaysComponent],
+  exports: [HolidaysComponent],
+  imports: [CommonModule, HolidayCardComponentModule]
+})
+export class HolidaysComponentModule {}

@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of, Subject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -35,3 +36,10 @@ export class RequestInfoComponent implements OnInit {
     this.submitter$.next();
   }
 }
+
+@NgModule({
+  declarations: [RequestInfoComponent],
+  exports: [RequestInfoComponent],
+  imports: [CommonModule, ReactiveFormsModule]
+})
+export class RequestInfoComponentModule {}

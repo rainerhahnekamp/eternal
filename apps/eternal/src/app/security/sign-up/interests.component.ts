@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Component, EventEmitter, NgModule, Output } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { formly } from 'ngx-formly-helpers';
 
 const mapToOptions = (records: string[]) =>
@@ -19,8 +19,12 @@ export interface InterestsData {
 
 @Component({
   selector: 'app-sign-up-interests',
-  templateUrl: './interests.component.html',
-  styleUrls: ['./interests.component.scss']
+  template: `
+    <form (ngSubmit)="handleSubmit()" [formGroup]="formGroup">
+      <formly-form [fields]="fields" [form]="formGroup" [model]="{}"></formly-form>
+      <ng-content></ng-content>
+    </form>
+  `
 })
 export class InterestsComponent {
   @Output() next = new EventEmitter<InterestsData>();
@@ -63,3 +67,10 @@ export class InterestsComponent {
     }
   }
 }
+
+@NgModule({
+  declarations: [InterestsComponent],
+  imports: [ReactiveFormsModule, FormlyModule],
+  exports: [InterestsComponent]
+})
+export class InterestsComponentModule {}

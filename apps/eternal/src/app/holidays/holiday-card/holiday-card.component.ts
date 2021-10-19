@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, NgModule } from '@angular/core';
 import { Holiday } from '../holiday';
 
 @Component({
@@ -9,3 +9,10 @@ import { Holiday } from '../holiday';
 export class HolidayCardComponent {
   @Input() holiday: Holiday | undefined;
 }
+
+@NgModule({
+  declarations: [HolidayCardComponent],
+  exports: [HolidayCardComponent],
+  imports: []
+})
+export class HolidayCardComponentModule {}

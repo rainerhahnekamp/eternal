@@ -1,8 +1,14 @@
-import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Component, NgModule } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyMaterialModule } from '@ngx-formly/material';
+import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { formly } from 'ngx-formly-helpers';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -72,3 +78,20 @@ export class CustomerComponent {
     return customer$.pipe(filter(customerGuard));
   }
 }
+
+@NgModule({
+  declarations: [CustomerComponent],
+  exports: [CustomerComponent],
+  imports: [
+    CommonModule,
+    FormlyModule.forChild(),
+    FormlyMaterialModule,
+    FormlyMatDatepickerModule,
+    ReactiveFormsModule,
+    RouterModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+  ]
+})
+export class CustomerComponentModule {}
