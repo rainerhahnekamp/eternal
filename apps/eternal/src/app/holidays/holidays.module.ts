@@ -4,11 +4,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { HolidaysEffects } from './+state/holidays.effects';
 import { holidaysFeature } from './+state/holidays.reducer';
-import { HolidaysComponent, HolidaysComponentModule } from './holidays/holidays.component';
-import {
-  RequestInfoComponent,
-  RequestInfoComponentModule
-} from './request-info/request-info.component';
+import { HolidaysComponent } from './holidays/holidays.component';
+import { HolidaysComponentModule } from './holidays/holidays.component.module';
+import { RequestInfoComponent } from './request-info/request-info.component';
+import { RequestInfoComponentModule } from './request-info/request-info.component.module';
 
 @NgModule({
   imports: [
