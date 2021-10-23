@@ -12,6 +12,7 @@ import { countries } from '../countries';
 import { Customer } from '../customer';
 
 @Component({
+  selector: 'eternal-customer',
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss']
 })
