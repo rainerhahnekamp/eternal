@@ -4,8 +4,6 @@ import localeDe from '@angular/common/locales/de-AT';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -14,23 +12,19 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { FormlyModule } from '@ngx-formly/core';
 import { AppComponent } from './app.component';
+import { AppComponentModule } from './app.component.module';
 import { APP_ROUTES } from './app.routes';
 import { BaseUrlInterceptor } from './core/base-url.interceptor';
-import { CoreModule } from './core/core.module';
 import { LoadingInterceptor } from './core/loading.interceptor';
-import { HomeComponent } from './home/home.component';
 import { SharedModule } from './shared/shared.module';
 
 registerLocaleData(localeDe, 'de-AT');
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
   imports: [
+    AppComponentModule,
     BrowserModule,
     BrowserAnimationsModule,
-    CoreModule,
-    MatSidenavModule,
-    MatToolbarModule,
     HttpClientModule,
     RouterModule.forRoot(APP_ROUTES),
     StoreModule.forRoot({}),

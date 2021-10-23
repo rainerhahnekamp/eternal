@@ -7,7 +7,6 @@ import { formly } from 'ngx-formly-helpers';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { CustomerActions } from '../+state/customer.actions';
-import { CustomerAppState } from '../+state/customer.reducer';
 import { fromCustomer } from '../+state/customer.selectors';
 import { countries } from '../countries';
 import { Customer } from '../customer';
@@ -21,7 +20,7 @@ export class CustomerComponent {
   customer$: Observable<Customer>;
   fields: FormlyFieldConfig[];
 
-  constructor(private store: Store<CustomerAppState>, private route: ActivatedRoute) {
+  constructor(private store: Store, private route: ActivatedRoute) {
     this.fields = [
       formly.requiredText('firstname', 'Firstname'),
       formly.requiredText('name', 'Name'),

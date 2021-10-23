@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-diaries',
@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./diaries.component.scss']
 })
 export class DiariesComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }
+
+@NgModule({
+  declarations: [DiariesComponent],
+  exports: [DiariesComponent]
+})
+export class DiariesComponentModule {}

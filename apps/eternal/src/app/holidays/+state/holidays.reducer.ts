@@ -1,8 +1,6 @@
-import { createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, on } from '@ngrx/store';
 import { Holiday } from '../holiday';
 import { holidaysActions } from './holidays.actions';
-
-export const holidaysFeatureKey = 'holiday';
 
 export interface HolidaysState {
   holidays: Holiday[];
@@ -10,10 +8,13 @@ export interface HolidaysState {
 
 const initialState: HolidaysState = { holidays: [] };
 
-export const holidaysReducer = createReducer<HolidaysState>(
-  initialState,
-  on(holidaysActions.findHolidaysSuccess, (state, { holidays }) => ({
-    ...state,
-    holidays,
-  }))
-);
+export const holidaysFeature = createFeature({
+  name: 'holiday',
+  reducer: createReducer(
+    initialState,
+    on(holidaysActions.findHolidaysSuccess, (state, { holidays }) => ({
+      ...state,
+      holidays
+    }))
+  )
+});

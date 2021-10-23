@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { UserLoaderGuard } from './core/user-loader.guard';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './home.component';
 
 export const APP_ROUTES: Routes = [
   {
@@ -26,7 +26,7 @@ export const APP_ROUTES: Routes = [
       },
       {
         path: 'diary',
-        loadChildren: () => import('./diary/diary.module').then((m) => m.DiaryModule)
+        loadChildren: () => import('./diary/diary.routes.module').then((m) => m.DiaryRoutesModule)
       }
     ]
   }

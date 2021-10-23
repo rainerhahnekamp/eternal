@@ -3,8 +3,8 @@ import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { BasicData } from './basic/basic.component';
-import { DetailData } from './detail/detail.component';
-import { InterestsData } from './interests/interests.component';
+import { DetailData } from './detail.component';
+import { InterestsData } from './interests.component';
 
 interface SignUpData {
   basic: BasicData;
