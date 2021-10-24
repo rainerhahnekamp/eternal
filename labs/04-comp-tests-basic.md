@@ -121,7 +121,6 @@ it('should fail on no input', fakeAsync(() => {
   fixture.detectChanges();
   const lookupResult = fixture.debugElement.query(By.css('[data-test=lookup-result]'))
     .nativeElement as HTMLElement;
-  expect(lookupResult.textContent).toContain('Address not found');
 }));
 ```
 
