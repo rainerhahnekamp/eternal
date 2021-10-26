@@ -1,16 +1,16 @@
-- [1. Nested Components - Stubs](#1-nested-components---stubs)
-- [2. Nested Components - Mocked](#2-nested-components---mocked)
-- [3. TestBed Factory method](#3-testbed-factory-method)
-- [4. Test Harnesses](#4-test-harnesses)
-- [5. Reusing Material Harnesses](#5-reusing-material-harnesses)
-- [6: Harness with multiple elements](#6-harness-with-multiple-elements)
+- [1. TestBed Factory method](#1-testbed-factory-method)
+- [2. Test Harnesses](#2-test-harnesses)
+- [3. Reusing Material Harnesses](#3-reusing-material-harnesses)
+- [4: Harness with multiple elements](#4-harness-with-multiple-elements)
+- [5. Bonus: Nested Components - Stubs](#5-bonus-nested-components---stubs)
+- [6. Bonus: Nested Components - Mocked](#6-bonus-nested-components---mocked)
 - [7. Bonus: Pipe Testing with Spectator](#7-bonus-pipe-testing-with-spectator)
 - [8. Bonus: Directive Testing with Spectator](#8-bonus-directive-testing-with-spectator)
 - [9. Bonus: Verify multiple input change](#9-bonus-verify-multiple-input-change)
 
-# 1. Nested Components - Stubs
+# 1. TestBed Factory method
 
-Let's pop up the request information screen. We will enhance the input and submit button visually with Angular Material.
+Let's pop up the request information screen. We will visually enhance the input and submit button with Angular Material.
 
 1. Replace the form fields (everything inside the form tag) in `request-info.component.html` with the following.
 
@@ -26,9 +26,9 @@ Let's pop up the request information screen. We will enhance the input and submi
 <button color="primary" data-test="btn-search" mat-raised-button type="submit">Send</button>
 ```
 
-1. Also make sure that `MatButtonModule`, `MatFormFieldModule`, `MatInputModule`, and `MatIconModule` are imported in the `RequestInfoComponentModule`.
+2. Also make sure that `MatButtonModule`, `MatFormFieldModule`, `MatInputModule`, and `MatIconModule` are imported in the `RequestInfoComponentModule`.
 
-2. Open **holidays/request-info/request-info.component.temp.spec.ts** and add `skip` to the `describe` command. It should read:
+3. Open **holidays/request-info/request-info.component.temp.spec.ts** and add `skip` to the `describe` command. It should read:
 
 ```typescript
 describe.skip('RequestInfo Component Temporary', () => {
@@ -36,9 +36,13 @@ describe.skip('RequestInfo Component Temporary', () => {
 });
 ```
 
-4. Add a unit test with the prefix `only`.
+We would have to refactor the configuration of the TestModule for all our other unit tests. To avoid high cohesion, we did not use a common setup function, i.e. `beforeEach`. Instead, we will provide a customisable factory method for the test's module configuration.
 
-**holidays/request-info/request-info.component.spec.ts**
+Remove the `only` commands so that all tests in **request-info.component.spec.ts** are run.
+
+Apply the newly created factory method the **should find an address** test.
+
+4. Create a new method inside **request-info.component.spec.ts**.
 
 ```typescript
 const noMaterialCheck = {
@@ -46,76 +50,6 @@ const noMaterialCheck = {
   useValue: false
 };
 
-it.only('should mock components', () => {
-  // tslint:disable-next-line:component-selector
-  @Component({ selector: 'mat-form-field', template: '' })
-  class MatFormField {}
-
-  // tslint:disable-next-line:component-selector
-  @Component({ selector: 'mat-hint', template: '' })
-  class MatHint {}
-
-  // tslint:disable-next-line:component-selector
-  @Component({ selector: 'mat-icon', template: '' })
-  class MatIcon {}
-
-  // tslint:disable-next-line:component-selector
-  @Component({ selector: 'mat-label', template: '' })
-  class MatLabel {}
-
-  const fixture = TestBed.configureTestingModule({
-    declarations: [RequestInfoComponent, MatFormField, MatHint, MatIcon, MatLabel],
-    imports: [ReactiveFormsModule],
-    providers: [{ provide: AddressLookuper, useValue: null }, noMaterialCheck]
-  }).createComponent(RequestInfoComponent);
-
-  fixture.detectChanges();
-});
-```
-
-To verify that the test turns red, don't add one of the components to the `declarations` property.
-
-# 2. Nested Components - Mocked
-
-As in the first exercise, but this team use the method `MockComponent(ComponentClass)` from `ng-mocks` in the `declarations` property of the `TestingModule`.
-
-<details>
-<summary>Show Solution</summary>
-<p>
-
-```typescript
-it.only('should mock components with ng-mocks', () => {
-  const fixture = TestBed.configureTestingModule({
-    declarations: [
-      RequestInfoComponent,
-      MockComponent(MatFormField),
-      MockComponent(MatHint),
-      MockComponent(MatIcon),
-      MockComponent(MatLabel)
-    ],
-    imports: [ReactiveFormsModule],
-    providers: [{ provide: AddressLookuper, useValue: null }, noMaterialCheck]
-  }).createComponent(RequestInfoComponent);
-
-  fixture.detectChanges();
-  expect(true).toBe(true);
-});
-```
-
-</p>
-</details>
-
-# 3. TestBed Factory method
-
-We would have to refactor the configuration of the TestModule for all our other unit tests. To avoid high cohesion, we did not use a common setup function, i.e. `beforeEach`. Instead, we will provide a customisable factory method for the test's module configuration.
-
-Remove the `only` commands so that all tests in **request-info.component.spec.ts** are run.
-
-Apply the newly created factory method the **should find an address** test.
-
-1. Create a new method inside **request-info.component.spec.ts**.
-
-```typescript
 const setup = (config: TestModuleMetadata = {}) => {
   const lookupMock = jest.fn<Observable<boolean>, [string]>();
   const defaultConfig: TestModuleMetadata = {
@@ -177,7 +111,7 @@ it('should find an address', fakeAsync(() => {
 </p>
 </details>
 
-# 4. Test Harnesses
+# 2. Test Harnesses
 
 Create a harness for the address component.
 
@@ -247,7 +181,7 @@ await harness.search();
 </p>
 </details>
 
-# 5. Reusing Material Harnesses
+# 3. Reusing Material Harnesses
 
 Our harness can access its child components also via harnesses, if they provide them. As a matter of fact, we are using Angular Material which provides full support.
 
@@ -291,7 +225,7 @@ export class RequestInfoComponentHarness extends ComponentHarness {
 </p>
 </details>
 
-# 6: Harness with multiple elements
+# 4: Harness with multiple elements
 
 Add a further button with type `button` in the request-info's template. It must be BEFORE the submit button. Verify that the **should find an adresss** fails.
 
@@ -302,6 +236,72 @@ Upgrade the `getButton` method in the harness so that it find the right one:
     MatButtonHarness.with({ selector: '[data-test=btn-search]' })
   );
 ```
+
+# 5. Bonus: Nested Components - Stubs
+
+4. Add following unit test.
+
+**holidays/request-info/request-info.component.spec.ts**
+
+```typescript
+it('should mock components', () => {
+  // tslint:disable-next-line:component-selector
+  @Component({ selector: 'mat-form-field', template: '' })
+  class MatFormField {}
+
+  // tslint:disable-next-line:component-selector
+  @Component({ selector: 'mat-hint', template: '' })
+  class MatHint {}
+
+  // tslint:disable-next-line:component-selector
+  @Component({ selector: 'mat-icon', template: '' })
+  class MatIcon {}
+
+  // tslint:disable-next-line:component-selector
+  @Component({ selector: 'mat-label', template: '' })
+  class MatLabel {}
+
+  const fixture = TestBed.configureTestingModule({
+    declarations: [RequestInfoComponent, MatFormField, MatHint, MatIcon, MatLabel],
+    imports: [ReactiveFormsModule],
+    providers: [{ provide: AddressLookuper, useValue: null }, noMaterialCheck]
+  }).createComponent(RequestInfoComponent);
+
+  fixture.detectChanges();
+});
+```
+
+To verify that the test turns red, don't add one of the components to the `declarations` property.
+
+# 6. Bonus: Nested Components - Mocked
+
+As in the first exercise, but this team use the method `MockComponent(ComponentClass)` from `ng-mocks` in the `declarations` property of the `TestingModule`.
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+```typescript
+it('should mock components with ng-mocks', () => {
+  const fixture = TestBed.configureTestingModule({
+    declarations: [
+      RequestInfoComponent,
+      MockComponent(MatFormField),
+      MockComponent(MatHint),
+      MockComponent(MatIcon),
+      MockComponent(MatLabel)
+    ],
+    imports: [ReactiveFormsModule],
+    providers: [{ provide: AddressLookuper, useValue: null }, noMaterialCheck]
+  }).createComponent(RequestInfoComponent);
+
+  fixture.detectChanges();
+  expect(true).toBe(true);
+});
+```
+
+</p>
+</details>
 
 # 7. Bonus: Pipe Testing with Spectator
 
