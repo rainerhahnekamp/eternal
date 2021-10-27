@@ -11,7 +11,7 @@ import { asyncScheduler, Observable, scheduled } from 'rxjs';
 import { AddressLookuper } from '../../shared/address-lookuper.service';
 import { assertType } from '../../shared/assert-type';
 import { RequestInfoComponent } from './request-info.component';
-import { RequestInfoComponentHarness } from './request-info.component.harnes';
+import { RequestInfoComponentHarness } from './request-info.component.harness';
 import { RequestInfoComponentModule } from './request-info.component.module';
 
 describe('Request Info Component', () => {
