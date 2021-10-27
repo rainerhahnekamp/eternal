@@ -96,7 +96,7 @@
     "@types/puppeteer": "^5.4.4",
     "@typescript-eslint/eslint-plugin": "~4.31.1",
     "@typescript-eslint/parser": "~4.31.1",
-    "cypress": "^8.6.0",
+    "cypress": "^8.7.0",
     "cypress-pipe": "^2.0.0",
     "cypress-plugin-snapshots": "^1.4.4",
     "date-fns": "^2.25.0",
