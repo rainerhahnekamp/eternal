@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, NgModule, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CustomerActions } from '../+state/customer.actions';
 import { fromCustomer } from '../+state/customer.selectors';
@@ -24,3 +28,10 @@ export class CustomersComponent implements OnInit {
     this.store.dispatch(CustomerActions.nextPage());
   }
 }
+
+@NgModule({
+  declarations: [CustomersComponent],
+  exports: [CustomersComponent],
+  imports: [CommonModule, MatButtonModule, MatIconModule, RouterModule]
+})
+export class CustomersComponentModule {}

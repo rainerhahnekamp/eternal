@@ -1,8 +1,8 @@
 set -e
 
-git  checkout 01-setup
+git checkout master
 
-branches=(01-setup 02-unit-tests-a 03-unit-tests-b 04-unit-tests-rxjs 05-comp-tests 06-comp-tests-material 07-comp-tests-harnesses 08-ngrx-tests 09-visual-regression 10-storybook 11-e2e-basic 12-e2e-advanced)
+branches=(master 01-unit-tests-basic 02-unit-tests-advanced 03-rxjs-marbles 04-ngrx 05-comp-tests-basic 06-comp-tests-advanced 07-integration-tests 08-e2e-tests-basic 09-e2e-tests-advanced 10-vr-storybook)
 previous=
 current=
 
@@ -22,4 +22,4 @@ done
 git checkout $branch
 git merge $current $branch -m merge
 
-git checkout 01-setup
+git checkout master

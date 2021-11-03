@@ -1,20 +1,12 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { sharedFeatureKey, SharedReducer } from './shared.reducer';
+import { createSelector } from '@ngrx/store';
+import { sharedFeature } from './shared.reducer';
 
-const featureSelector = createFeatureSelector<SharedReducer>(sharedFeatureKey);
-
-const selectUser = createSelector(featureSelector, ({ user }) => user);
-const selectLoaded = createSelector(featureSelector, ({ loaded }) => loaded);
+const { selectActiveHttpRequest, selectUser, selectLoaded } = sharedFeature;
 
 const selectSignedIn = createSelector(
   selectUser,
   selectLoaded,
   (user, loaded) => loaded && !user?.anonymous
-);
-
-const selectActiveHttpRequest = createSelector(
-  featureSelector,
-  ({ activeHttpRequest }) => activeHttpRequest
 );
 
 export const fromShared = {

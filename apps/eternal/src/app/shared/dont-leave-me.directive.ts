@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, NgModule } from '@angular/core';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
@@ -21,3 +21,9 @@ export class DontLeaveMeDirective {
     }
   }
 }
+
+@NgModule({
+  declarations: [DontLeaveMeDirective],
+  exports: [DontLeaveMeDirective]
+})
+export class DontLeaveMeDirectiveModule {}

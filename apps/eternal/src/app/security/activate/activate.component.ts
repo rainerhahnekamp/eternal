@@ -7,8 +7,7 @@ import { formly } from 'ngx-formly-helpers';
 
 @Component({
   selector: 'app-activate',
-  templateUrl: './activate.component.html',
-  styleUrls: ['./activate.component.scss']
+  templateUrl: './activate.component.html'
 })
 export class ActivateComponent {
   formGroup = new FormGroup({});

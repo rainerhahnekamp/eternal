@@ -1,0 +1,17 @@
+<h2>{{ title }}</h2>
+<p>Please fill in your address and below and we will send you a brochure with more information.</p>
+<form (ngSubmit)="search()" [formGroup]="formGroup">
+  <p>
+    <mat-form-field>
+      <mat-label>Address</mat-label>
+      <input data-test="address" formControlName="address" matInput />
+      <mat-icon matSuffix>location_on</mat-icon>
+      <mat-hint>Please enter your address</mat-hint>
+    </mat-form-field>
+  </p>
+  <button mat-raised-button type="button">Cancel</button>
+  <button color="primary" data-test="btn-search" mat-raised-button type="submit">Send</button>
+</form>
+<p *ngIf="lookupResult$ | async as lookupResult" data-test="lookup-result">
+  {{ lookupResult }}
+</p>

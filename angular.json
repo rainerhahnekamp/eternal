@@ -161,6 +161,9 @@
             "production": {
               "devServerTarget": "eternal:serve:production"
             },
+            "dev-local": {
+              "devServerTarget": "eternal:serve:dev-local"
+            },
             "non-mock": {
               "devServerTarget": "eternal:serve:non-mock"
             },

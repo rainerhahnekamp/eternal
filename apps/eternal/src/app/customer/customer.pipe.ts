@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { NgModule, Pipe, PipeTransform } from '@angular/core';
 import { Customer } from './customer';
 
 @Pipe({
@@ -12,3 +12,9 @@ export class CustomerPipe implements PipeTransform {
     return `${customer.name}, ${customer.firstname}`;
   }
 }
+
+@NgModule({
+  declarations: [CustomerPipe],
+  exports: [CustomerPipe]
+})
+export class CustomerPipeModule {}

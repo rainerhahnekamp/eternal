@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 import { UserService } from '../../shared/user.service';
 
 @Component({
@@ -15,3 +18,10 @@ export class HeaderComponent {
     this.userService.signOut();
   }
 }
+
+@NgModule({
+  imports: [CommonModule, MatButtonModule, RouterModule],
+  declarations: [HeaderComponent],
+  exports: [HeaderComponent]
+})
+export class HeaderComponentModule {}
