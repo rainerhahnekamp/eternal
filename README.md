@@ -1,19 +1,24 @@
 # Angular Workshop Testing
 
+Fork the Projekt
+
 ## DATEV-VDI
 
-First unzip `\\bk.datev.de\dfs\COO\CCD\QM\Public\AngularWorkshop\cypress.zip` into `%localAppdata%\Cypress\Cache\7.7.0`.
-
-## Starting
+### Starting
 
 After cloning the project and using
 ```
  set PUPPETEER_EXECUTABLE_PATH=C:\Program Files\Google\Chrome\Application\chrome.exe
  set PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
- npm install
+ set PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
+ set CYPRESS_DOWNLOAD_MIRROR=https://cypriote.pcfpub.dev.datev.de
+ set CYPRESS_DOWNLOAD_USE_CA=1
+ npm install --force
+ cypress open
 ```
 for downloading the dependencies, you can
 start the Angular application via `npm run start:dev-local`.
+if there are problems concerning certificates then be sure that %appdata%\npm/etc/cacert.txt contains all needed certificates and that CYPRESS_DOWNLOAD_USE_CA is not misspelled .  
 
 ---
 
@@ -32,12 +37,12 @@ it can't start via Run configuration "EternalApplication".
 To verify everything is working, you can run following commands:
 
 - Unit Tests: `npm run test`
-  Tests with Puppeteer: `npm run test:vr`
+  Tests with Puppeteer: `npm run test:vr` (--> Puppeteer doesnt work at Datev right now, because the currently supported chrome version of puppeteer is 93 and the installed chrome is version 95)
 - Storybook: `npm run storybook`
+- Playwright: `npm run test:playwright`
 - Cypress: `npm run e2e`
 
 ### E2E Tests in den Übungen
 
-Please start the E2E Tests for the Lab section with: e2e:dev-local
-On BK2.0 VDIs please use the Browser Elektron, the browsers Firefox and Chrome are currently not working on BK2.0 VDIs. (We currently fixing this)
+Please start the E2E Tests for the Lab section with: e2e:dev-local.
 
