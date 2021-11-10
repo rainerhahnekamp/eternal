@@ -6,14 +6,10 @@ Fork the Projekt
 
 ### Starting
 
-After cloning the project and using
+After cloning the project and executing the file "environment.bat" in the IntelliJ Terminal, use:
+
 ```
- set PUPPETEER_EXECUTABLE_PATH=C:\Program Files\Google\Chrome\Application\chrome.exe
- set PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
- set PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true
- set CYPRESS_DOWNLOAD_MIRROR=https://cypriote.pcfpub.dev.datev.de
- set CYPRESS_DOWNLOAD_USE_CA=1
- npm install --force
+ npm install
  cypress open
 ```
 for downloading the dependencies, you can
