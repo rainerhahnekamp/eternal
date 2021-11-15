@@ -84,6 +84,9 @@
             },
             "non-mock": {
               "browserTarget": "eternal:build:non-mock"
+            },
+            "dev-local": {
+              "browserTarget": "eternal:build:dev-local"
             }
           },
           "defaultConfiguration": "development"

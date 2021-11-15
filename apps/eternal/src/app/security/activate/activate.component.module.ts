@@ -6,6 +6,6 @@ import { ActivateComponent } from './activate.component';
 @NgModule({
   declarations: [ActivateComponent],
   exports: [ActivateComponent],
-  imports: [ReactiveFormsModule, FormlyModule]
+  imports: [CommonModule, ReactiveFormsModule, FormlyModule]
 })
 export class ActivateComponentModule {}

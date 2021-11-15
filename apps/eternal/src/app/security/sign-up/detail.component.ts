@@ -1,6 +1,8 @@
 import { Component, EventEmitter, NgModule, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { formly } from 'ngx-formly-helpers';
 import { countries } from '../../customer/countries';
 import { SignUpForm } from './sign-up-form';
@@ -55,6 +57,6 @@ export class DetailComponent implements SignUpForm {
 @NgModule({
   declarations: [DetailComponent],
   exports: [DetailComponent],
-  imports: [ReactiveFormsModule, FormlyModule]
+  imports: [ReactiveFormsModule, MatNativeDateModule, FormlyModule, FormlyMatDatepickerModule]
 })
 export class DetailComponentModule {}

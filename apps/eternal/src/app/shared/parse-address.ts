@@ -2,7 +2,7 @@ import { Address } from './address';
 
 export function parseAddress(query: string): Address {
   const shortPattern = /^([\w\s]+)\s(\d+)$/;
-  const longPattern = /^([\w\s]+)\s(\d+),\s(\d+)\s(\w+)$/;
+  const longPattern = /^([\w\s]+)\s(\d+),\s(\d+)\s([\w\s]+)$/;
   let match: string[] | null = query.match(shortPattern);
 
   if (match) {

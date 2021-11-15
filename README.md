@@ -40,36 +40,38 @@ application build from scratch, following commands should be executed:
 npx ng add @angular/material
 
 # NgRx
-yarn add @ngrx/store @ngrx/effects @ngrx/store-devtools
+pnpm add @ngrx/store @ngrx/effects @ngrx/store-devtools
 
 # Forms
-yarn add @ngx-formly/core @ngx-formly/material ngx-formly-helpers 
+pnpm add @ngx-formly/core @ngx-formly/material ngx-formly-helpers
 
 # Utility libs
-yarn add lodash-es date-fns
+pnpm add lodash-es date-fns
 
 # Tailwind
-yarn add -D tailwindcss postcss
+pnpm add -D tailwindcss postcss
 
 # Auto-Spies
-yarn add -D jest-auto-spies
+pnpm add -D jest-auto-spies
 
 # RxJs Marbles
-yarn add -D rxjs-marbles
+pnpm add -D rxjs-marbles
 
 # Testing Boilerplate
-yarn add -D @ngneat/spectator ng-mocks ngx-build-plus @types/lodash-es
+pnpm add -D @ngneat/spectator ng-mocks ngx-build-plus @types/lodash-es @testing-library/angular
 
 # Component Harnesses in Cypress
-yarn add -D @jscutlery/cypress-harness cypress-pipe
+pnpm add -D @jscutlery/cypress-harness cypress-pipe
 
 # Visual Regression - Puppeteer
-yarn add -D jest-image-snapshot jest-puppeteer puppeteer @types/expect-puppeteer @types/jest-environment-puppeteer @types/jest-image-snapshot @types/puppeteer
+pnpm add -D jest-image-snapshot jest-puppeteer puppeteer @types/expect-puppeteer @types/jest-environment-puppeteer @types/jest-image-snapshot @types/puppeteer
 
 # Enable Storybook
 npx ng g @nrwl/angular:storybook-configuration eternal
 
 # Visual Regression - Cypress
-yarn add cypress-plugin-snapshots 
+pnpm add -D cypress-plugin-snapshots
 
+# Playwright
+pnpm add -D @playwright/test
 ```
