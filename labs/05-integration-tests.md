@@ -27,8 +27,6 @@ it('should only mock the HttpClient', async () => {
   await harness.writeAddress('Domgasse 5');
   await harness.search();
 
-  controller.expectOne((req) => !!req.url.match(/nominatim/)).flush([true]);
-
   expect(await harness.getResult()).toBe('Brochure sent');
 });
 ```

@@ -408,7 +408,7 @@ it('should use the Test-API', () => {
 
 Write an intelligent test that adds a news customer. For the assertion part, the test should navigate through the pages until the customer is found. Afterwards, it should remove the customer and verify that it has really gone.
 
-That test should replace the existing "add add a new customer" test.
+That test should replace the existing "add a new customer" test.
 
 **Note**: That is very advanced exercise and not for beginners. It is **highly** recommended that you copy the solution and try to understand it.
 
