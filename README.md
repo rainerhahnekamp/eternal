@@ -12,9 +12,10 @@ After cloning the project and executing the file "environment.bat" in the Intell
  npm install
  cypress open
 ```
+
 for downloading the dependencies, you can
-start the Angular application via `npm run start:dev-local`.
-if there are problems concerning certificates then be sure that %appdata%\npm/etc/cacert.txt contains all needed certificates and that CYPRESS_DOWNLOAD_USE_CA is not misspelled .  
+start the Angular application via `npm run start`.
+if there are problems concerning certificates then be sure that %appdata%\npm/etc/cacert.txt contains all needed certificates and that CYPRESS_DOWNLOAD_USE_CA is not misspelled .
 
 ---
 
@@ -41,4 +42,3 @@ To verify everything is working, you can run following commands:
 ### E2E Tests in den Übungen
 
 Please start the E2E Tests for the Lab section with: e2e:dev-local.
-

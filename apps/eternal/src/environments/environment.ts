@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  baseUrl: 'https://api.eternal-holidays.net',
+  baseUrl: 'http://localhost:8080',
   mockHttp: true,
   production: false
 };
