@@ -1,11 +1,7 @@
 import { parseAddress } from './parse-address';
 
 export class AddressLookuper {
-  addresses: string[];
-
-  constructor(addressesSupplier: () => string[]) {
-    this.addresses = addressesSupplier();
-  }
+  constructor(private addresses: string[]) {}
 
   lookup(query: string): boolean {
     parseAddress(query);

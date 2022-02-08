@@ -19,13 +19,4 @@ describe('parseAddress', () => {
   it('should throw an error if no street number is given', () => {
     expect(() => parseAddress('Domgasse')).toThrowError('Could not parse address. Invalid format.');
   });
-
-  it('should parse a city with multiple words', () => {
-    expect(parseAddress('Domgasse 5, 2700 Wiener Neustadt')).toEqual({
-      street: 'Domgasse',
-      streetNumber: '5',
-      zip: '2700',
-      city: 'Wiener Neustadt'
-    });
-  });
 });
