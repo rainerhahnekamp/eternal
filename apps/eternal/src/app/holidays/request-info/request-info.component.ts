@@ -5,8 +5,7 @@ import { map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-request-info',
-  templateUrl: './request-info.component.html',
-  styles: []
+  templateUrl: './request-info.component.html'
 })
 export class RequestInfoComponent implements OnInit {
   formGroup: FormGroup = this.formBuilder.group({

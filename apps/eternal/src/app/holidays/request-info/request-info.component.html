@@ -1,12 +1,9 @@
 <h2>{{ title }}</h2>
-<p>
-  Please fill in your address and below and we will send you a brochure with
-  more information.
-</p>
+<p>Please fill in your address and below and we will send you a brochure with more information.</p>
 <form (ngSubmit)="search()" [formGroup]="formGroup">
-  <input data-test="address" formControlName="address" placeholder="address" />
-  <button data-test="btn-search" type="submit">Send</button>
+  <input data-testId="address" formControlName="address" placeholder="address" />
+  <button data-testId="btn-search" type="submit">Send</button>
 </form>
-<p *ngIf="lookupResult$ | async as lookupResult" data-test="lookup-result">
+<p *ngIf="lookupResult$ | async as lookupResult" data-testId="lookup-result">
   {{ lookupResult }}
 </p>
