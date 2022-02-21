@@ -1,0 +1,3 @@
+[submodule "testing-labs"]
+	path = testing-labs
+	url = https://github.com/rainerhahnekamp/testing-labs.git
