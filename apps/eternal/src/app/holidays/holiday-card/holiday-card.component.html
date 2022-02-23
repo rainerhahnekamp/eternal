@@ -1,6 +1,6 @@
 <mat-card
   *ngIf="holiday"
-  [attr.data-testId]="'holiday-' + holiday.id"
+  [attr.data-testid]="'holiday-' + holiday.id"
   [ngClass]="{ 'sold-out': holiday.soldOut }"
   class="my-4 mx-4"
 >
@@ -19,7 +19,7 @@
     {{ holiday.description }}
   </mat-card-content>
   <mat-card-actions class="justify-evenly">
-    <a [routerLink]="['./request-info', holiday.id]" data-testId="btn-brochure" mat-raised-button>
+    <a [routerLink]="['./request-info', holiday.id]" data-testid="btn-brochure" mat-raised-button>
       Get a Brochure
     </a>
   </mat-card-actions>

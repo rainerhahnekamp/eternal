@@ -1,7 +1,7 @@
 declare namespace Cypress {
   interface Chainable<Subject> {
-    getByAttr(selector: string): Chainable<Element>;
+    getByAttr(selector: string): Chainable<JQuery<HTMLElement>>;
   }
 }
 
-Cypress.Commands.add('getByAttr', (selector) => cy.get(`[data-test=${selector}]`));
+Cypress.Commands.add('getByAttr', (selector: string) => cy.get(`[data-testid=${selector}]`));
