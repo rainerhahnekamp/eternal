@@ -3,13 +3,14 @@
   [attr.data-testid]="'holiday-' + holiday.id"
   [ngClass]="{ 'sold-out': holiday.soldOut }"
   class="my-4 mx-4"
+  eternalBlinker
 >
   <mat-card-header>
     <mat-card-title>{{ holiday.title }}</mat-card-title>
     <mat-card-subtitle class="h-8">{{ holiday.teaser }}</mat-card-subtitle>
   </mat-card-header>
   <figure>
-    <img [alt]="holiday.title" [src]="holiday.imageUrl" appDontLeaveMe class="max-w-none" />
+    <img [alt]="holiday.title" [src]="holiday.imageUrl" class="max-w-none" />
     <div class="badge-overlay">
       <span *ngIf="holiday.onSale" class="top-left badge">On Sale</span>
       <span *ngIf="holiday.soldOut" class="middle-full badge">Sold out</span>
