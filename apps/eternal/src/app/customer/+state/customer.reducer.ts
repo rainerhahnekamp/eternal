@@ -1,6 +1,6 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
-import { Customer } from '../customer';
-import { CustomerActions } from './customer.actions';
+import {createFeature, createReducer, on} from "@ngrx/store";
+import {Customer} from "../customer";
+import {CustomerActions} from "./customer.actions";
 
 export interface State {
   customers: Customer[];
@@ -15,7 +15,7 @@ export const initialState: State = {
 };
 
 export const customerFeature = createFeature({
-  name: 'customer',
+  name: 'customers',
   reducer: createReducer<State>(
     initialState,
     on(CustomerActions.load, (state) => ({ ...state, currentPage: 0 })),

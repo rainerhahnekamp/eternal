@@ -3,8 +3,8 @@ import { formly } from '../util/formly';
 class SignIn {
   signIn(email: string, password: string) {
     formly.fillIn({ email, password }, {}, 'app-sign-in');
-    cy.getByAttr('btn-sign-in-submit').click();
-    cy.getByAttr('sign-in-successful');
+    cy.testid('btn-sign-in-submit').click();
+    cy.testid('sign-in-successful');
   }
 }
 

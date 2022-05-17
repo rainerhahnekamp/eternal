@@ -1,0 +1,7 @@
+<h2>Newsletter</h2>
+<form (ngSubmit)="handleSubmit()" [formGroup]="formGroup">
+  <input data-testid="inp-email" formControlName="email" type="text" />
+  <button>Subscribe</button>
+</form>
+
+<p>{{ message }}</p>

@@ -1,6 +1,6 @@
 class Diary {
   verify() {
-    return cy.getByAttr('diary-header');
+    return cy.testid('diary-header');
   }
 }
 

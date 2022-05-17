@@ -1,5 +1,5 @@
 // playwright.config.ts
-import { devices, PlaywrightTestConfig } from '@playwright/test';
+import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   projects: [
@@ -7,11 +7,25 @@ const config: PlaywrightTestConfig = {
       name: 'Chrome Stable',
       use: {
         browserName: 'chromium',
-        channel: 'chrome',
-        launchOptions: {
-          executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
-        }
-
+        channel: 'chrome'
+      }
+    },
+    {
+      name: 'Desktop Safari',
+      use: {
+        browserName: 'webkit',
+        viewport: { width: 1200, height: 750 }
+      }
+    },
+    {
+      name: 'Mobile Chrome',
+      use: devices['Pixel 5']
+    },
+    {
+      name: 'Desktop Firefox',
+      use: {
+        browserName: 'firefox',
+        viewport: { width: 800, height: 600 }
       }
     }
   ]

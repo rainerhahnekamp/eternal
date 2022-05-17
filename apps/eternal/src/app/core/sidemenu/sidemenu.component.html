@@ -1,11 +1,11 @@
 <ul *ngIf="userService.loaded$ | async">
   <li>
-    <a data-test="btn-holidays" mat-raised-button routerLink="/holidays">Holidays</a>
+    <a data-testid="btn-holidays" mat-raised-button routerLink="/holidays">Holidays</a>
   </li>
   <li>
-    <a data-test="btn-customers" mat-raised-button routerLink="/customer">Customers</a>
+    <a data-testid="btn-customers" mat-raised-button routerLink="/customer">Customers</a>
   </li>
   <li *ngIf="userService.signedIn$ | async">
-    <a data-test="btn-diary" mat-raised-button routerLink="/diary">Diary</a>
+    <a data-testid="btn-diary" mat-raised-button routerLink="/diary">Diary</a>
   </li>
 </ul>

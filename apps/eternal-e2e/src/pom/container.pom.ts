@@ -1,18 +1,18 @@
 class Container {
   clickSignIn() {
-    return cy.getByAttr('btn-sign-in').click();
+    return cy.testid('btn-sign-in').click();
   }
 
   clickSignUp() {
-    return cy.getByAttr('btn-sign-up').click();
+    return cy.testid('btn-sign-up').click();
   }
 
   clickSignOut() {
-    return cy.getByAttr('btn-sign-out').click();
+    return cy.testid('btn-sign-out').click();
   }
 
   clickDiary() {
-    return cy.getByAttr('btn-diary').click();
+    return cy.testid('btn-diary').click();
   }
 }
 

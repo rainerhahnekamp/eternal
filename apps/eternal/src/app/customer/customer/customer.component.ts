@@ -23,10 +23,20 @@ export class CustomerComponent {
 
   constructor(private store: Store, private route: ActivatedRoute) {
     this.fields = [
-      formly.requiredText('firstname', 'Firstname'),
-      formly.requiredText('name', 'Name'),
-      formly.requiredSelect('country', 'Country', countries),
-      formly.requiredDate('birthdate', 'Birthdate')
+      formly.requiredText('firstname', 'Firstname', {
+        attributes: { 'data-testid': 'inp-firstname' }
+      }),
+      formly.requiredText('name', 'Name', { attributes: { 'data-testid': 'inp-name' } }),
+      (() => {
+        const fieldConfig = formly.requiredSelect('country', 'Country', countries);
+        if (fieldConfig.templateOptions) {
+          fieldConfig.templateOptions.attributes = { 'data-testid': 'sel-country' };
+        }
+        return fieldConfig;
+      })(),
+      formly.requiredDate('birthdate', 'Birthdate', {
+        attributes: { 'data-testid': 'date-birthdate' }
+      })
     ];
     this.store.dispatch(CustomerActions.load());
     if (this.route.snapshot.data.mode === 'new') {

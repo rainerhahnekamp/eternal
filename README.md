@@ -1,44 +1,77 @@
 # Angular Workshop Testing
 
-Fork the Projekt
+After cloning the project, run `yarn` for downloading the dependencies. Verify
+that the applications starts with `npm run start`.
 
-## DATEV-VDI
-
-### Starting
-
-After cloning the project and executing the file "environment.bat" in the IntelliJ Terminal, use:
-
-```
- npm install
- cypress open
-```
-
-for downloading the dependencies, you can
-start the Angular application via `npm run start`.
-if there are problems concerning certificates then be sure that %appdata%\npm/etc/cacert.txt contains all needed certificates and that CYPRESS_DOWNLOAD_USE_CA is not misspelled .
+`https://api.eternal-holidays.net` acts as the default backend.
 
 ---
 
-### Local Backend
-
-You can run the backend also locally. It is written in Spring Boot and uses H2
-as database. The db file is located in `backend/db.mv.db`.
-
-In IntelliJ you can open the backend folder as a new project or right-click on the pom.xml file in the backend directory, and select 'Add as maven project' if
-it can't start via Run configuration "EternalApplication".
-
----
+If the backend is not reachable you can also run the backend locally (see below)
+.
 
 ### System Check
 
 To verify everything is working, you can run following commands:
 
 - Unit Tests: `npm run test`
-  Tests with Puppeteer: `npm run test:vr` (--> Puppeteer doesnt work at Datev right now, because the currently supported chrome version of puppeteer is 93 and the installed chrome is version 95)
-- Storybook: `npm run storybook`
-- Playwright: `npm run test:playwright`
-- Cypress: `npm run e2e`
+  Tests with Puppeteer: `npm run test:vr`
+- Storybook: `npm run storybook` (Storybook should start
+  on http://localhost:4400)
+- Cypress: `npm run e2e:watch`
+- optional: Backend (see notes below): `mvnw spring-boot:run -pl backend`
 
-### E2E Tests in den Übungen
+### Local Backend
 
-Please start the E2E Tests for the Lab section with: e2e:dev-local.
+You can run the backend also locally. It is written in Spring Boot and uses H2
+as database. The db file is located in `backend/db.mv.db`.
+
+Execute `./mvnw spring-boot:run -pl backend`. You require at least Java 1.8.
+
+You also have to replace the `baseUrl` property in `environment.ts` or just
+run `npm run start:dev-local`.
+
+### Full Rewrite from Scratch
+
+If you have the desire to fully rebuild the system from scratch with an Angular
+application build from scratch, following commands should be executed:
+
+```bash
+npx ng add @angular/material
+
+# NgRx
+yarn add @ngrx/store @ngrx/effects @ngrx/store-devtools
+
+# Forms
+yarn add @ngx-formly/core @ngx-formly/material ngx-formly-helpers
+
+# Utility libs
+yarn add lodash-es date-fns
+
+# Tailwind
+yarn add -D tailwindcss postcss
+
+# Auto-Spies
+yarn add -D jest-auto-spies
+
+# RxJs Marbles
+yarn add -D rxjs-marbles
+
+# Testing Boilerplate
+yarn add -D @ngneat/spectator ng-mocks ngx-build-plus @types/lodash-es @testing-library/angular
+
+# Component Harnesses in Cypress
+yarn add -D @jscutlery/cypress-harness cypress-pipe
+
+# Visual Regression - Puppeteer
+yarn add -D jest-image-snapshot jest-puppeteer puppeteer @types/expect-puppeteer @types/jest-environment-puppeteer @types/jest-image-snapshot @types/puppeteer
+
+# Enable Storybook
+npx ng g @nrwl/angular:storybook-configuration eternal
+
+# Visual Regression - Cypress
+yarn add -D cypress-plugin-snapshots
+
+# Playwright
+yarn add -D @playwright/test
+```

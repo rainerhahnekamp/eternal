@@ -4,7 +4,7 @@ import { formly } from '../util/formly';
 
 class SignUp {
   selectUserType(userType: 'customer' | 'agent') {
-    return cy.getByAttr(`user-type-${userType}`).click();
+    return cy.testid(`user-type-${userType}`).click();
   }
 
   fillInDetail(detailData: DetailData) {
@@ -16,7 +16,7 @@ class SignUp {
       },
       'app-sign-up-detail'
     );
-    return cy.getByAttr('btn-sign-up-detail-next').click();
+    return cy.testid('btn-sign-up-detail-next').click();
   }
 
   fillInInterests(interestsData: InterestsData) {
@@ -30,7 +30,7 @@ class SignUp {
       },
       'app-sign-up-interests'
     );
-    return cy.getByAttr('btn-sign-up-interests-next').click();
+    return cy.testid('btn-sign-up-interests-next').click();
   }
 
   acceptTerms() {
@@ -39,7 +39,7 @@ class SignUp {
   }
 
   finish() {
-    cy.getByAttr('btn-sign-up-finish').click();
+    cy.testid('btn-sign-up-finish').click();
   }
 }
 

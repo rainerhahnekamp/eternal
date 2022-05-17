@@ -23,6 +23,12 @@
           },
           "configurations": {
             "non-mock": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
               "fileReplacements": [
                 {
                   "replace": "apps/eternal/src/environments/environment.ts",

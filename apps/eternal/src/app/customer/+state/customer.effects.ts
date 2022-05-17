@@ -1,18 +1,18 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { concatMap, map, switchMap, tap } from 'rxjs/operators';
-import { Customer } from '../customer';
-import { CustomerActions } from './customer.actions';
-import { fromCustomer } from './customer.selectors';
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {Injectable} from "@angular/core";
+import {Router} from "@angular/router";
+import {Actions, concatLatestFrom, createEffect, ofType} from "@ngrx/effects";
+import {Store} from "@ngrx/store";
+import {Observable} from "rxjs";
+import {concatMap, map, switchMap, tap} from "rxjs/operators";
+import {Customer} from "../customer";
+import {CustomerActions} from "./customer.actions";
+import {fromCustomer} from "./customer.selectors";
 
 @Injectable()
 export class CustomerEffects {
   private pageSize = '10';
-  private url = '/customer';
+  private url = '/customers';
   add$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CustomerActions.add),

@@ -1,8 +1,7 @@
-import { parseAddress } from './parse-address';
+import {parseAddress} from "./parse-address";
 
 export class AddressLookuper {
-  addresses: string[];
-
+  addresses :string[];
   constructor(addressesSupplier: () => string[]) {
     this.addresses = addressesSupplier();
   }
