@@ -17,6 +17,7 @@ import { APP_ROUTES } from './app.routes';
 import { BaseUrlInterceptor } from './core/base-url.interceptor';
 import { LoadingInterceptor } from './core/loading.interceptor';
 import { SharedModule } from './shared/shared.module';
+import { NewsletterComponentModule } from './newsletter/newsletter.component.module';
 
 registerLocaleData(localeDe, 'de-AT');
 
@@ -31,6 +32,7 @@ registerLocaleData(localeDe, 'de-AT');
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument(),
     SharedModule,
+    NewsletterComponentModule,
     FormlyModule.forRoot({
       extras: { lazyRender: true },
       validationMessages: [

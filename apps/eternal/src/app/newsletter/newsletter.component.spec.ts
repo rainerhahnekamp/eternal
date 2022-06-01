@@ -1,65 +1,70 @@
-import { ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
-
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NewsletterComponent } from './newsletter.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { createSpyFromClass, Spy } from 'jest-auto-spies';
+import { HttpClient } from '@angular/common/http';
+import { NewsletterService } from './newsletter.service';
+import { By } from '@angular/platform-browser';
+import { asyncScheduler, scheduled } from 'rxjs';
 
-describe('NewsletterComponent', () => {
-  let component: NewsletterComponent;
+describe('Newsletter Component', () => {
   let fixture: ComponentFixture<NewsletterComponent>;
+  let component: NewsletterComponent;
+  const getButton = () =>
+    fixture.debugElement.query(By.css('[data-testid=btn-subscribe]'))
+      .nativeElement as HTMLButtonElement;
+  const getInput = () =>
+    fixture.debugElement.query(By.css('[data-testid=inp-email]')).nativeElement as HTMLInputElement;
+  const getInputName = () =>
+    fixture.debugElement.query(By.css('[data-testid=inp-name]')).nativeElement as HTMLInputElement;
+  const getMessage = () =>
+    fixture.debugElement.query(By.css('[data-testid=p-message]'))
+      .nativeElement as HTMLParagraphElement;
+  let newsletterServiceSpy: Spy<NewsletterService>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
+    newsletterServiceSpy = createSpyFromClass(NewsletterService);
+    const httpClient = createSpyFromClass(HttpClient);
+    fixture = TestBed.configureTestingModule({
       declarations: [NewsletterComponent],
       imports: [ReactiveFormsModule],
-      providers: [{ provide: ComponentFixtureAutoDetect, useValue: true }]
-    });
-    fixture = TestBed.createComponent(NewsletterComponent);
+      providers: [{ provide: NewsletterService, useValue: newsletterServiceSpy }]
+    }).createComponent(NewsletterComponent);
+    fixture.detectChanges();
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should instantiate', () => {
+    expect(component).toBeInstanceOf(NewsletterComponent);
   });
 
-  it('should subscribe without DOM interaction', () => {
-    component.formGroup.setValue({ email: 'user@host.com' });
-    component.handleSubmit();
-    expect(component.message).toBe('Thank you for your subscription');
-  });
-
-  it('should not subscribe without DOM interaction', () => {
+  it('should test invalid submit', () => {
     component.handleSubmit();
     expect(component.message).toBe('Please provide an email');
   });
 
-  it('should not subscribe with DOM interaction', () => {
-    fixture.debugElement.query(By.css('button')).nativeElement.click();
-    const messageBox = fixture.debugElement.query(By.css('p'))
-      .nativeElement as HTMLParagraphElement;
-    expect(messageBox.textContent).toBe('Please provide an email');
-  });
+  it('should test invalid submit via DOM', fakeAsync(() => {
+    const button = fixture.debugElement.query(By.css('[data-testid=btn-subscribe]'))
+      .nativeElement as HTMLButtonElement;
+    // fixture.autoDetectChanges(true);
 
-  it('should subscribe with DOM interaction', () => {
-    const input = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
-    input.value = 'user@host.com';
-    input.dispatchEvent(new CustomEvent('input'));
-
-    fixture.debugElement.query(By.css('button')).nativeElement.click();
-    const messageBox = fixture.debugElement.query(By.css('p'))
-      .nativeElement as HTMLParagraphElement;
-    expect(messageBox.textContent).toBe('Thank you for your subscription');
-  });
-
-  it('should subscribe in mixed mode', () => {
-    const input = fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
-    input.value = 'user@host.com';
-    input.dispatchEvent(new CustomEvent('input'));
-
-    component.handleSubmit();
+    button.click();
+    tick();
     fixture.detectChanges();
-    const messageBox = fixture.debugElement.query(By.css('p'))
+    const p = fixture.debugElement.query(By.css('[data-testid=p-message]'))
       .nativeElement as HTMLParagraphElement;
-    expect(messageBox.textContent).toBe('Thank you for your subscription');
-  });
+    expect(p.textContent).toBe('Please provide an email');
+  }));
+
+  it('should subscribe successfully via DOM', fakeAsync(() => {
+    newsletterServiceSpy.send.mockReturnValue(scheduled([true], asyncScheduler));
+    const input = getInput();
+    input.value = 'user@host.com';
+    input.dispatchEvent(new CustomEvent('input'));
+
+    getButton().click();
+    tick();
+    fixture.detectChanges();
+    expect(getMessage().textContent).toBe('Thank you for your subscription');
+  }));
 });

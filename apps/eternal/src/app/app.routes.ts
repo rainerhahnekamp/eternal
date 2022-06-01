@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { UserLoaderGuard } from './core/user-loader.guard';
 import { HomeComponent } from './home.component';
+import { NewsletterComponent } from './newsletter/newsletter.component';
 
 export const APP_ROUTES: Routes = [
   {
@@ -12,6 +13,7 @@ export const APP_ROUTES: Routes = [
         component: HomeComponent
       },
       { path: 'home', redirectTo: '' },
+      { path: 'newsletter', component: NewsletterComponent },
       {
         path: 'security',
         loadChildren: () => import('./security/security.module').then((m) => m.SecurityModule)
