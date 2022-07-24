@@ -1,19 +1,22 @@
-- [1. Component Test for Request Info](#1-component-test-for-request-info)
+- [1.Component/Integration Tests "Angular-natively"](#1componentintegration-tests-angular-natively)
+  - [1.1. Component Test](#11-component-test)
+  - [1.2. Integration Test](#12-integration-test)
 - [2. Spectator](#2-spectator)
   - [2.1 Setup TestingModule](#21-setup-testingmodule)
   - [2.2 Mocked AddressLookuper](#22-mocked-addresslookuper)
   - [2.3 Integration test](#23-integration-test)
-- [3. Harnesses](#3-harnesses)
-  - [3.1 RequestInfoComponentHarness](#31-requestinfocomponentharness)
-  - [3.2. Reusing Material Harnesses](#32-reusing-material-harnesses)
-  - [3.3: Harness with multiple elements](#33-harness-with-multiple-elements)
-- [4. Bonus: Holidays & Spectator](#4-bonus-holidays--spectator)
-- [5. Bonus: Directive Testing with Spectator](#5-bonus-directive-testing-with-spectator)
-- [6. Bonus: Verify multiple input change](#6-bonus-verify-multiple-input-change)
+- [3. Testing Library](#3-testing-library)
+  - [3.1. Setup](#31-setup)
+  - [3.2. Component Test](#32-component-test)
+  - [3.3. Integration Test](#33-integration-test)
+- [4. Harnesses](#4-harnesses)
+  - [4.1 RequestInfoComponentHarness](#41-requestinfocomponentharness)
+  - [4.2. Reusing Material Harnesses](#42-reusing-material-harnesses)
+  - [4.3: Harness with multiple elements](#43-harness-with-multiple-elements)
 
-# 1. Component Test for Request Info
+Double-check, that the `RequestInfoComponent` uses the `AddressLookuper`. If not, merge from the `solution` branch or inject it on your own. The `AddressLookuper` be the `lookuper` property.
 
-We will visually enhance the RequestInfo component with Angular Material.
+We will visually enhance the `RequestInfoComponent` with Angular Material.
 
 1. Replace the form fields (everything inside the form tag) in `request-info.component.html` with the following.
 
@@ -39,62 +42,95 @@ describe.skip('RequestInfo Component Temporary', () => {
 });
 ```
 
-4. In the test **should find an address**, we want to use a factory method instead of `beforeEach`. Create a new method inside **request-info.component.spec.ts**.
+# 1.Component/Integration Tests "Angular-natively"
 
-```typescript
-const setup = (config: TestModuleMetadata = {}) => {
-  const lookupMock = jest.fn<Observable<boolean>, [string]>();
-  const defaultConfig: TestModuleMetadata = {
-    imports: [NoopAnimationsModule, RequestInfoComponentModule],
-    providers: [
-      {
-        provide: AddressLookuper,
-        useValue: { lookup: lookupMock }
-      }
-    ]
-  };
-  const fixture = TestBed.configureTestingModule({ ...defaultConfig, ...config }).createComponent(
-    RequestInfoComponent
-  );
-  lookupMock.mockReset();
+## 1.1. Component Test
 
-  return { fixture, lookupMock };
-};
-```
+Write a component test for the `RequestInfoComponent`. Mock the lookuper so that it only returns `true` when the user's input is "Domgasse 5".
+
+For positive address lookups, the message should say "Brochure sent".
+
+Place this test into a new file: **holidays/request-info/request-info.component.spec.ts**
 
 <details>
 <summary>Show Solution</summary>
 <p>
 
-**request-info.component.spec.ts**
+```typescript
+import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { asyncScheduler, scheduled } from 'rxjs';
+import { AddressLookuper } from '../../shared/address-lookuper.service';
+import { assertType } from '../../shared/assert-type';
+import { RequestInfoComponent } from './request-info.component';
+import { RequestInfoComponentModule } from './request-info.component.module';
+
+describe('Request Info Component', () => {
+  it('should find an address', fakeAsync(() => {
+    const lookuper = {
+      lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
+    };
+    const fixture = TestBed.configureTestingModule({
+      imports: [NoopAnimationsModule, RequestInfoComponentModule],
+      providers: [{ provide: AddressLookuper, useValue: lookuper }]
+    }).createComponent(RequestInfoComponent);
+    const input = fixture.debugElement.query(By.css('[data-testid=address]'))
+      .nativeElement as HTMLInputElement;
+    const button = fixture.debugElement.query(By.css('[data-testid=btn-search]'))
+      .nativeElement as HTMLButtonElement;
+
+    fixture.detectChanges();
+
+    input.value = 'Domgasse 5';
+    input.dispatchEvent(new Event('input'));
+    button.click();
+    tick();
+    fixture.detectChanges();
+
+    const lookupResult = fixture.debugElement.query(By.css('[data-testid=lookup-result]'))
+      .nativeElement as HTMLButtonElement;
+    expect(lookupResult.textContent).toContain('Brochure sent');
+  }));
+});
+```
+
+</p>
+</details>
+
+## 1.2. Integration Test
+
+Add an integration where you don't mock the `AddressLookuper`, but only the `HttpClient`. Use the `HttpClientTestingModule` for that.
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+**holidays/request-info/request-info.component.spec.ts**
 
 ```typescript
-it('should find an address', fakeAsync(() => {
-  const { fixture, lookupMock } = setup();
-  lookupMock.mockImplementation((query) => scheduled([query === 'Domgasse 5'], asyncScheduler));
-
+it('should do an integration test for Domgasse 5', fakeAsync(() => {
+  const fixture = TestBed.configureTestingModule({
+    imports: [NoopAnimationsModule, RequestInfoComponentModule, HttpClientTestingModule]
+  }).createComponent(RequestInfoComponent);
   const input = fixture.debugElement.query(By.css('[data-testid=address]'))
     .nativeElement as HTMLInputElement;
   const button = fixture.debugElement.query(By.css('[data-testid=btn-search]'))
     .nativeElement as HTMLButtonElement;
 
   fixture.detectChanges();
-  input.value = 'Domgasse 15';
-  input.dispatchEvent(new Event('input'));
-  button.click();
-  tick();
-  fixture.detectChanges();
-  const lookupResult = fixture.debugElement.query(By.css('[data-testid=lookup-result]'))
-    .nativeElement as HTMLElement;
-
-  expect(lookupResult.textContent).toContain('Address not found');
 
   input.value = 'Domgasse 5';
   input.dispatchEvent(new Event('input'));
   button.click();
+  TestBed.inject(HttpTestingController)
+    .expectOne((req) => !!req.url.match(/nominatim/))
+    .flush([true]);
   tick();
   fixture.detectChanges();
 
+  const lookupResult = fixture.debugElement.query(By.css('[data-testid=lookup-result]'))
+    .nativeElement as HTMLButtonElement;
   expect(lookupResult.textContent).toContain('Brochure sent');
 }));
 ```
@@ -205,9 +241,7 @@ describe('Request Info Spectator', () => {
 
         spectator
           .inject(HttpTestingController)
-          .expectOne((req) => {
-            return req.url.match(/nominatim/);
-          })
+          .expectOne((req) => !!req.url.match(/nominatim/))
           .flush(response);
 
         spectator.detectChanges();
@@ -218,13 +252,104 @@ describe('Request Info Spectator', () => {
 });
 ```
 
-# 3. Harnesses
+# 3. Testing Library
 
-## 3.1 RequestInfoComponentHarness
+## 3.1. Setup
+
+Setup a test suite which uses the testing library for the `RequestInfoComponent`.
+
+Name the test file **request-info.component.tl.spec.ts**.
+
+```typescript
+describe('Request Info with Testing Library', () => {
+  const setup = async () =>
+    render(RequestInfoComponent, {
+      imports: [RequestInfoComponentModule],
+      providers: [provideMock(AddressLookuper)],
+      excludeComponentDeclaration: true
+    });
+
+  it('should instantiate', async () => {
+    const renderResult = await setup();
+    expect(renderResult.fixture.componentInstance).toBeInstanceOf(RequestInfoComponent);
+  });
+});
+```
+
+## 3.2. Component Test
+
+Write a parameterized component test, where you mock the `AddressLookuper`.
+
+```typescript
+it.each([
+  { input: 'Domgasse 5', message: 'Brochure sent' },
+  { input: 'Domgasse 15', message: 'Address not found' }
+])('should show $message for $input', async ({ input, message }) => {
+  await setup();
+  const lookuper = TestBed.inject(AddressLookuper);
+  jest
+    .spyOn(lookuper, 'lookup')
+    .mockImplementation((query) => scheduled([query === 'Domgasse 5'], asyncScheduler));
+
+  await userEvent.type(screen.getByTestId('address'), input);
+  await userEvent.click(screen.getByTestId('btn-search'));
+
+  expect(await screen.findByText(message)).toBeTruthy();
+});
+```
+
+## 3.3. Integration Test
+
+Write an integration test that only mocks the HttpClient. It should again check against "Domgasse 5" and "Domgasse 15".
+
+Let's apply the test context strategy. Create a nested test suite by inserting `describe("Component Test", () => {...})` into the existing `describe` method and move all existing code, except the selector variables, inside it.
+
+Then insert a second test suite that contains the test and configuration for the integration test:
+
+```typescript
+describe('Request Info with Testing Library', () => {
+  describe('Component Test', () => {
+    //...
+  });
+
+  describe('Integration Test', () => {
+    const setup = async () =>
+      render(RequestInfoComponent, {
+        imports: [RequestInfoComponentModule, HttpClientTestingModule],
+        excludeComponentDeclaration: true
+      });
+
+    it('should instantiate', async () => {
+      const renderResult = await setup();
+      expect(renderResult.fixture.componentInstance).toBeInstanceOf(RequestInfoComponent);
+    });
+
+    it.each([
+      { input: 'Domgasse 5', message: 'Brochure sent', response: [true] },
+      { input: 'Domgasse 15', message: 'Address not found', response: [] }
+    ])('should show $message for $input', async ({ input, message, response }) => {
+      await setup();
+
+      userEvent.type(screen.getByTestId('address'), input);
+      userEvent.click(screen.getByTestId('btn-search'));
+
+      TestBed.inject(HttpTestingController)
+        .expectOne((req) => !!req.url.match(/nominatim/))
+        .flush(response);
+
+      expect(await screen.findByText(message)).toBeTruthy();
+    });
+  });
+});
+```
+
+# 4. Harnesses
+
+## 4.1 RequestInfoComponentHarness
 
 Create a harness for the request info component.
 
-**request-info.component.harness.spec.ts**
+**request-info.component.harness.ts**
 
 ```typescript
 import { ComponentHarness } from '@angular/cdk/testing';
@@ -253,23 +378,34 @@ export class RequestInfoComponentHarness extends ComponentHarness {
 }
 ```
 
-Use the harness in the existing test "should find an address" in **request-info.component.spec.ts**.
-
-**Mind the switch from `fakeAsync` to an `async` method**.
+Use the harness to write the test "should find an address" in **request-info.component.harness.spec.ts**.
 
 ```typescript
-it('should find an address', async () => {
-  const { fixture, lookupMock } = setup();
-  lookupMock.mockImplementation((query) => scheduled([query === 'Domgasse 5'], asyncScheduler));
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { asyncScheduler, scheduled } from 'rxjs';
+import { AddressLookuper } from '../../shared/address-lookuper.service';
+import { RequestInfoComponent } from './request-info.component';
+import { RequestInfoComponentHarness } from './request-info.component.harness';
+import { RequestInfoComponentModule } from './request-info.component.module';
 
-  const harness = await TestbedHarnessEnvironment.harnessForFixture(
-    fixture,
-    RequestInfoComponentHarness
-  );
+describe('Request Info Component', () => {
+  it('should find an address', async () => {
+    const lookuper = {
+      lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
+    };
+    const fixture = TestBed.configureTestingModule({
+      imports: [NoopAnimationsModule, RequestInfoComponentModule],
+      providers: [{ provide: AddressLookuper, useValue: lookuper }]
+    }).createComponent(RequestInfoComponent);
+    const harness = await TestbedHarnessEnvironment.harnessForFixture(
+      fixture,
+      RequestInfoComponentHarness
+    );
 
-  // use harness here to set the queries and submit
-
-  return expect(harness.getResult()).resolves.toBe('Brochure sent');
+    // use harness here to set the queries and submit
+  });
 });
 ```
 
@@ -280,18 +416,15 @@ it('should find an address', async () => {
 With test harness, the search is very simple. You need to insert following code.
 
 ```typescript
-await harness.writeAddress('Domgasse 15');
-await harness.search();
-const message = await harness.getResult();
-expect(message).toBe('Address not found');
 await harness.writeAddress('Domgasse 5');
 await harness.search();
+expect(await harness.getResult()).toBe('Brochure sent');
 ```
 
 </p>
 </details>
 
-## 3.2. Reusing Material Harnesses
+## 4.2. Reusing Material Harnesses
 
 Our harness can access its sub-components via harnesses, if these components provide them. We are lucky. Angular Material provides harnesses for all its components.
 
@@ -334,7 +467,7 @@ export class RequestInfoComponentHarness extends ComponentHarness {
 </p>
 </details>
 
-## 3.3: Harness with multiple elements
+## 4.3: Harness with multiple elements
 
 Add a further button with type `button` in the request-info's template. It must be BEFORE the submit button. Verify that the **should find an adresss** fails.
 
@@ -345,146 +478,3 @@ Upgrade the `getButton` method in the harness so that it find the right one:
     MatButtonHarness.with({ selector: '[data-testid=btn-search]' })
   );
 ```
-
-# 4. Bonus: Holidays & Spectator
-
-Write a test for the **/holidays/holidays.component.ts** with Spectator. Mock only the `Store`. The sub component `HolidayCardComponent` should not be mocked.
-
-In this test, you cannot use the `mock` property of `createComponentFactory`. Use `createSpyFromClass` (jest-auto-spies) or `createSpyObject` (spectator) instead.
-
-The reason why you cannot simply mock the Store is that it is already inside of the constructor.
-
-<details>
-<summary>Show Solution</summary>
-<p>
-
-```typescript
-import { createRoutingFactory, createSpyObject } from '@ngneat/spectator/jest';
-import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { fromHolidays } from '../+state/holidays.selectors';
-import { createHoliday } from '../holiday';
-import { HolidaysComponent } from './holidays.component';
-import { HolidaysComponentModule } from './holidays.component.module';
-
-describe('Holidays Component', () => {
-  const storeMock = createSpyObject(Store);
-  const createComponent = createRoutingFactory({
-    component: HolidaysComponent,
-    imports: [HolidaysComponentModule],
-    providers: [{ provide: Store, useValue: storeMock }],
-    declareComponent: false
-  });
-
-  it('should show a holiday', () => {
-    const holiday = createHoliday({ title: 'Vienna' });
-    storeMock.select.mockImplementation((selector) => {
-      expect(selector).toBe(fromHolidays.get);
-      return of([holiday]);
-    });
-
-    const spectator = createComponent();
-
-    expect(spectator.query('[data-testid=holiday-1] mat-card-title')).toHaveExactText('Vienna');
-  });
-});
-```
-
-</p>
-</details>
-
-# 5. Bonus: Directive Testing with Spectator
-
-If you haven't done so, run the application and click on holidays. Hover with the mouse over an image. You should see that the is replaced by another for about 1.5 seconds. This is done by a directive, we are going to test with Spectator.
-
-Open the and study the implementation of the directive in **shared/dont-leave-me.directive.ts**.
-
-The unit test with spectator is really short:
-
-**shared/dont-leave-me.directice.spec.ts**
-
-```typescript
-import { createDirectiveFactory } from '@ngneat/spectator/jest';
-import { DontLeaveMeDirective } from './dont-leave-me.directive';
-
-describe("Don't leave me", () => {
-  const createDirective = createDirectiveFactory(DontLeaveMeDirective);
-
-  it('should show the dog image', () => {
-    const spectator = createDirective('<img appDontLeaveMe src="/dummy.jpg">');
-    spectator.dispatchMouseEvent(spectator.element, 'mouseleave');
-
-    expect(spectator.element).toHaveAttribute('src', '/assets/dontleaveme.jpg');
-  });
-});
-```
-
-With all the knowledge you learned so far, write a second test that verifies that the original image is put back after 1.5 seconds.
-
-**Hint**: `fakeAsync`
-
-<details>
-<summary>Show Solution</summary>
-<p>
-
-```typescript
-it('should revert to original after 1.5 seconds', fakeAsync(() => {
-  const spectator = createDirective('<img appDontLeaveMe src="/dummy.jpg">');
-  spectator.dispatchMouseEvent(spectator.element, 'mouseleave');
-  tick(1500);
-  expect(spectator.element).toHaveAttribute('src', 'http://localhost/dummy.jpg');
-}));
-```
-
-</p>
-</details>
-
-# 6. Bonus: Verify multiple input change
-
-We want to verify, if the input field is updated, if the input value for address changes multiple times. `ngOnChanges` is not executed automatically but we use a wrapper component instead.
-
-**holidays/request-info/request-info.component.spec.ts**
-
-```typescript
-it('should verify ngOnChanges with address', async () => {
-  @Component({
-    template: ` <app-request-info [address]="address"></app-request-info>`
-  })
-  class WrapperComponent {
-    address = 'Domgasse 15';
-  }
-
-  setup({ declarations: [WrapperComponent] });
-  const fixture = TestBed.createComponent(WrapperComponent);
-
-  const loader = await TestbedHarnessEnvironment.loader(fixture);
-  const harness = await loader.getHarness(RequestInfoComponentHarness);
-
-  expect(await harness.getAddress()).toBe('Domgasse 15');
-  fixture.componentInstance.address = 'Domgasse 5';
-  expect(await harness.getAddress()).toBe('Domgasse 5');
-});
-```
-
-This test should fail. Make the required updates in the component and the harness `getAddress()`.
-
-<details>
-<summary>Show Solution</summary>
-<p>
-
-You have to move the part where it sets the form value from `ngOnInit` to `ngOnChanges`.
-
-**holidays/request-info/request-info.component.ts**
-
-```typescript
-//
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.address) {
-      this.formGroup.setValue({ address: this.address });
-    }
-  }
-  //
-```
-
-</p>
-</details>

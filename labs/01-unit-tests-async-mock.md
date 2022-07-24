@@ -22,7 +22,7 @@ Change the **should pass addresses in the constructor** to a parameterised test.
 <p>
 
 ```typescript
-for (let { query, expected } of [
+for (const { query, expected } of [
   { query: 'Domgasse 5', expected: true },
   {
     query: 'Domgasse 15',
@@ -66,23 +66,22 @@ export function assertType<T>(object: unknown = undefined): T {
 ```typescript
 import { assertType } from './assert-type';
 // ...
-for (let { query, expected } of [
+for (const { query, expected } of [
   { query: 'Domgasse 5', expected: true },
   { query: 'Domgasse 15', expected: false }
 ]) {
-  it(
-    `should return ${expected} for ${query}`,
-    waitForAsync(() => {
-      const httpClient = assertType<HttpClient>({
-        get: () => scheduled([['Domgasse 5']], asyncScheduler)
-      });
-      const lookuper = new AddressLookuper(httpClient);
+  it(`should return ${expected} for ${query}`, fakeAsync(() => {
+    const httpClient = assertType<HttpClient>({
+      get: () => scheduled([['Domgasse 5']], asyncScheduler)
+    });
+    const lookuper = new AddressLookuper(httpClient);
 
-      lookuper.lookup(query).subscribe((isValid) => {
-        expect(isValid).toBe(expected);
-      });
-    })
-  );
+    lookuper.lookup(query).subscribe((isValid) => {
+      expect(isValid).toBe(expected);
+    });
+
+    tick();
+  }));
 }
 ```
 
@@ -99,7 +98,8 @@ export class AddressLookuper {
       .pipe(map((addresses) => addresses.some((address) => address.startsWith(query))));
   }
 
-  ...
+  // ...
+}
 ```
 
 </p>
@@ -141,7 +141,7 @@ it('should call nominatim with right parameters', () => {
 // inside the lookup method
 return this.httpClient
   .get<string[]>('https://nominatim.openstreetmap.org/search.php', {
-    params: new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5')
+    params: new HttpParams().set('format', 'jsonv2').set('q', query)
   })
   .pipe(map((addresses) => addresses.some((address) => address.startsWith(query))));
 ```
@@ -162,23 +162,22 @@ Implement this new behaviour by adapting the existing parameterised test.
 **shared/address-lookuper.service.spec.ts**
 
 ```typescript
-for (let { response, expected } of [
+for (const { response, expected } of [
   { response: [undefined], expected: true },
   { response: [], expected: false }
 ]) {
-  it(
-    `should return ${expected} for ${response}`,
-    waitForAsync(() => {
-      const httpClient = assertType<HttpClient>({
-        get: () => scheduled([response], asyncScheduler)
-      });
-      const lookuper = new AddressLookuper(httpClient);
+  it(`should return ${expected} for ${response}`, fakeAsync(() => {
+    const httpClient = assertType<HttpClient>({
+      get: () => scheduled([response], asyncScheduler)
+    });
+    const lookuper = new AddressLookuper(httpClient);
 
-      lookuper.lookup('Domgasse 5').subscribe((isValid) => {
-        expect(isValid).toBe(expected);
-      });
-    })
-  );
+    lookuper.lookup('Domgasse 5').subscribe((isValid) => {
+      expect(isValid).toBe(expected);
+    });
+
+    tick();
+  }));
 }
 ```
 
@@ -209,7 +208,9 @@ it(`should have an assertive stub`, (done) => {
   const httpClientStub = assertType<HttpClient>({
     get(url: string, options: { params: HttpParams }) {
       expect(url).toBe('https://nominatim.openstreetmap.org/search.php');
-      expect(options.params).toEqual(new HttpParams().set('format', 'jsonv2').set('q', query));
+      expect(options.params).toEqual(
+        new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5')
+      );
 
       return scheduled([['']], asyncScheduler);
     }
@@ -252,7 +253,7 @@ it('should test http with jest-auto-spies', () => {
   lookuper.lookup('Domgasse 5');
 
   expect(httpClient.get).toHaveBeenCalledWith('https://nominatim.openstreetmap.org/search.php', {
-    params: new HttpParams().set('format', 'jsonv2').set('q', query)
+    params: new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5')
   });
 });
 ```
@@ -308,18 +309,13 @@ jest.mock('./parse-address', () => ({
 }));
 
 describe('Address Lookuper', () => {
-  it(
-    'should work with invalid addresses',
-    waitForAsync(() => {
-      const lookuper = new AddressLookuper(
-        assertType<HttpClient>({ get: () => of(['']) })
-      );
+  it('should work with invalid addresses', waitForAsync(() => {
+    const lookuper = new AddressLookuper(assertType<HttpClient>({ get: () => of(['']) }));
 
-      lookuper.lookup('Domgasse').subscribe((isValid) => {
-        expect(isValid).toBe(true);
-      });
-    })
-  );
+    lookuper.lookup('Domgasse').subscribe((isValid) => {
+      expect(isValid).toBe(true);
+    });
+  }));
 });
 ```
 
@@ -347,9 +343,7 @@ describe('Pure Address Lookuper Unit Test', () => {
   it('should pass an invalid address', () => {
     jest.spyOn(parser, 'parseAddress').mockReturnValue({ street: 'Domgasse', streetNumber: '5' });
 
-    const lookuper = new AddressLookuper(
-      assertType<HttpClient>({ get: () => of([]) })
-    );
+    const lookuper = new AddressLookuper(assertType<HttpClient>({ get: () => of([]) }));
 
     lookuper.lookup('Domgasse');
   });

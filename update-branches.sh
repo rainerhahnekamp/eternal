@@ -2,7 +2,7 @@ set -e
 
 git checkout master
 
-branches=(master 01-unit-tests-basic 02-unit-tests-advanced 03-rxjs-marbles 04-ngrx 05-comp-tests-basic 06-comp-tests-advanced 07-integration-tests 08-e2e-tests-basic 09-e2e-tests-advanced 10-vr-storybook)
+branches=(master solution-01-unit-tests-async-mock solution-02a-unit-tests-advanced solution-02b-unit-tests-ngrx solution-03-component-integration-tests-basic solution-04-component-integration-tests-advanced)
 previous=
 current=
 

@@ -280,13 +280,13 @@ test(
 For this exercise, you CANNOT use `rxjs-marbles`.
 
 ```typescript
-const lookuper = (query) =>
+const lookuper = (query: string) =>
   new Promise<boolean>((resolve) => {
     resolve(query === 'Domgasse 5');
   });
 
 const source = of('Praterstern', 'Domgasse 5');
-const hits = [];
+const hits: boolean[] = [];
 ```
 
 Create an observable from `source` that is using the `lookuper` method. It should store the resolved values of `lookuper` into hits. Verify that `hits` has following value: `[false, true]`.
@@ -305,7 +305,7 @@ test('asynchronicity', (done) => {
     });
 
   const source = of('Praterstern', 'Domgasse 5');
-  const hits = [];
+  const hits: boolean[] = [];
   source.pipe(concatMap((query) => lookuper(query))).subscribe((isHit) => {
     hits.push(isHit);
 

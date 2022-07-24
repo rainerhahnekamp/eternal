@@ -71,6 +71,7 @@ describe('RequestInfo Component Temporary', () => {
 
     expect(title.textContent).toBe('Test Title');
   });
+});
 ```
 
 <details>
@@ -87,12 +88,12 @@ You will have to find out the right css selector for the input field and also ad
 ```typescript
 it('should check input fields have right values', () => {
   component.formGroup.patchValue({
-    address: 'Hauptstraße 5'
+    address: 'Domgasse 5'
   });
   const address = fixture.debugElement.query(By.css('add-your-selector-here'))
     .nativeElement as HTMLInputElement;
 
-  expect(address.value).toBe('Hauptstraße 5');
+  expect(address.value).toBe('Domgasse 5');
 });
 ```
 
@@ -160,6 +161,7 @@ lookupMock.mockReturnValue(scheduled([false], asyncScheduler));
 const button = fixture.debugElement.query(By.css('[data-testid=btn-search]'))
   .nativeElement as HTMLButtonElement;
 button.click();
+tick();
 ```
 
 </p>
@@ -249,28 +251,25 @@ Create a unit test version for the **should find an address**. This means no `Te
 <p>
 
 ```typescript
-it(
-  'should test as unit test',
-  waitForAsync(() => {
-    const formBuilder = {
-      group: () => ({ value: { address: 'Domgasse 5' } })
-    };
-    const lookuper = {
-      lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
-    };
-    const component = new RequestInfoComponent(
-      assertType<FormBuilder>(formBuilder),
-      assertType<AddressLookuper>(lookuper)
-    );
+it('should test as unit test', waitForAsync(() => {
+  const formBuilder = {
+    group: () => ({ value: { address: 'Domgasse 5' } })
+  };
+  const lookuper = {
+    lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
+  };
+  const component = new RequestInfoComponent(
+    assertType<FormBuilder>(formBuilder),
+    assertType<AddressLookuper>(lookuper)
+  );
 
-    component.ngOnInit();
-    component.lookupResult$?.subscribe((message) => {
-      expect(message).toBe('Brochure sent');
-    });
+  component.ngOnInit();
+  component.lookupResult$?.subscribe((message) => {
+    expect(message).toBe('Brochure sent');
+  });
 
-    component.search();
-  })
-);
+  component.search();
+}));
 ```
 
 </p>
