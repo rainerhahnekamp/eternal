@@ -1,3 +1,10 @@
+## 1.7.0
+
+- Cypress Component Testing
+- Cypress Session and Login
+- Cypress Testing Library
+- Angular 14
+
 ## 1.6.0
 
 - SCAM pattern

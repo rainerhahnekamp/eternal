@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "sourceMap": false,
     "outDir": "../../dist/out-tsc",
@@ -10,7 +10,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*.ts", "src/**/*.js"],
+  "include": ["**/*.ts"],
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,

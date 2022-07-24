@@ -1,6 +1,6 @@
 {
   "name": "angular-testing-workshop",
-  "version": "1.6.0",
+  "version": "1.7.0-beta",
   "author": {
     "name": "Rainer Hahnekamp",
     "email": "rainer.hahnekamp@angulararchitects.io"
@@ -19,10 +19,8 @@
     "storybook": "nx run eternal:storybook",
     "storybook:build": "nx run eternal:build-storybook",
     "storybook:build:run": "npx serve dist/storybook/eternal",
-    "e2e": "nx e2e --skip-serve --headless",
-    "e2e:watch": "nx e2e --watch",
-    "e2e:dev-local": "nx e2e --watch -c dev-local",
-    "e2e:non-mock": "nx e2e --watch -c non-mock"
+    "e2e": "cypress run",
+    "e2e:watch": "cypress open"
   },
   "private": true,
   "dependencies": {

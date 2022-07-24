@@ -2,7 +2,6 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
-    "eternal": "apps/eternal",
-    "eternal-e2e": "apps/eternal-e2e"
+    "eternal": "apps/eternal"
   }
 }
