@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { formly } from 'ngx-formly-helpers';
@@ -10,7 +10,7 @@ import { formly } from 'ngx-formly-helpers';
   templateUrl: './activate.component.html'
 })
 export class ActivateComponent {
-  formGroup = new FormGroup({});
+  formGroup = new UntypedFormGroup({});
   model = { terms: false, gdpr: false };
   fields: FormlyFieldConfig[] = [formly.requiredNumber('activationCode', 'Activation Code')];
   message = '';
@@ -22,7 +22,7 @@ export class ActivateComponent {
       this.httpClient
         .post(
           `/security/activate-user-by-code/${this.route.snapshot.paramMap.get('id')}/${
-            this.formGroup.value.activationCode
+            this.formGroup.value['activationCode']
           }`,
           {}
         )

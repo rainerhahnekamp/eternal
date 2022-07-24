@@ -1,5 +1,5 @@
 import { Component, EventEmitter, NgModule, Output } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {FormGroup, ReactiveFormsModule, UntypedFormGroup} from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { formly } from 'ngx-formly-helpers';
 
@@ -28,7 +28,7 @@ export interface InterestsData {
 })
 export class InterestsComponent {
   @Output() next = new EventEmitter<InterestsData>();
-  formGroup = new FormGroup({});
+  formGroup = new UntypedFormGroup({});
   fields: FormlyFieldConfig[] = [
     formly.requiredMultiSelect(
       'continents',

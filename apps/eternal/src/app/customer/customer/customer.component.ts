@@ -39,7 +39,7 @@ export class CustomerComponent {
       })
     ];
     this.store.dispatch(CustomerActions.load());
-    if (this.route.snapshot.data.mode === 'new') {
+    if (this.route.snapshot.data['mode'] === 'new') {
       this.customer$ = of({
         id: 0,
         firstname: '',
@@ -49,7 +49,7 @@ export class CustomerComponent {
       });
     } else {
       this.customer$ = this.store
-        .select(fromCustomer.selectById(Number(this.route.snapshot.params.id)))
+        .select(fromCustomer.selectById(Number(this.route.snapshot.params['id'])))
         .pipe(
           filter((customer) => !!customer),
           this.verifyCustomer,

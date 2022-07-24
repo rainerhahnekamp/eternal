@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import {FormGroup, UntypedFormGroup} from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { formly } from 'ngx-formly-helpers';
 import { UserService } from '../../shared/user.service';
@@ -9,7 +9,7 @@ import { UserService } from '../../shared/user.service';
   templateUrl: './sign-in.component.html'
 })
 export class SignInComponent {
-  formGroup = new FormGroup({});
+  formGroup = new UntypedFormGroup({});
   fields: FormlyFieldConfig[] = [
     formly.requiredText('email', 'EMail'),
     formly.requiredText('password', 'Password', { type: 'password' })

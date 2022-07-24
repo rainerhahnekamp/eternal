@@ -1,5 +1,5 @@
 import { Component, EventEmitter, NgModule, Output } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {FormGroup, ReactiveFormsModule, UntypedFormGroup} from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
@@ -32,7 +32,7 @@ export interface DetailData {
 })
 export class DetailComponent implements SignUpForm {
   @Output() next = new EventEmitter<DetailData>();
-  formGroup = new FormGroup({});
+  formGroup = new UntypedFormGroup({});
   fields: FormlyFieldConfig[] = [
     formly.requiredText('email', 'EMail'),
     formly.requiredText('password', 'Password', { type: 'password' }),

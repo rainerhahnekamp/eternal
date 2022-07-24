@@ -4,7 +4,7 @@
     (click)="handleUserType('customer')"
     [matRippleCentered]="true"
     [ngClass]="{
-      selected: formGroup.value.userType == 'customer'
+      selected: formGroup.value['userType'] == 'customer'
     }"
     class="mat-elevation-z4"
     data-testid="user-type-customer"
@@ -18,7 +18,7 @@
     (click)="handleUserType('agent')"
     [matRippleCentered]="true"
     [ngClass]="{
-      selected: formGroup.value.userType == 'agent'
+      selected: formGroup.value['userType'] == 'agent'
     }"
     class="mat-elevation-z4"
     data-testid="user-type-agent"
