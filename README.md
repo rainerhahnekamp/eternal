@@ -73,4 +73,7 @@ yarn add -D cypress-plugin-snapshots
 
 # Playwright
 yarn add -D @playwright/test
+
+# Cypress Component Testing
+yarn add -D @cypress/webpack-dev-server@1 @ngtools/webpack babel-loader html-webpack-plugin raw-loader
 ```
