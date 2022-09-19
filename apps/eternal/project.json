@@ -5,7 +5,9 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/eternal",
         "index": "apps/eternal/src/index.html",
@@ -13,8 +15,13 @@
         "polyfills": "apps/eternal/src/polyfills.ts",
         "tsConfig": "apps/eternal/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/eternal/src/favicon.ico", "apps/eternal/src/assets"],
-        "styles": ["apps/eternal/src/styles.scss"],
+        "assets": [
+          "apps/eternal/src/favicon.ico",
+          "apps/eternal/src/assets"
+        ],
+        "styles": [
+          "apps/eternal/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -105,12 +112,17 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": ["apps/eternal/**/*.ts", "apps/eternal/**/*.html"]
+        "lintFilePatterns": [
+          "apps/eternal/**/*.ts",
+          "apps/eternal/**/*.html"
+        ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/eternal"],
+      "outputs": [
+        "coverage/apps/eternal"
+      ],
       "options": {
         "jestConfig": "apps/eternal/jest.config.ts",
         "passWithNoTests": true
@@ -132,7 +144,9 @@
     },
     "build-storybook": {
       "executor": "@storybook/angular:build-storybook",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputDir": "dist/storybook/eternal",
         "configDir": "apps/eternal/.storybook",
@@ -143,6 +157,15 @@
         "ci": {
           "quiet": true
         }
+      }
+    },
+    "component-test": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/eternal/cypress.config.ts",
+        "testingType": "component",
+        "skipServe": true,
+        "devServerTarget": "eternal:build"
       }
     }
   },
