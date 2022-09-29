@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 
 @Component({
   selector: 'eternal-newsletter',
-  templateUrl: './newsletter.component.html'
+  templateUrl: './newsletter.component.html',
+  standalone: true,
+  imports: [ReactiveFormsModule]
 })
 export class NewsletterComponent implements OnInit {
   message = '';
