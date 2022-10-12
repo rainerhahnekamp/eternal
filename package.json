@@ -42,6 +42,7 @@
     "@ngx-formly/core": "^5.12.6",
     "@ngx-formly/material": "^5.12.6",
     "@nrwl/angular": "14.8.1",
+    "@types/jest": "^29.1.2",
     "date-fns": "^2.29.1",
     "lodash-es": "^4.17.21",
     "ngx-formly-helpers": "^0.9.7",
@@ -104,4 +105,3 @@
     "webpack": "^5.64.0"
   }
 }
-

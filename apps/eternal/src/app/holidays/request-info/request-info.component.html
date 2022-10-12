@@ -4,6 +4,4 @@
   <input data-testid="address" formControlName="address" placeholder="address" />
   <button data-testid="btn-search" type="submit">Send</button>
 </form>
-<p *ngIf="lookupResult$ | async as lookupResult" data-testid="lookup-result">
-  {{ lookupResult }}
-</p>
+<p *ngIf="lookupResult$ | async as lookupResult" data-testid="lookup-result">{{ lookupResult }}</p>
