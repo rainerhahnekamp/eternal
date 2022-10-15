@@ -20,8 +20,8 @@
     "storybook": "nx run eternal:storybook",
     "storybook:build": "nx run eternal:build-storybook",
     "storybook:build:run": "npx serve dist/storybook/eternal",
-    "e2e": "cypress run",
-    "e2e:watch": "cypress open"
+    "e2e": "nx e2e eternal-e2e",
+    "e2e:watch": "nx e2e eternal-e2e --watch"
   },
   "private": true,
   "dependencies": {
