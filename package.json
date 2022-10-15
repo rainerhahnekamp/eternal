@@ -1,6 +1,6 @@
 {
   "name": "angular-testing-workshop",
-  "version": "1.7.0-beta",
+  "version": "1.8.0",
   "author": {
     "name": "Rainer Hahnekamp",
     "email": "rainer.hahnekamp@angulararchitects.io"
@@ -41,7 +41,7 @@
     "@ngrx/store-devtools": "^14.0.2",
     "@ngx-formly/core": "^5.12.6",
     "@ngx-formly/material": "^5.12.6",
-    "@nrwl/angular": "14.8.1",
+    "@nrwl/angular": "14.8.6",
     "@types/jest": "^29.1.2",
     "date-fns": "^2.29.1",
     "lodash-es": "^4.17.21",
@@ -61,12 +61,12 @@
     "@cypress/webpack-dev-server": "1",
     "@ngneat/spectator": "^11.1.0",
     "@ngtools/webpack": "^14.1.0",
-    "@nrwl/cli": "14.8.1",
-    "@nrwl/eslint-plugin-nx": "14.8.1",
-    "@nrwl/jest": "14.8.1",
-    "@nrwl/linter": "14.8.1",
-    "@nrwl/storybook": "14.8.1",
-    "@nrwl/workspace": "14.8.1",
+    "@nrwl/cli": "14.8.6",
+    "@nrwl/eslint-plugin-nx": "14.8.6",
+    "@nrwl/jest": "14.8.6",
+    "@nrwl/linter": "14.8.6",
+    "@nrwl/storybook": "14.8.6",
+    "@nrwl/workspace": "14.8.6",
     "@playwright/test": "^1.27.1",
     "@storybook/addon-essentials": "~6.5.9",
     "@storybook/angular": "~6.5.9",
@@ -92,7 +92,7 @@
     "jest-environment-jsdom": "28.1.1",
     "jest-preset-angular": "12.2.2",
     "ng-mocks": "^14.1.0",
-    "nx": "14.8.1",
+    "nx": "14.8.6",
     "postcss": "^8.4.14",
     "prettier": "^2.6.2",
     "raw-loader": "^4.0.2",
@@ -105,3 +105,4 @@
     "webpack": "^5.64.0"
   }
 }
+
