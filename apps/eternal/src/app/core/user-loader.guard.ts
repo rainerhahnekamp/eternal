@@ -9,6 +9,6 @@ export class UserLoaderGuard implements CanActivate {
   securityService = inject(SecurityService);
 
   canActivate(): Observable<boolean> | boolean {
-    return this.securityService.getLoaded$().pipe(filter(Boolean));
+    return this.securityService.loaded$.pipe(filter(Boolean));
   }
 }

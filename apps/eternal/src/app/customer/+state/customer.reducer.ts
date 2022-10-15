@@ -1,6 +1,6 @@
-import {createFeature, createReducer, on} from "@ngrx/store";
-import {Customer} from "../customer";
-import {CustomerActions} from "./customer.actions";
+import { createFeature, createReducer, on } from '@ngrx/store';
+import { Customer } from '../customer';
+import { customerActions } from './customer.actions';
 
 export interface State {
   customers: Customer[];
@@ -14,28 +14,28 @@ export const initialState: State = {
   pageCount: 0
 };
 
-export const customerFeature = createFeature({
+export const customersFeature = createFeature({
   name: 'customers',
   reducer: createReducer<State>(
     initialState,
-    on(CustomerActions.load, (state) => ({ ...state, currentPage: 0 })),
-    on(CustomerActions.loaded, (state, { customers, pageCount }) => ({
+    on(customerActions.load, (state) => ({ ...state, currentPage: 0 })),
+    on(customerActions.loaded, (state, { customers, pageCount }) => ({
       ...state,
       customers,
       pageCount
     })),
-    on(CustomerActions.added, CustomerActions.updated, CustomerActions.removed, () => initialState),
-    on(CustomerActions.previousPage, (state) => ({
+    on(customerActions.added, customerActions.updated, customerActions.removed, () => initialState),
+    on(customerActions.previousPage, (state) => ({
       ...state,
       currentPage: state.currentPage - 1
     })),
-    on(CustomerActions.nextPage, (state) => ({
+    on(customerActions.nextPage, (state) => ({
       ...state,
       currentPage: state.currentPage + 1
     })),
     on(
-      CustomerActions.previousPageSuccess,
-      CustomerActions.nextPageSuccess,
+      customerActions.previousPageSuccess,
+      customerActions.nextPageSuccess,
       (state, { customers }) => ({
         ...state,
         customers

@@ -1,53 +1,54 @@
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Injectable} from "@angular/core";
-import {Router} from "@angular/router";
-import {Actions, concatLatestFrom, createEffect, ofType} from "@ngrx/effects";
-import {Store} from "@ngrx/store";
-import {Observable} from "rxjs";
-import {concatMap, map, switchMap, tap} from "rxjs/operators";
-import {Customer} from "../customer";
-import {CustomerActions} from "./customer.actions";
-import {fromCustomer} from "./customer.selectors";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { Customer } from '../customer';
+import { fromCustomer } from './customer.selectors';
+import { customerActions } from './customer.actions';
 
 @Injectable()
 export class CustomerEffects {
   private pageSize = '10';
   private url = '/customers';
+
+  actions$ = inject(Actions);
+  store = inject(Store);
+  http = inject(HttpClient);
+  router = inject(Router);
+
   add$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CustomerActions.add),
+      ofType(customerActions.add),
       concatMap(({ customer }) => this.http.post<Customer>(this.url, customer)),
-      map((customer) => CustomerActions.added({ customer })),
+      map((customer) => customerActions.added({ customer })),
       tap(() => this.router.navigateByUrl('/customer'))
     )
   );
-  update = createEffect(() =>
+
+  update$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CustomerActions.update),
+      ofType(customerActions.update),
       concatMap(({ customer }) => this.http.put<Customer>(this.url, customer)),
-      map((customer) => CustomerActions.updated({ customer })),
+      map((customer) => customerActions.updated({ customer })),
       tap(() => this.router.navigateByUrl('/customer'))
     )
   );
-  remove = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CustomerActions.remove),
+
+  remove$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(customerActions.remove),
       concatMap(({ customer }) =>
         this.http.delete<void>(`${this.url}/${customer.id}`).pipe(map(() => customer))
       ),
-      map((customer) => CustomerActions.removed({ customer })),
+      map((customer) => customerActions.removed({ customer })),
       tap(() => this.router.navigateByUrl('/customer'))
-    )
-  );
+    );
+  });
 
-  constructor(
-    private actions$: Actions,
-    private store: Store,
-    private http: HttpClient,
-    private router: Router
-  ) {}
-
-  private fetchCustomers = <T>(
+  #fetchCustomers = <T>(
     observable: Observable<T>
   ): Observable<{ customers: Customer[]; pageCount: number }> =>
     observable.pipe(
@@ -63,26 +64,28 @@ export class CustomerEffects {
       }))
     );
 
-  nextPage$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CustomerActions.nextPage),
-      this.fetchCustomers,
-      map(({ customers }) => CustomerActions.nextPageSuccess({ customers }))
-    )
-  );
-  previousPage$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CustomerActions.previousPage),
-      this.fetchCustomers,
-      map(({ customers }) => CustomerActions.previousPageSuccess({ customers }))
-    )
-  );
+  nextPage$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(customerActions.nextPage),
+      this.#fetchCustomers,
+      map(({ customers }) => customerActions.nextPageSuccess({ customers }))
+    );
+  });
+
+  previousPage$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(customerActions.previousPage),
+      this.#fetchCustomers,
+      map(({ customers }) => customerActions.previousPageSuccess({ customers }))
+    );
+  });
+
   load$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CustomerActions.load),
-      this.fetchCustomers,
+      ofType(customerActions.load),
+      this.#fetchCustomers,
       map(({ customers, pageCount }) =>
-        CustomerActions.loaded({
+        customerActions.loaded({
           customers,
           pageCount
         })

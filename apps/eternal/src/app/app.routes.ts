@@ -15,10 +15,6 @@ export const appRoutes: Routes = [
       { path: 'home', redirectTo: '' },
       { path: 'newsletter', component: NewsletterComponent },
       {
-        path: 'security',
-        loadChildren: () => import('./security/security.module').then((m) => m.SecurityModule)
-      },
-      {
         path: 'customer',
         loadChildren: () => import('./customer/customer.routes').then((m) => m.customerRoutes)
       },

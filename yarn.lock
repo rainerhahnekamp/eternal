@@ -2771,17 +2771,17 @@
     replace-in-file "6.2.0"
     tslib "^2.1.0"
 
-"@ngrx/effects@^14.0.2":
-  version "14.3.1"
-  resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-14.3.1.tgz#b22dcbc084c85d02b8ae34a4c6b7ce83f66d58d3"
-  integrity sha512-2+hTlw79f8snayMCBDdVUYaAneowhXJwR0pwhOPAwldv/QufiFaoRA9M26nm9tC4mxIFlGY0gJ03c94/E0sKjQ==
+"@ngrx/effects@^14.3.2":
+  version "14.3.2"
+  resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-14.3.2.tgz#a5cc62e78cec2f5ccce810b8d27a58cc91e72c4f"
+  integrity sha512-6bpGfA44jzwhBcmNaTwVgnFmYOX9iKPFpXyetDe41tVESo1CsNhUBPTmISDXKN9Mx2mwGbsMxrn6QFRypSsKAQ==
   dependencies:
     tslib "^2.0.0"
 
-"@ngrx/eslint-plugin@^14.0.2":
-  version "14.3.1"
-  resolved "https://registry.yarnpkg.com/@ngrx/eslint-plugin/-/eslint-plugin-14.3.1.tgz#f070d2eddec0245de2ecfed963df23cc59444d12"
-  integrity sha512-dIYRw/oVD6BUVma9QBMc7gdXQUegOBAlrIdOj+sKojdwrwUQsoshQIsRBXccX+CgZt19WdbxCyVMG+6CXAy93A==
+"@ngrx/eslint-plugin@^14.3.2":
+  version "14.3.2"
+  resolved "https://registry.yarnpkg.com/@ngrx/eslint-plugin/-/eslint-plugin-14.3.2.tgz#6d61001566ad6b85637f6bc272d64cf44a447784"
+  integrity sha512-Jd+YMI7zonRS9P6iXCA3dfz2EAOi2WSJUcvlHyiqbJ5pZZXdYUWyolBk1TYDMHWL79ZsBFmrcqMsoVhdwvjt6g==
   dependencies:
     "@angular-devkit/schematics" "^14.0.0-rc.0"
     "@typescript-eslint/experimental-utils" "^5.4.0"
@@ -2789,17 +2789,17 @@
     semver "^7.3.5"
     strip-json-comments "3.1.1"
 
-"@ngrx/store-devtools@^14.0.2":
-  version "14.3.1"
-  resolved "https://registry.yarnpkg.com/@ngrx/store-devtools/-/store-devtools-14.3.1.tgz#867e3b7afaf393e251b1452b44191e4ef5f5ab5e"
-  integrity sha512-FbCYcMMfR0NbkQdkYlNDscskz3jWbntA1gybndrG9yP8zmPKHUb8i0pPXOXg+gV/jfHM2mKrj4u0SLZCOUdeXw==
+"@ngrx/store-devtools@^14.3.2":
+  version "14.3.2"
+  resolved "https://registry.yarnpkg.com/@ngrx/store-devtools/-/store-devtools-14.3.2.tgz#046e53a8e342251ff12606375166833d148ffa5e"
+  integrity sha512-lm1BobiHXzBC3tqYNAghCRNfBdIbs4JyfaTO9wqOEoDCh6COvzGLi7tAo9Zjls1REZC1NiIwSw4vKK8OMc+tfA==
   dependencies:
     tslib "^2.0.0"
 
-"@ngrx/store@^14.0.2":
-  version "14.3.1"
-  resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-14.3.1.tgz#b371f7cce3c9825ba017b220928228903b3bc31e"
-  integrity sha512-5fKZVxwyawH8wXuYaAkMfPxLJ+GzdXmjWjQtUkMjpa8lsgEBtIs+UdyirgwjBcwYUt0ewp2CM14+Io5eeb8bQA==
+"@ngrx/store@^14.3.2":
+  version "14.3.2"
+  resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-14.3.2.tgz#91333c9c4d7b54bf98d842cb94e6afa3a6ea8df2"
+  integrity sha512-XGHjr0arh6gClo8Ce+xqJLvW9PkeXPW2tCo9Z5qMtHFI/z5dUppLVKGmMgD/fQBDyoqWTK5xu+89tDkdeZfRjQ==
   dependencies:
     tslib "^2.0.0"
 

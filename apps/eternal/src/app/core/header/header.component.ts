@@ -13,7 +13,7 @@ import { SecurityService } from '../../security/security.service';
 })
 export class HeaderComponent {
   securityService = inject(SecurityService);
-  user$ = this.securityService.getLoadedUser$();
+  user$ = this.securityService.loadedUser$;
 
   signOut() {
     this.securityService.signOut();

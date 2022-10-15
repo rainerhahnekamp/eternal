@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, tap } from 'rxjs/operators';
+import { delay, map, tap } from 'rxjs/operators';
 import { securityActions } from './security.actions';
 import { ANONYMOUS_USER } from './security.reducer';
 import { AuthService } from '@auth0/auth0-angular';
@@ -10,6 +10,7 @@ import { AuthService } from '@auth0/auth0-angular';
 export class SecurityEffects {
   user$ = createEffect(() =>
     this.authService.user$.pipe(
+      delay(1000),
       map((user) =>
         securityActions.loaded({
           user: user

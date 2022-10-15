@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLinkWithHref } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { CustomerActions } from '../+state/customer.actions';
+import { customerActions } from '../+state/customer.actions';
 import { fromCustomer } from '../+state/customer.selectors';
 
 @Component({
@@ -19,14 +19,14 @@ export class CustomersComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit() {
-    this.store.dispatch(CustomerActions.load());
+    this.store.dispatch(customerActions.load());
   }
 
   previousPage() {
-    this.store.dispatch(CustomerActions.previousPage());
+    this.store.dispatch(customerActions.previousPage());
   }
 
   nextPage() {
-    this.store.dispatch(CustomerActions.nextPage());
+    this.store.dispatch(customerActions.nextPage());
   }
 }

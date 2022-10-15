@@ -6,7 +6,7 @@ import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { formly } from 'ngx-formly-helpers';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { CustomerActions } from '../+state/customer.actions';
+import { customerActions } from '../+state/customer.actions';
 import { fromCustomer } from '../+state/customer.selectors';
 import { countries } from '../countries';
 import { Customer } from '../customer';
@@ -57,7 +57,7 @@ export class CustomerComponent {
         attributes: { 'data-testid': 'date-birthdate' }
       })
     ];
-    this.store.dispatch(CustomerActions.load());
+    this.store.dispatch(customerActions.load());
     if (this.route.snapshot.data['mode'] === 'new') {
       this.customer$ = of({
         id: 0,
@@ -80,16 +80,16 @@ export class CustomerComponent {
   submit(customer: Customer) {
     if (this.formGroup.valid) {
       if (customer.id) {
-        this.store.dispatch(CustomerActions.update({ customer }));
+        this.store.dispatch(customerActions.update({ customer }));
       } else {
-        this.store.dispatch(CustomerActions.add({ customer }));
+        this.store.dispatch(customerActions.add({ customer }));
       }
     }
   }
 
   remove(customer: Customer) {
     if (confirm(`Really delete ${customer}?`)) {
-      this.store.dispatch(CustomerActions.remove({ customer }));
+      this.store.dispatch(customerActions.remove({ customer }));
     }
   }
 

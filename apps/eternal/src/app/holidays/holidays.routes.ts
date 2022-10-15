@@ -1,7 +1,6 @@
-import { importProvidersFrom, NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
+import { Routes } from '@angular/router';
+import { provideEffects } from '@ngrx/effects';
+import { provideState } from '@ngrx/store';
 import { HolidaysEffects } from './+state/holidays.effects';
 import { holidaysFeature } from './+state/holidays.reducer';
 import { HolidaysComponent } from './holidays/holidays.component';
@@ -10,12 +9,7 @@ import { RequestInfoComponent } from './request-info/request-info.component';
 export const holidayRoutes: Routes = [
   {
     path: '',
-    providers: [
-      importProvidersFrom([
-        StoreModule.forFeature(holidaysFeature),
-        EffectsModule.forFeature([HolidaysEffects])
-      ])
-    ],
+    providers: [provideState(holidaysFeature), provideEffects([HolidaysEffects])],
     component: HolidaysComponent
   },
   {
