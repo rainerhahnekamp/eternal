@@ -1,27 +1,20 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { ActivateComponent } from './activate/activate.component';
-import { ActivateComponentModule } from './activate/activate.component.module';
-import { SignUpComponent } from './sign-up/sign-up.component';
-import { SignUpComponentModule } from './sign-up/sign-up.component.module';
-import { SignInComponent } from './signIn/sign-in.component';
-import { SignInComponentModule } from './signIn/sign-in.component.module';
+import { CommonModule } from '@angular/common';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { SecurityEffects } from './security.effects';
+import { securityFeature } from './security.reducer';
+import {AuthModule} from "@auth0/auth0-angular";
 
 @NgModule({
   imports: [
-    ActivateComponentModule,
-    SignInComponentModule,
-    SignUpComponentModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        children: [
-          { path: 'sign-in', component: SignInComponent },
-          { path: 'sign-up', component: SignUpComponent },
-          { path: 'activate/:id', component: ActivateComponent }
-        ]
-      }
-    ])
-  ]
+    StoreModule.forFeature(securityFeature),
+    EffectsModule.forFeature([SecurityEffects]),
+    CommonModule,
+    AuthModule.forRoot({
+      domain: "dev-xbu2-fid.eu.auth0.com",
+      clientId: "YgUoOMh2jc4CQuo8Ky9PS7npW3Q4ckX9"
+    })
+  ],
 })
 export class SecurityModule {}

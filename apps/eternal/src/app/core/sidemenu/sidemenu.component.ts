@@ -1,21 +1,16 @@
-import { CommonModule } from '@angular/common';
-import { Component, NgModule } from '@angular/core';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterModule } from '@angular/router';
-import { UserService } from '../../shared/user.service';
+import { RouterLinkWithHref } from '@angular/router';
+import { SecurityService } from '../../security/security.service';
 
 @Component({
-  selector: 'app-sidemenu',
+  selector: 'eternal-sidemenu',
   templateUrl: './sidemenu.component.html',
-  styleUrls: ['./sidemenu.component.scss']
+  styleUrls: ['./sidemenu.component.scss'],
+  standalone: true,
+  imports: [AsyncPipe, NgIf, MatButtonModule, RouterLinkWithHref]
 })
 export class SidemenuComponent {
-  constructor(public userService: UserService) {}
+  securityService = inject(SecurityService);
 }
-
-@NgModule({
-  imports: [CommonModule, MatButtonModule, RouterModule],
-  declarations: [SidemenuComponent],
-  exports: [SidemenuComponent]
-})
-export class SidemenuComponentModule {}

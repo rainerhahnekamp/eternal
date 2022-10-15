@@ -1,7 +1,0 @@
-<form (ngSubmit)="handleSubmit()" *ngIf="!message; else messagePanel" [formGroup]="formGroup">
-  <formly-form [fields]="fields" [form]="formGroup" [model]="{}"></formly-form>
-  <button mat-raised-button type="submit">Activate</button>
-</form>
-<ng-template #messagePanel>
-  <h2 data-testid="activated">{{ message }}</h2>
-</ng-template>

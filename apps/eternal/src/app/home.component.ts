@@ -1,4 +1,4 @@
-import { Component, NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'eternal-home',
@@ -9,12 +9,7 @@ import { Component, NgModule } from '@angular/core';
     <p>
       You can click around, do whatever you want but don't expect to be able to book a real holiday
       😉.
-    </p> `
+    </p> `,
+  standalone: true
 })
 export class HomeComponent {}
-
-@NgModule({
-  declarations: [HomeComponent],
-  exports: [HomeComponent]
-})
-export class HomeComponentModule {}

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, RouterLinkWithHref } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { formly } from 'ngx-formly-helpers';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -10,11 +10,30 @@ import { CustomerActions } from '../+state/customer.actions';
 import { fromCustomer } from '../+state/customer.selectors';
 import { countries } from '../countries';
 import { Customer } from '../customer';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { FormlyMaterialModule } from '@ngx-formly/material';
+import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'eternal-customer',
   templateUrl: './customer.component.html',
-  styleUrls: ['./customer.component.scss']
+  styleUrls: ['./customer.component.scss'],
+  standalone: true,
+  imports: [
+    FormlyModule,
+    FormlyMaterialModule,
+    FormlyMatDatepickerModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    RouterLinkWithHref,
+    AsyncPipe,
+    NgIf
+  ]
 })
 export class CustomerComponent {
   formGroup = new FormGroup({});

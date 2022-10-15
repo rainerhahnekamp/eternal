@@ -1,15 +1,15 @@
 <div class="main">
   <mat-toolbar color="primary">
     <mat-toolbar-row>
-      <app-header></app-header>
+      <eternal-header></eternal-header>
     </mat-toolbar-row>
   </mat-toolbar>
   <mat-drawer-container autosize>
     <mat-drawer mode="side" opened>
-      <app-sidemenu></app-sidemenu>
+      <eternal-sidemenu></eternal-sidemenu>
     </mat-drawer>
     <mat-drawer-content>
-      <app-loader></app-loader>
+      <eternal-loader></eternal-loader>
       <router-outlet></router-outlet>
     </mat-drawer-content>
   </mat-drawer-container>
