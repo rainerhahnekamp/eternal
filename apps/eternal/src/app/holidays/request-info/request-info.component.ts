@@ -1,23 +1,42 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validator, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { of, Subject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { AsyncPipe, NgIf } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { AddressLookuper } from '../../shared/address-lookuper.service';
 
 @Component({
   selector: 'eternal-request-info',
   templateUrl: './request-info.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, AsyncPipe]
+  imports: [
+    ReactiveFormsModule,
+    NgIf,
+    AsyncPipe,
+    MatFormFieldModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule
+  ]
 })
 export class RequestInfoComponent implements OnInit {
+  @Input() address = '';
+
   formGroup = inject(NonNullableFormBuilder).group({
     address: ['', Validators.required]
   });
-  lookuper = { lookup: (address: string) => of(false) };
+
+  lookuper = {
+    lookup(query: string) {
+      return of(true);
+    }
+  };
 
   title = 'Request More Information';
-  @Input() address = '';
   submitter$ = new Subject<void>();
   lookupResult$ = this.submitter$.pipe(
     switchMap(() => this.lookuper.lookup(this.formGroup.getRawValue().address)),

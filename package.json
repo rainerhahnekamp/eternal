@@ -67,7 +67,7 @@
     "@nrwl/linter": "14.8.1",
     "@nrwl/storybook": "14.8.1",
     "@nrwl/workspace": "14.8.1",
-    "@playwright/test": "^1.24.0",
+    "@playwright/test": "^1.27.1",
     "@storybook/addon-essentials": "~6.5.9",
     "@storybook/angular": "~6.5.9",
     "@storybook/builder-webpack5": "~6.5.9",
