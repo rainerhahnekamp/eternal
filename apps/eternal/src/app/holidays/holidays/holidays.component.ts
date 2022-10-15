@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { holidaysActions } from '../+state/holidays.actions';
 import { fromHolidays } from '../+state/holidays.selectors';
@@ -13,11 +13,10 @@ import { AsyncPipe, NgForOf } from '@angular/common';
   imports: [HolidayCardComponent, NgForOf, AsyncPipe]
 })
 export class HolidaysComponent implements OnInit {
-  holidays$ = this.store.select(fromHolidays.get);
-
-  constructor(private store: Store) {}
+  #store = inject(Store);
+  holidays$ = this.#store.select(fromHolidays.get);
 
   ngOnInit(): void {
-    this.store.dispatch(holidaysActions.findHolidays());
+    this.#store.dispatch(holidaysActions.findHolidays());
   }
 }

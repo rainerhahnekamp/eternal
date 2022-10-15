@@ -12,14 +12,14 @@ import { SecurityService } from '../../security/security.service';
   imports: [RouterLinkWithHref, MatButtonModule, AsyncPipe, NgIf]
 })
 export class HeaderComponent {
-  securityService = inject(SecurityService);
-  user$ = this.securityService.loadedUser$;
+  #securityService = inject(SecurityService);
+  user$ = this.#securityService.loadedUser$;
 
   signOut() {
-    this.securityService.signOut();
+    this.#securityService.signOut();
   }
 
   signIn() {
-    this.securityService.signIn();
+    this.#securityService.signIn();
   }
 }

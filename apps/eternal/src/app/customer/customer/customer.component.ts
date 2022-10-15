@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLinkWithHref } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -38,27 +38,29 @@ import { MatNativeDateModule } from '@angular/material/core';
 export class CustomerComponent {
   formGroup = new FormGroup({});
   customer$: Observable<Customer>;
-  fields: FormlyFieldConfig[];
+  #store = inject(Store);
+  #route = inject(ActivatedRoute);
 
-  constructor(private store: Store, private route: ActivatedRoute) {
-    this.fields = [
-      formly.requiredText('firstname', 'Firstname', {
-        attributes: { 'data-testid': 'inp-firstname' }
-      }),
-      formly.requiredText('name', 'Name', { attributes: { 'data-testid': 'inp-name' } }),
-      (() => {
-        const fieldConfig = formly.requiredSelect('country', 'Country', countries);
-        if (fieldConfig.templateOptions) {
-          fieldConfig.templateOptions.attributes = { 'data-testid': 'sel-country' };
-        }
-        return fieldConfig;
-      })(),
-      formly.requiredDate('birthdate', 'Birthdate', {
-        attributes: { 'data-testid': 'date-birthdate' }
-      })
-    ];
-    this.store.dispatch(customerActions.load());
-    if (this.route.snapshot.data['mode'] === 'new') {
+  fields: FormlyFieldConfig[] = [
+    formly.requiredText('firstname', 'Firstname', {
+      attributes: { 'data-testid': 'inp-firstname' }
+    }),
+    formly.requiredText('name', 'Name', { attributes: { 'data-testid': 'inp-name' } }),
+    (() => {
+      const fieldConfig = formly.requiredSelect('country', 'Country', countries);
+      if (fieldConfig.templateOptions) {
+        fieldConfig.templateOptions.attributes = { 'data-testid': 'sel-country' };
+      }
+      return fieldConfig;
+    })(),
+    formly.requiredDate('birthdate', 'Birthdate', {
+      attributes: { 'data-testid': 'date-birthdate' }
+    })
+  ];
+
+  constructor() {
+    this.#store.dispatch(customerActions.load());
+    if (this.#route.snapshot.data['mode'] === 'new') {
       this.customer$ = of({
         id: 0,
         firstname: '',
@@ -67,8 +69,8 @@ export class CustomerComponent {
         birthdate: ''
       });
     } else {
-      this.customer$ = this.store
-        .select(fromCustomer.selectById(Number(this.route.snapshot.params['id'])))
+      this.customer$ = this.#store
+        .select(fromCustomer.selectById(Number(this.#route.snapshot.params['id'])))
         .pipe(
           filter((customer) => !!customer),
           this.verifyCustomer,
@@ -80,16 +82,16 @@ export class CustomerComponent {
   submit(customer: Customer) {
     if (this.formGroup.valid) {
       if (customer.id) {
-        this.store.dispatch(customerActions.update({ customer }));
+        this.#store.dispatch(customerActions.update({ customer }));
       } else {
-        this.store.dispatch(customerActions.add({ customer }));
+        this.#store.dispatch(customerActions.add({ customer }));
       }
     }
   }
 
   remove(customer: Customer) {
     if (confirm(`Really delete ${customer}?`)) {
-      this.store.dispatch(customerActions.remove({ customer }));
+      this.#store.dispatch(customerActions.remove({ customer }));
     }
   }
 

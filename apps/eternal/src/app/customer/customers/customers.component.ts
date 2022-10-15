@@ -1,5 +1,5 @@
 import { AsyncPipe, DatePipe, NgForOf, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLinkWithHref } from '@angular/router';
@@ -14,19 +14,18 @@ import { fromCustomer } from '../+state/customer.selectors';
   imports: [MatButtonModule, MatIconModule, RouterLinkWithHref, AsyncPipe, DatePipe, NgIf, NgForOf]
 })
 export class CustomersComponent implements OnInit {
-  data$ = this.store.select(fromCustomer.selectCustomersAndPage);
-
-  constructor(private store: Store) {}
+  #store = inject(Store);
+  data$ = this.#store.select(fromCustomer.selectCustomersAndPage);
 
   ngOnInit() {
-    this.store.dispatch(customerActions.load());
+    this.#store.dispatch(customerActions.load());
   }
 
   previousPage() {
-    this.store.dispatch(customerActions.previousPage());
+    this.#store.dispatch(customerActions.previousPage());
   }
 
   nextPage() {
-    this.store.dispatch(customerActions.nextPage());
+    this.#store.dispatch(customerActions.nextPage());
   }
 }

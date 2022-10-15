@@ -14,37 +14,37 @@ export class CustomerEffects {
   private pageSize = '10';
   private url = '/customers';
 
-  actions$ = inject(Actions);
-  store = inject(Store);
-  http = inject(HttpClient);
-  router = inject(Router);
+  #actions$ = inject(Actions);
+  #store = inject(Store);
+  #http = inject(HttpClient);
+  #router = inject(Router);
 
   add$ = createEffect(() =>
-    this.actions$.pipe(
+    this.#actions$.pipe(
       ofType(customerActions.add),
-      concatMap(({ customer }) => this.http.post<Customer>(this.url, customer)),
+      concatMap(({ customer }) => this.#http.post<Customer>(this.url, customer)),
       map((customer) => customerActions.added({ customer })),
-      tap(() => this.router.navigateByUrl('/customer'))
+      tap(() => this.#router.navigateByUrl('/customer'))
     )
   );
 
   update$ = createEffect(() =>
-    this.actions$.pipe(
+    this.#actions$.pipe(
       ofType(customerActions.update),
-      concatMap(({ customer }) => this.http.put<Customer>(this.url, customer)),
+      concatMap(({ customer }) => this.#http.put<Customer>(this.url, customer)),
       map((customer) => customerActions.updated({ customer })),
-      tap(() => this.router.navigateByUrl('/customer'))
+      tap(() => this.#router.navigateByUrl('/customer'))
     )
   );
 
   remove$ = createEffect(() => {
-    return this.actions$.pipe(
+    return this.#actions$.pipe(
       ofType(customerActions.remove),
       concatMap(({ customer }) =>
-        this.http.delete<void>(`${this.url}/${customer.id}`).pipe(map(() => customer))
+        this.#http.delete<void>(`${this.url}/${customer.id}`).pipe(map(() => customer))
       ),
       map((customer) => customerActions.removed({ customer })),
-      tap(() => this.router.navigateByUrl('/customer'))
+      tap(() => this.#router.navigateByUrl('/customer'))
     );
   });
 
@@ -52,9 +52,9 @@ export class CustomerEffects {
     observable: Observable<T>
   ): Observable<{ customers: Customer[]; pageCount: number }> =>
     observable.pipe(
-      concatLatestFrom(() => this.store.select(fromCustomer.selectCurrentPage)),
+      concatLatestFrom(() => this.#store.select(fromCustomer.selectCurrentPage)),
       switchMap(([, page]) =>
-        this.http.get<{ content: Customer[]; totalPages: number }>(this.url, {
+        this.#http.get<{ content: Customer[]; totalPages: number }>(this.url, {
           params: new HttpParams().append('page', '' + page).append('pageSize', this.pageSize)
         })
       ),
@@ -65,7 +65,7 @@ export class CustomerEffects {
     );
 
   nextPage$ = createEffect(() => {
-    return this.actions$.pipe(
+    return this.#actions$.pipe(
       ofType(customerActions.nextPage),
       this.#fetchCustomers,
       map(({ customers }) => customerActions.nextPageSuccess({ customers }))
@@ -73,7 +73,7 @@ export class CustomerEffects {
   });
 
   previousPage$ = createEffect(() => {
-    return this.actions$.pipe(
+    return this.#actions$.pipe(
       ofType(customerActions.previousPage),
       this.#fetchCustomers,
       map(({ customers }) => customerActions.previousPageSuccess({ customers }))
@@ -81,7 +81,7 @@ export class CustomerEffects {
   });
 
   load$ = createEffect(() =>
-    this.actions$.pipe(
+    this.#actions$.pipe(
       ofType(customerActions.load),
       this.#fetchCustomers,
       map(({ customers, pageCount }) =>

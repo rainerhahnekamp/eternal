@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'eternal-newsletter',
@@ -9,9 +9,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 })
 export class NewsletterComponent {
   message = '';
-  formGroup = this.fb.group({ email: ['', Validators.required] });
-
-  constructor(private fb: FormBuilder) {}
+  formGroup = inject(NonNullableFormBuilder).group({ email: ['', Validators.required] });
 
   handleSubmit() {
     if (this.formGroup.valid) {

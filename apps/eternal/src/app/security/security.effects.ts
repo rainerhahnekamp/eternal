@@ -1,5 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { delay, map, tap } from 'rxjs/operators';
 import { securityActions } from './security.actions';
@@ -8,8 +7,11 @@ import { AuthService } from '@auth0/auth0-angular';
 
 @Injectable()
 export class SecurityEffects {
+  #actions$ = inject(Actions);
+  #authService = inject(AuthService);
+
   user$ = createEffect(() =>
-    this.authService.user$.pipe(
+    this.#authService.user$.pipe(
       delay(1000),
       map((user) =>
         securityActions.loaded({
@@ -28,25 +30,19 @@ export class SecurityEffects {
 
   signInUser$ = createEffect(
     () =>
-      this.actions$.pipe(
+      this.#actions$.pipe(
         ofType(securityActions.signIn),
-        tap(() => this.authService.loginWithRedirect())
+        tap(() => this.#authService.loginWithRedirect())
       ),
     { dispatch: false }
   );
 
   signOutUser$ = createEffect(
     () =>
-      this.actions$.pipe(
+      this.#actions$.pipe(
         ofType(securityActions.signOut),
-        tap(() => this.authService.logout())
+        tap(() => this.#authService.logout())
       ),
     { dispatch: false }
   );
-
-  constructor(
-    private actions$: Actions,
-    private httpClient: HttpClient,
-    private authService: AuthService
-  ) {}
 }
