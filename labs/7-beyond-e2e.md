@@ -8,7 +8,7 @@
 
 ## 1.1 Mounting
 
-You write a test for the `RequestInfoComponent` by using Cypress' component runner. That feature allows you to test a component in isolution by using all the capabilities of the Cypress framework.
+You write a test for the `RequestInfoComponent` by using Cypress' component runner. That feature allows you to test a component in isolation by using all the capabilities of the Cypress framework.
 
 Create and add following content to the file **/apps/eternal/src/app/holidays/request-info/request-info.cy.ts**.
 

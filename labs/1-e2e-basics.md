@@ -6,17 +6,17 @@
 - [6. Edit a customer's firstname](#6-edit-a-customers-firstname)
 - [7. Add a new customer](#7-add-a-new-customer)
 - [8. Request Brochure for Firenze](#8-request-brochure-for-firenze)
-- [9. Split up tests](#9-split-up-tests)
+- [9. Split up the tests](#9-split-up-the-tests)
+- [10. Headless (CI) Mode](#10-headless-ci-mode)
+- [11. Webkit](#11-webkit)
 
 # 1. Setup
 
-1. Open the **/cypress** folder and make yourself acquainted with its content.
-
-2. Open the **/cypress.config.ts** and check if it contains the value for `baseUrl` and `apiUrl`. Note that the `apiUrl` is part of the `env` property.
+1. Open the **/apps/eternal-e2e/src** folder and make yourself acquainted with its content.
 
 # 2. Add a first sanity check test
 
-Create a new **/cypress/e2e/e2e.cy.ts** file and add the following first test:
+Create a new **/apps/eternal-e2e/src/e2e/e2e.cy.ts** file and add the following first test:
 
 <details>
 <summary>Show Solution</summary>
@@ -164,20 +164,35 @@ Write a test that clicks on the Florence holiday's "Get a Brochure" button and v
 ```typescript
 it('should request brochure for Firenze', () => {
   cy.get('[data-testid=btn-holidays]').click();
-  cy.get('app-holiday-card').contains('Firenze').parents('app-holiday-card').find('a').click();
-  cy.get('[data-testid=address').type('Domgasse 5');
-  cy.get('[data-testid=btn-search]').click();
-  cy.get('[data-testid=lookup-result]').contains('Brochure sent');
+  cy.get('eternal-holiday-card')
+    .contains('Firenze')
+    .parents('eternal-holiday-card')
+    .find('a')
+    .click();
+  cy.get('[data-testid=ri-address]').type('Domgasse 5');
+  cy.get('[data-testid=ri-search]').click();
+  cy.get('[data-testid=ri-message]').should('have.text', 'Brochure sent');
 });
 ```
 
 </p>
 </details>
 
-# 9. Split up tests
+# 9. Split up the tests
 
 Split up the test into 3 different spec files:
 
 - customers.cy.ts
 - holidays.cy.ts
 - misc.cy.ts
+
+# 10. Headless (CI) Mode
+
+Run the tests via `npm run e2e`. You should see no browser and the output only via the console. All tests should end successfully and there should be a video folder, where you can see the recordings of the run.
+
+Try to fail a test, re-run them again, and you will see that a screenshot has been created for the failed test.
+
+# 11. Webkit
+
+Go to `cypress.config.ts` and temporarily set the parameter `experimentalSessionAndOrigin` to `false`. Now restart Cypress, select Webkit as browser and check if the tests are still working.
+Don't forget to set `experimentalSessionAndOrigin` back to `true`.
