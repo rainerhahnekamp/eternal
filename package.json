@@ -94,6 +94,7 @@
     "jest-preset-angular": "12.2.2",
     "ng-mocks": "^14.1.0",
     "nx": "14.8.6",
+    "playwright-webkit": "^1.27.1",
     "postcss": "^8.4.14",
     "prettier": "^2.6.2",
     "raw-loader": "^4.0.2",
