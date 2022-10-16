@@ -2,13 +2,13 @@
 - [2. Individual Commands](#2-individual-commands)
 - [3. Intercept Network Requests](#3-intercept-network-requests)
 - [4. Page Object Model: Customer Form & Sidemenu](#4-page-object-model-customer-form--sidemenu)
-- [5: Session Cache & Domain Switching](#5-session-cache--domain-switching)
-  - [5.1: `cy.origin`](#51-cyorigin)
-  - [5.2: `cy.session`](#52-cysession)
-  - [5.3: Validating the Cache](#53-validating-the-cache)
-  - [5.4: Configurable Credentials](#54-configurable-credentials)
-- [6: Bonus - Scraping with `cy.task`](#6-bonus---scraping-with-cytask)
-- [7: Bonus - Intelligent (Conditional) Test](#7-bonus---intelligent-conditional-test)
+- [5. Session Cache & Domain Switching](#5-session-cache--domain-switching)
+  - [5.1. `cy.origin`](#51-cyorigin)
+  - [5.2. `cy.session`](#52-cysession)
+  - [5.3. Validating the Cache](#53-validating-the-cache)
+  - [5.4. Configurable Credentials](#54-configurable-credentials)
+- [6. Bonus - Scraping with `cy.task`](#6-bonus---scraping-with-cytask)
+- [7. Bonus - Intelligent (Conditional) Test](#7-bonus---intelligent-conditional-test)
 
 **The project's path is: /apps/eternal-e2e/src/**
 
@@ -180,7 +180,7 @@ export const customer = new Customer();
 </p>
 </details>
 
-# 5: Session Cache & Domain Switching
+# 5. Session Cache & Domain Switching
 
 It is quite usual to use a signed-in user for the majority of the tests.
 
@@ -192,7 +192,7 @@ Third, we'll pack the session cache along the login into an own command.
 
 Create a new file **session.cy.ts**.
 
-## 5.1: `cy.origin`
+## 5.1. `cy.origin`
 
 Let's start with a simple login on a different domain. We have to use `cy.origin` in all places, where we leave our origin domain which is specified in the **cypress.config.ts**.
 
@@ -213,7 +213,7 @@ describe('Session', () => {
 });
 ```
 
-## 5.2: `cy.session`
+## 5.2. `cy.session`
 
 Let's wrap the whole login procedure into a `cy.session` so that it gets cached internally:
 
@@ -233,7 +233,7 @@ it('should login', () => {
 2. Now rerun. It should be much shorter (well below 1 second).
 3. Click on "Clear All Sessions", and rerun the test. You should see that it is not using the cache.
 
-## 5.3: Validating the Cache
+## 5.3. Validating the Cache
 
 Create a new Cypress command, `cy.login` that takes a username and password as parameter. Move the code for the session into it. Make sure the parameters for username and password are used as cache key (first parameter of `cy.session`).
 
@@ -290,7 +290,7 @@ describe('Session', () => {
 </p>
 </details>
 
-## 5.4: Configurable Credentials
+## 5.4. Configurable Credentials
 
 In `cypress.config.ts`, add two variables to store the credentials:
 
@@ -350,13 +350,13 @@ Cypress.Commands.add('login', (username?: string, password?: string) => {
 </p>
 </details>
 
-# 6: Bonus - Scraping with `cy.task`
+# 6. Bonus - Scraping with `cy.task`
 
 Write a test that reads all names of the customer's first page and stores them to a file called **customers.txt**.
 
 Please look up the solution in the branch `solution-2-e2e-advanced`.
 
-# 7: Bonus - Intelligent (Conditional) Test
+# 7. Bonus - Intelligent (Conditional) Test
 
 Write an intelligent test that adds a news customer. For the assertion part, the test should navigate through the pages until the customer is found. Afterwards, it should remove the customer and verify that it has really gone.
 
