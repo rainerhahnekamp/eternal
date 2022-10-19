@@ -15,7 +15,7 @@
     "build": "nx build",
     "test": "nx test",
     "test:component-test": "nx component-test --watch",
-    "test:playwright": "playwright test playwright.spec.ts",
+    "test:playwright": "playwright test",
     "test:watch": "nx test --watch",
     "storybook": "nx run eternal:storybook",
     "storybook:build": "nx run eternal:build-storybook",
