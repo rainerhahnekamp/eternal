@@ -1,13 +1,13 @@
-package com.softarc.springworkshop;
+package com.softarc.eternal;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringWorkshopApplication {
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringWorkshopApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
 }

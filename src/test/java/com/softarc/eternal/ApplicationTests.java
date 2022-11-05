@@ -1,10 +1,10 @@
-package com.softarc.springworkshop;
+package com.softarc.eternal;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringWorkshopApplicationTests {
+class ApplicationTests {
 
     @Test
     void contextLoads() {

@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+/dev.mv.db
+/dev.trace.db
+/template.mv.db
