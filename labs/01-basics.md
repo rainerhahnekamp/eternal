@@ -25,8 +25,8 @@ Create a bean which manages updates, deletions and inserts
 
 # 4. Setup Logging
 
-Profiles
-File Sink
+- Profiles
+- File Sink
 
 # 4. Setup and seed an embedded database (H2)
 
