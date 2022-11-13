@@ -38,3 +38,7 @@ out/
 /dev.mv.db
 /dev.trace.db
 /template.mv.db
+
+application.log
+node_modules
+/holidays.json
