@@ -58,7 +58,11 @@ public class Holiday {
 
 Our application acts as backend, so we will need a Controller which processes HTTP requests against certain URLs.
 
-Create a new class `HttpController`. It should be located in the package `com.softarc.eternal.web`. Annotate the class as a `RestController` and assign the Url `/holidays` to it.
+Enable Spring Web MVC by installing the starter.
+
+Add `implementation 'org.springframework.boot:spring-boot-starter-web` to the `dependencies` property in **build.gradle**.
+
+Create a new class `HolidaysController`. It should be located in the package `com.softarc.eternal.web`. Annotate the class as a `RestController` and assign the Url `/holidays` to it.
 
 It should return a list of holidays. You can use these as an example or create your one ones:
 
