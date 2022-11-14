@@ -1,45 +1,66 @@
-import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, RouterLinkWithHref } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { formly } from 'ngx-formly-helpers';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { CustomerActions } from '../+state/customer.actions';
+import { customerActions } from '../+state/customer.actions';
 import { fromCustomer } from '../+state/customer.selectors';
 import { countries } from '../countries';
 import { Customer } from '../customer';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { FormlyMaterialModule } from '@ngx-formly/material';
+import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'eternal-customer',
   templateUrl: './customer.component.html',
-  styleUrls: ['./customer.component.scss']
+  styleUrls: ['./customer.component.scss'],
+  standalone: true,
+  imports: [
+    FormlyModule,
+    FormlyMaterialModule,
+    FormlyMatDatepickerModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    RouterLinkWithHref,
+    AsyncPipe,
+    NgIf
+  ]
 })
 export class CustomerComponent {
   formGroup = new FormGroup({});
   customer$: Observable<Customer>;
-  fields: FormlyFieldConfig[];
+  #store = inject(Store);
+  #route = inject(ActivatedRoute);
 
-  constructor(private store: Store, private route: ActivatedRoute) {
-    this.fields = [
-      formly.requiredText('firstname', 'Firstname', {
-        attributes: { 'data-testid': 'inp-firstname' }
-      }),
-      formly.requiredText('name', 'Name', { attributes: { 'data-testid': 'inp-name' } }),
-      (() => {
-        const fieldConfig = formly.requiredSelect('country', 'Country', countries);
-        if (fieldConfig.templateOptions) {
-          fieldConfig.templateOptions.attributes = { 'data-testid': 'sel-country' };
-        }
-        return fieldConfig;
-      })(),
-      formly.requiredDate('birthdate', 'Birthdate', {
-        attributes: { 'data-testid': 'date-birthdate' }
-      })
-    ];
-    this.store.dispatch(CustomerActions.load());
-    if (this.route.snapshot.data.mode === 'new') {
+  fields: FormlyFieldConfig[] = [
+    formly.requiredText('firstname', 'Firstname', {
+      attributes: { 'data-testid': 'inp-firstname' }
+    }),
+    formly.requiredText('name', 'Name', { attributes: { 'data-testid': 'inp-name' } }),
+    (() => {
+      const fieldConfig = formly.requiredSelect('country', 'Country', countries);
+      if (fieldConfig.templateOptions) {
+        fieldConfig.templateOptions.attributes = { 'data-testid': 'sel-country' };
+      }
+      return fieldConfig;
+    })(),
+    formly.requiredDate('birthdate', 'Birthdate', {
+      attributes: { 'data-testid': 'date-birthdate' }
+    })
+  ];
+
+  constructor() {
+    this.#store.dispatch(customerActions.load());
+    if (this.#route.snapshot.data['mode'] === 'new') {
       this.customer$ = of({
         id: 0,
         firstname: '',
@@ -48,8 +69,8 @@ export class CustomerComponent {
         birthdate: ''
       });
     } else {
-      this.customer$ = this.store
-        .select(fromCustomer.selectById(Number(this.route.snapshot.params.id)))
+      this.customer$ = this.#store
+        .select(fromCustomer.selectById(Number(this.#route.snapshot.params['id'])))
         .pipe(
           filter((customer) => !!customer),
           this.verifyCustomer,
@@ -61,16 +82,16 @@ export class CustomerComponent {
   submit(customer: Customer) {
     if (this.formGroup.valid) {
       if (customer.id) {
-        this.store.dispatch(CustomerActions.update({ customer }));
+        this.#store.dispatch(customerActions.update({ customer }));
       } else {
-        this.store.dispatch(CustomerActions.add({ customer }));
+        this.#store.dispatch(customerActions.add({ customer }));
       }
     }
   }
 
   remove(customer: Customer) {
     if (confirm(`Really delete ${customer}?`)) {
-      this.store.dispatch(CustomerActions.remove({ customer }));
+      this.#store.dispatch(customerActions.remove({ customer }));
     }
   }
 

@@ -1,33 +1,51 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable, of, Subject } from 'rxjs';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { of, Subject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
-  selector: 'app-request-info',
-  templateUrl: './request-info.component.html'
+  selector: 'eternal-request-info',
+  templateUrl: './request-info.component.html',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    NgIf,
+    AsyncPipe,
+    MatFormFieldModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule
+  ]
 })
 export class RequestInfoComponent implements OnInit {
-  formGroup: FormGroup = this.formBuilder.group({
-    address: []
-  });
-  title = 'Request More Information';
   @Input() address = '';
-  submitter$ = new Subject<void>();
-  lookupResult$: Observable<string> | undefined;
-  lookuper = { lookup: (address: string) => of(false) };
 
-  constructor(private formBuilder: FormBuilder) {}
+  formGroup = inject(NonNullableFormBuilder).group({
+    address: ['', Validators.required]
+  });
+
+  lookuper = {
+    lookup(query: string) {
+      return of(true);
+    }
+  };
+
+  title = 'Request More Information';
+  submitter$ = new Subject<void>();
+  lookupResult$ = this.submitter$.pipe(
+    switchMap(() => this.lookuper.lookup(this.formGroup.getRawValue().address)),
+    map((found) => (found ? 'Brochure sent' : 'Address not found'))
+  );
 
   ngOnInit(): void {
     if (this.address) {
-      this.formGroup.setValue({ addresss: this.address });
+      this.formGroup.setValue({ address: this.address });
     }
-
-    this.lookupResult$ = this.submitter$.pipe(
-      switchMap(() => this.lookuper.lookup(this.formGroup.value.address)),
-      map((found) => (found ? 'Brochure sent' : 'Address not found'))
-    );
   }
 
   search(): void {

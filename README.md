@@ -15,7 +15,6 @@ If the backend is not reachable you can also run the backend locally (see below)
 To verify everything is working, you can run following commands:
 
 - Unit Tests: `npm run test`
-  Tests with Puppeteer: `npm run test:vr`
 - Storybook: `npm run storybook` (Storybook should start
   on http://localhost:4400)
 - Cypress: `npm run e2e:watch`
@@ -74,4 +73,7 @@ yarn add -D cypress-plugin-snapshots
 
 # Playwright
 yarn add -D @playwright/test
+
+# Cypress Component Testing
+yarn add -D @cypress/webpack-dev-server@1 @ngtools/webpack babel-loader html-webpack-plugin raw-loader
 ```

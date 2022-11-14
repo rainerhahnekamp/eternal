@@ -1,3 +1,17 @@
+## 1.8.0
+
+- Cypress Component Testing as main testing tool for component & integration tests
+- Standalone-ability according to Angular 14.2
+- `inject` function
+- E2E exercises for session, task
+
+## 1.7.0
+
+- Cypress Component Testing
+- Cypress Session and Login
+- Cypress Testing Library
+- Angular 14
+
 ## 1.6.0
 
 - SCAM pattern

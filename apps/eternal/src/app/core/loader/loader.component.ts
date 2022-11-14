@@ -1,20 +1,15 @@
-import { CommonModule } from '@angular/common';
-import { Component, NgModule } from '@angular/core';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LoadingService } from '../../shared/loading.service';
 
 @Component({
-  selector: 'app-loader',
+  selector: 'eternal-loader',
   templateUrl: './loader.component.html',
-  styleUrls: ['./loader.component.scss']
+  styleUrls: ['./loader.component.scss'],
+  standalone: true,
+  imports: [MatProgressBarModule, AsyncPipe, NgIf]
 })
 export class LoaderComponent {
-  constructor(public loadingService: LoadingService) {}
+  loadingService = inject(LoadingService);
 }
-
-@NgModule({
-  imports: [CommonModule, MatProgressBarModule],
-  declarations: [LoaderComponent],
-  exports: [LoaderComponent]
-})
-export class LoaderComponentModule {}

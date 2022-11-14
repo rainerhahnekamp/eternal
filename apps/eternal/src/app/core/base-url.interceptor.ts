@@ -1,11 +1,11 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL } from '../shared/base-url.token';
 
 @Injectable()
 export class BaseUrlInterceptor implements HttpInterceptor {
-  constructor(@Inject(BASE_URL) private baseUrl: string) {}
+  #baseUrl = inject(BASE_URL);
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!req.url.startsWith('/')) {
@@ -13,7 +13,7 @@ export class BaseUrlInterceptor implements HttpInterceptor {
     }
     return next.handle(
       req.clone({
-        url: `${this.baseUrl}${req.url}`,
+        url: `${this.#baseUrl}${req.url}`,
         withCredentials: true
       })
     );

@@ -1,18 +1,9 @@
-import { Component, NgModule, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-diaries',
+  selector: 'eternal-diaries',
   templateUrl: './diaries.component.html',
-  styleUrls: ['./diaries.component.scss']
+  styleUrls: ['./diaries.component.scss'],
+  standalone: true
 })
-export class DiariesComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
-}
-
-@NgModule({
-  declarations: [DiariesComponent],
-  exports: [DiariesComponent]
-})
-export class DiariesComponentModule {}
+export class DiariesComponent {}

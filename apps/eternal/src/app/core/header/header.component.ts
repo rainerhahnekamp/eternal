@@ -1,27 +1,25 @@
-import { CommonModule } from '@angular/common';
-import { Component, NgModule } from '@angular/core';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterModule } from '@angular/router';
-import { UserService } from '../../shared/user.service';
+import { RouterLinkWithHref } from '@angular/router';
+import { SecurityService } from '../../security/security.service';
 
 @Component({
-  selector: 'app-header',
+  selector: 'eternal-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  standalone: true,
+  imports: [RouterLinkWithHref, MatButtonModule, AsyncPipe, NgIf]
 })
 export class HeaderComponent {
-  user$ = this.userService.loadedUser$;
-
-  constructor(private userService: UserService) {}
+  #securityService = inject(SecurityService);
+  user$ = this.#securityService.loadedUser$;
 
   signOut() {
-    this.userService.signOut();
+    this.#securityService.signOut();
+  }
+
+  signIn() {
+    this.#securityService.signIn();
   }
 }
-
-@NgModule({
-  imports: [CommonModule, MatButtonModule, RouterModule],
-  declarations: [HeaderComponent],
-  exports: [HeaderComponent]
-})
-export class HeaderComponentModule {}

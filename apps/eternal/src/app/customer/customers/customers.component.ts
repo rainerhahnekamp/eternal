@@ -1,37 +1,31 @@
-import { CommonModule } from '@angular/common';
-import { Component, NgModule, OnInit } from '@angular/core';
+import { AsyncPipe, DatePipe, NgForOf, NgIf } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
+import { RouterLinkWithHref } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { CustomerActions } from '../+state/customer.actions';
+import { customerActions } from '../+state/customer.actions';
 import { fromCustomer } from '../+state/customer.selectors';
 
 @Component({
   templateUrl: './customers.component.html',
-  styleUrls: ['./customers.component.scss']
+  styleUrls: ['./customers.component.scss'],
+  standalone: true,
+  imports: [MatButtonModule, MatIconModule, RouterLinkWithHref, AsyncPipe, DatePipe, NgIf, NgForOf]
 })
 export class CustomersComponent implements OnInit {
-  data$ = this.store.select(fromCustomer.selectCustomersAndPage);
-
-  constructor(private store: Store) {}
+  #store = inject(Store);
+  data$ = this.#store.select(fromCustomer.selectCustomersAndPage);
 
   ngOnInit() {
-    this.store.dispatch(CustomerActions.load());
+    this.#store.dispatch(customerActions.load());
   }
 
   previousPage() {
-    this.store.dispatch(CustomerActions.previousPage());
+    this.#store.dispatch(customerActions.previousPage());
   }
 
   nextPage() {
-    this.store.dispatch(CustomerActions.nextPage());
+    this.#store.dispatch(customerActions.nextPage());
   }
 }
-
-@NgModule({
-  declarations: [CustomersComponent],
-  exports: [CustomersComponent],
-  imports: [CommonModule, MatButtonModule, MatIconModule, RouterModule]
-})
-export class CustomersComponentModule {}

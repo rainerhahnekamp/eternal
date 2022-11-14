@@ -3,7 +3,14 @@
   "compilerOptions": {
     "emitDecoratorMetadata": true
   },
-
-  "exclude": ["../**/*.spec.ts"],
-  "include": ["../src/**/*", "*.js"]
+  "files": ["../src/polyfills.ts"],
+  "exclude": ["../**/*.spec.ts", "jest.config.ts"],
+  "include": [
+    "../src/**/*.stories.ts",
+    "../src/**/*.stories.js",
+    "../src/**/*.stories.jsx",
+    "../src/**/*.stories.tsx",
+    "../src/**/*.stories.mdx",
+    "*.js"
+  ]
 }
