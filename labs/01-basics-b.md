@@ -42,9 +42,11 @@ public class AppConfiguration {
 
 ## 1.2. Interface
 
-Extract the `HolidayService` into an interface. The interface should become the Bean and name the original implemenation `DefaultHolidaysRepository`.
+Extract the `HolidayService` into an interface. The interface should become the Bean and name of the original implementation should become `DefaultHolidaysRepository`.
 
 Make sure, that `HolidaysController` does not inject the `DefaultHolidaysRepository` but the `HolidayService`.
+
+**Hint:** If you use IntelliJ, try out the action _Extract to Interface..._
 
 <details>
 <summary>Show Solution</summary>
@@ -179,8 +181,18 @@ public class FsHolidaysRepository implements HolidaysRepository {
 
   @Override
   public void remove(Long id) {
-    this.holidays.removeIf(holiday -> holiday.getId().equals(id));
-    this.persist();
+    this.find(id)
+      .ifPresentOrElse(
+        holiday -> {
+          this.holidays.remove(holiday);
+          this.persist();
+        },
+        () -> {
+          throw new RuntimeException(
+            String.format("could not find Holiday with id %d", id)
+          );
+        }
+      );
   }
 }
 
@@ -193,7 +205,7 @@ public class FsHolidaysRepository implements HolidaysRepository {
 
 We want to define which `HolidaysRepository` should be used and also the filename for the `FsHolidayRepository`.
 
-Add the following properties in **application.yml** (directory resources):
+Add the following properties to the file **/src/main/resources/application.yml**:
 
 ```yml
 app.holidays:
@@ -263,6 +275,15 @@ public class FsHolidaysRepository implements HolidaysRepository {
 
 Instead of using the unsafe `@Value`, create a new class `AppProperties` which uses `@ConfigurationProperties("app.holidays")` instead. That class should be injected in `AppConfiguration` and `FsHolidaysRepository`.
 
+Add another annotation processor to your dependencies array in **build.gradle**:
+
+```groovy
+dependencies {
+  // ...
+  annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+}
+```
+
 <details>
 <summary>Show Solution</summary>
 <p>
@@ -330,7 +351,7 @@ FsHolidaysRepository.log.info(String.format("Holiday %s was added.", name));
 
 Next, we want to change the behaviour. We want too see our application's log in the console, and the rest should end up in a file.
 
-In the directory **/src/mainresources**, add the file **logback.xml**. Restart the application and verify, that a logging was created and contains already logging data.
+In the directory **/src/main/resources**, add the file **logback.xml**. Restart the application and verify, that a logging was created and contains already logging data.
 
 **logback.xml**
 
@@ -392,7 +413,7 @@ Update the `AppConfiguration` via the `@Profile` annotation.
 
 ## 3.5. Profile-based Repository via Configuration
 
-An alternative to `@Profile` is to delegate to "configuration profile files". Add a new **application-demo.yml** in the **resources** directory and set the property `application.holidays.repository-type` to "default".
+An alternative to `@Profile` is to delegate to "configuration profile files". Add a new **application-demo.yml** in the **resources** directory and set the property `app.holidays.persistence-type` to "default".
 
 # 4. Bonus: Enable Automatic Restart
 
