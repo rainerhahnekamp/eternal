@@ -1,0 +1,12 @@
+{
+  "name": "spring-workshop",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/rainerhahnekamp/spring-workshop.git",
+  "author": "Rainer Hahnekamp <rainer.hahnekamp@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "prettier": "^2.7.1",
+    "prettier-plugin-java": "^1.6.2"
+  }
+}
