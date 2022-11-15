@@ -38,5 +38,8 @@ out/
 /dev.mv.db
 /dev.trace.db
 /template.mv.db
-/node_modules/
+
+application.log
+node_modules
+/holidays.json
 /yarn-error.log
