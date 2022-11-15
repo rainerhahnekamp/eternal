@@ -42,3 +42,4 @@ out/
 application.log
 node_modules
 /holidays.json
+/yarn-error.log
