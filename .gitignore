@@ -38,3 +38,5 @@ out/
 /dev.mv.db
 /dev.trace.db
 /template.mv.db
+/node_modules/
+/yarn-error.log
