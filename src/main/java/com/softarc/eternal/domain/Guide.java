@@ -1,7 +1,5 @@
 package com.softarc.eternal.domain;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,12 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Holiday {
+public class Guide {
 
   private Long id;
-  private String name;
-  private String description;
-
-  @Builder.Default
-  private Set<HolidayTrip> trips = new HashSet<>();
+  private String firstname;
+  private String lastname;
+  private String email;
+  private String phoneNr;
+  private String text;
 }
