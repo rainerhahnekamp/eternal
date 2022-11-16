@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softarc.eternal.data.DefaultHolidaysRepository;
 import com.softarc.eternal.data.FsHolidaysRepository;
 import com.softarc.eternal.data.HolidaysRepository;
+import com.softarc.eternal.data.OverlappingCalculator;
 import com.softarc.eternal.domain.Holiday;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +18,8 @@ public class AppConfiguration {
   @Bean
   public HolidaysRepository getHolidaysRepository(
     ObjectMapper objectMapper,
-    AppProperties appProperties
+    AppProperties appProperties,
+    OverlappingCalculator calculator
   ) {
     if ("file".equals(appProperties.getPersistenceType())) {
       return new FsHolidaysRepository(
@@ -39,7 +41,7 @@ public class AppConfiguration {
           Collections.emptySet()
         )
       );
-      return new DefaultHolidaysRepository(holidays);
+      return new DefaultHolidaysRepository(holidays, calculator);
     }
   }
 }

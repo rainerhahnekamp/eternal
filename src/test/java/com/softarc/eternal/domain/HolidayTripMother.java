@@ -5,10 +5,15 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+import net.bytebuddy.asm.Advice;
 
 public class HolidayTripMother {
 
   private static Long id = 1L;
+
+  public static HolidayTrip.HolidayTripBuilder start2022(Holiday holiday) {
+    return HolidayTripMother.standard(holiday, LocalDate.of(2022, 1, 1), 7);
+  }
 
   public static HolidayTrip.HolidayTripBuilder standard(
     Holiday holiday,
