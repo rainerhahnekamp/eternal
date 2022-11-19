@@ -1,7 +1,36 @@
 # Unit Tests `FsHolidaysRepository`
 
-Write unit tests for `FsHolidaysRepository`. Try to come with 100% test coverage. You might have to refactor for testing a little bit.
+# Create ObjectMother for `Holiday`
+
+Write unit tests for `DefaultHolidaysRepository`. Try to come with 100% test coverage. You might have to refactor for testing a little bit.
+
+- Add `HolidayTrip` and `Guide`.
+
+
+CRUD Tests
+
+# Add HolidayTrip
+
+# Add Guide
+
+# Add Guide with Overlapping
+
+# Add Parameterized Guide with Overlapping
+
+# Extract Overlapping to class and mock it
+
+
 
 # Spring Web Test `/holidays/`
 
-# Bonus: E2E
+## Unit Test
+
+- Verify that FsHolidaysRepository is used
+  - Set Profile and verify `DefaultHolidaysRepository` is used
+  - Use `@MockBean`
+- Write Integration Tests
+  - Verify Repository Bean
+  - Set Profile
+  - Set Configuration Parameter
+
+- Measure Test Coverage
