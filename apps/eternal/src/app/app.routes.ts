@@ -31,6 +31,13 @@ export const appRoutes: Routes = [
         loadChildren: () =>
           import('@eternal/diary/feature').then((m) => m.diaryRoutes),
       },
+      {
+        path: 'admin/holidays',
+        loadChildren: () =>
+          import('@eternal/admin/holidays/feature').then(
+            (m) => m.adminHolidaysRoutes
+          ),
+      },
     ],
   },
 ];
