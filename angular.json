@@ -2,6 +2,10 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "admin-holidays-data": "libs/admin/holidays/data",
+    "admin-holidays-feature": "libs/admin/holidays/feature",
+    "admin-holidays-model": "libs/admin/holidays/model",
+    "admin-holidays-ui": "libs/admin/holidays/ui",
     "bookings": "libs/bookings",
     "customers-api": "libs/customers/api",
     "customers-data": "libs/customers/data",
