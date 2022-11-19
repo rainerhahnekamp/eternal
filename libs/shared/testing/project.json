@@ -1,0 +1,26 @@
+{
+  "name": "shared-testing",
+  "projectType": "library",
+  "sourceRoot": "libs/shared/testing/src",
+  "prefix": "eternal",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/shared/testing"],
+      "options": {
+        "jestConfig": "libs/shared/testing/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/testing/**/*.ts",
+          "libs/shared/testing/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": ["domain:shared", "type:shared:testing"]
+}

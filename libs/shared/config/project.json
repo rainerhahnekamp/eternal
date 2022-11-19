@@ -1,0 +1,26 @@
+{
+  "name": "shared-config",
+  "projectType": "library",
+  "sourceRoot": "libs/shared/config/src",
+  "prefix": "eternal",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/shared/config"],
+      "options": {
+        "jestConfig": "libs/shared/config/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/config/**/*.ts",
+          "libs/shared/config/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": ["domain:shared", "type:shared:config"]
+}
