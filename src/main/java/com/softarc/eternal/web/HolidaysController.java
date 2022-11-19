@@ -2,8 +2,10 @@ package com.softarc.eternal.web;
 
 import com.softarc.eternal.data.HolidaysRepository;
 import com.softarc.eternal.domain.Holiday;
-import java.util.List;
+import com.softarc.eternal.web.request.HolidayDto;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/holidays")
 @RestController
@@ -25,10 +27,14 @@ public class HolidaysController {
     return this.repository.find(id).orElseThrow();
   }
 
-  @PostMapping("{name}")
-  public void add(@PathVariable("name") String name) {
-    this.repository.add(name);
+  @PostMapping
+  public void add(@RequestBody HolidayDto holidayDto) {
+    this.repository.add(holidayDto.getName(), holidayDto.getDescription());
   }
+
+  @PutMapping
+  public void update(@RequestBody HolidayDto holidayDto) { this.repository.update(holidayDto.getId(), holidayDto.getName(), holidayDto.getDescription());}
+
 
   @DeleteMapping("{id}")
   public void remove(@PathVariable("id") Long id) {

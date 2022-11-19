@@ -1,22 +1,24 @@
 package com.softarc.eternal.data;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import com.softarc.eternal.domain.GuideMother;
 import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.domain.HolidayMother;
 import com.softarc.eternal.domain.HolidayTripMother;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultHolidaysRepositoryTest {
@@ -56,12 +58,12 @@ class DefaultHolidaysRepositoryTest {
   public void testAddingHoliday() {
     var holiday = HolidayMother.vienna().build();
     var repository = setup();
-    repository.add("Vienna");
+    repository.add("Vienna", "Urlaub in Wien");
 
     assertThat(repository.findAll())
       .hasSize(1)
       .extracting(Holiday::getName)
-      .allSatisfy(name -> assertThat(name).isEqualTo("Vienna"));
+      .allSatisfy(name -> assertThat(name).isEqualTo("Vienna", "Urlaub in Wien"));
   }
 
   @Test
