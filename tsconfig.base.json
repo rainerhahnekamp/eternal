@@ -15,6 +15,14 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@eternal/admin/holidays/data": ["libs/admin/holidays/data/src/index.ts"],
+      "@eternal/admin/holidays/feature": [
+        "libs/admin/holidays/feature/src/index.ts"
+      ],
+      "@eternal/admin/holidays/model": [
+        "libs/admin/holidays/model/src/index.ts"
+      ],
+      "@eternal/admin/holidays/ui": ["libs/admin/holidays/ui/src/index.ts"],
       "@eternal/bookings": ["libs/bookings/src/index.ts"],
       "@eternal/customers/api": ["libs/customers/api/src/index.ts"],
       "@eternal/customers/data": ["libs/customers/data/src/index.ts"],

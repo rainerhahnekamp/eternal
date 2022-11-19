@@ -1,0 +1,19 @@
+<form (ngSubmit)="submit()" *ngIf="holiday" [formGroup]="formGroup">
+  <formly-form
+    [fields]="fields"
+    [form]="formGroup"
+    [model]="holiday"
+  ></formly-form>
+  <div class="buttons">
+    <a [routerLink]="['..']" mat-raised-button>Back</a>
+    <button
+      (click)="handleRemove()"
+      color="warn"
+      mat-raised-button
+      type="button"
+    >
+      Delete
+    </button>
+    <button color="primary" mat-raised-button type="submit">Save</button>
+  </div>
+</form>
