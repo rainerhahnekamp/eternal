@@ -28,8 +28,9 @@ public class HolidaysController {
   }
 
   @PostMapping
-  public void add(@RequestBody HolidayDto holidayDto) {
+  public boolean add(@RequestBody HolidayDto holidayDto) {
     this.repository.add(holidayDto.getName(), holidayDto.getDescription());
+    return true;
   }
 
   @PutMapping
