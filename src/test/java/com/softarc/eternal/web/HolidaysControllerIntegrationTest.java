@@ -2,6 +2,7 @@ package com.softarc.eternal.web;
 
 import com.softarc.eternal.data.DefaultHolidaysRepository;
 import com.softarc.eternal.data.HolidaysRepository;
+import com.softarc.eternal.web.dto.HolidayDtoMother;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +26,8 @@ class HolidaysControllerIntegrationTest {
 
   @Test
   public void testAddHoliday() {
-    controller.add( "Amsterdam");
+    var amsterdam = HolidayDtoMother.vienna().name("Amsterdam").build();
+    controller.add(amsterdam);
     var holiday = repository.findAll().stream().filter(h -> "Amsterdam".equals(h.getName())).findFirst().orElseThrow();
     assertThat(controller.find(holiday.getId())).isEqualTo(holiday);
   }
