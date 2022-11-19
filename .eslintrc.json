@@ -1,0 +1,133 @@
+{
+  "root": true,
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nrwl/nx"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "@nrwl/nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "type:app",
+                "onlyDependOnLibsWithTags": [
+                  "type:feature",
+                  "type:shared:config",
+                  "type:shared:http",
+                  "type:shared:master-data",
+                  "type:shared:security",
+                  "type:shared:ui-messaging"
+                ]
+              },
+              {
+                "sourceTag": "domain:bookings",
+                "onlyDependOnLibsWithTags": [
+                  "domain:bookings",
+                  "domain:customers:api",
+                  "domain:shared"
+                ]
+              },
+              {
+                "sourceTag": "domain:customers",
+                "onlyDependOnLibsWithTags": [
+                  "domain:customers",
+                  "domain:shared"
+                ]
+              },
+              {
+                "sourceTag": "domain:customers:api",
+                "onlyDependsOnLibWithTags": ["domain:customers"]
+              },
+              {
+                "sourceTag": "domain:diary",
+                "onlyDependOnLibsWithTags": ["domain:diary", "domain:shared"]
+              },
+              {
+                "sourceTag": "domain:holidays",
+                "onlyDependOnLibsWithTags": ["domain:holidays", "domain:shared"]
+              },
+              {
+                "sourceTag": "type:api",
+                "onlyDependOnLibWithTags": [
+                  "type:feature",
+                  "type:data",
+                  "type:ui",
+                  "type:model"
+                ]
+              },
+              {
+                "sourceTag": "type:feature",
+                "onlyDependOnLibsWithTags": [
+                  "type:api",
+                  "type:data",
+                  "type:ui",
+                  "type:model",
+                  "type:shared:form",
+                  "type:shared:config",
+                  "type:shared:master-data",
+                  "type:shared:ngrx-utils",
+                  "type:shared:security",
+                  "type:shared:ui-messaging",
+                  "type:shared:util"
+                ]
+              },
+              {
+                "sourceTag": "type:data",
+                "onlyDependOnLibsWithTags": [
+                  "type:model",
+                  "type:shared:config",
+                  "type:shared:ui-messaging",
+                  "type:shared:ngrx-utils",
+                  "type:shared:testing",
+                  "type:shared:util"
+                ]
+              },
+              {
+                "sourceTag": "type:ui",
+                "onlyDependOnLibsWithTags": [
+                  "type:model",
+                  "type:shared:form",
+                  "type:shared:ui",
+                  "type:shared:util"
+                ]
+              },
+              {
+                "sourceTag": "type:ui",
+                "bannedExternalImports": ["@ngrx/**"]
+              },
+              {
+                "sourceTag": "type:shared:http",
+                "onlyDependOnLibsWithTags": [
+                  "type:shared:config",
+                  "type:shared:ui-messaging"
+                ]
+              },
+              {
+                "sourceTag": "type:shared:ngrx-utils",
+                "onlyDependOnLibsWithTags": ["type:shared:util"]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nrwl/nx/javascript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.ts"],
+      "extends": ["plugin:@ngrx/strict"]
+    }
+  ]
+}

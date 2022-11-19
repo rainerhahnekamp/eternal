@@ -1,0 +1,26 @@
+{
+  "name": "shared-http",
+  "projectType": "library",
+  "sourceRoot": "libs/shared/http/src",
+  "prefix": "eternal",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/shared/http"],
+      "options": {
+        "jestConfig": "libs/shared/http/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/http/**/*.ts",
+          "libs/shared/http/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": ["domain:shared", "type:shared:http"]
+}

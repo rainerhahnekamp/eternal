@@ -1,0 +1,26 @@
+{
+  "name": "customers-model",
+  "projectType": "library",
+  "sourceRoot": "libs/customers/model/src",
+  "prefix": "eternal",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/customers/model"],
+      "options": {
+        "jestConfig": "libs/customers/model/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/customers/model/**/*.ts",
+          "libs/customers/model/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": ["domain:customers", "type:model"]
+}
