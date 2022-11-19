@@ -1,0 +1,26 @@
+{
+  "name": "shared-form",
+  "projectType": "library",
+  "sourceRoot": "libs/shared/form/src",
+  "prefix": "eternal",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/shared/form"],
+      "options": {
+        "jestConfig": "libs/shared/form/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/form/**/*.ts",
+          "libs/shared/form/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": ["domain:shared", "type:shared:form"]
+}

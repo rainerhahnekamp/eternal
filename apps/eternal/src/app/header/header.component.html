@@ -1,0 +1,27 @@
+<a class="home" routerLink="/">
+  <h1>
+    <img alt="Eteneral" src="/assets/logo.png" />
+    Unforgettable Holidays
+  </h1>
+</a>
+<div class="security">
+  <ng-container *ngIf="user$ | async as user">
+    <ng-container *ngIf="user.anonymous; else logout">
+      <button data-testid="btn-sign-in" mat-raised-button (click)="signIn()">
+        Sign In
+      </button>
+    </ng-container>
+    <ng-template #logout>
+      <div class="flex items-center">
+        <p class="mr-4" data-testid="p-username">Welcome {{ user.name }}</p>
+        <button
+          (click)="signOut()"
+          data-testid="btn-sign-out"
+          mat-raised-button
+        >
+          Sign Out
+        </button>
+      </div>
+    </ng-template>
+  </ng-container>
+</div>

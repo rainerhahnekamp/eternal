@@ -1,0 +1,43 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@eternal/bookings": ["libs/bookings/src/index.ts"],
+      "@eternal/customers/api": ["libs/customers/api/src/index.ts"],
+      "@eternal/customers/data": ["libs/customers/data/src/index.ts"],
+      "@eternal/customers/feature": ["libs/customers/feature/src/index.ts"],
+      "@eternal/customers/model": ["libs/customers/model/src/index.ts"],
+      "@eternal/customers/ui": ["libs/customers/ui/src/index.ts"],
+      "@eternal/diary/feature": ["libs/diary/feature/src/index.ts"],
+      "@eternal/holidays/data": ["libs/holidays/data/src/index.ts"],
+      "@eternal/holidays/feature": ["libs/holidays/feature/src/index.ts"],
+      "@eternal/holidays/model": ["libs/holidays/model/src/index.ts"],
+      "@eternal/holidays/ui": ["libs/holidays/ui/src/index.ts"],
+      "@eternal/shared/config": ["libs/shared/config/src/index.ts"],
+      "@eternal/shared/form": ["libs/shared/form/src/index.ts"],
+      "@eternal/shared/http": ["libs/shared/http/src/index.ts"],
+      "@eternal/shared/master-data": ["libs/shared/master-data/src/index.ts"],
+      "@eternal/shared/ngrx-utils": ["libs/shared/ngrx-utils/src/index.ts"],
+      "@eternal/shared/security": ["libs/shared/security/src/index.ts"],
+      "@eternal/shared/testing": ["libs/shared/testing/src/index.ts"],
+      "@eternal/shared/ui": ["libs/shared/ui/src/index.ts"],
+      "@eternal/shared/ui-messaging": ["libs/shared/ui-messaging/src/index.ts"],
+      "@eternal/shared/util": ["libs/shared/util/src/index.ts"],
+      "@eternal/user": ["libs/user/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

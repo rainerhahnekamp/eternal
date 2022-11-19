@@ -1,0 +1,27 @@
+<form (ngSubmit)="submit()" *ngIf="customer" [formGroup]="formGroup">
+  <formly-form
+    [fields]="fields"
+    [form]="formGroup"
+    [model]="customer"
+  ></formly-form>
+  <div class="buttons">
+    <a [routerLink]="['..']" mat-raised-button>Back</a>
+    <button
+      *ngIf="showDeleteButton"
+      (click)="handleRemove()"
+      color="warn"
+      mat-raised-button
+      type="button"
+    >
+      Delete
+    </button>
+    <button
+      color="primary"
+      mat-raised-button
+      type="submit"
+      [disabled]="disableSubmitButton"
+    >
+      Save
+    </button>
+  </div>
+</form>
