@@ -1,0 +1,26 @@
+{
+  "name": "diary-feature",
+  "projectType": "library",
+  "sourceRoot": "libs/diary/feature/src",
+  "prefix": "eternal",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/diary/feature"],
+      "options": {
+        "jestConfig": "libs/diary/feature/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/diary/feature/**/*.ts",
+          "libs/diary/feature/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": ["domain:customers", "type:feature"]
+}

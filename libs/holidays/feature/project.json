@@ -1,0 +1,26 @@
+{
+  "name": "holidays-feature",
+  "projectType": "library",
+  "sourceRoot": "libs/holidays/feature/src",
+  "prefix": "eternal",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/holidays/feature"],
+      "options": {
+        "jestConfig": "libs/holidays/feature/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/holidays/feature/**/*.ts",
+          "libs/holidays/feature/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": ["domain:holidays", "type:feature"]
+}
