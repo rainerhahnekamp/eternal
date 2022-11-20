@@ -1,0 +1,16 @@
+.gitignore
+.openapi-generator-ignore
+README.md
+api.module.ts
+api/api.ts
+api/holidaysController.service.ts
+configuration.ts
+encoder.ts
+git_push.sh
+index.ts
+model/holiday.ts
+model/holidayDto.ts
+model/holidayTrip.ts
+model/models.ts
+param.ts
+variables.ts

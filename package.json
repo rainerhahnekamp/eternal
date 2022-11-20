@@ -14,7 +14,8 @@
     "test": "nx test",
     "test:all": "nx run-many --target=test --all",
     "lint:all": "nx run-many --target=lint --all",
-    "full-check": "run-s lint:all test:all build"
+    "full-check": "run-s lint:all test:all build",
+    "openapi": "openapi-generator-cli generate -i http://localhost:8080/v3/api-docs -g typescript-angular -o libs/openapi"
   },
   "private": true,
   "dependencies": {
@@ -39,6 +40,7 @@
     "@ngx-formly/core": "^6.0.2",
     "@ngx-formly/material": "^6.0.2",
     "@nrwl/angular": "14.8.6",
+    "@openapitools/openapi-generator-cli": "^2.5.2",
     "@playwright/test": "^1.23.0",
     "autoprefixer": "^10.4.7",
     "date-fns": "^2.28.0",
