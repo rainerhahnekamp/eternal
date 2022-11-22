@@ -1,10 +1,15 @@
-<form (ngSubmit)="submit()" *ngIf="holiday" [formGroup]="formGroup">
+<form
+  (ngSubmit)="submit()"
+  *ngIf="holiday"
+  [formGroup]="formGroup"
+  class="w-96"
+>
   <formly-form
     [fields]="fields"
     [form]="formGroup"
     [model]="holiday"
   ></formly-form>
-  <div class="buttons">
+  <div class="flex justify-evenly">
     <a [routerLink]="['..']" mat-raised-button>Back</a>
     <button
       (click)="handleRemove()"
