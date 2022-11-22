@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
-import { Customer } from '@eternal/customers/model';
 import { Options } from '@eternal/shared/form';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { formly } from 'ngx-formly-helpers';
@@ -27,8 +26,8 @@ export class HolidayDetailComponent {
   @Input() holiday: Holiday | undefined;
   @Input() guides: Options = [];
 
-  @Output() save = new EventEmitter<Customer>();
-  @Output() remove = new EventEmitter<Customer>();
+  @Output() save = new EventEmitter<Holiday>();
+  @Output() remove = new EventEmitter<Holiday>();
   fields: FormlyFieldConfig[] = [];
 
   ngOnInit() {
@@ -44,6 +43,7 @@ export class HolidayDetailComponent {
 
   submit() {
     if (this.formGroup.valid) {
+      console.log(this.formGroup.value);
       this.save.emit(this.formGroup.value);
     }
   }

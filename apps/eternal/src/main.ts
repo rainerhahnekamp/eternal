@@ -25,7 +25,7 @@ import { registerLocaleData } from '@angular/common';
 
 import localeDeAt from '@angular/common/locales/de-AT';
 import { AuthModule } from '@auth0/auth0-angular';
-import { securityProviders } from '../../../libs/shared/security/src/lib/security.providers';
+import { securityProviders } from '@eternal/shared/security';
 
 if (environment.production) {
   enableProdMode();

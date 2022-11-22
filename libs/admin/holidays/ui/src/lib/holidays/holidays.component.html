@@ -1,14 +1,16 @@
 <h2>Holidays</h2>
 <p class="my-2">
-  <a color="primary" mat-raised-button>Add Customer</a>
+  <a color="primary" mat-raised-button routerLink="./add">Add Holiday</a>
 </p>
 
 <ng-container *ngIf="viewModel">
-  <div
-    *ngIf="dataSource.data.length > 0; else noCustomers"
-    class="my-4 max-w-screen-sm"
-  >
+  <div *ngIf="dataSource.data.length > 0" class="my-4 max-w-screen-sm">
     <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef> Id</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.id }} </mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
         <mat-cell *matCellDef="let element">{{ element.name }} </mat-cell>
@@ -22,9 +24,12 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> </mat-header-cell>
         <mat-cell *matCellDef="let element"
-          ><a [routerLink]="['.', element.id]">
-            <mat-icon>edit</mat-icon>
-          </a>
+          ><div class="px-4">
+            <a [routerLink]="['.', element.id]">
+              <mat-icon>edit</mat-icon>
+              <mat-icon>delete</mat-icon>
+            </a>
+          </div>
         </mat-cell>
       </ng-container>
 
@@ -35,15 +40,11 @@
       ></mat-row>
     </mat-table>
     <mat-paginator
-      pageSize="10"
-      showFirstLastButtons="true"
-      [pageIndex]="viewModel.pageIndex"
-      [length]="viewModel.length"
       (page)="switchPage.emit($event.pageIndex)"
+      [length]="viewModel.length"
+      [pageIndex]="viewModel.pageIndex"
+      pageSize="100"
+      showFirstLastButtons="true"
     ></mat-paginator>
   </div>
-
-  <ng-template #noCustomers>
-    <p>We don't have any customers yet 😥</p>
-  </ng-template>
 </ng-container>

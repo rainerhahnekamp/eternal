@@ -1,1 +1,1 @@
-export * from './lib/admin-holidays-data';
+export * from './lib/holidays-repository.service';
