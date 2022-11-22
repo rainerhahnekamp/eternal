@@ -1,28 +1,42 @@
-import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Holiday } from '@eternal/admin/holidays/model';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class HolidaysRepository {
-  #httpClient = inject(HttpClient);
+  #holidayId = 1;
+  #holidays: Holiday[] = [];
+  #holidays$ = new BehaviorSubject<Holiday[]>([]);
+
   get holidays$(): Observable<Holiday[]> {
-    return this.#httpClient.get<Holiday[]>('/api/holidays');
+    return this.#holidays$.asObservable();
   }
 
   findById(id: number): Observable<Holiday | undefined> {
-    return this.#httpClient.get<Holiday>(`/api/holidays/${id}`);
+    return this.holidays$.pipe(
+      map((holidays) => holidays.find((h) => h.id === id))
+    );
   }
 
-  save(holiday: Holiday): Observable<void> {
-    return this.#httpClient.put<void>(`/api/holidays`, holiday);
+  save(holiday: Holiday): void {
+    this.#holidays = this.#holidays.map((h) => {
+      if (h.id === holiday.id) {
+        return holiday;
+      } else {
+        return h;
+      }
+    });
+
+    this.#holidays$.next(this.#holidays);
   }
 
-  add(holiday: Holiday): Observable<any> {
-    return this.#httpClient.post<void>(`/api/holidays`, holiday);
+  add(holiday: Holiday): void {
+    this.#holidays = [...this.#holidays, { ...holiday, id: this.#holidayId++ }];
+    this.#holidays$.next(this.#holidays);
   }
 
-  remove(id: number): Observable<void> {
-    return this.#httpClient.delete<void>(`/api/holidays/${id}`);
+  remove(id: number): void {
+    this.#holidays = this.#holidays.filter((holiday) => holiday.id !== id);
+    this.#holidays$.next(this.#holidays);
   }
 }

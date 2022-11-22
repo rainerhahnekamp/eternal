@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { HolidayDetailComponent } from '@eternal/admin/holidays/ui';
 import { Holiday } from '@eternal/admin/holidays/model';
 import { HolidaysRepository } from '@eternal/admin/holidays/data';
-import { firstValueFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '@eternal/shared/ui-messaging';
 
@@ -20,8 +19,8 @@ export class AddHolidayComponent {
   #route = inject(ActivatedRoute);
   #messageService = inject(MessageService);
 
-  async save(holiday: Holiday) {
-    await firstValueFrom(this.#repo.add(holiday));
+  save(holiday: Holiday) {
+    this.#repo.add(holiday);
     this.#messageService.info('Holiday was added');
     this.#router.navigate(['..'], { relativeTo: this.#route });
   }
