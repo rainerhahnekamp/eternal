@@ -5,7 +5,7 @@ import com.softarc.eternal.domain.Holiday;
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/holidays")
+@RequestMapping("/api/holidays")
 @RestController
 public class HolidaysController {
 
