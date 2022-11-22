@@ -34,6 +34,7 @@
       "@eternal/holidays/feature": ["libs/holidays/feature/src/index.ts"],
       "@eternal/holidays/model": ["libs/holidays/model/src/index.ts"],
       "@eternal/holidays/ui": ["libs/holidays/ui/src/index.ts"],
+      "@eternal/openapi": ["libs/openapi/index.ts"],
       "@eternal/shared/config": ["libs/shared/config/src/index.ts"],
       "@eternal/shared/form": ["libs/shared/form/src/index.ts"],
       "@eternal/shared/http": ["libs/shared/http/src/index.ts"],

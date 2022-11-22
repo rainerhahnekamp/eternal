@@ -1,3 +1,3 @@
-export * from './holidaysController.service';
-import { HolidaysControllerService } from './holidaysController.service';
-export const APIS = [HolidaysControllerService];
+export * from './holidays.service';
+import { HolidaysService } from './holidays.service';
+export const APIS = [HolidaysService];

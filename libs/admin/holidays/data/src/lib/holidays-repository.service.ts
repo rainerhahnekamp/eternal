@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, map, Observable } from 'rxjs';
 import { Holiday } from '@eternal/admin/holidays/model';
-import { HttpClient } from '@angular/common/http';
+import { HolidaysService } from '@eternal/openapi';
 
 @Injectable({ providedIn: 'root' })
 export class HolidaysRepository {
   #holidays$ = new BehaviorSubject<Holiday[]>([]);
-  #httpClient = inject(HttpClient);
+  #holidaysService = inject(HolidaysService);
   #initialized = false;
 
   get holidays$(): Observable<Holiday[]> {
@@ -18,28 +18,28 @@ export class HolidaysRepository {
   }
 
   findById(id: number): Observable<Holiday | undefined> {
-    return this.#httpClient.get<Holiday | undefined>(`/holidays/${id}`);
+    return this.holidays$.pipe(
+      map((holidays) => holidays.find((holiday) => holiday.id === id))
+    );
   }
 
   async save(holiday: Holiday) {
-    await firstValueFrom(this.#httpClient.put<void>(`/holidays`, holiday));
+    await firstValueFrom(this.#holidaysService.save(holiday));
     await this.#update();
   }
 
   async add(holiday: Holiday): Promise<void> {
-    await firstValueFrom(this.#httpClient.post<void>(`/holidays`, holiday));
+    await firstValueFrom(this.#holidaysService.add(holiday));
     await this.#update();
   }
 
   async remove(id: number): Promise<void> {
-    await firstValueFrom(this.#httpClient.delete(`/holidays/${id}`));
+    await firstValueFrom(this.#holidaysService.remove(id));
     await this.#update();
   }
 
   async #update() {
-    const holidays = await firstValueFrom(
-      this.#httpClient.get<Holiday[]>('/holidays')
-    );
+    const holidays = await firstValueFrom(this.#holidaysService.findAll());
     this.#holidays$.next(holidays);
   }
 }

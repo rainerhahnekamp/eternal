@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.softarc.eternal.data.DefaultHolidaysRepository;
 import com.softarc.eternal.data.HolidaysRepository;
-import com.softarc.eternal.web.dto.HolidayDtoMother;
+import com.softarc.eternal.web.request.HolidayDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,7 +33,7 @@ class HolidaysControllerIntegrationTest {
   @Test
   public void testAddHoliday(@Autowired WebTestClient webTestClient)
     throws Exception {
-    var amsterdam = HolidayDtoMother.vienna().name("Amsterdam").build();
+    var amsterdam = new HolidayDto(1L, "Amsterdam", "Netherlands");
     webTestClient
       .post()
       .uri("/api/holidays")
