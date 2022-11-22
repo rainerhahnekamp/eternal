@@ -73,7 +73,7 @@ this.holidays.add(new Holiday(2L, "China", "To the Middle Kingdom"));
 return holidays;
 ```
 
-Verify, that _http://localhost:8080/holidays_ returns the generated holidays.
+Verify, that _http://localhost:8080/api/holidays_ returns the generated holidays.
 
 <details>
 <summary>Show Solution</summary>
@@ -81,7 +81,7 @@ Verify, that _http://localhost:8080/holidays_ returns the generated holidays.
 
 ```java
 @RestController
-@RequestMapping("/holidays")
+@RequestMapping("/api/holidays")
 public class HolidaysController {
 
   @GetMapping
@@ -166,17 +166,17 @@ public class HolidaysRepository {
 
 Extend the `HolidaysController`, so that it provides the full CRUD functionality of the `HolidaysRepository`:
 
-- **GET, /holidays**: returns all holidays
-- **GET, /holidays/{id}**: returns holiday for the passed id or throws an error
-- **POST, /holidays/{name}**: adds a new holiday with the passed name
-- **DELETE, /holidays/{id}**: removes the holiday with that particular id
+- **GET, /api/holidays**: returns all holidays
+- **GET, /api/holidays/{id}**: returns holiday for the passed id or throws an error
+- **POST, /api/holidays/{name}**: adds a new holiday with the passed name
+- **DELETE, /api/holidays/{id}**: removes the holiday with that particular id
 
 <details>
 <summary>Show Solution</summary>
 <p>
 
 ```java
-@RequestMapping("/holidays")
+@RequestMapping("/api/holidays")
 @RestController
 public class HolidaysController {
 
