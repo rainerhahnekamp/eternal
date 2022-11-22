@@ -43,7 +43,6 @@ export class HolidayDetailComponent {
 
   submit() {
     if (this.formGroup.valid) {
-      console.log(this.formGroup.value);
       this.save.emit(this.formGroup.value);
     }
   }
