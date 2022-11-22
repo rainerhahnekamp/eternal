@@ -14,6 +14,7 @@ export interface HolidaysViewModel {
 }
 
 @Component({
+  selector: 'eternal-holidays',
   templateUrl: 'holidays.component.html',
   standalone: true,
   imports: [
@@ -31,11 +32,12 @@ export class HolidaysComponent {
   @Output() setUnselected = new EventEmitter<number>();
   @Output() switchPage = new EventEmitter<number>();
 
-  displayedColumns = ['id', 'name', 'description'];
+  displayedColumns = ['id', 'name', 'description', 'action'];
   dataSource = new MatTableDataSource<Holiday>([]);
 
   ngOnChanges(): void {
     if (this.viewModel) {
+      this.dataSource.data = this.viewModel.holidays;
     }
   }
 }
