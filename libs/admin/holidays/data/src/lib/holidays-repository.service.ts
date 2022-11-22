@@ -22,13 +22,12 @@ export class HolidaysRepository {
   }
 
   async save(holiday: Holiday) {
-    throw new Error('not implemented');
+    await firstValueFrom(this.#httpClient.put<void>(`/holidays`, holiday));
+    await this.#update();
   }
 
   async add(holiday: Holiday): Promise<void> {
-    await firstValueFrom(
-      this.#httpClient.post<void>(`/holidays/${holiday.name}`, {})
-    );
+    await firstValueFrom(this.#httpClient.post<void>(`/holidays`, holiday));
     await this.#update();
   }
 
