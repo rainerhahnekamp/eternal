@@ -1,1 +1,1 @@
-export * from './lib/admin-holidays-feature';
+export { adminHolidaysRoutes } from './lib/admin-holidays-routes';
