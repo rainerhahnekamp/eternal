@@ -3,7 +3,8 @@
 - [3. `HolidaysRepository`](#3-holidaysrepository)
   - [3.1. Implementation](#31-implementation)
   - [3.2. Native Usage in `HolidaysController`](#32-native-usage-in-holidayscontroller)
-- [4. Beans & Dependency Injection](#4-beans--dependency-injection)
+- [4. Beans \& Dependency Injection](#4-beans--dependency-injection)
+- [5. Connecting the Frontend](#5-connecting-the-frontend)
 
 # 1. Create Domain Classes with Lombok support
 
@@ -248,3 +249,96 @@ public class HolidaysController {
 
 </p>
 </details>
+
+# 5. Connecting the Frontend
+
+Our frontend should be able to connect to our backend. Since both are running on different origins, we have to setup a proper CORS Configuration.
+
+Create a new class `WebConfig` and copy the following content into it (explanation follows later).
+
+**WebConfig.java**
+
+```java
+package com.softarc.eternal;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class WebConfig {
+
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry
+          .addMapping("/api/**")
+          .allowedOrigins("http://localhost:4200")
+          .allowedMethods("GET", "POST", "OPTIONS", "PUT", "DELETE")
+          .allowCredentials(true);
+      }
+    };
+  }
+}
+```
+
+Now modify the `HolidaysRepository` in Angular so that it connects to the newly created API. At the moment, we can't edit a holiday, so that feature has to be skipped.
+
+Verify you can add a new holiday and that it is persisted (after a page reload).
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+**/libs/admin/holidays/data/src/lib/holidays-repository.service.ts**
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class HolidaysRepository {
+  #holidays$ = new BehaviorSubject<Holiday[]>([]);
+  #httpClient = inject(HttpClient);
+  #initialized = false;
+
+  get holidays$(): Observable<Holiday[]> {
+    if (!this.#initialized) {
+      this.#update();
+      this.#initialized = true;
+    }
+    return this.#holidays$.asObservable();
+  }
+
+  findById(id: number): Observable<Holiday | undefined> {
+    return this.#httpClient.get<Holiday | undefined>(`/holidays/${id}`);
+  }
+
+  async save(holiday: Holiday) {
+    throw new Error('not implemented');
+  }
+
+  async add(holiday: Holiday): Promise<void> {
+    await firstValueFrom(
+      this.#httpClient.post<void>(`/holidays/${holiday.name}`, {})
+    );
+    await this.#update();
+  }
+
+  async remove(id: number): Promise<void> {
+    await firstValueFrom(this.#httpClient.delete(`/holidays/${id}`));
+    await this.#update();
+  }
+
+  async #update() {
+    const holidays = await firstValueFrom(
+      this.#httpClient.get<Holiday[]>('/holidays')
+    );
+    this.#holidays$.next(holidays);
+  }
+}
+```
+
+</p>
+</details>
+
