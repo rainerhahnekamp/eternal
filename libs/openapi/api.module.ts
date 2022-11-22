@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
-import { HolidaysControllerService } from './api/holidaysController.service';
+import { HolidaysService } from './api/holidays.service';
 
 @NgModule({
   imports:      [],
