@@ -21,7 +21,7 @@ CRUD Tests
 
 
 
-# Spring Web Test `/holidays/`
+# Spring Web Test `/api/holidays/`
 
 ## Unit Test
 
