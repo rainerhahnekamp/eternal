@@ -6,3 +6,21 @@ export type Holiday = {
   description: string;
   trips: HolidayTrip[];
 };
+
+let id = 1;
+
+export function createHoliday(holiday: Partial<Holiday> = {}): Holiday {
+  return {
+    ...{
+      id: id++,
+      name: 'Vienna',
+      description: 'A holiday to Vienna',
+      trips: [],
+    },
+    ...holiday,
+  };
+}
+
+export function createHolidays(...holidays: Partial<Holiday>[]): Holiday[] {
+  return holidays.map(createHoliday);
+}
