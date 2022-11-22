@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { HolidaysRepository } from '@eternal/admin/holidays/data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { firstValueFrom, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Holiday } from '@eternal/admin/holidays/model';
 import { filterDefined } from '@eternal/shared/ngrx-utils';
 import { HolidayDetailComponent } from '@eternal/admin/holidays/ui';
@@ -30,16 +30,14 @@ export class EditHolidayComponent implements OnInit {
       .pipe(filterDefined);
   }
 
-  async handleRemove() {
-    await firstValueFrom(this.#holidaysRepository.remove(this.#holidayId));
+  handleRemove() {
+    this.#holidaysRepository.remove(this.#holidayId);
     this.#messageService.info('Holiday was removed');
     this.#router.navigate(['..'], { relativeTo: this.#route });
   }
 
-  async handleSave(holiday: Holiday) {
-    await firstValueFrom(
-      this.#holidaysRepository.save({ ...holiday, id: this.#holidayId })
-    );
+  handleSave(holiday: Holiday) {
+    this.#holidaysRepository.save({ ...holiday, id: this.#holidayId });
     this.#messageService.info('Holiday was saved');
     this.#router.navigate(['..'], { relativeTo: this.#route });
   }
