@@ -1,7 +1,6 @@
 package com.softarc.eternal.domain;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +14,9 @@ import lombok.NoArgsConstructor;
 public class Holiday {
 
   private Long id;
+
   private String name;
+
   private String description;
 
   @Builder.Default
