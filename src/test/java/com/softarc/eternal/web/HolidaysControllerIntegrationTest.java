@@ -2,15 +2,18 @@ package com.softarc.eternal.web;
 
 import com.softarc.eternal.data.DefaultHolidaysRepository;
 import com.softarc.eternal.data.HolidaysRepository;
+import com.softarc.eternal.web.dto.HolidayDtoMother;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@SpringBootTest(properties = {"app.holidays.persistence-type=default"})
-//@ActiveProfiles("demo")
+@SpringBootTest(properties = {"app.holidays.persistence-type=default", "app.holidays.pre-seed=false"})
+@AutoConfigureMockMvc
 class HolidaysControllerIntegrationTest {
   @Autowired
   HolidaysController controller;
@@ -24,9 +27,9 @@ class HolidaysControllerIntegrationTest {
   }
 
   @Test
-  public void testAddHoliday() {
-    controller.add( "Amsterdam");
-    var holiday = repository.findAll().stream().filter(h -> "Amsterdam".equals(h.getName())).findFirst().orElseThrow();
-    assertThat(controller.find(holiday.getId())).isEqualTo(holiday);
+  public void testAddHoliday(@Autowired WebTestClient webTestClient) throws Exception {
+    var amsterdam = HolidayDtoMother.vienna().name("Amsterdam").build();
+    webTestClient.post().uri("/holidays").bodyValue(amsterdam).exchange().expectStatus().isOk();
+    webTestClient.get().uri("/holidays").exchange().expectBody().jsonPath("[0].name").isEqualTo("Amsterdam");
   }
   }
