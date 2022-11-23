@@ -6,7 +6,7 @@ declare -a branches=(
   master
   solution-1-basics-a solution-2-basics-b
   solution-3a-testing solution-3b-testing
-  solution-4-1-dto solution-4-2-webtests solution-4-3-openapi
+  solution-4-1-dto solution-4-2-webtests solution-4-3-openapi-a solution-4-4-openapi-b
   solution-5-data
 )
 
