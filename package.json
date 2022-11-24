@@ -15,7 +15,7 @@
     "test:all": "nx run-many --target=test --all",
     "lint:all": "nx run-many --target=lint --all",
     "full-check": "run-s lint:all test:all build",
-    "openapi": "openapi-generator-cli generate -i http://localhost:8080/v3/api-docs -g typescript-angular -o libs/openapi"
+    "openapi": "openapi-generator-cli generate -i http://localhost:8080/v3/api-docs -g typescript-angular -o libs/openapi --type-mappings=DateTime=number"
   },
   "private": true,
   "dependencies": {

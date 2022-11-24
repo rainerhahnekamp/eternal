@@ -13,8 +13,8 @@
 
 export interface HolidayTrip { 
     id?: number;
-    fromDate?: string;
-    toDate?: string;
+    fromDate?: number;
+    toDate?: number;
     priceSingleRoom?: number;
     priceDoubleRoom?: number;
     currency?: string;

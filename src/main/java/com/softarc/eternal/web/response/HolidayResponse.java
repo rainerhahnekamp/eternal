@@ -1,3 +1,11 @@
 package com.softarc.eternal.web.response;
 
-public record HolidayResponse(Long id, String name, String description) {}
+import com.softarc.eternal.domain.HolidayTrip;
+import java.util.Set;
+
+public record HolidayResponse(
+  Long id,
+  String name,
+  String description,
+  Set<HolidayTrip> holidayTrips
+) {}
