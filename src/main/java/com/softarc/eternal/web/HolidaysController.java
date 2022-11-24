@@ -6,6 +6,7 @@ import com.softarc.eternal.web.request.HolidayDto;
 import com.softarc.eternal.web.response.HolidayResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Collections;
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,7 +63,8 @@ public class HolidaysController {
     return new HolidayResponse(
       holiday.getId(),
       holiday.getName(),
-      holiday.getDescription()
+      holiday.getDescription(),
+      Collections.emptySet()
     );
   }
 }
