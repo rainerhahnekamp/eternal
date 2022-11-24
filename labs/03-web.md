@@ -1,6 +1,9 @@
 # DTOs
 
-Come up with DTOs and update the frontend code as well. Use HolidayDto, HolidayResponse
+- Come up with DTOs and update the frontend code as well. Use HolidayDto, HolidayResponse
+- GlobalAdvice and Explain Problem Http
+- Caching
+- JSONView
 
 # WebTest with MvcClient
 
@@ -20,3 +23,8 @@ Come up with DTOs and update the frontend code as well. Use HolidayDto, HolidayR
 # Jackson
 
 # Upload and Download
+
+- Upload
+- Progress
+- Quota Check
+- File Type Check
