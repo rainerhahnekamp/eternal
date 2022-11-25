@@ -36,6 +36,7 @@ export class HolidaysComponent {
   dataSource = new MatTableDataSource<Holiday>([]);
 
   ngOnChanges(): void {
+    console.log(this);
     if (this.viewModel) {
       this.dataSource.data = this.viewModel.holidays;
     }
