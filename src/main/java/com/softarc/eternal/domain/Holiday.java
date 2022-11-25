@@ -1,6 +1,7 @@
 package com.softarc.eternal.domain;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,8 @@ public class Holiday {
   private String name;
 
   private String description;
+
+  private Optional<String> coverPath;
 
   @Builder.Default
   private Set<HolidayTrip> trips = new HashSet<>();

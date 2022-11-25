@@ -2,9 +2,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { HolidaysRepository } from '@eternal/admin/holidays/data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Holiday } from '@eternal/admin/holidays/model';
 import { filterDefined } from '@eternal/shared/ngrx-utils';
-import { HolidayDetailComponent } from '@eternal/admin/holidays/ui';
+import {
+  HolidayDetailComponent,
+  HolidayForm,
+  HolidayFormInput,
+} from '@eternal/admin/holidays/ui';
 import { LetModule } from '@ngrx/component';
 import { MessageService } from '@eternal/shared/ui-messaging';
 
@@ -16,7 +19,7 @@ import { MessageService } from '@eternal/shared/ui-messaging';
   imports: [HolidayDetailComponent, LetModule],
 })
 export class EditHolidayComponent implements OnInit {
-  protected holiday$: Observable<Holiday> | undefined;
+  protected holiday$: Observable<HolidayFormInput> | undefined;
   #route = inject(ActivatedRoute);
   #router = inject(Router);
   #holidaysRepository = inject(HolidaysRepository);
@@ -36,7 +39,7 @@ export class EditHolidayComponent implements OnInit {
     this.#router.navigate(['..'], { relativeTo: this.#route });
   }
 
-  handleSave(holiday: Holiday) {
+  handleSave(holiday: HolidayForm) {
     this.#holidaysRepository.save({ ...holiday, id: this.#holidayId });
     this.#messageService.info('Holiday was saved');
     this.#router.navigate(['..'], { relativeTo: this.#route });

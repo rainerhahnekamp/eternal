@@ -3,6 +3,12 @@ import { BehaviorSubject, firstValueFrom, map, Observable } from 'rxjs';
 import { Holiday } from '@eternal/admin/holidays/model';
 import { HolidaysService } from '@eternal/openapi';
 
+export type AddHoliday = {
+  name: string;
+  description: string;
+  cover: File;
+};
+
 @Injectable({ providedIn: 'root' })
 export class HolidaysRepository {
   #holidays$ = new BehaviorSubject<Holiday[]>([]);
@@ -24,13 +30,15 @@ export class HolidaysRepository {
   }
 
   async save(holiday: Holiday) {
-    await firstValueFrom(this.#holidaysService.save(holiday));
+    // await firstValueFrom(this.#holidaysService.save(holiday));
     await this.#update();
   }
 
-  async add(holiday: Holiday): Promise<void> {
-    await firstValueFrom(this.#holidaysService.add(holiday));
-    await this.#update();
+  async add(holiday: AddHoliday): Promise<void> {
+    const formData = new FormData();
+    const { cover, ...holidayDto } = holiday;
+
+    this.#holidaysService.add(holidayDto, cover).subscribe();
   }
 
   async remove(id: number): Promise<void> {
