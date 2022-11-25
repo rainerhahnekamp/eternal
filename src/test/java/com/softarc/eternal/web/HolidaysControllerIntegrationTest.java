@@ -62,9 +62,14 @@ class HolidaysControllerIntegrationTest {
       .exchange()
       .expectBody()
       .jsonPath("[0].name")
-      .isEqualTo("Amsterdam");
+      .isEqualTo("Amsterdam")
+      .jsonPath("[0].hasCover")
+      .isEqualTo(true);
 
-    assertThat(Files.exists(destinationPath)).isTrue();
-    Files.delete(destinationPath);
+    try {
+      assertThat(Files.exists(destinationPath)).isTrue();
+    } finally {
+      Files.delete(destinationPath);
+    }
   }
 }

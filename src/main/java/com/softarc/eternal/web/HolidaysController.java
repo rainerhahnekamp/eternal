@@ -84,7 +84,7 @@ public class HolidaysController {
   }
 
   @GetMapping(
-    value = "/cover/view/{id}",
+    value = "/{id}/cover",
     produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
   )
   public ResponseEntity<Resource> viewCover(@PathVariable("id") Long id) {
@@ -95,27 +95,12 @@ public class HolidaysController {
     return new ResponseEntity<>(resource, new HttpHeaders(), HttpStatus.OK);
   }
 
-  @GetMapping("/cover/download/{id}")
-  public ResponseEntity<Resource> downloadCover(@PathVariable("id") Long id) {
-    var holiday = this.repository.find(id).orElseThrow();
-    var cover = holiday.getCoverPath().orElseThrow();
-    var file = Path.of("", "filestore", cover);
-    FileSystemResource resource = new FileSystemResource(file);
-    var header = new HttpHeaders();
-    ContentDisposition disposition = ContentDisposition
-      .attachment()
-      .filename(resource.getFilename())
-      .build();
-
-    header.setContentDisposition(disposition);
-    return new ResponseEntity<>(resource, header, HttpStatus.OK);
-  }
-
   private HolidayResponse toHolidayResponse(Holiday holiday) {
     return new HolidayResponse(
       holiday.getId(),
       holiday.getName(),
       holiday.getDescription(),
+      holiday.getCoverPath().isPresent(),
       Collections.emptySet()
     );
   }

@@ -4,6 +4,8 @@ export type Holiday = {
   id: number;
   name: string;
   description: string;
+  hasCover: boolean;
+  coverLink: string;
   trips?: HolidayTrip[];
 };
 
@@ -16,6 +18,8 @@ export function createHoliday(holiday: Partial<Holiday> = {}): Holiday {
       name: 'Vienna',
       description: 'A holiday to Vienna',
       trips: [],
+      hasCover: false,
+      coverLink: '',
     },
     ...holiday,
   };

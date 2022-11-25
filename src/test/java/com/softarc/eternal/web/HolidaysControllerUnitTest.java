@@ -10,6 +10,7 @@ import com.softarc.eternal.web.response.HolidayResponse;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -32,7 +33,8 @@ public class HolidaysControllerUnitTest {
     var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien");
 
     controller.add(vienna, cover);
-    verify(repository).add("Vienna", "Urlaub in Wien");
+    verify(repository)
+      .add("Vienna", "Urlaub in Wien", Optional.of("vienna.jpg"));
   }
 
   @Test
@@ -56,6 +58,7 @@ public class HolidaysControllerUnitTest {
             holiday.getId(),
             holiday.getName(),
             holiday.getDescription(),
+            false,
             Collections.emptySet()
           )
         )

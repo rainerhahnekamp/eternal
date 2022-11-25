@@ -49,6 +49,12 @@ export class HolidaysRepository {
 
   async #update() {
     const holidays = await firstValueFrom(this.#holidaysService.findAll());
-    this.#holidays$.next(holidays as Holiday[]);
+
+    this.#holidays$.next(
+      holidays.map((holiday) => ({
+        ...holiday,
+        coverLink: `http://localhost:8080/api/holidays/${holiday.id}/cover`,
+      }))
+    );
   }
 }
