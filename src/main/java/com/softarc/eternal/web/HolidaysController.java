@@ -10,7 +10,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
-import org.springframework.http.MediaType;
+import java.util.Optional;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,8 +49,13 @@ public class HolidaysController {
     @RequestPart HolidayDto holidayDto,
     @RequestPart MultipartFile cover
   ) throws IOException {
-    this.repository.add(holidayDto.name(), holidayDto.description());
-    var path = Path.of("", "filestore", cover.getOriginalFilename());
+    var filename = cover.getOriginalFilename();
+    var path = Path.of("", "filestore", filename);
+    this.repository.add(
+        holidayDto.name(),
+        holidayDto.description(),
+        Optional.ofNullable(filename)
+      );
     cover.transferTo(path);
     return true;
   }
@@ -58,12 +66,14 @@ public class HolidaysController {
     @RequestPart HolidayDto holidayDto,
     @RequestPart MultipartFile cover
   ) throws IOException {
+    var filename = cover.getOriginalFilename();
     this.repository.update(
         holidayDto.id(),
         holidayDto.name(),
-        holidayDto.description()
+        holidayDto.description(),
+        Optional.ofNullable(filename)
       );
-    var path = Path.of("", "filestore", cover.getOriginalFilename());
+    var path = Path.of("", "filestore", filename);
     cover.transferTo(path);
   }
 
@@ -71,6 +81,34 @@ public class HolidaysController {
   @Operation(operationId = "remove")
   public void remove(@PathVariable("id") Long id) {
     this.repository.remove(id);
+  }
+
+  @GetMapping(
+    value = "/cover/view/{id}",
+    produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+  )
+  public ResponseEntity<Resource> viewCover(@PathVariable("id") Long id) {
+    var holiday = this.repository.find(id).orElseThrow();
+    var cover = holiday.getCoverPath().orElseThrow();
+    var file = Path.of("", "filestore", cover);
+    FileSystemResource resource = new FileSystemResource(file);
+    return new ResponseEntity<>(resource, new HttpHeaders(), HttpStatus.OK);
+  }
+
+  @GetMapping("/cover/download/{id}")
+  public ResponseEntity<Resource> downloadCover(@PathVariable("id") Long id) {
+    var holiday = this.repository.find(id).orElseThrow();
+    var cover = holiday.getCoverPath().orElseThrow();
+    var file = Path.of("", "filestore", cover);
+    FileSystemResource resource = new FileSystemResource(file);
+    var header = new HttpHeaders();
+    ContentDisposition disposition = ContentDisposition
+      .attachment()
+      .filename(resource.getFilename())
+      .build();
+
+    header.setContentDisposition(disposition);
+    return new ResponseEntity<>(resource, header, HttpStatus.OK);
   }
 
   private HolidayResponse toHolidayResponse(Holiday holiday) {
