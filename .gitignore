@@ -39,8 +39,13 @@ out/
 /dev.trace.db
 /template.mv.db
 
+### Custom ###
+
 application.log
 node_modules
 /holidays.json
 /yarn-error.log
 .angular
+filestore/**
+!filestore/.gitkeep
+
