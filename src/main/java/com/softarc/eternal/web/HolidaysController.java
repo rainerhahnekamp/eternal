@@ -14,6 +14,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import java.util.Optional;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,8 +52,13 @@ public class HolidaysController {
     @RequestPart HolidayDto holidayDto,
     @RequestPart MultipartFile cover
   ) throws IOException {
-    this.repository.add(holidayDto.name(), holidayDto.description());
-    var path = Path.of("", "filestore", cover.getOriginalFilename());
+    var filename = cover.getOriginalFilename();
+    var path = Path.of("", "filestore", filename);
+    this.repository.add(
+        holidayDto.name(),
+        holidayDto.description(),
+        Optional.ofNullable(filename)
+      );
     cover.transferTo(path);
     return true;
   }
@@ -63,12 +69,14 @@ public class HolidaysController {
     @RequestPart HolidayDto holidayDto,
     @RequestPart MultipartFile cover
   ) throws IOException {
+    var filename = cover.getOriginalFilename();
     this.repository.update(
         holidayDto.id(),
         holidayDto.name(),
-        holidayDto.description()
+        holidayDto.description(),
+        Optional.ofNullable(filename)
       );
-    var path = Path.of("", "filestore", cover.getOriginalFilename());
+    var path = Path.of("", "filestore", filename);
     cover.transferTo(path);
   }
 
