@@ -32,12 +32,14 @@ export class HolidaysRepository {
 
   async save(holiday: EditHoliday) {
     const { cover, ...holidayDto } = holiday;
-    this.#holidaysService.save(holidayDto, cover);
+    await firstValueFrom(this.#holidaysService.save(holidayDto, cover));
+    this.#update();
   }
 
   async add(holiday: AddHoliday): Promise<void> {
     const { cover, ...holidayDto } = holiday;
-    this.#holidaysService.add(holidayDto, cover).subscribe();
+    await firstValueFrom(this.#holidaysService.add(holidayDto, cover));
+    this.#update();
   }
 
   async remove(id: number): Promise<void> {
