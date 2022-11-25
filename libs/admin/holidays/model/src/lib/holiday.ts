@@ -14,7 +14,6 @@ export function createHoliday(holiday: Partial<Holiday> = {}): Holiday {
       id: id++,
       name: 'Vienna',
       description: 'A holiday to Vienna',
-      trips: [],
     },
     ...holiday,
   };

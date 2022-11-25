@@ -40,7 +40,8 @@ public class HolidaysControllerUnitTest {
           new HolidayResponse(
             holiday.getId(),
             holiday.getName(),
-            holiday.getDescription()
+            holiday.getDescription(),
+            Collections.emptySet()
           )
         )
       );

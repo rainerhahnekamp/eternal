@@ -13,9 +13,9 @@ import { HolidayTrip } from './holidayTrip';
 
 
 export interface HolidayResponse { 
-    id?: number;
-    name?: string;
-    description?: string;
-    holidayTrips?: Set<HolidayTrip>;
+    id: number;
+    name: string;
+    description: string;
+    holidayTrips: Set<HolidayTrip>;
 }
 
