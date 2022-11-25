@@ -78,13 +78,13 @@ public class FsHolidaysRepository implements HolidaysRepository {
   }
 
   @Override
-  public void add(String name, String description) {
+  public void add(String name, String description, Optional<String> optCover) {
     this.holidays.add(
         new Holiday(
           ++this.currentId,
           name,
           description,
-          Optional.empty(),
+          optCover,
           new HashSet<>()
         )
       );
@@ -93,10 +93,16 @@ public class FsHolidaysRepository implements HolidaysRepository {
   }
 
   @Override
-  public void update(Long id, String name, String description) {
+  public void update(
+    Long id,
+    String name,
+    String description,
+    Optional<String> optCover
+  ) {
     var holiday = this.find(id).orElseThrow();
     holiday.setName(name);
     holiday.setDescription(description);
+    holiday.setCoverPath(optCover);
     this.persist();
   }
 

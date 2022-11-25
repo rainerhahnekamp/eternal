@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,8 +47,13 @@ public class HolidaysController {
     @RequestPart HolidayDto holidayDto,
     @RequestPart MultipartFile cover
   ) throws IOException {
-    this.repository.add(holidayDto.name(), holidayDto.description());
-    var path = Path.of("", "filestore", cover.getOriginalFilename());
+    var filename = cover.getOriginalFilename();
+    var path = Path.of("", "filestore", filename);
+    this.repository.add(
+        holidayDto.name(),
+        holidayDto.description(),
+        Optional.ofNullable(filename)
+      );
     cover.transferTo(path);
     return true;
   }
@@ -58,12 +64,14 @@ public class HolidaysController {
     @RequestPart HolidayDto holidayDto,
     @RequestPart MultipartFile cover
   ) throws IOException {
+    var filename = cover.getOriginalFilename();
     this.repository.update(
         holidayDto.id(),
         holidayDto.name(),
-        holidayDto.description()
+        holidayDto.description(),
+        Optional.ofNullable(filename)
       );
-    var path = Path.of("", "filestore", cover.getOriginalFilename());
+    var path = Path.of("", "filestore", filename);
     cover.transferTo(path);
   }
 
