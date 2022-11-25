@@ -38,7 +38,7 @@ export class HolidayDetailComponent {
       formly.textArea('description', 'Description', {
         attributes: { 'data-testid': 'inp-description' },
       }),
-      { name: 'coverImage', type: 'file' },
+      { key: 'coverImage', type: 'file' },
     ];
   }
 
