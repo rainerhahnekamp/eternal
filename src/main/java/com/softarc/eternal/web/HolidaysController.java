@@ -10,7 +10,12 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,6 +76,23 @@ public class HolidaysController {
   @Operation(operationId = "remove")
   public void remove(@PathVariable("id") Long id) {
     this.repository.remove(id);
+  }
+
+  @GetMapping(
+    value = "/cover/view/{id}",
+    produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+  )
+  public ResponseEntity<Resource> viewCover(@PathVariable("id") Long id) {
+    var holiday = this.repository.find(id).orElseThrow();
+    var cover = holiday.getCoverPath().orElseThrow();
+    var file = Path.of("", "filestore", cover);
+    FileSystemResource resource = new FileSystemResource(file);
+    return new ResponseEntity<>(resource, new HttpHeaders(), HttpStatus.OK);
+  }
+
+  @GetMapping("/cover/download/{id}")
+  public void downloadCover(@PathVariable("id") Long id) {
+    var holiday = this.repository.find(id).orElseThrow();
   }
 
   private HolidayResponse toHolidayResponse(Holiday holiday) {
