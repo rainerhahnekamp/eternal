@@ -1,3 +1,9 @@
 package com.softarc.eternal.web.response;
 
-public record HolidayResponse(Long id, String name, String description) {}
+import jakarta.validation.constraints.NotNull;
+
+public record HolidayResponse(
+  @NotNull Long id,
+  @NotNull String name,
+  @NotNull String description
+) {}
