@@ -26,6 +26,7 @@ import { registerLocaleData } from '@angular/common';
 import localeDeAt from '@angular/common/locales/de-AT';
 import { AuthModule } from '@auth0/auth0-angular';
 import { securityProviders } from '@eternal/shared/security';
+import { FileField } from '@eternal/shared/ui';
 
 if (environment.production) {
   enableProdMode();
@@ -54,6 +55,9 @@ bootstrapApplication(AppComponent, {
       }),
       FormlyModule.forRoot({
         extras: { lazyRender: true },
+        types: [
+          { name: 'file', component: FileField, wrappers: ['form-field'] },
+        ],
         validationMessages: [
           {
             name: 'required',
