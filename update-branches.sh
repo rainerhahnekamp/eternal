@@ -6,7 +6,8 @@ declare -a branches=(
   master
   solution-1-basics-a solution-2-basics-b
   solution-3a-testing solution-3b-testing
-  solution-4-1-dto solution-4-2-webtests solution-4-3-openapi-a solution-4-4-openapi-b solution-4-5-upload-download
+  solution-4-1-dto solution-4-2-webtests solution-4-3-openapi-a solution-4-4-openapi-b
+  solution-4-5-upload-download-1-basic solution-4-5-upload-download-2-download
   solution-5-data
 )
 
@@ -21,6 +22,7 @@ for branch in ${branches[*]}; do
   if [ ! $current = "" ]
   then
     git checkout $current
+    git pull
     git tag -d `git tag | grep -E '.'`
     git merge $previous -m merge
   fi;
