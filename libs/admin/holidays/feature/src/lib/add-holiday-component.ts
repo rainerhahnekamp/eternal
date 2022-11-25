@@ -13,7 +13,7 @@ import { MessageService } from '@eternal/shared/ui-messaging';
   imports: [HolidayDetailComponent],
 })
 export class AddHolidayComponent {
-  emptyHoliday: Holiday = { id: 0, name: '', description: '', trips: [] };
+  emptyHoliday: Holiday = { id: 0, name: '', description: '' };
   #repo = inject(HolidaysRepository);
   #router = inject(Router);
   #route = inject(ActivatedRoute);
