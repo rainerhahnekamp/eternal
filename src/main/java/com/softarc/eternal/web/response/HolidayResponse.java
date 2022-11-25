@@ -7,5 +7,6 @@ public record HolidayResponse(
   Long id,
   String name,
   String description,
+  Boolean hasCover,
   Set<HolidayTrip> holidayTrips
 ) {}
