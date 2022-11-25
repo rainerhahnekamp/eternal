@@ -58,7 +58,6 @@ export class FileField extends FieldType<any> {
 
       const coverImage = input.files[0];
       this.formControl.setValue(coverImage);
-      console.log(this.formControl);
 
       reader.readAsDataURL(coverImage);
     }
