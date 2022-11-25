@@ -3,7 +3,6 @@ package com.softarc.eternal.data;
 import com.softarc.eternal.domain.Guide;
 import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.domain.HolidayTrip;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -13,8 +12,8 @@ import java.util.function.Predicate;
 public class DefaultHolidaysRepository implements HolidaysRepository {
 
   private final List<Holiday> holidays = new ArrayList<>();
-  private Long currentId = 3L;
   private final OverlappingCalculator overlappingCalculator;
+  private Long currentId = 3L;
 
   public DefaultHolidaysRepository(
     List<Holiday> holidays,
@@ -31,7 +30,13 @@ public class DefaultHolidaysRepository implements HolidaysRepository {
 
   @Override
   public void add(String name, String description) {
-    var holiday = new Holiday(this.currentId++, name, description, new HashSet<>());
+    var holiday = new Holiday(
+      this.currentId++,
+      name,
+      description,
+      Optional.empty(),
+      new HashSet<>()
+    );
     this.holidays.add(holiday);
   }
 

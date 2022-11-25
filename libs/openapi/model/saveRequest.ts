@@ -9,13 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { HolidayTrip } from './holidayTrip';
+import { HolidayDto } from './holidayDto';
 
 
-export interface Holiday { 
-    id: number;
-    name: string;
-    description: string;
-    trips?: Set<HolidayTrip>;
+export interface SaveRequest { 
+    holidayDto: HolidayDto;
+    cover: Blob;
 }
 

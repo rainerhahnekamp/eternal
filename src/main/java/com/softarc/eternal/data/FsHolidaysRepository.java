@@ -4,21 +4,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softarc.eternal.domain.Guide;
 import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.domain.HolidayTrip;
-import lombok.SneakyThrows;
-import lombok.extern.java.Log;
-
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
+import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 
 @Log
 public class FsHolidaysRepository implements HolidaysRepository {
 
   private final ObjectMapper objectMapper;
   private final List<Holiday> holidays;
-
-  private Long currentId;
   private final File file;
+  private Long currentId;
 
   @SneakyThrows
   public FsHolidaysRepository(ObjectMapper objectMapper, String filename) {
@@ -48,10 +46,22 @@ public class FsHolidaysRepository implements HolidaysRepository {
   private void init() {
     this.holidays.clear();
     holidays.add(
-      new Holiday(1L, "Canada", "Visit Rocky Mountains", new HashSet<>())
+      new Holiday(
+        1L,
+        "Canada",
+        "Visit Rocky Mountains",
+        Optional.empty(),
+        new HashSet<>()
+      )
     );
     holidays.add(
-      new Holiday(2L, "China", "To the Middle Kingdom", new HashSet<>())
+      new Holiday(
+        2L,
+        "China",
+        "To the Middle Kingdom",
+        Optional.empty(),
+        new HashSet<>()
+      )
     );
     this.currentId = this.getCurrentId();
     this.persist();
@@ -70,7 +80,13 @@ public class FsHolidaysRepository implements HolidaysRepository {
   @Override
   public void add(String name, String description) {
     this.holidays.add(
-        new Holiday(++this.currentId, name, description, new HashSet<>())
+        new Holiday(
+          ++this.currentId,
+          name,
+          description,
+          Optional.empty(),
+          new HashSet<>()
+        )
       );
     this.persist();
     FsHolidaysRepository.log.info(String.format("Holiday %s was added", name));
