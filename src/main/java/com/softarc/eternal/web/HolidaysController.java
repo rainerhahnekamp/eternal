@@ -10,13 +10,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import java.util.Optional;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -99,8 +96,19 @@ public class HolidaysController {
   }
 
   @GetMapping("/cover/download/{id}")
-  public void downloadCover(@PathVariable("id") Long id) {
+  public ResponseEntity<Resource> downloadCover(@PathVariable("id") Long id) {
     var holiday = this.repository.find(id).orElseThrow();
+    var cover = holiday.getCoverPath().orElseThrow();
+    var file = Path.of("", "filestore", cover);
+    FileSystemResource resource = new FileSystemResource(file);
+    var header = new HttpHeaders();
+    ContentDisposition disposition = ContentDisposition
+      .attachment()
+      .filename(resource.getFilename())
+      .build();
+
+    header.setContentDisposition(disposition);
+    return new ResponseEntity<>(resource, header, HttpStatus.OK);
   }
 
   private HolidayResponse toHolidayResponse(Holiday holiday) {
