@@ -9,13 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { HolidayTrip } from './holidayTrip';
 
 
-export interface HolidayResponse { 
+export interface HolidayTrip { 
     id?: number;
-    name?: string;
-    description?: string;
-    holidayTrips?: Set<HolidayTrip>;
+    fromDate?: number;
+    toDate?: number;
+    priceSingleRoom?: number;
+    priceDoubleRoom?: number;
+    currency?: string;
+    holidayId?: number;
+    guideId?: number;
 }
 
