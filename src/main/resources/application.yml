@@ -2,3 +2,5 @@ app.holidays:
   persistence-type: file
   persistence-file: holidays.json
   pre-seed: true
+springdoc:
+  default-produces-media-type: application/json
