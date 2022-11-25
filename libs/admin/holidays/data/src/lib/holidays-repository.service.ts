@@ -8,6 +8,7 @@ export type AddHoliday = {
   description: string;
   cover: File;
 };
+export type EditHoliday = AddHoliday & { id: number };
 
 @Injectable({ providedIn: 'root' })
 export class HolidaysRepository {
@@ -29,15 +30,13 @@ export class HolidaysRepository {
     );
   }
 
-  async save(holiday: Holiday) {
-    // await firstValueFrom(this.#holidaysService.save(holiday));
-    await this.#update();
+  async save(holiday: EditHoliday) {
+    const { cover, ...holidayDto } = holiday;
+    this.#holidaysService.save(holidayDto, cover);
   }
 
   async add(holiday: AddHoliday): Promise<void> {
-    const formData = new FormData();
     const { cover, ...holidayDto } = holiday;
-
     this.#holidaysService.add(holidayDto, cover).subscribe();
   }
 

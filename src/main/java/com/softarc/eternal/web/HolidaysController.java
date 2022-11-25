@@ -52,7 +52,7 @@ public class HolidaysController {
     return true;
   }
 
-  @PutMapping
+  @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @Operation(operationId = "save")
   public void update(
     @RequestPart HolidayDto holidayDto,

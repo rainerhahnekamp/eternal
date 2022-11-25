@@ -7,10 +7,8 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
-model/holidayDto.ts
 model/holidayResponse.ts
 model/holidayTrip.ts
 model/models.ts
-model/saveRequest.ts
 param.ts
 variables.ts

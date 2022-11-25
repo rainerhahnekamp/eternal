@@ -22,8 +22,6 @@ import { Observable }                                        from 'rxjs';
 import { HolidayDto } from '../model/holidayDto';
 // @ts-ignore
 import { HolidayResponse } from '../model/holidayResponse';
-// @ts-ignore
-import { SaveRequest } from '../model/saveRequest';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -362,14 +360,21 @@ export class HolidaysService {
     }
 
     /**
-     * @param saveRequest 
+     * @param holidayDto 
+     * @param cover 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public save(saveRequest?: SaveRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
-    public save(saveRequest?: SaveRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
-    public save(saveRequest?: SaveRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
-    public save(saveRequest?: SaveRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+    public save(holidayDto: HolidayDto, cover: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
+    public save(holidayDto: HolidayDto, cover: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
+    public save(holidayDto: HolidayDto, cover: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
+    public save(holidayDto: HolidayDto, cover: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+        if (holidayDto === null || holidayDto === undefined) {
+            throw new Error('Required parameter holidayDto was null or undefined when calling save.');
+        }
+        if (cover === null || cover === undefined) {
+            throw new Error('Required parameter cover was null or undefined when calling save.');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -389,14 +394,30 @@ export class HolidaysService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (holidayDto !== undefined) {
+            localVarFormParams = localVarFormParams.append('holidayDto', localVarUseForm ? new Blob([JSON.stringify(holidayDto)], {type: 'application/json'}) : <any>holidayDto) as any || localVarFormParams;
+        }
+        if (cover !== undefined) {
+            localVarFormParams = localVarFormParams.append('cover', <any>cover) as any || localVarFormParams;
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -414,7 +435,7 @@ export class HolidaysService {
         return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: saveRequest,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
