@@ -6,9 +6,12 @@ import com.softarc.eternal.data.FsHolidays;
 import com.softarc.eternal.data.Holidays;
 import com.softarc.eternal.data.OverlappingCalculator;
 import com.softarc.eternal.domain.Holiday;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,14 +36,14 @@ public class AppConfiguration {
               "Canada",
               "Visit Rocky Mountains",
               null,
-              Collections.emptySet()
+              Collections.emptyList()
             ),
             new Holiday(
               2L,
               "China",
               "To the Middle Kingdom",
               null,
-              Collections.emptySet()
+              Collections.emptyList()
             )
           );
       } else {

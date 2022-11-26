@@ -6,9 +6,12 @@ import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.domain.HolidayTrip;
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.*;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Log
 public class FsHolidays implements Holidays {
@@ -46,10 +49,10 @@ public class FsHolidays implements Holidays {
   private void init() {
     this.holidays.clear();
     holidays.add(
-      new Holiday(1L, "Canada", "Visit Rocky Mountains", null, new HashSet<>())
+      new Holiday(1L, "Canada", "Visit Rocky Mountains", null, new ArrayList<>())
     );
     holidays.add(
-      new Holiday(2L, "China", "To the Middle Kingdom", null, new HashSet<>())
+      new Holiday(2L, "China", "To the Middle Kingdom", null, new ArrayList<>())
     );
     this.currentId = this.getCurrentId();
     this.persist();
@@ -73,7 +76,7 @@ public class FsHolidays implements Holidays {
           name,
           description,
           optCover.get(),
-          new HashSet<>()
+          new ArrayList<>()
         )
       );
     this.persist();

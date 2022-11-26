@@ -70,7 +70,7 @@ public class HolidaysController {
       holidayDto.name(),
       holidayDto.description(),
       filename,
-      Collections.emptySet()
+      Collections.emptyList()
     );
     this.repository.save(holiday);
     return true;
@@ -121,7 +121,7 @@ public class HolidaysController {
       holiday.getName(),
       holiday.getDescription(),
       holiday.getCoverPath() != null,
-      Collections.emptySet()
+      Collections.emptyList()
     );
   }
 
