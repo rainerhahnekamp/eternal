@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Holiday } from '@eternal/admin/holidays/model';
+import { dummyHolidays } from './dummy-holidays';
 
 @Injectable({ providedIn: 'root' })
 export class HolidaysRepository {
   #holidayId = 1;
   #holidays: Holiday[] = [];
-  #holidays$ = new BehaviorSubject<Holiday[]>([]);
+  #holidays$ = new BehaviorSubject<Holiday[]>(dummyHolidays);
 
   get holidays$(): Observable<Holiday[]> {
     return this.#holidays$.asObservable();
