@@ -4,11 +4,11 @@ git checkout master
 
 declare -a branches=(
   master
-  solution-1-basics-a solution-2-basics-b
-  solution-3a-testing solution-3b-testing
-  solution-4-1-basics solution-4-2-openapi
-  solution-4-3-upload-download-1-basic solution-4-3-upload-download-2-download
-  solution-5-data
+  solution-1-1-basics solution-1-2-advanced
+  solution-2-1-basics solution-2-2-advanced
+  solution-3-1-basics solution-3-2-openapi
+  solution-3-3-upload-download-1-basic solution-3-3-upload-download-2-download solution-3-3-upload-download-3-misc
+  solution-4-data-1-h2 solution-4-data-2-entity
 )
 
 previous=

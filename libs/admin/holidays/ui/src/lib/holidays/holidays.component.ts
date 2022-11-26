@@ -25,6 +25,26 @@ export interface HolidaysViewModel {
     MatPaginatorModule,
     NgIf,
   ],
+  styles: [
+    `
+      mat-header-cell {
+        justify-content: center;
+      }
+      .mat-column-id {
+        flex: 0 0 5em;
+      }
+      .mat-column-name {
+        flex: 0 0 10em;
+      }
+      .mat-column-hasCover {
+        flex: 0 0 15em;
+        padding: 1em;
+      }
+      .mat-column-action {
+        flex: 0 0 5em;
+      }
+    `,
+  ],
 })
 export class HolidaysComponent {
   @Input() viewModel: HolidaysViewModel | undefined;
