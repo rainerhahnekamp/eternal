@@ -44,7 +44,7 @@ export class HolidayDetailComponent {
         attributes: { 'data-testid': 'inp-name' },
       }),
       formly.textArea('description', 'Description', {
-        attributes: { 'data-testid': 'inp-description' },
+        attributes: { 'data-testid': 'inp-description', rows: 10 },
       }),
       { key: 'cover', type: 'file' },
     ];
