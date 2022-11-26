@@ -127,8 +127,6 @@ For the changes in the controller, please checkout the diff from branch **soluti
 </p>
 </details>
 
-## Entity Classes
-
 ## JPA Repository
 
 ## Mapping
@@ -151,4 +149,4 @@ For the changes in the controller, please checkout the diff from branch **soluti
 
 # Transactions and Streaming
 
-# Holidays as Facade
+# Holidays as Facade and specific Entity classes
