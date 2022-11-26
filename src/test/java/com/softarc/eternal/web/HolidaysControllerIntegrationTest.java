@@ -1,16 +1,19 @@
 package com.softarc.eternal.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-import com.softarc.eternal.data.DefaultHolidays;
-import com.softarc.eternal.data.Holidays;
+import com.softarc.eternal.data.HolidaysRepository;
+import com.softarc.eternal.domain.HolidayMother;
 import com.softarc.eternal.web.request.HolidayDto;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -18,7 +21,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(
   properties = {
-    "app.holidays.persistence-type=default", "app.holidays.pre-seed=false",
+    "app.holidays.persistence-type=default",
+    "app.holidays.pre-seed=false",
+    "spring.datasource.url=jdbc:h2:mem:holidays-controller",
   }
 )
 @AutoConfigureMockMvc
@@ -27,12 +32,12 @@ class HolidaysControllerIntegrationTest {
   @Autowired
   HolidaysController controller;
 
-  @Autowired
-  Holidays repository;
+  @MockBean
+  HolidaysRepository repository;
 
   @Test
   public void testInjectedDefaultRepository() {
-    assertThat(repository).isInstanceOf(DefaultHolidays.class);
+    assertThat(repository).isInstanceOf(HolidaysRepository.class);
   }
 
   @Test
@@ -45,8 +50,15 @@ class HolidaysControllerIntegrationTest {
     var holidayFile = new ClassPathResource("vienna.jpg");
     MultipartBodyBuilder builder = new MultipartBodyBuilder();
     builder.part("cover", holidayFile);
-    var amsterdam = new HolidayDto(1L, "Amsterdam", "Netherlands");
-    builder.part("holidayDto", amsterdam);
+    var amsterdamDto = new HolidayDto(1L, "Amsterdam", "Netherlands");
+    builder.part("holidayDto", amsterdamDto);
+    var amsterdam = HolidayMother
+      .vienna()
+      .name("Amsterdam")
+      .coverPath("amsterdam.jpg")
+      .build();
+
+    when(repository.findAll()).thenReturn(Collections.singletonList(amsterdam));
 
     webTestClient
       .post()

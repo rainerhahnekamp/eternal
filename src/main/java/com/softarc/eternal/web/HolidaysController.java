@@ -66,7 +66,7 @@ public class HolidaysController {
     var path = Path.of("", "filestore", filename);
     cover.transferTo(path);
     var holiday = new Holiday(
-      0L,
+      null,
       holidayDto.name(),
       holidayDto.description(),
       filename,

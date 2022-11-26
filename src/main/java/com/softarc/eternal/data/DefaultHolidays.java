@@ -34,7 +34,7 @@ public class DefaultHolidays implements Holidays {
       this.currentId++,
       name,
       description,
-      optCover.get(),
+      optCover.orElse(""),
       new HashSet<>()
     );
     this.holidays.add(holiday);
@@ -50,7 +50,7 @@ public class DefaultHolidays implements Holidays {
     var holiday = this.find(id).orElseThrow();
     holiday.setName(name);
     holiday.setDescription(description);
-    holiday.setCoverPath(optCover.get());
+    holiday.setCoverPath(optCover.orElse(""));
   }
 
   @Override
