@@ -10,6 +10,12 @@ import lombok.extern.java.Log;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 
 @Log
 public class FsHolidaysRepository implements HolidaysRepository {
@@ -48,10 +54,10 @@ public class FsHolidaysRepository implements HolidaysRepository {
   private void init() {
     this.holidays.clear();
     holidays.add(
-      new Holiday(1L, "Canada", "Visit Rocky Mountains", new HashSet<>())
+      new Holiday(1L, "Canada", "Visit Rocky Mountains", new ArrayList<>())
     );
     holidays.add(
-      new Holiday(2L, "China", "To the Middle Kingdom", new HashSet<>())
+      new Holiday(2L, "China", "To the Middle Kingdom", new ArrayList<>())
     );
     this.currentId = this.getCurrentId();
     this.persist();
@@ -70,7 +76,7 @@ public class FsHolidaysRepository implements HolidaysRepository {
   @Override
   public void add(String name, String description) {
     this.holidays.add(
-        new Holiday(++this.currentId, name, description, new HashSet<>())
+        new Holiday(++this.currentId, name, description, new ArrayList<>())
       );
     this.persist();
     FsHolidaysRepository.log.info(String.format("Holiday %s was added", name));

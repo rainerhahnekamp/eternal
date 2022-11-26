@@ -1,7 +1,7 @@
 package com.softarc.eternal.domain;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,5 +20,5 @@ public class Holiday {
   private String description;
 
   @Builder.Default
-  private Set<HolidayTrip> trips = new HashSet<>();
+  private List<HolidayTrip> trips = new ArrayList<>();
 }
