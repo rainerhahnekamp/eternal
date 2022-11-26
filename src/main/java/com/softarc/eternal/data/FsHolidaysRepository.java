@@ -6,9 +6,12 @@ import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.domain.HolidayTrip;
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.*;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Log
 public class FsHolidaysRepository implements HolidaysRepository {
@@ -51,7 +54,7 @@ public class FsHolidaysRepository implements HolidaysRepository {
         "Canada",
         "Visit Rocky Mountains",
         Optional.empty(),
-        new HashSet<>()
+        new ArrayList<>()
       )
     );
     holidays.add(
@@ -60,7 +63,7 @@ public class FsHolidaysRepository implements HolidaysRepository {
         "China",
         "To the Middle Kingdom",
         Optional.empty(),
-        new HashSet<>()
+        new ArrayList<>()
       )
     );
     this.currentId = this.getCurrentId();
@@ -85,7 +88,7 @@ public class FsHolidaysRepository implements HolidaysRepository {
           name,
           description,
           optCover,
-          new HashSet<>()
+          new ArrayList<>()
         )
       );
     this.persist();
