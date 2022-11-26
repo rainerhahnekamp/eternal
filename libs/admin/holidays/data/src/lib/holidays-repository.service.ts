@@ -49,6 +49,6 @@ export class HolidaysRepository {
 
   async #update() {
     const holidays = await firstValueFrom(this.#holidaysService.findAll());
-    this.#holidays$.next(holidays as Holiday[]);
+    this.#holidays$.next(holidays);
   }
 }

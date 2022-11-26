@@ -4,7 +4,6 @@ export type Holiday = {
   id: number;
   name: string;
   description: string;
-  trips?: HolidayTrip[];
 };
 
 let id = 1;
@@ -15,7 +14,6 @@ export function createHoliday(holiday: Partial<Holiday> = {}): Holiday {
       id: id++,
       name: 'Vienna',
       description: 'A holiday to Vienna',
-      trips: [],
     },
     ...holiday,
   };
