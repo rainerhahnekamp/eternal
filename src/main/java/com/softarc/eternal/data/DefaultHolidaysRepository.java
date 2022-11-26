@@ -3,6 +3,9 @@ package com.softarc.eternal.data;
 import com.softarc.eternal.domain.Guide;
 import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.domain.HolidayTrip;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,7 +34,7 @@ public class DefaultHolidaysRepository implements HolidaysRepository {
 
   @Override
   public void add(String name, String description) {
-    var holiday = new Holiday(this.currentId++, name, description, new HashSet<>());
+    var holiday = new Holiday(this.currentId++, name, description, new ArrayList<>());
     this.holidays.add(holiday);
   }
 
