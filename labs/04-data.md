@@ -1,18 +1,61 @@
-# Setup H2 (Embedded Database)
+# H2
+
+## Setup
+
+Setup an embedded database we can use for development purposes.
+
+In IntelliJ, open the database window, click on _New_ (plus symbol) and select H2 from the available databases.
+
+In _URL_ type in the following JDBC URL "jdbc:h2:./dev-db".
+
+Also make sure that the drivers are available. IntelliJ will shows a link "Download missing drivers". Click on it, if it is shown.
+
+Click on "Test Connection" to make sure IntelliJ can connect to the database.
+
+If everything ran successfully, you should see new two files in your project's root folder:
+
+- **deb-db.mv.db**
+- **dev-db.trace.db**
+
+In order to run the web console, add the following two dependencies to your **build.gradle**
+
+```kotlin
+implementation 'com.h2database:h2'
+testImplementation 'org.springframework.boot:spring-boot-starter-test'
+```
+
+Start Spring and navigate to _http://localhost:8080/h2-console_. You should see the H2 Console where you can try to connect. Make sure you use the right path.
+
+## Create the Tables and Insert Data
+
+Close Spring, open the database view in IntelliJ again, click the "plus" symbol and open the "Query Console".
+
+Insert the SQL to create the tables for `Holiday`, `HolidayTrip`, and `Guide`. You can try it on your own or copy it from **ddl-holidays.sql** from the **labs** directory.
+
+Next add some holidays. Again, you can write your own SQL or copy from **dml.sql**.
+
+To verify, that everything worked, run `select * from HOLIDAY`.
+
+# Repository
+
+It is time to switch from the filesystem to the database
+
+## Entity Classes
+
+## JPA Repository
+
+## Mapping
+
+## Testing
+
+## MySql
 
 # Flyway
 
-# Profile with Real Database Docker
-
-# Spring Data Repository
-
 # Mapping with MapStruct
-
-# Integration Test with SQL
 
 # Converters
 
 # Jooq
 
 # Transactions
-
