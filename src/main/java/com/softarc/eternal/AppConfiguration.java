@@ -33,14 +33,14 @@ public class AppConfiguration {
               "Canada",
               "Visit Rocky Mountains",
               null,
-              Collections.emptySet()
+              Collections.emptyList()
             ),
             new Holiday(
               2L,
               "China",
               "To the Middle Kingdom",
               null,
-              Collections.emptySet()
+              Collections.emptyList()
             )
           );
       } else {

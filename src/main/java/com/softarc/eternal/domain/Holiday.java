@@ -5,8 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,10 +31,8 @@ public class Holiday {
   @NotBlank
   private String description;
 
-  @Column(name = "COVERPATH")
   private String coverPath;
 
-  @Builder.Default
-  @Transient
-  private Set<HolidayTrip> trips = new HashSet<>();
+  @OneToMany(mappedBy = "holiday")
+  private List<HolidayTrip> trips;
 }

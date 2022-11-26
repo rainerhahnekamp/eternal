@@ -2,15 +2,18 @@ package com.softarc.eternal.web;
 
 import com.softarc.eternal.data.HolidaysRepository;
 import com.softarc.eternal.domain.Holiday;
+import com.softarc.eternal.domain.HolidayTrip;
 import com.softarc.eternal.multimedia.ImageValidator;
 import com.softarc.eternal.web.request.HolidayDto;
 import com.softarc.eternal.web.response.HolidayResponse;
+import com.softarc.eternal.web.response.HolidayTripDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.SneakyThrows;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -70,7 +73,7 @@ public class HolidaysController {
       holidayDto.name(),
       holidayDto.description(),
       filename,
-      Collections.emptySet()
+      Collections.emptyList()
     );
     this.repository.save(holiday);
     return true;
@@ -116,12 +119,19 @@ public class HolidaysController {
   }
 
   private HolidayResponse toHolidayResponse(Holiday holiday) {
+    var trips = holiday.getTrips().stream().map(HolidayTrip::getId).toList();
     return new HolidayResponse(
       holiday.getId(),
       holiday.getName(),
       holiday.getDescription(),
       holiday.getCoverPath() != null,
-      Collections.emptySet()
+      holiday
+        .getTrips()
+        .stream()
+        .map(trip ->
+          new HolidayTripDto(trip.getId(), trip.getFromDate(), trip.getToDate())
+        )
+        .collect(Collectors.toList())
     );
   }
 

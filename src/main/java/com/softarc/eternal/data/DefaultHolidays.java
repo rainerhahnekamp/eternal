@@ -4,7 +4,6 @@ import com.softarc.eternal.domain.Guide;
 import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.domain.HolidayTrip;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -35,7 +34,7 @@ public class DefaultHolidays implements Holidays {
       name,
       description,
       optCover.orElse(""),
-      new HashSet<>()
+      new ArrayList<>()
     );
     this.holidays.add(holiday);
   }
@@ -92,7 +91,7 @@ public class DefaultHolidays implements Holidays {
       .findFirst()
       .ifPresent(trip -> this.throwAlreadyAssignedException(trip, guide));
 
-    holidayTrip.setGuideId(guide.getId());
+    holidayTrip.setGuide(guide);
   }
 
   private Predicate<HolidayTrip> filterOverlappingTrip(
@@ -101,9 +100,9 @@ public class DefaultHolidays implements Holidays {
     HolidayTrip holidayTrip
   ) {
     return trip ->
-      trip.getGuideId() != null &&
+      trip.getGuide() != null &&
       !trip.getId().equals(holidayTripId) &&
-      trip.getGuideId().equals(guide.getId()) &&
+      trip.getGuide().equals(guide.getId()) &&
       this.isTripOverlapping(trip, holidayTrip);
   }
 
