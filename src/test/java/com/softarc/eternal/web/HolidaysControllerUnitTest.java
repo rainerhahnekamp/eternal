@@ -58,7 +58,7 @@ public class HolidaysControllerUnitTest {
       "Vienna",
       "Urlaub in Wien",
       "vienna",
-      Collections.emptySet()
+      Collections.emptyList()
     );
     verify(repository).save(holiday);
   }
@@ -85,7 +85,7 @@ public class HolidaysControllerUnitTest {
             holiday.getName(),
             holiday.getDescription(),
             false,
-            Collections.emptySet()
+            Collections.emptyList()
           )
         )
       );

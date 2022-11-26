@@ -1,8 +1,9 @@
 package com.softarc.eternal.domain;
 
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,10 +24,9 @@ public class Holiday {
 
   private String description;
 
-  @Column(name = "COVERPATH")
   private String coverPath;
 
   @Builder.Default
   @Transient
-  private Set<HolidayTrip> trips = new HashSet<>();
+  private List<HolidayTrip> trips = new ArrayList<>();
 }
