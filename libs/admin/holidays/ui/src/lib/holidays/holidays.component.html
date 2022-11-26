@@ -4,7 +4,7 @@
 </p>
 
 <ng-container *ngIf="viewModel">
-  <div *ngIf="dataSource.data.length > 0" class="my-4 max-w-screen-sm">
+  <div *ngIf="dataSource.data.length > 0" class="my-4 max-w-screen-lg">
     <mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef> Id</mat-header-cell>
@@ -18,7 +18,7 @@
 
       <ng-container matColumnDef="description">
         <mat-header-cell *matHeaderCellDef> Description</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{ element.description }}</mat-cell>
+        <mat-cell *matCellDef="let element"><p class="line-clamp-5">{{ element.description }}</p></mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="action">
