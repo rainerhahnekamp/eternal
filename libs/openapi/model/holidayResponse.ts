@@ -16,6 +16,6 @@ export interface HolidayResponse {
     id: number;
     name: string;
     description: string;
-    holidayTrips: Set<HolidayTrip>;
+    holidayTrips: Array<HolidayTrip>;
 }
 

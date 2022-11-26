@@ -64,7 +64,7 @@ public class HolidaysController {
       holiday.getId(),
       holiday.getName(),
       holiday.getDescription(),
-      Collections.emptySet()
+      Collections.emptyList()
     );
   }
 }
