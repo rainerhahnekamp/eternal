@@ -48,4 +48,5 @@ node_modules
 .angular
 filestore/**
 !filestore/.gitkeep
-
+dev-db.mv.db
+dev-db.trace.db

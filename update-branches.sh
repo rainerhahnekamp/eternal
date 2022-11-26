@@ -8,7 +8,7 @@ declare -a branches=(
   solution-3a-testing solution-3b-testing
   solution-4-1-basics solution-4-2-openapi
   solution-4-3-upload-download-1-basic solution-4-3-upload-download-2-download
-  solution-5-data
+  solution-5-data-1-h2
 )
 
 previous=
