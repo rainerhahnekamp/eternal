@@ -2,6 +2,7 @@ package com.softarc.eternal.web;
 
 import com.softarc.eternal.data.HolidaysRepository;
 import com.softarc.eternal.domain.Holiday;
+import com.softarc.eternal.multimedia.ImageValidator;
 import com.softarc.eternal.web.request.HolidayDto;
 import com.softarc.eternal.web.response.HolidayResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,9 +12,13 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import lombok.SneakyThrows;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,9 +28,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class HolidaysController {
 
   private final HolidaysRepository repository;
+  private final ImageValidator imageValidator;
 
-  public HolidaysController(HolidaysRepository repository) {
+  public HolidaysController(
+    HolidaysRepository repository,
+    ImageValidator imageValidator
+  ) {
     this.repository = repository;
+    this.imageValidator = imageValidator;
   }
 
   @GetMapping
@@ -49,6 +59,8 @@ public class HolidaysController {
     @RequestPart HolidayDto holidayDto,
     @RequestPart MultipartFile cover
   ) throws IOException {
+    this.assertFileIsImage(cover);
+
     var filename = cover.getOriginalFilename();
     var path = Path.of("", "filestore", filename);
     this.repository.add(
@@ -66,6 +78,8 @@ public class HolidaysController {
     @RequestPart HolidayDto holidayDto,
     @RequestPart MultipartFile cover
   ) throws IOException {
+    this.assertFileIsImage(cover);
+
     var filename = cover.getOriginalFilename();
     this.repository.update(
         holidayDto.id(),
@@ -103,5 +117,14 @@ public class HolidaysController {
       holiday.getCoverPath().isPresent(),
       Collections.emptySet()
     );
+  }
+
+  @SneakyThrows
+  private void assertFileIsImage(MultipartFile file) {
+    if (!this.imageValidator.isFileImage(file.getInputStream())) {
+      throw new RuntimeException(
+        String.format("'%s' is not an image.", file.getName())
+      );
+    }
   }
 }
