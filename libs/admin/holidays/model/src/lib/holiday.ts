@@ -6,7 +6,6 @@ export type Holiday = {
   description: string;
   hasCover: boolean;
   coverLink: string;
-  trips?: HolidayTrip[];
 };
 
 let id = 1;
@@ -17,7 +16,6 @@ export function createHoliday(holiday: Partial<Holiday> = {}): Holiday {
       id: id++,
       name: 'Vienna',
       description: 'A holiday to Vienna',
-      trips: [],
       hasCover: false,
       coverLink: '',
     },
