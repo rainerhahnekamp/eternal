@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import lombok.SneakyThrows;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -50,7 +49,9 @@ public class HolidaysController {
   @GetMapping("{id}")
   @Operation(operationId = "findById")
   public HolidayResponse find(@PathVariable("id") Long id) {
-    return this.repository.find(id).map(this::toHolidayResponse).orElseThrow();
+    return this.repository.findById(id)
+      .map(this::toHolidayResponse)
+      .orElseThrow();
   }
 
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -63,12 +64,15 @@ public class HolidaysController {
 
     var filename = cover.getOriginalFilename();
     var path = Path.of("", "filestore", filename);
-    this.repository.add(
-        holidayDto.name(),
-        holidayDto.description(),
-        Optional.ofNullable(filename)
-      );
     cover.transferTo(path);
+    var holiday = new Holiday(
+      0L,
+      holidayDto.name(),
+      holidayDto.description(),
+      filename,
+      Collections.emptySet()
+    );
+    this.repository.save(holiday);
     return true;
   }
 
@@ -79,22 +83,21 @@ public class HolidaysController {
     @RequestPart MultipartFile cover
   ) throws IOException {
     this.assertFileIsImage(cover);
-
     var filename = cover.getOriginalFilename();
-    this.repository.update(
-        holidayDto.id(),
-        holidayDto.name(),
-        holidayDto.description(),
-        Optional.ofNullable(filename)
-      );
     var path = Path.of("", "filestore", filename);
     cover.transferTo(path);
+
+    Holiday holiday = this.repository.findById(holidayDto.id()).orElseThrow();
+    holiday.setDescription(holidayDto.description());
+    holiday.setName(holidayDto.name());
+    holiday.setCoverPath(filename);
+    this.repository.save(holiday);
   }
 
   @DeleteMapping("{id}")
   @Operation(operationId = "remove")
   public void remove(@PathVariable("id") Long id) {
-    this.repository.remove(id);
+    this.repository.deleteById(id);
   }
 
   @GetMapping(
@@ -102,8 +105,11 @@ public class HolidaysController {
     produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
   )
   public ResponseEntity<Resource> viewCover(@PathVariable("id") Long id) {
-    var holiday = this.repository.find(id).orElseThrow();
-    var cover = holiday.getCoverPath().orElseThrow();
+    var holiday = this.repository.findById(id).orElseThrow();
+    var cover = holiday.getCoverPath();
+    if (cover == null) {
+      throw new RuntimeException("Cover not set");
+    }
     var file = Path.of("", "filestore", cover);
     FileSystemResource resource = new FileSystemResource(file);
     return new ResponseEntity<>(resource, new HttpHeaders(), HttpStatus.OK);
@@ -114,7 +120,7 @@ public class HolidaysController {
       holiday.getId(),
       holiday.getName(),
       holiday.getDescription(),
-      holiday.getCoverPath().isPresent(),
+      holiday.getCoverPath() != null,
       Collections.emptySet()
     );
   }

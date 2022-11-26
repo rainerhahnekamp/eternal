@@ -1,15 +1,14 @@
 package com.softarc.eternal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.softarc.eternal.data.DefaultHolidaysRepository;
-import com.softarc.eternal.data.FsHolidaysRepository;
-import com.softarc.eternal.data.HolidaysRepository;
+import com.softarc.eternal.data.DefaultHolidays;
+import com.softarc.eternal.data.FsHolidays;
+import com.softarc.eternal.data.Holidays;
 import com.softarc.eternal.data.OverlappingCalculator;
 import com.softarc.eternal.domain.Holiday;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,16 +16,13 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfiguration {
 
   @Bean
-  public HolidaysRepository getHolidaysRepository(
+  public Holidays getHolidaysRepository(
     ObjectMapper objectMapper,
     AppProperties appProperties,
     OverlappingCalculator calculator
   ) {
     if ("file".equals(appProperties.getPersistenceType())) {
-      return new FsHolidaysRepository(
-        objectMapper,
-        appProperties.getPersistenceFile()
-      );
+      return new FsHolidays(objectMapper, appProperties.getPersistenceFile());
     } else {
       List<Holiday> holidays;
       if (appProperties.isPreSeed()) {
@@ -36,21 +32,21 @@ public class AppConfiguration {
               1L,
               "Canada",
               "Visit Rocky Mountains",
-              Optional.empty(),
+              null,
               Collections.emptySet()
             ),
             new Holiday(
               2L,
               "China",
               "To the Middle Kingdom",
-              Optional.empty(),
+              null,
               Collections.emptySet()
             )
           );
       } else {
         holidays = Collections.emptyList();
       }
-      return new DefaultHolidaysRepository(holidays, calculator);
+      return new DefaultHolidays(holidays, calculator);
     }
   }
 }

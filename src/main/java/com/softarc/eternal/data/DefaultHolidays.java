@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public class DefaultHolidaysRepository implements HolidaysRepository {
+public class DefaultHolidays implements Holidays {
 
   private final List<Holiday> holidays = new ArrayList<>();
   private final OverlappingCalculator overlappingCalculator;
   private Long currentId = 3L;
 
-  public DefaultHolidaysRepository(
+  public DefaultHolidays(
     List<Holiday> holidays,
     OverlappingCalculator overlappingCalculator
   ) {
@@ -34,7 +34,7 @@ public class DefaultHolidaysRepository implements HolidaysRepository {
       this.currentId++,
       name,
       description,
-      optCover,
+      optCover.get(),
       new HashSet<>()
     );
     this.holidays.add(holiday);
@@ -50,7 +50,7 @@ public class DefaultHolidaysRepository implements HolidaysRepository {
     var holiday = this.find(id).orElseThrow();
     holiday.setName(name);
     holiday.setDescription(description);
-    holiday.setCoverPath(optCover);
+    holiday.setCoverPath(optCover.get());
   }
 
   @Override

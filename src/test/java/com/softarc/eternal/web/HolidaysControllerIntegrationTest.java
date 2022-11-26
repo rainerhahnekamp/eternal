@@ -2,8 +2,8 @@ package com.softarc.eternal.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.softarc.eternal.data.DefaultHolidaysRepository;
-import com.softarc.eternal.data.HolidaysRepository;
+import com.softarc.eternal.data.DefaultHolidays;
+import com.softarc.eternal.data.Holidays;
 import com.softarc.eternal.web.request.HolidayDto;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,11 +28,11 @@ class HolidaysControllerIntegrationTest {
   HolidaysController controller;
 
   @Autowired
-  HolidaysRepository repository;
+  Holidays repository;
 
   @Test
   public void testInjectedDefaultRepository() {
-    assertThat(repository).isInstanceOf(DefaultHolidaysRepository.class);
+    assertThat(repository).isInstanceOf(DefaultHolidays.class);
   }
 
   @Test

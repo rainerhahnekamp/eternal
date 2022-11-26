@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-import com.softarc.eternal.data.HolidaysRepository;
+import com.softarc.eternal.data.Holidays;
 import com.softarc.eternal.domain.HolidayMother;
 import com.softarc.eternal.multimedia.ImageValidator;
 import com.softarc.eternal.web.request.HolidayDto;
@@ -28,7 +28,7 @@ public class HolidaysControllerUnitTest {
   HolidaysController controller;
 
   @MockBean
-  HolidaysRepository repository;
+  Holidays repository;
 
   @MockBean
   ImageValidator imageValidator;

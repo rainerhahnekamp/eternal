@@ -11,7 +11,7 @@ import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 
 @Log
-public class FsHolidaysRepository implements HolidaysRepository {
+public class FsHolidays implements Holidays {
 
   private final ObjectMapper objectMapper;
   private final List<Holiday> holidays;
@@ -19,7 +19,7 @@ public class FsHolidaysRepository implements HolidaysRepository {
   private Long currentId;
 
   @SneakyThrows
-  public FsHolidaysRepository(ObjectMapper objectMapper, String filename) {
+  public FsHolidays(ObjectMapper objectMapper, String filename) {
     this.objectMapper = objectMapper;
     file = Paths.get(filename).toFile();
 
@@ -46,22 +46,10 @@ public class FsHolidaysRepository implements HolidaysRepository {
   private void init() {
     this.holidays.clear();
     holidays.add(
-      new Holiday(
-        1L,
-        "Canada",
-        "Visit Rocky Mountains",
-        Optional.empty(),
-        new HashSet<>()
-      )
+      new Holiday(1L, "Canada", "Visit Rocky Mountains", null, new HashSet<>())
     );
     holidays.add(
-      new Holiday(
-        2L,
-        "China",
-        "To the Middle Kingdom",
-        Optional.empty(),
-        new HashSet<>()
-      )
+      new Holiday(2L, "China", "To the Middle Kingdom", null, new HashSet<>())
     );
     this.currentId = this.getCurrentId();
     this.persist();
@@ -84,12 +72,12 @@ public class FsHolidaysRepository implements HolidaysRepository {
           ++this.currentId,
           name,
           description,
-          optCover,
+          optCover.get(),
           new HashSet<>()
         )
       );
     this.persist();
-    FsHolidaysRepository.log.info(String.format("Holiday %s was added", name));
+    FsHolidays.log.info(String.format("Holiday %s was added", name));
   }
 
   @Override
@@ -102,7 +90,7 @@ public class FsHolidaysRepository implements HolidaysRepository {
     var holiday = this.find(id).orElseThrow();
     holiday.setName(name);
     holiday.setDescription(description);
-    holiday.setCoverPath(optCover);
+    holiday.setCoverPath(optCover.get());
     this.persist();
   }
 
@@ -124,7 +112,7 @@ public class FsHolidaysRepository implements HolidaysRepository {
         holiday -> {
           this.holidays.remove(holiday);
           this.persist();
-          FsHolidaysRepository.log.info(
+          FsHolidays.log.info(
             String.format("Holiday %s was removed", holiday.getName())
           );
         },
