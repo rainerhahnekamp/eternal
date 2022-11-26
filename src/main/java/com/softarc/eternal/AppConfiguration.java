@@ -5,7 +5,6 @@ import com.softarc.eternal.data.DefaultHolidaysRepository;
 import com.softarc.eternal.data.FsHolidaysRepository;
 import com.softarc.eternal.data.HolidaysRepository;
 import com.softarc.eternal.domain.Holiday;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import org.springframework.context.annotation.Bean;
@@ -30,13 +29,13 @@ public class AppConfiguration {
           1L,
           "Canada",
           "Visit Rocky Mountains",
-          Collections.emptySet()
+          Collections.emptyList()
         ),
         new Holiday(
           2L,
           "China",
           "To the Middle Kingdom",
-          Collections.emptySet()
+          Collections.emptyList()
         )
       );
       return new DefaultHolidaysRepository(holidays);
