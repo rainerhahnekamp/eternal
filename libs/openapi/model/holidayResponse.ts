@@ -11,12 +11,10 @@
  */
 import { HolidayTrip } from './holidayTrip';
 
-
 export interface HolidayResponse {
-    id: number;
-    name: string;
-    description: string;
-    hasCover: boolean;
-    holidayTrips: Array<HolidayTrip>;
+  id: number;
+  name: string;
+  description: string;
+  hasCover: boolean;
+  holidayTrips: Array<HolidayTrip>;
 }
-
