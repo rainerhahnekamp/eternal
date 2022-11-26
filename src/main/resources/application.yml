@@ -4,3 +4,7 @@ app.holidays:
   pre-seed: true
 springdoc:
   default-produces-media-type: application/json
+
+spring.servlet.multipart:
+  max-file-size: 4MB
+  max-request-size: 4MB
