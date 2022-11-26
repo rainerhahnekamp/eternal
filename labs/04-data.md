@@ -44,6 +44,10 @@ It is time to switch from the filesystem to the database. First, a hard cut is r
 
 Once that is done create a new interface `com.softarc.eternal.data.HolidaysRepository` which extends from Spring's `JpaRepository`.
 
+The integration tests will connect to the h2 database. In order to avoid that, add the following configuration property to the `@SpringBootTest` annotation: `spring.datasource.url=jdbc:h2:mem:application-test`.
+
+This will not access the file-based H2 but temporarily creates one in the memory.
+
 The major changes you will have to do:
 
 - `coverPath` in `Holiday` changes from type `Optional<String>` to `String`.
