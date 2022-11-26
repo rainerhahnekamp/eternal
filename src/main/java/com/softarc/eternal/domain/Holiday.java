@@ -34,6 +34,7 @@ public class Holiday {
 
   private String coverPath;
 
+  @Builder.Default
   @OneToMany(mappedBy = "holiday")
   private List<HolidayTrip> trips = new ArrayList<>();
 }

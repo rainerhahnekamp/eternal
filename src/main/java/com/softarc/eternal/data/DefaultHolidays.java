@@ -6,10 +6,6 @@ import com.softarc.eternal.domain.HolidayTrip;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 public class DefaultHolidays implements Holidays {
@@ -106,7 +102,7 @@ public class DefaultHolidays implements Holidays {
     return trip ->
       trip.getGuide() != null &&
       !trip.getId().equals(holidayTripId) &&
-      trip.getGuide().equals(guide.getId()) &&
+      trip.getGuide().getId().equals(guide.getId()) &&
       this.isTripOverlapping(trip, holidayTrip);
   }
 
