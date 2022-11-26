@@ -58,7 +58,7 @@ public class HolidaysControllerUnitTest {
             holiday.getId(),
             holiday.getName(),
             holiday.getDescription(),
-            Collections.emptySet()
+            Collections.emptyList()
           )
         )
       );

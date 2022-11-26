@@ -4,6 +4,10 @@ import com.softarc.eternal.domain.Guide;
 import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.domain.HolidayTrip;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +39,7 @@ public class DefaultHolidaysRepository implements HolidaysRepository {
       name,
       description,
       optCover,
-      new HashSet<>()
+      new ArrayList<>()
     );
     this.holidays.add(holiday);
   }
