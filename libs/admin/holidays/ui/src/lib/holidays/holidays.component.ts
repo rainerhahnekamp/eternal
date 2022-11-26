@@ -36,6 +36,10 @@ export interface HolidaysViewModel {
       .mat-column-name {
         flex: 0 0 10em;
       }
+      .mat-column-hasCover {
+        flex: 0 0 15em;
+        padding: 1em;
+      }
       .mat-column-action {
         flex: 0 0 5em;
       }
