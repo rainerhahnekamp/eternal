@@ -6,8 +6,10 @@ import static org.mockito.Mockito.when;
 import com.softarc.eternal.data.HolidaysRepository;
 import com.softarc.eternal.domain.HolidayMother;
 import com.softarc.eternal.web.request.HolidayDto;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.junit.jupiter.api.AfterAll;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +31,24 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @AutoConfigureMockMvc
 class HolidaysControllerIntegrationTest {
 
+  private static final Path destinationPath = Path.of(
+    "",
+    "filestore",
+    "vienna.jpg"
+  );
+
   @Autowired
   HolidaysController controller;
 
   @MockBean
   HolidaysRepository repository;
+
+  @AfterAll
+  static void removeViennaFile() throws IOException {
+    if (Files.exists(destinationPath)) {
+      Files.delete(destinationPath);
+    }
+  }
 
   @Test
   public void testInjectedDefaultRepository() {
@@ -43,7 +58,6 @@ class HolidaysControllerIntegrationTest {
   @Test
   public void testAddHoliday(@Autowired WebTestClient webTestClient)
     throws Exception {
-    var destinationPath = Path.of("", "filestore", "vienna.jpg");
     assertThat(Files.exists(destinationPath))
       .withFailMessage("Cannot start when vienna.jpg exists in filestore")
       .isFalse();
@@ -78,10 +92,6 @@ class HolidaysControllerIntegrationTest {
       .jsonPath("[0].hasCover")
       .isEqualTo(true);
 
-    try {
-      assertThat(Files.exists(destinationPath)).isTrue();
-    } finally {
-      Files.delete(destinationPath);
-    }
+    assertThat(Files.exists(destinationPath)).isTrue();
   }
 }
