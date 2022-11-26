@@ -115,7 +115,7 @@ public class Holiday {
 
   @Builder.Default
   @Transient
-  private Set<HolidayTrip> trips = new HashSet<>();
+  private List<HolidayTrip> trips = new ArrayList<>();
 }
 
 ```
