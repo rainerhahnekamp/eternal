@@ -38,7 +38,11 @@ To verify, that everything worked, run `select * from HOLIDAY`.
 
 # Repository
 
-It is time to switch from the filesystem to the database
+It is time to switch from the filesystem to the database. First, a hard cut is required. Since the term `Repository` has a special meaning in Spring Data, rename `HolidaysRepository` to just `Holidays`.
+
+**Important**: Rename it automatically. Right click on the class name, select _Refactor_ and then _Rename..._.
+
+Once that is done create a new interface `com.softarc.eternal.data.HolidaysRepository` which extends from Spring's `JpaRepository`.
 
 ## Entity Classes
 
@@ -58,4 +62,10 @@ It is time to switch from the filesystem to the database
 
 # Jooq
 
-# Transactions
+# Paging & Sorting
+
+# Aynchronous
+
+# Transactions and Streaming
+
+# Holidays as Facade

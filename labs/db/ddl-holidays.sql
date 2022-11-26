@@ -3,7 +3,7 @@ create table Holiday
   Id          int auto_increment primary key,
   Name        nvarchar(50) not null,
   Description text not null,
-  Cover       text null
+  CoverPath       text null
 );
 
 create table Guide
