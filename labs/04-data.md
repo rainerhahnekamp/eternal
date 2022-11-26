@@ -127,15 +127,313 @@ For the changes in the controller, please checkout the diff from branch **soluti
 </p>
 </details>
 
-## JPA Repository
+# Spring Data Testing
 
-## Mapping
+Write 4 tests that use an in-memory database against the `HolidaysRepository`:
 
-## Testing
+Tip: If you want to see the values of your SQL statements, add the following to your **application.yml**:
+
+```yml
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
+```
+
+1. `testFindAll`: Should add and persist a holiday and retrieve it via `findAll`.
+2. `testCrud`: Should add, persist, find, update and then remove a holiday. This is a test with multiple assertions.
+3. `testNonExistingHoliday`: Should verify, that an empty Optional is returned when a non-existend holiday is search for.
+4. Validations: Should verify that the validation annotations on `Holiday::name` works:
+   1. No nulls value
+   2. No empty string
+   3. Minimum size of 3
+   4. Only characters (regular expression would be "\\w")
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+**HolidaysRepositoryTest.java**
+
+```java
+package com.softarc.eternal.data;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
+import com.softarc.eternal.domain.HolidayMother;
+import jakarta.validation.ConstraintViolationException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+@DataJpaTest
+class HolidaysRepositoryTest {
+
+  @Autowired
+  private HolidaysRepository repository;
+
+  @Test
+  void testFindAll() {
+    var vienna = HolidayMother.vienna().build();
+    repository.save(vienna);
+    assertThat(repository.findAll()).hasSize(1);
+  }
+
+  @Test
+  void testCrud() {
+    var vienna = HolidayMother.vienna().build();
+    repository.save(vienna);
+    var entities = repository.findAll();
+    assertThat(entities).hasSize(1);
+    var entity = entities.get(0);
+
+    assertThat(vienna).isNotEqualTo(entity);
+    entity.setName("Wien");
+    repository.save(entity);
+
+    var wien = repository.findById(entity.getId()).orElseThrow();
+    assertThat(wien.getName()).isEqualTo("Wien");
+
+    repository.deleteById(wien.getId());
+    assertThat(repository.findAll()).hasSize(0);
+  }
+
+  @Test
+  void testNonExistingHoliday() {
+    assertThat(repository.findById(1L)).isEmpty();
+  }
+
+  @Test
+  void testNoBlankName() {
+    assertThatExceptionOfType(ConstraintViolationException.class)
+      .isThrownBy(() -> repository.save(HolidayMother.vienna().name("").build())
+      );
+  }
+
+  @Test
+  void testNoNullOnName() {
+    assertThatExceptionOfType(ConstraintViolationException.class)
+      .isThrownBy(() ->
+        repository.save(HolidayMother.vienna().name(null).build())
+      );
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = { "Wr. Neustadt", "District 9", "Tromsø" })
+  void testOnlyCharsAndSpaceOnName(String name) {
+    assertThatExceptionOfType(ConstraintViolationException.class)
+      .isThrownBy(() ->
+        repository.save(HolidayMother.vienna().name(name).build())
+      );
+  }
+
+  @Test
+  void testMinSizeOfThreeOnName() {
+    assertThatExceptionOfType(ConstraintViolationException.class)
+      .isThrownBy(() ->
+        repository.save(HolidayMother.vienna().name("Ro").build())
+      );
+  }
+}
+
+```
+
+</p>
+</details>
+
+# Relations
+
+Add the relations to three entities and create the repositories for `HolidayTrip` and `Guide`.
+
+After that, write a test, where you add a `Holiday`, a `HolidayTrip`, and a `Guide`, which all related to each other.
+
+The test should query for the `HolidayTrip`, get the first one and verify that its properties `holiday` and `guide` exist.
+
+Update the `HolidaysController` so that it exposes the `trips` as well. Create a `HolidayTripDto` which has the `id`, `fromDate`, and `lastDate`.
+
+Solution branch: **solution-4-data-4-relations**
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+**Holiday.java**
+
+```java
+//...
+
+public class Holiday {
+
+  // ...
+
+  @OneToMany(mappedBy = "holiday")
+  private List<HolidayTrip> trips;
+}
+
+```
+
+**Guide.java**
+
+```java
+package com.softarc.eternal.domain;
+
+// ...
+
+public class Guide {
+
+  // ...
+
+  @OneToMany
+  private Set<HolidayTrip> holidayTrips;
+}
+
+```
+
+**HolidayTrip.java**
+
+```java
+package com.softarc.eternal.domain;
+
+public class HolidayTrip {
+
+  // ...
+
+  @ManyToOne
+  private Holiday holiday;
+
+  @ManyToOne
+  private Guide guide;
+}
+
+```
+
+**HolidayTripDto.java**
+
+```java
+package com.softarc.eternal.web.response;
+
+import jakarta.validation.constraints.NotNull;
+import java.time.Instant;
+
+public record HolidayTripDto(
+  @NotNull Long id,
+  @NotNull Instant fromDate,
+  @NotNull Instant toDate
+) {}
+
+```
+
+**HolidayReponse.java**
+
+```java
+package com.softarc.eternal.web.response;
+
+// ...
+
+public record HolidayResponse(
+  //...
+  @NotNull List<HolidayTripDto> holidayTrips
+) {}
+
+```
+
+**HolidayController.java**
+
+```java
+package com.softarc.eternal.web;
+
+// ...
+
+public class HolidaysController {
+
+  // ...
+
+  private HolidayResponse toHolidayResponse(Holiday holiday) {
+    var trips = holiday.getTrips().stream().map(HolidayTrip::getId).toList();
+    return new HolidayResponse(
+      holiday.getId(),
+      holiday.getName(),
+      holiday.getDescription(),
+      holiday.getCoverPath() != null,
+      holiday
+        .getTrips()
+        .stream()
+        .map(trip ->
+          new HolidayTripDto(trip.getId(), trip.getFromDate(), trip.getToDate())
+        )
+        .collect(Collectors.toList())
+    );
+  }
+  // ...
+}
+
+```
+
+**DbTest.java**
+
+```java
+package com.softarc.eternal.data;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.softarc.eternal.domain.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
+@DataJpaTest
+public class DbTest {
+
+  @Autowired
+  TestEntityManager entityManager;
+
+  @Autowired
+  HolidaysRepository holidaysRepository;
+
+  @Autowired
+  GuideRepository guideRepository;
+
+  @Autowired
+  HolidayTripRepository holidayTripRepository;
+
+  Holiday vienna;
+  HolidayTrip holidayTrip;
+  Guide deborah;
+
+  void setupFullHoliday() {
+    var holiday = HolidayMother.vienna().build();
+    this.vienna = holidaysRepository.save(holiday);
+
+    var guide = GuideMother.deborah().build();
+    this.deborah = guideRepository.save(guide);
+
+    var trip = HolidayTripMother.start2022(vienna).guide(deborah).build();
+    this.holidayTrip = holidayTripRepository.save(trip);
+  }
+
+  @Test
+  void testRelationForHolidayTrip() {
+    setupFullHoliday();
+    var trip = holidayTripRepository.findAll().iterator().next();
+    assertThat(trip.getHoliday().getName()).isEqualTo("Vienna");
+    assertThat(trip.getGuide().getFirstname()).isEqualTo("Deborah");
+  }
+}
+
+```
+
+</p>
+</details>
+
+# Flyway
 
 ## MySql
 
-# Flyway
+## Mapping
 
 # Mapping with MapStruct
 
