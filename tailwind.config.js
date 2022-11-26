@@ -1,10 +1,10 @@
 module.exports = {
   content: [
-    "./apps/eternal/src/**/*.{html,ts}",
-    "./libs/**/src/**/*.{html,ts}",
+    './apps/eternal/src/**/*.{html,ts}',
+    './libs/**/src/**/*.{html,ts}',
   ],
   theme: {
     extend: {},
   },
-  plugins: [],
-}
+  plugins: [require('@tailwindcss/line-clamp')],
+};
