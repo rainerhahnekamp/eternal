@@ -101,7 +101,7 @@ public class HolidaysController {
       holiday.getName(),
       holiday.getDescription(),
       holiday.getCoverPath().isPresent(),
-      Collections.emptySet()
+      Collections.emptyList()
     );
   }
 }
