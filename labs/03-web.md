@@ -19,9 +19,7 @@
 - Change the type url in the backend and verify it is failing (two times via TypeScript compiler but also via the WebTests)
 - Add Annotations
 - Data Type Mapping (Numbers, Enums, HolidayTrip)
-- 
-
-# Jackson
+-
 
 # Upload and Download
 
@@ -29,9 +27,9 @@
 - OpenApi Anpassung
 - Optional
 - Fix Tests
-- 
+-
 - File Type Check
 - Serving Files
-- 
+-
 - Progress
 - Quota Check

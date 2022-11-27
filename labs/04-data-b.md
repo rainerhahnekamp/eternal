@@ -1,133 +1,15 @@
-# H2
+- [1. Spring Data Testing](#1-spring-data-testing)
+- [2. Relations](#2-relations)
+- [3. Flyway \& MySQL](#3-flyway--mysql)
+  - [3.1. Setup](#31-setup)
+  - [3.2. Flyway](#32-flyway)
+    - [3.2.1. Dependencies](#321-dependencies)
+    - [3.2.2. Migration Script](#322-migration-script)
+    - [3.2.3. Configuration](#323-configuration)
+    - [3.2.4. Verification](#324-verification)
+- [4. Further Exercises](#4-further-exercises)
 
-## Setup
-
-Setup an embedded database we can use for development purposes.
-
-In IntelliJ, open the database window, click on _New_ (plus symbol) and select H2 from the available databases.
-
-In _URL_ type in the following JDBC URL "jdbc:h2:./dev-db".
-
-Also make sure that the drivers are available. IntelliJ will shows a link "Download missing drivers". Click on it, if it is shown.
-
-Click on "Test Connection" to make sure IntelliJ can connect to the database.
-
-If everything ran successfully, you should see new two files in your project's root folder:
-
-- **deb-db.mv.db**
-- **dev-db.trace.db**
-
-In order to run the web console, add the following two dependencies to your **build.gradle**
-
-```kotlin
-implementation 'com.h2database:h2'
-testImplementation 'org.springframework.boot:spring-boot-starter-test'
-```
-
-Start Spring and navigate to _http://localhost:8080/h2-console_. You should see the H2 Console where you can try to connect. Make sure you use the right path.
-
-## Create the Tables and Insert Data
-
-Close Spring, open the database view in IntelliJ again, click the "plus" symbol and open the "Query Console".
-
-Insert the SQL to create the tables for `Holiday`, `HolidayTrip`, and `Guide`. You can try it on your own or copy it from **ddl-holidays.sql** from the **labs** directory.
-
-Next add some holidays. Again, you can write your own SQL or copy from **dml.sql**.
-
-To verify, that everything worked, run `select * from HOLIDAY`.
-
-# Repository
-
-It is time to switch from the filesystem to the database. First, a hard cut is required. Since the term `Repository` has a special meaning in Spring Data, rename `HolidaysRepository` to just `Holidays`.
-
-**Important**: Rename it automatically. Right click on the class name, select _Refactor_ and then _Rename..._.
-
-Once that is done create a new interface `com.softarc.eternal.data.HolidaysRepository` which extends from Spring's `JpaRepository`.
-
-The integration tests will connect to the h2 database. In order to avoid that, add the following configuration property to the `@SpringBootTest` annotation: `spring.datasource.url=jdbc:h2:mem:application-test`.
-
-This will not access the file-based H2 but temporarily creates one in the memory.
-
-The major changes you will have to do:
-
-- `coverPath` in `Holiday` changes from type `Optional<String>` to `String`.
-- Methods of the new `HolidaysRepository` have slightyl different names.
-- Updating the tests
-
-<details>
-<summary>Show Solution</summary>
-<p>
-
-**application.yml**
-
-```yaml
-spring:
-  datasource:
-    url: jdbc:h2:./dev-db
-    driver-class-name: org.h2.Driver
-```
-
-**HolidaysRepository.java**
-
-```java
-package com.softarc.eternal.data;
-
-import com.softarc.eternal.domain.Holiday;
-import java.util.List;
-import org.springframework.data.repository.CrudRepository;
-
-public interface HolidaysRepository extends CrudRepository<Holiday, Long> {
-  List<Holiday> findAll();
-}
-
-```
-
-**Holiday.java**
-
-```java
-package com.softarc.eternal.domain;
-
-import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Entity
-public class Holiday {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
-  private String name;
-
-  private String description;
-
-  @Column(name = "COVERPATH")
-  private String coverPath;
-
-  @Builder.Default
-  @Transient
-  private List<HolidayTrip> trips = new ArrayList<>();
-}
-
-```
-
-**HolidaysController.java**
-
-For the changes in the controller, please checkout the diff from branch **solution-4-data-2-entity**.
-
-</p>
-</details>
-
-# Spring Data Testing
+# 1. Spring Data Testing
 
 Write 4 tests that use an in-memory database against the `HolidaysRepository`:
 
@@ -243,7 +125,7 @@ class HolidaysRepositoryTest {
 </p>
 </details>
 
-# Relations
+# 2. Relations
 
 Add the relations to three entities and create the repositories for `HolidayTrip` and `Guide`.
 
@@ -429,22 +311,143 @@ public class DbTest {
 </p>
 </details>
 
-# Flyway
+# 3. Flyway & MySQL
 
-## MySql
+Enough of having a single-access model. We'll switch to MySQL ;).
 
-## Mapping
+## 3.1. Setup
 
-# Mapping with MapStruct
+We use Docker to run MySQL. Create a new composer file:
 
-# Converters
+**/docker-compose.yml**
 
-# Jooq
+```yml
+version: '3.9'
 
-# Paging & Sorting
+services:
+  db:
+    image: mysql:8.0.30
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=eternal
+      - MYSQL_DATABASE=eternal
+      - MYSQL_USER=eternal
+      - MYSQL_PASSWORD=eternal123
+    volumes:
+      - db_data:/var/lib/mysql
+      - db_logs:/var/log/mysql
+      - db_config:/etc/mysql/mysql.conf.d
 
-# Aynchronous
+volumes:
+  db_data:
+  db_config:
+  db_logs:
+```
 
-# Transactions and Streaming
+Start the MySQL directly from IntelliJ or run it in the console via `docker compose up -d`.
 
-# Holidays as Facade and specific Entity classes
+Make sure you can connect to it via IntelliJ's database view. The username is _eternal_ and the password _eternal123_. The JDBC Url is _jdbc:mysql://localhost:3306/eternal_.
+
+Register the MySQL connector by adding the a dependency in `build.gradle`.
+
+**build.gradle**
+
+```groovy
+dependencies {
+  // ...
+
+  implementation 'mysql:mysql-connector-java'
+}
+```
+
+## 3.2. Flyway
+
+In order to manage the development of our database schema, we use Flyway. It generates script files for every DDL operation.
+
+### 3.2.1. Dependencies
+
+First, register the required dependencies.
+
+**build.gradle**
+
+```groovy
+dependencies {
+  // ...
+
+  implementation 'org.flywaydb:flyway-core'
+  implementation 'org.flywaydb:flyway-mysql'
+}
+```
+
+### 3.2.2. Migration Script
+
+Let's create a first migration script.
+
+**/src/main/resource/db/migration/V1\_\_init.sql**
+
+```sql
+create table holiday
+(
+  id          int auto_increment primary key,
+  name        nvarchar(50) not null,
+  description text         not null,
+  cover_path  text         null
+);
+
+create table guide
+(
+  id        int auto_increment primary key,
+  firstname nvarchar(50) not null,
+  lastname  nvarchar(50) not null,
+  email     nvarchar(50) not null,
+  phone_nr  nvarchar(50) not null,
+  bio       text         not null
+);
+
+create table holiday_trip
+(
+  id                int auto_increment primary key,
+  from_date         timestamp,
+  to_date           timestamp,
+  price_single_room decimal(7, 2),
+  price_double_room decimal(7, 2),
+  currency          nvarchar(3),
+  holiday_id        int references holiday (id),
+  guide_id          int references guide (id)
+);
+
+```
+
+### 3.2.3. Configuration
+
+Next, replace H2 with MySQL in our config.
+
+**application.yml**
+
+```yml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/eternal
+```
+
+Remove any other `spring.datasource` you have from H2.
+
+### 3.2.4. Verification
+
+- Now restart Spring and you should see in the logs that the migration ran.
+- Connect to the MySQL instance and verify our three tables are there. There should also be a `flyway_schema_history` as well.
+- You might want to run the **dml.sql** to fill in some demo data.
+- Open your app, create, edit and delete a holiday.
+
+# 4. Further Exercises
+
+- Holidays as API: You can see the entity layer as a module of its own. The controllers don't have access to it. Instead, there should be a `Holidays` class, acting as facade and provides all the necessary functions. That would also include `addTrip` and `assignGuide`.
+- Differentiation between Domain and Entity classes: Kind of what we did with DTOs, but this time the DTOs are also used internally for logic. For example assigning guides or adding a trip. In that case, the `@Entity` classes would only be used for persistence and the logic is done in the domain classes.
+- To Map between classes, use the library MapStruct.
+- Sometimes you need to map a value from your database to another one. Can be from a `varchar` to `Instant` or `int` to an `enum`. In that case, we have converteres that are registered on the entity class.
+- Spring Data supports querying for paged lists and sorting. You can add paging and sorting to your frontend table and adapt the backend for it.
+- Use Spring Data's support for asynchronous queries via `@Future`.
+- Jooq: For complex queries, you'll hit a limit with Spring Data. You can use `@Query` but have to provide a string which is not really safe. The library Jooq allows you to write typesafe SQL.
+- Come up with multiple sql commands that need to be executed within a transaction. Use `@Transactional` for that.
+- Naming Strategies: You might have noticed that the DDL for MySQL is different. You can register you own strategy how Hibernate resolve the column and table names from the `@Entity` classes.
