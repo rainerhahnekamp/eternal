@@ -25,6 +25,53 @@ record OverlappingParameter(
 
 class DefaultHolidaysRepositoryTest {
 
+  static List<OverlappingParameter> overlappingParametersProvider() {
+    return Arrays.asList(
+      new OverlappingParameter(
+        LocalDate.parse("2022-01-01"),
+        7,
+        LocalDate.parse("2022-01-02"),
+        7,
+        true
+      ),
+      new OverlappingParameter(
+        LocalDate.parse("2022-01-01"),
+        7,
+        LocalDate.parse("2022-02-01"),
+        7,
+        false
+      ),
+      new OverlappingParameter(
+        LocalDate.parse("2022-02-01"),
+        7,
+        LocalDate.parse("2022-01-01"),
+        7,
+        false
+      ),
+      new OverlappingParameter(
+        LocalDate.parse("2022-02-01"),
+        7,
+        LocalDate.parse("2022-01-01"),
+        7,
+        false
+      ),
+      new OverlappingParameter(
+        LocalDate.parse("2022-01-01"),
+        7,
+        LocalDate.parse("2022-01-04"),
+        2,
+        true
+      ),
+      new OverlappingParameter(
+        LocalDate.parse("2022-01-04"),
+        2,
+        LocalDate.parse("2022-01-01"),
+        7,
+        true
+      )
+    );
+  }
+
   public DefaultHolidaysRepository setup() {
     return new DefaultHolidaysRepository(Collections.emptyList());
   }
@@ -108,52 +155,5 @@ class DefaultHolidaysRepositoryTest {
     } else {
       assertThatCode(assignment).doesNotThrowAnyException();
     }
-  }
-
-  static List<OverlappingParameter> overlappingParametersProvider() {
-    return Arrays.asList(
-      new OverlappingParameter(
-        LocalDate.of(2022, 1, 1),
-        7,
-        LocalDate.of(2022, 1, 2),
-        7,
-        true
-      ),
-      new OverlappingParameter(
-        LocalDate.of(2022, 1, 1),
-        7,
-        LocalDate.of(2022, 2, 1),
-        7,
-        false
-      ),
-      new OverlappingParameter(
-        LocalDate.of(2022, 2, 1),
-        7,
-        LocalDate.of(2022, 1, 1),
-        7,
-        false
-      ),
-      new OverlappingParameter(
-        LocalDate.of(2022, 2, 1),
-        7,
-        LocalDate.of(2022, 1, 1),
-        7,
-        false
-      ),
-      new OverlappingParameter(
-        LocalDate.of(2022, 1, 1),
-        7,
-        LocalDate.of(2022, 1, 4),
-        2,
-        true
-      ),
-      new OverlappingParameter(
-        LocalDate.of(2022, 1, 4),
-        2,
-        LocalDate.of(2022, 1, 1),
-        7,
-        true
-      )
-    );
   }
 }
