@@ -5,10 +5,13 @@ app.holidays:
 springdoc:
   default-produces-media-type: application/json
 
+
 spring:
   datasource:
-    url: jdbc:h2:./dev-db
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/eternal
+    username: eternal
+    password: eternal123
+
   servlet.multipart:
     max-file-size: 4MB
     max-request-size: 4MB
