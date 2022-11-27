@@ -12,9 +12,6 @@
 - [3. Add `HolidayTrip`](#3-add-holidaytrip)
 - [4. Add Guide with Overlapping](#4-add-guide-with-overlapping)
 - [5. Add Parameterised Guide with Overlapping](#5-add-parameterised-guide-with-overlapping)
-- [6. Extract Overlapping to class and mock it](#6-extract-overlapping-to-class-and-mock-it)
-  - [6.1. Unit Test](#61-unit-test)
-- [7. Further Exercises](#7-further-exercises)
 
 The solution branch for the whole lab is `solution-2-1-basics`.
 
@@ -611,25 +608,3 @@ static List<OverlappingParameter> overlappingParametersProvider() {
   }
 
 ```
-
-# 6. Extract Overlapping to class and mock it
-
-## 6.1. Unit Test
-
-- Verify that FsHolidaysRepository is used
-  - Set Profile and verify `DefaultHolidaysRepository` is used
-  - Use `@MockBean`
-- Write Integration Tests
-
-  - Verify Repository Bean
-  - Set Profile
-  - Set Configuration Parameter
-
-- Measure Test Coverage
-
-# 7. Further Exercises
-
-- Code Coverage via Jacoco and thresholds
-- Write Unit Tests for the `FsHolidaysRepository`.
-- Try to write an E2E test which covers the frontend, backend and the persistence layer (most of the times a database)
--
