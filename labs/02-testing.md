@@ -6,7 +6,6 @@ Write unit tests for `DefaultHolidaysRepository`. Try to come with 100% test cov
 
 - Add `HolidayTrip` and `Guide`.
 
-
 CRUD Tests
 
 # Add HolidayTrip
@@ -19,8 +18,6 @@ CRUD Tests
 
 # Extract Overlapping to class and mock it
 
-
-
 # Spring Web Test `/api/holidays/`
 
 ## Unit Test
@@ -29,8 +26,14 @@ CRUD Tests
   - Set Profile and verify `DefaultHolidaysRepository` is used
   - Use `@MockBean`
 - Write Integration Tests
+
   - Verify Repository Bean
   - Set Profile
   - Set Configuration Parameter
 
 - Measure Test Coverage
+
+# Further Exercises
+
+- Code Coverage via jacoco with thresholds
+- Try to write an E2E test which covers the frontend, backend and the persistence layer (most of the times a database)
