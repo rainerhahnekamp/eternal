@@ -1,10 +1,45 @@
 # DTOs
 
-An endpoint should be able to consume a complete `Holiday` object. For that we need to access it via a `POST` or `PUT` body and we only want to use a subset of the original `Holiday`.
+Our `POST` or `PUT` should be able to consume parts of the `Holiday` object.
 
-For that purpose, create a `HolidayDto` record which only contains `id`, `name`, `description`. `HolidaysController` is repsonsible to map `Holiday` to `HolidayDto`. Make sure that `name` and `description` are required.
+For that purpose, create a `HolidayDto` `record` which only contains `id`, `name`, `description`. `HolidaysController` is repsonsible for mapping `Holiday` to `HolidayDto`. Make sure that `name` and `description` are required.
 
-Create another record, called `HolidayResponse` which the endpoint uses for its answer. In the beginning, it should have the same properties as the `HolidayDto`.
+Create another `record`, called `HolidayResponse`, which is used as type by `/api/holidays` and `/api/holidays/{id}`. As a first step, it should have the same properties as the `HolidayDto`.
+
+Since a `PUT` request allows us to update an existing `Holiday`, add `void update(Long id, String name, String description)` to `HolidaysRepository` and implement in both classes.
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+**/src/main/java/com/softarc/eternal/web/request/HolidayDto.java**
+
+```java
+package com.softarc.eternal.web.request;
+
+public record HolidayDto(Long id, @NotNull String name, @NotNull String description) {}
+
+```
+
+**/src/main/java/com/softarc/eternal/web/request/HolidayDto.java**
+
+```java
+package com.softarc.eternal.web.response;
+
+import jakarta.validation.constraints.NotNull;
+
+public record HolidayResponse(
+  @NotNull Long id,
+  @NotNull String name,
+  @NotNull String description
+) {}
+
+```
+
+</p>
+</details>
+
+
 
 # DTOs
 
