@@ -1,5 +1,7 @@
 - [1. Mocking and Improving the Tests](#1-mocking-and-improving-the-tests)
-- [Further Exercises](#further-exercises)
+- [2. Unit Test for HolidaysController with @SpringBootTest](#2-unit-test-for-holidayscontroller-with-springboottest)
+- [3. Integration Test for HolidaysController with @SpringBootTest](#3-integration-test-for-holidayscontroller-with-springboottest)
+- [4. Further Exercises](#4-further-exercises)
 
 The solution branch for the whole lab is `solution-2-2-advanced`.
 
@@ -269,9 +271,126 @@ class DefaultHolidaysRepositoryTest {
 </p>
 </details>
 
-# Further Exercises
+# 2. Unit Test for HolidaysController with @SpringBootTest
+
+Use `@SpringBootTest` to setup tests, where you inject `HolidaysController` and mock `HolidaysRepository` via `@MockBean`.
+
+Write two unit tests:
+
+- `testRepositoryIsCalled`: Call the controller's `add` method and verify that 'repository` is executed.
+- `testMockRepository`: Mock `HolidaysRepository.findAll`, so that it returns a pre-defined holiday instance. Call the controller's `index` method and verify that it returns the holiday.
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+**/src/test/java/com/softarc/eternal/web/HolidaysControllerUnitTest.java**
+
+```java
+package com.softarc.eternal.web;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import com.softarc.eternal.data.HolidaysRepository;
+import com.softarc.eternal.domain.HolidayMother;
+import java.util.Collections;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
+
+@SpringBootTest
+@ActiveProfiles
+public class HolidaysControllerUnitTest {
+
+  @Autowired
+  HolidaysController controller;
+
+  @MockBean
+  HolidaysRepository repository;
+
+  @Test
+  public void testRepositoryIsCalled() {
+    controller.add("Vienna");
+    verify(repository).add("Vienna");
+  }
+
+  @Test
+  public void testMockRepository() {
+    var holiday = HolidayMother.vienna().build();
+    when(repository.findAll()).thenReturn(Collections.singletonList(holiday));
+    assertThat(controller.index()).containsExactly(holiday);
+  }
+}
+
+```
+</p>
+</details>
+
+# 3. Integration Test for HolidaysController with @SpringBootTest
+
+Setup a test where you don't mock the `HolidaysRepository` but use the original one.
+
+Set the `properties` in `@SpringBootTest` and set the `app.holidays.persistence-type=default`, so that the `DefaultHolidaysRepository` is injected.
+
+Write the following tests:
+
+- `testInjectedDefaultRepository`: Should verify that the autowired `HolidaysRepository` is an instance of `DefaultHolidaysRepository`.
+- `testAddHoliday`: Run `HolidaysController::add` to add a holiday and verify it exists via `HolidaysController::find`;
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+**/src/test/java/com/softarc/eternal/web/HolidaysControllerIntegrationTest.java**
+
+```java
+package com.softarc.eternal.web;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.softarc.eternal.data.DefaultHolidaysRepository;
+import com.softarc.eternal.data.HolidaysRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest(properties = { "app.holidays.persistence-type=default" })
+class HolidaysControllerIntegrationTest {
+
+  @Autowired
+  HolidaysController controller;
+
+  @Autowired
+  HolidaysRepository repository;
+
+  @Test
+  public void testInjectedDefaultRepository() {
+    assertThat(repository).isInstanceOf(DefaultHolidaysRepository.class);
+  }
+
+  @Test
+  public void testAddHoliday() {
+    controller.add("Amsterdam");
+    var holiday = repository
+      .findAll()
+      .stream()
+      .filter(h -> "Amsterdam".equals(h.getName()))
+      .findFirst()
+      .orElseThrow();
+    assertThat(controller.find(holiday.getId())).isEqualTo(holiday);
+  }
+}
+
+```
+</p>
+</details>
+
+# 4. Further Exercises
 
 - Code Coverage via Jacoco and thresholds
 - Write Unit Tests for the `FsHolidaysRepository`.
 - Try to write an E2E test which covers the frontend, backend and the persistence layer (most of the times a database)
--
