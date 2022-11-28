@@ -6,6 +6,7 @@ import com.softarc.eternal.web.request.HolidayDto;
 import com.softarc.eternal.web.response.HolidayResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
@@ -38,14 +39,14 @@ public class HolidaysController {
 
   @PostMapping
   @Operation(operationId = "add")
-  public boolean add(@RequestBody HolidayDto holidayDto) {
+  public boolean add(@RequestBody @Valid HolidayDto holidayDto) {
     this.repository.add(holidayDto.name(), holidayDto.description());
     return true;
   }
 
   @PutMapping
   @Operation(operationId = "save")
-  public void update(@RequestBody HolidayDto holidayDto) {
+  public void update(@RequestBody @Valid HolidayDto holidayDto) {
     this.repository.update(
         holidayDto.id(),
         holidayDto.name(),
