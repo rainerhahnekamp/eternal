@@ -36,9 +36,24 @@ public record HolidayResponse(
 
 ```
 
+**HolidaysRepository.java**
+
+```java
+
+```
+
 </p>
 </details>
 
+## Validated DTOs
+
+Enable BeanValidation. In `HolidayDto`, `name` and `description` must not be null or an empty string.
+
+For `HolidayResponse`, all properties must be required, i.e. not null.
+
+Don't forget to make sure the `HolidaysController` validates the DTOs.
+
+## WebTests
 
 
 # DTOs
