@@ -4,6 +4,7 @@ import com.softarc.eternal.data.HolidaysRepository;
 import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.web.request.HolidayDto;
 import com.softarc.eternal.web.response.HolidayResponse;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,12 +32,12 @@ public class HolidaysController {
   }
 
   @PostMapping
-  public void add(@RequestBody HolidayDto holidayDto) {
+  public void add(@RequestBody @Valid HolidayDto holidayDto) {
     this.repository.add(holidayDto.name(), holidayDto.description());
   }
 
   @PutMapping
-  public void update(@RequestBody HolidayDto holidayDto) {
+  public void update(@RequestBody @Valid HolidayDto holidayDto) {
     this.repository.update(
         holidayDto.id(),
         holidayDto.name(),
