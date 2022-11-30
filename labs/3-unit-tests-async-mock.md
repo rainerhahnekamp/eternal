@@ -2,7 +2,7 @@
 - [2. HttpClient Injection](#2-httpclient-injection)
 - [3. Test Mock](#3-test-mock)
 - [4. Bonus - Assertive Stub](#4-bonus---assertive-stub)
-- [5. Bonus = `createMock` of testing library](#5-bonus--createmock-of-testing-library)
+- [5. Bonus - `createMock` of testing library](#5-bonus---createmock-of-testing-library)
 - [6. Bonus - Use `mock` property of `jest.fn`](#6-bonus---use-mock-property-of-jestfn)
 - [7. Bonus - Mock via `inject` function](#7-bonus---mock-via-inject-function)
 
@@ -178,7 +178,7 @@ it(`should have an assertive stub`, async () => {
 </p>
 </details>
 
-# 5. Bonus = `createMock` of testing library
+# 5. Bonus - `createMock` of testing library
 
 Use the installed library "@testing-library/angular" to verify the behaviour of the HttpClient. `createMock` instantiates a new object and replaces all its methods with `jest.fn`.
 

@@ -14,33 +14,7 @@
   - [4.2. Reusing Material Harnesses](#42-reusing-material-harnesses)
   - [4.3: Harness with multiple elements](#43-harness-with-multiple-elements)
 
-Double-check, that the `RequestInfoComponent` uses the `AddressLookuper`. If not, merge from the `solution` branch or inject it on your own. The `AddressLookuper` be the `lookuper` property.
-
-We will visually enhance the `RequestInfoComponent` with Angular Material.
-
-1. Replace the form fields (everything inside the form tag) in `request-info.component.html` with the following.
-
-```html
-<p>
-  <mat-form-field>
-    <mat-label>Address</mat-label>
-    <input data-testid="address" formControlName="address" matInput />
-    <mat-icon matSuffix>location_on</mat-icon>
-    <mat-hint>Please enter your address</mat-hint>
-  </mat-form-field>
-</p>
-<button color="primary" data-testid="btn-search" mat-raised-button type="submit">Send</button>
-```
-
-2. Also make sure that `MatButtonModule`, `MatFormFieldModule`, `MatInputModule`, and `MatIconModule` are imported in the `RequestInfoComponentModule`.
-
-3. Because of the additions, the tests in the temp file will not work anymore. Let's skip them. Open **holidays/request-info/request-info.component.temp.spec.ts** and add `skip` to the `describe` command. It should read:
-
-```typescript
-describe.skip('RequestInfo Component Temporary', () => {
-  // ...
-});
-```
+Double-check, that the `RequestInfoComponent` uses the `AddressLookuper`. If not, merge from the `solution` branch or inject it on your own.
 
 # 1.Component/Integration Tests "Angular-natively"
 
@@ -75,9 +49,9 @@ describe('Request Info Component', () => {
       imports: [NoopAnimationsModule, RequestInfoComponentModule],
       providers: [{ provide: AddressLookuper, useValue: lookuper }]
     }).createComponent(RequestInfoComponent);
-    const input = fixture.debugElement.query(By.css('[data-testid=address]'))
+    const input = fixture.debugElement.query(By.css('[data-testid=ri-address]'))
       .nativeElement as HTMLInputElement;
-    const button = fixture.debugElement.query(By.css('[data-testid=btn-search]'))
+    const button = fixture.debugElement.query(By.css('[data-testid=ri-search]'))
       .nativeElement as HTMLButtonElement;
 
     fixture.detectChanges();
@@ -88,7 +62,7 @@ describe('Request Info Component', () => {
     tick();
     fixture.detectChanges();
 
-    const lookupResult = fixture.debugElement.query(By.css('[data-testid=lookup-result]'))
+    const lookupResult = fixture.debugElement.query(By.css('[data-testid=ri-message]'))
       .nativeElement as HTMLButtonElement;
     expect(lookupResult.textContent).toContain('Brochure sent');
   }));
@@ -113,9 +87,9 @@ it('should do an integration test for Domgasse 5', fakeAsync(() => {
   const fixture = TestBed.configureTestingModule({
     imports: [NoopAnimationsModule, RequestInfoComponentModule, HttpClientTestingModule]
   }).createComponent(RequestInfoComponent);
-  const input = fixture.debugElement.query(By.css('[data-testid=address]'))
+  const input = fixture.debugElement.query(By.css('[data-testid=ri-address]'))
     .nativeElement as HTMLInputElement;
-  const button = fixture.debugElement.query(By.css('[data-testid=btn-search]'))
+  const button = fixture.debugElement.query(By.css('[data-testid=ri-search]'))
     .nativeElement as HTMLButtonElement;
 
   fixture.detectChanges();
@@ -129,7 +103,7 @@ it('should do an integration test for Domgasse 5', fakeAsync(() => {
   tick();
   fixture.detectChanges();
 
-  const lookupResult = fixture.debugElement.query(By.css('[data-testid=lookup-result]'))
+  const lookupResult = fixture.debugElement.query(By.css('[data-testid=ri-message]'))
     .nativeElement as HTMLButtonElement;
   expect(lookupResult.textContent).toContain('Brochure sent');
 }));
@@ -153,9 +127,7 @@ import { RequestInfoComponentModule } from './request-info.component.module';
 describe('Request Info Spectator', () => {
   const createComponent = createComponentFactory({
     component: RequestInfoComponent,
-    imports: [RequestInfoComponentModule],
-    mocks: [AddressLookuper],
-    declareComponent: false
+    mocks: [AddressLookuper]
   });
 
   const setup = () => {
@@ -164,9 +136,9 @@ describe('Request Info Spectator', () => {
     return { spectator, lookuperMock };
   };
 
-  const inputSelector = '[data-testid=address]';
-  const buttonSelector = '[data-testid=btn-search]';
-  const lookupSelector = '[data-testid=lookup-result]';
+  const inputSelector = '[data-testid=ri-address]';
+  const buttonSelector = '[data-testid=ri-search]';
+  const lookupSelector = '[data-testid=ri-message]';
 
   it('should instantiate', () => {
     const { spectator } = setup();
@@ -210,9 +182,9 @@ Then insert a second test suite that contains the test and configuration for the
 
 ```typescript
 describe('Request Info Spectator', () => {
-  const inputSelector = '[data-testid=address]';
-  const buttonSelector = '[data-testid=btn-search]';
-  const lookupSelector = '[data-testid=lookup-result]';
+  const inputSelector = '[data-testid=ri-address]';
+  const buttonSelector = '[data-testid=ri-search]';
+  const lookupSelector = '[data-testid=ri-message]';
 
   describe('Component Test', () => {
     // ...
@@ -221,8 +193,7 @@ describe('Request Info Spectator', () => {
   describe('Integration Test', () => {
     const createComponent = createComponentFactory({
       component: RequestInfoComponent,
-      imports: [RequestInfoComponentModule, HttpClientTestingModule],
-      declareComponent: false
+      imports: [HttpClientTestingModule]
     });
 
     it('should instantiate', () => {
@@ -262,12 +233,14 @@ Name the test file **request-info.component.tl.spec.ts**.
 
 ```typescript
 describe('Request Info with Testing Library', () => {
-  const setup = async () =>
-    render(RequestInfoComponent, {
-      imports: [RequestInfoComponentModule],
-      providers: [provideMock(AddressLookuper)],
-      excludeComponentDeclaration: true
+  const setup = async () => {
+    const renderResult = await render(RequestInfoComponent, {
+      providers: [provideMock(AddressLookuper)]
     });
+    const user = userEvent.setup();
+
+    return { ...renderResult, user };
+  };
 
   it('should instantiate', async () => {
     const renderResult = await setup();
@@ -285,14 +258,14 @@ it.each([
   { input: 'Domgasse 5', message: 'Brochure sent' },
   { input: 'Domgasse 15', message: 'Address not found' }
 ])('should show $message for $input', async ({ input, message }) => {
-  await setup();
+  const { user } = await setup();
   const lookuper = TestBed.inject(AddressLookuper);
   jest
     .spyOn(lookuper, 'lookup')
     .mockImplementation((query) => scheduled([query === 'Domgasse 5'], asyncScheduler));
 
-  await userEvent.type(screen.getByTestId('address'), input);
-  await userEvent.click(screen.getByTestId('btn-search'));
+  await user.type(screen.getByTestId('ri-address'), input);
+  await user.click(screen.getByTestId('ri-search'));
 
   expect(await screen.findByText(message)).toBeTruthy();
 });
@@ -313,11 +286,14 @@ describe('Request Info with Testing Library', () => {
   });
 
   describe('Integration Test', () => {
-    const setup = async () =>
-      render(RequestInfoComponent, {
-        imports: [RequestInfoComponentModule, HttpClientTestingModule],
-        excludeComponentDeclaration: true
+    const setup = async () => {
+      const renderResult = await render(RequestInfoComponent, {
+        imports: [HttpClientTestingModule]
       });
+      const user = userEvent.setup();
+
+      return { ...renderResult, user };
+    };
 
     it('should instantiate', async () => {
       const renderResult = await setup();
@@ -328,10 +304,10 @@ describe('Request Info with Testing Library', () => {
       { input: 'Domgasse 5', message: 'Brochure sent', response: [true] },
       { input: 'Domgasse 15', message: 'Address not found', response: [] }
     ])('should show $message for $input', async ({ input, message, response }) => {
-      await setup();
+      const { user } = await setup();
 
-      userEvent.type(screen.getByTestId('address'), input);
-      userEvent.click(screen.getByTestId('btn-search'));
+      await user.type(screen.getByTestId('ri-address'), input);
+      await user.click(screen.getByTestId('ri-search'));
 
       TestBed.inject(HttpTestingController)
         .expectOne((req) => !!req.url.match(/nominatim/))
@@ -355,10 +331,10 @@ Create a harness for the request info component.
 import { ComponentHarness } from '@angular/cdk/testing';
 
 export class RequestInfoComponentHarness extends ComponentHarness {
-  static hostSelector = 'app-request-info';
-  protected getInput = this.locatorFor('[data-testid=address]');
-  protected getButton = this.locatorFor('[data-testid=btn-search]');
-  protected getLookupResult = this.locatorFor('[data-testid=lookup-result]');
+  static hostSelector = 'eternal-request-info';
+  protected getInput = this.locatorFor('[data-testid=ri-address]');
+  protected getButton = this.locatorFor('[data-testid=ri-search]');
+  protected getLookupResult = this.locatorFor('[data-testid=ri-message]');
 
   async search(): Promise<void> {
     const button = await this.getButton();
@@ -388,7 +364,6 @@ import { asyncScheduler, scheduled } from 'rxjs';
 import { AddressLookuper } from '../../shared/address-lookuper.service';
 import { RequestInfoComponent } from './request-info.component';
 import { RequestInfoComponentHarness } from './request-info.component.harness';
-import { RequestInfoComponentModule } from './request-info.component.module';
 
 describe('Request Info Component', () => {
   it('should find an address', async () => {
@@ -396,7 +371,7 @@ describe('Request Info Component', () => {
       lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
     };
     const fixture = TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, RequestInfoComponentModule],
+      imports: [NoopAnimationsModule, RequestInfoComponent],
       providers: [{ provide: AddressLookuper, useValue: lookuper }]
     }).createComponent(RequestInfoComponent);
     const harness = await TestbedHarnessEnvironment.harnessForFixture(
@@ -442,10 +417,10 @@ import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
 
 export class RequestInfoComponentHarness extends ComponentHarness {
-  static hostSelector = 'app-request-info';
+  static hostSelector = 'eternal-request-info';
   protected getInput = this.locatorFor(MatInputHarness);
   protected getButton = this.locatorFor(MatButtonHarness);
-  protected getLookupResult = this.locatorFor('[data-testid=lookup-result]');
+  protected getLookupResult = this.locatorFor('[data-testid=ri-message]');
 
   async search(): Promise<void> {
     const button = await this.getButton();
@@ -475,6 +450,6 @@ Upgrade the `getButton` method in the harness so that it find the right one:
 
 ```typescript
   protected getButton = this.locatorFor(
-    MatButtonHarness.with({ selector: '[data-testid=btn-search]' })
+    MatButtonHarness.with({ selector: '[data-testid=ri-search]' })
   );
 ```
