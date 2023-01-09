@@ -1,6 +1,6 @@
 import { AsyncPipe, DatePipe, NgForOf, NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
