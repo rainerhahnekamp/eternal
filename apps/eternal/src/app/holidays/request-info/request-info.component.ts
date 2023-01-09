@@ -3,10 +3,10 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { of, Subject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 
 @Component({
   selector: 'eternal-request-info',

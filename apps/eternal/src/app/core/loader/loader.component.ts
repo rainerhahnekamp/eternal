@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { LoadingService } from '../../shared/loading.service';
 
 @Component({

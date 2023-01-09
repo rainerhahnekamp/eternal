@@ -6,7 +6,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BaseUrlInterceptor } from './app/core/base-url.interceptor';
 import { LoadingInterceptor } from './app/core/loading.interceptor';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MAT_LEGACY_FORM_FIELD_DEFAULT_OPTIONS as MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/legacy-form-field';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { FormlyModule } from '@ngx-formly/core';
 import { provideRouter } from '@angular/router';

@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { Holiday } from '../holiday';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { NgClass, NgIf } from '@angular/common';
 import { BlinkerDirective } from '../../shared/blinker.directive';
 import { RouterLink } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 
 @Component({
   selector: 'eternal-holiday-card',

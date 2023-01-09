@@ -1,6 +1,6 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { RouterLink } from '@angular/router';
 import { SecurityService } from '../../security/security.service';
 
