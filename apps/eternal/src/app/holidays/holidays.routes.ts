@@ -9,7 +9,7 @@ import { RequestInfoComponent } from './request-info/request-info.component';
 export const holidayRoutes: Routes = [
   {
     path: '',
-    providers: [provideState(holidaysFeature), provideEffects([HolidaysEffects])],
+    providers: [provideState(holidaysFeature), provideEffects(HolidaysEffects)],
     component: HolidaysComponent
   },
   {

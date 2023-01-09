@@ -18,7 +18,7 @@ export const customerRoutes: Routes = [
         useClass: environment.mockHttp ? MockedHttpClient : HttpClient
       },
       provideState(customersFeature),
-      provideEffects([CustomerEffects])
+      provideEffects(CustomerEffects)
     ],
     children: [
       {
