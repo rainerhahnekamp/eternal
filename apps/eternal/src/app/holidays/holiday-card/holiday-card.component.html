@@ -6,17 +6,18 @@
   eternalBlinker
 >
   <mat-card-header>
-    <mat-card-title>{{ holiday.title }}</mat-card-title>
-    <mat-card-subtitle class="h-8">{{ holiday.teaser }}</mat-card-subtitle>
+    <mat-card-title class="text-lg font-bold">{{ holiday.title }}</mat-card-title>
+    <mat-card-subtitle class="h-16">{{ holiday.teaser }}</mat-card-subtitle>
   </mat-card-header>
-  <figure>
-    <img [alt]="holiday.title" [src]="holiday.imageUrl" class="max-w-none" />
-    <div class="badge-overlay">
-      <span *ngIf="holiday.onSale" class="top-left badge">On Sale</span>
-      <span *ngIf="holiday.soldOut" class="middle-full badge">Sold out</span>
-    </div>
-  </figure>
-  <mat-card-content class="h-16 overflow-clip overflow-hidden">
+  <mat-card-content class="h-64 overflow-clip overflow-hidden">
+
+    <figure>
+      <img [alt]="holiday.title" [src]="holiday.imageUrl" class="max-w-none" />
+      <div class="badge-overlay">
+        <span *ngIf="holiday.onSale" class="top-left badge">On Sale</span>
+        <span *ngIf="holiday.soldOut" class="middle-full badge">Sold out</span>
+      </div>
+    </figure>
     {{ holiday.description }}
   </mat-card-content>
   <mat-card-actions class="justify-evenly">
