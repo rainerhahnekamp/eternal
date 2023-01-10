@@ -55,3 +55,8 @@ export class Configuration {
     localStorage.setItem(this.#storageKey, JSON.stringify(configurationFeatures));
   }
 }
+
+export const configurationProvider = {
+  provide: Configuration,
+  useValue: new Configuration('', true, true, true)
+};

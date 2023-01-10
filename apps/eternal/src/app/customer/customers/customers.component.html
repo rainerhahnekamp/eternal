@@ -12,13 +12,20 @@
     <p class="birthdate">Date of Birth</p>
   </div>
   <ng-container *ngIf="data.customers.length > 0; else noCustomers">
-    <div *ngFor="let customer of data.customers" class="row" testid="row-customer">
+    <div
+      *ngFor="let customer of data.customers"
+      class="row"
+      testid="row-customer"
+      [attr.aria-labelledby]="'customer-' + customer.id"
+    >
       <p class="edit" testid="btn-edit">
-        <a [routerLink]="['.', customer.id]">
+        <a [routerLink]="['.', customer.id]" aria-label="Edit Customer">
           <mat-icon>edit</mat-icon>
         </a>
       </p>
-      <p class="name">{{ customer.firstname }} {{ customer.name }}</p>
+      <p class="name" [id]="'customer-' + customer.id">
+        {{ customer.firstname }} {{ customer.name }}
+      </p>
       <p class="country">{{ customer.country }}</p>
       <p class="birthdate">{{ customer.birthdate | date }}</p>
     </div>

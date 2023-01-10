@@ -11,4 +11,11 @@
   </p>
   <button color="primary" testid="ri-search" mat-raised-button type="submit">Send</button>
 </form>
-<p *ngIf="lookupResult$ | async as lookupResult" testid="ri-message">{{ lookupResult }}</p>
+<p
+  *ngIf="lookupResult$ | async as lookupResult"
+  testid="ri-message"
+  aria-live="assertive"
+  role="status"
+>
+  {{ lookupResult }}
+</p>
