@@ -11,7 +11,7 @@ import { customerActions } from './customer.actions';
 
 @Injectable()
 export class CustomerEffects {
-  private pageSize = '10';
+  private pageSize = 10;
   private url = '/customers';
 
   #actions$ = inject(Actions);
@@ -54,14 +54,15 @@ export class CustomerEffects {
     observable.pipe(
       concatLatestFrom(() => this.#store.select(fromCustomer.selectCurrentPage)),
       switchMap(([, page]) =>
-        this.#http.get<{ content: Customer[]; totalPages: number }>(this.url, {
+        this.#http.get<{ content: Customer[]; total: number }>(this.url, {
           params: new HttpParams().append('page', '' + page).append('pageSize', this.pageSize)
         })
       ),
-      map(({ content, totalPages }) => ({
+      map(({ content, total }) => ({
         customers: content,
-        pageCount: totalPages
-      }))
+        pageCount: Math.floor(total / this.pageSize)
+      })),
+      tap(console.log)
     );
 
   nextPage$ = createEffect(() => {

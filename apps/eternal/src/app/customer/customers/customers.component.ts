@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { customerActions } from '../+state/customer.actions';
 import { fromCustomer } from '../+state/customer.selectors';
 import { TestidDirective } from '../../shared/testid.directive';
+import { tap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './customers.component.html',
@@ -25,7 +26,7 @@ import { TestidDirective } from '../../shared/testid.directive';
 })
 export class CustomersComponent implements OnInit {
   #store = inject(Store);
-  data$ = this.#store.select(fromCustomer.selectCustomersAndPage);
+  data$ = this.#store.select(fromCustomer.selectCustomersAndPage).pipe(tap(console.log));
 
   ngOnInit() {
     this.#store.dispatch(customerActions.load());

@@ -3,6 +3,7 @@
 - Usage of Testing Library in Cypress
 - Mocking Configuration for Customers and Holidays
 - Angular 15
+- Fix DatePicker parsing issue
 
 ## 1.8.0
 

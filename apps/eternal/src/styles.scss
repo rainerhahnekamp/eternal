@@ -79,3 +79,8 @@ h2 {
   font-weight: bold;
   font-size: 125%;
 }
+
+// tailwind fix
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch {
+  border-right-style: hidden;
+}

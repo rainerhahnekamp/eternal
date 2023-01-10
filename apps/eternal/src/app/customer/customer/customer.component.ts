@@ -30,7 +30,6 @@ import { TestidDirective } from '../../shared/testid.directive';
     ReactiveFormsModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatNativeDateModule,
     RouterLink,
     AsyncPipe,
     NgIf,

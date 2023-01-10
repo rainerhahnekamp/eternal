@@ -23,16 +23,17 @@
       <p class="birthdate">{{ customer.birthdate | date }}</p>
     </div>
     <div class="paginator">
-      <button [disabled]="data.currentPage == 0" mat-raised-button>
-        <mat-icon (click)="previousPage()" testid="btn-customers-back"> arrow_back </mat-icon>
+      <button [disabled]="data.currentPage === 0" mat-raised-button (click)="previousPage()">
+        <mat-icon testid="btn-customers-back"> arrow_back </mat-icon>
       </button>
       {{ data.currentPage + 1 }}
       <button
-        [disabled]="data.currentPage >= data.pageCount - 1"
+        [disabled]="data.currentPage >= data.pageCount"
         testid="btn-customers-next"
         mat-raised-button
+        (click)="nextPage()"
       >
-        <mat-icon (click)="nextPage()">arrow_forward</mat-icon>
+        <mat-icon>arrow_forward</mat-icon>
       </button>
     </div>
   </ng-container>

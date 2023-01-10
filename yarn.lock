@@ -250,6 +250,13 @@
   resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-15.0.4.tgz#06ace02f410308f38663a7f7a4c699daff1a29ed"
   integrity sha512-HGudgKAGvGCw4D1SXHxvXfoBG64/IVYLA9rkbodNAMfOnQwOCxgktkaQ6zzr59C0BS5mXlbBUcEYOC0Q5BXdsw==
 
+"@angular/material-date-fns-adapter@^15.0.4":
+  version "15.0.4"
+  resolved "https://registry.yarnpkg.com/@angular/material-date-fns-adapter/-/material-date-fns-adapter-15.0.4.tgz#53199542e80951a41c20154bf3a160d58c365aa4"
+  integrity sha512-UCUrlK9YARMj7gIZzNVeRYZBjeVaU3Xt72i6/Tx0YHkvp72wrC14NfGd+Qg5WqORKKJgJPKfIbK6nVIeGhVD3Q==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular/material@15.0.4":
   version "15.0.4"
   resolved "https://registry.yarnpkg.com/@angular/material/-/material-15.0.4.tgz#e62e86485783e18a8d7e8c3017af0cdc70efb7ab"
