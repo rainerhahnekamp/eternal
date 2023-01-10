@@ -18,6 +18,7 @@ import { securityProviders } from './app/security/security.providers';
 import { sharedProviders } from './app/shared/shared.providers';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { AuthModule } from '@auth0/auth0-angular';
+import { Configuration } from './app/shared/configuration';
 
 if (environment.production) {
   enableProdMode();
@@ -59,6 +60,7 @@ bootstrapApplication(AppComponent, {
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' }
-    }
+    },
+    { provide: Configuration, useValue: new Configuration(environment.baseUrl, true, false, true) }
   ]
 });

@@ -9,7 +9,7 @@ import { CustomerComponent } from './customer/customer.component';
 import { CustomersComponent } from './customers/customers.component';
 import { MockedHttpClient } from './mocked-http-client';
 
-export const customerRoutes: Routes = [
+const customerRoutes: Routes = [
   {
     path: '',
     providers: [
@@ -34,3 +34,5 @@ export const customerRoutes: Routes = [
     ]
   }
 ];
+
+export default customerRoutes;

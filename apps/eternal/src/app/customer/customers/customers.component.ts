@@ -6,12 +6,22 @@ import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { customerActions } from '../+state/customer.actions';
 import { fromCustomer } from '../+state/customer.selectors';
+import { TestidDirective } from '../../shared/testid.directive';
 
 @Component({
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.scss'],
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, RouterLink, AsyncPipe, DatePipe, NgIf, NgForOf]
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    RouterLink,
+    AsyncPipe,
+    DatePipe,
+    NgIf,
+    NgForOf,
+    TestidDirective
+  ]
 })
 export class CustomersComponent implements OnInit {
   #store = inject(Store);

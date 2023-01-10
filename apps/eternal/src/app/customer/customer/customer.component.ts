@@ -16,6 +16,7 @@ import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { TestidDirective } from '../../shared/testid.directive';
 
 @Component({
   selector: 'eternal-customer',
@@ -32,7 +33,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatNativeDateModule,
     RouterLink,
     AsyncPipe,
-    NgIf
+    NgIf,
+    TestidDirective
   ]
 })
 export class CustomerComponent {

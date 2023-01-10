@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TestidDirective } from '../shared/testid.directive';
 
 @Component({
   selector: 'eternal-newsletter',
   templateUrl: './newsletter.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule]
+  imports: [ReactiveFormsModule, TestidDirective]
 })
 export class NewsletterComponent {
   message = '';
