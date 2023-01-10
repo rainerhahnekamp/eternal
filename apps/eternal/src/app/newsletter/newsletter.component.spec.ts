@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { describe, expect, beforeEach } from '@jest/globals';
 import { NewsletterComponent } from './newsletter.component';
+import { Configuration } from '../shared/configuration';
 
 describe('NewsletterComponent', () => {
   let component: NewsletterComponent;
@@ -11,7 +12,10 @@ describe('NewsletterComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NewsletterComponent],
-      providers: [{ provide: ComponentFixtureAutoDetect, useValue: true }]
+      providers: [
+        { provide: ComponentFixtureAutoDetect, useValue: true },
+        { provide: Configuration, useValue: new Configuration('', true, true, true) }
+      ]
     });
     fixture = TestBed.createComponent(NewsletterComponent);
     component = fixture.componentInstance;
