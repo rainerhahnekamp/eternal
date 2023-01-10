@@ -40,10 +40,8 @@ export class CustomerEffects {
   remove$ = createEffect(() => {
     return this.#actions$.pipe(
       ofType(customerActions.remove),
-      concatMap(({ customer }) =>
-        this.#http.delete<void>(`${this.url}/${customer.id}`).pipe(map(() => customer))
-      ),
-      map((customer) => customerActions.removed({ customer })),
+      concatMap(({ id }) => this.#http.delete<void>(`${this.url}/${id}`)),
+      map(() => customerActions.removed()),
       tap(() => this.#router.navigateByUrl('/customer'))
     );
   });

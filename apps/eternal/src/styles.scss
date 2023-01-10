@@ -42,7 +42,8 @@ $candy-app-theme: mat.define-light-theme((
     primary: $candy-app-primary,
     accent: $candy-app-accent,
     warn: $candy-app-warn
-  )
+  ),
+  typography: mat.define-typography-config()
 ));
 @include mat.all-component-themes($candy-app-theme);
 
@@ -60,6 +61,10 @@ body {
 
 a {
   color: #2193b0;
+}
+
+.error {
+  color: map-get(mat.$red-palette, 500);
 }
 
 mat-checkbox + mat-checkbox, mat-radio-button + mat-radio-button {

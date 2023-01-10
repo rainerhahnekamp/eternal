@@ -13,7 +13,7 @@
   </div>
   <ng-container *ngIf="data.customers.length > 0; else noCustomers">
     <div *ngFor="let customer of data.customers" class="row" testid="row-customer">
-      <p class="edit">
+      <p class="edit" testid="btn-edit">
         <a [routerLink]="['.', customer.id]">
           <mat-icon>edit</mat-icon>
         </a>
