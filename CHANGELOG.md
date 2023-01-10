@@ -1,3 +1,9 @@
+## 1.9.0
+
+- Usage of Testing Library in Cypress
+- Mocking Configuration for Customers and Holidays
+- Angular 15
+
 ## 1.8.0
 
 - Cypress Component Testing as main testing tool for component & integration tests
