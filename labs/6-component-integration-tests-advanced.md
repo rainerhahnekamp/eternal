@@ -1,4 +1,4 @@
-- [1.Component/Integration Tests "Angular-natively"](#1componentintegration-tests-angular-natively)
+- [1. Component/Integration Tests "Angular-natively"](#1-componentintegration-tests-angular-natively)
   - [1.1. Component Test](#11-component-test)
   - [1.2. Integration Test](#12-integration-test)
 - [2. Spectator](#2-spectator)
@@ -16,7 +16,7 @@
 
 Double-check, that the `RequestInfoComponent` uses the `AddressLookuper`. If not, merge from the `solution` branch or inject it on your own.
 
-# 1.Component/Integration Tests "Angular-natively"
+# 1. Component/Integration Tests "Angular-natively"
 
 ## 1.1. Component Test
 
@@ -39,6 +39,7 @@ import { AddressLookuper } from '../../shared/address-lookuper.service';
 import { assertType } from '../../shared/assert-type';
 import { RequestInfoComponent } from './request-info.component';
 import { RequestInfoComponentModule } from './request-info.component.module';
+import { configurationProvider } from '../../shared/configuration';
 
 describe('Request Info Component', () => {
   it('should find an address', fakeAsync(() => {
@@ -47,7 +48,7 @@ describe('Request Info Component', () => {
     };
     const fixture = TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, RequestInfoComponentModule],
-      providers: [{ provide: AddressLookuper, useValue: lookuper }]
+      providers: [{ provide: AddressLookuper, useValue: lookuper }, configurationProvider]
     }).createComponent(RequestInfoComponent);
     const input = fixture.debugElement.query(By.css('[data-testid=ri-address]'))
       .nativeElement as HTMLInputElement;
@@ -85,7 +86,8 @@ Add an integration where you don't mock the `AddressLookuper`, but only the `Htt
 ```typescript
 it('should do an integration test for Domgasse 5', fakeAsync(() => {
   const fixture = TestBed.configureTestingModule({
-    imports: [NoopAnimationsModule, RequestInfoComponentModule, HttpClientTestingModule]
+    imports: [NoopAnimationsModule, RequestInfoComponentModule, HttpClientTestingModule],
+    providers: [configurationProvider]
   }).createComponent(RequestInfoComponent);
   const input = fixture.debugElement.query(By.css('[data-testid=ri-address]'))
     .nativeElement as HTMLInputElement;
@@ -123,10 +125,12 @@ import { createComponentFactory } from '@ngneat/spectator/jest';
 import { AddressLookuper } from '../../shared/address-lookuper.service';
 import { RequestInfoComponent } from './request-info.component';
 import { RequestInfoComponentModule } from './request-info.component.module';
+import { configurationProvider } from '../../shared/configuration';
 
 describe('Request Info Spectator', () => {
   const createComponent = createComponentFactory({
     component: RequestInfoComponent,
+    providers: [configurationProvider],
     mocks: [AddressLookuper]
   });
 
@@ -193,6 +197,7 @@ describe('Request Info Spectator', () => {
   describe('Integration Test', () => {
     const createComponent = createComponentFactory({
       component: RequestInfoComponent,
+      providers: [configurationProvider],
       imports: [HttpClientTestingModule]
     });
 
@@ -235,7 +240,7 @@ Name the test file **request-info.component.tl.spec.ts**.
 describe('Request Info with Testing Library', () => {
   const setup = async () => {
     const renderResult = await render(RequestInfoComponent, {
-      providers: [provideMock(AddressLookuper)]
+      providers: [provideMock(AddressLookuper), configurationProvider]
     });
     const user = userEvent.setup();
 
@@ -288,7 +293,8 @@ describe('Request Info with Testing Library', () => {
   describe('Integration Test', () => {
     const setup = async () => {
       const renderResult = await render(RequestInfoComponent, {
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
+        providers: [configurationProvider]
       });
       const user = userEvent.setup();
 
