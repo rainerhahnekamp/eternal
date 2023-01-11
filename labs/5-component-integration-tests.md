@@ -22,11 +22,13 @@ import { RequestInfoComponent } from './request-info.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { mount } from 'cypress/angular';
+import { configurationProvider } from '../../shared/configuration';
 
 describe('Request Info Component', () => {
   it('should mount', () => {
     mount(RequestInfoComponent, {
-      imports: [NoopAnimationsModule, HttpClientModule]
+      imports: [NoopAnimationsModule, HttpClientModule],
+      providers: [configurationProvider]
     });
   });
 });
@@ -54,6 +56,7 @@ Verify that the input field's value is set.
 it('should set the address', () => {
   mount(RequestInfoComponent, {
     imports: [NoopAnimationsModule, HttpClientModule],
+    providers: [configurationProvider],
     componentProperties: { address: 'Domgasse 5' }
   });
   cy.get('[data-testid=ri-address]').should('have.value', 'Domgasse 5');
@@ -85,7 +88,8 @@ for (const { message, response } of [
   it(`should intercept the network and return ${response} for ${message}`, () => {
     cy.intercept(/nominatim/, { body: response });
     mount(RequestInfoComponent, {
-      imports: [NoopAnimationsModule, HttpClientModule]
+      imports: [NoopAnimationsModule, HttpClientModule],
+      providers: [configurationProvider]
     });
 
     cy.testid('ri-address').type('Domgasse 5');
@@ -115,7 +119,7 @@ for (const { message, response } of [
     const lookuper = { lookup: () => scheduled([response], asyncScheduler) };
     mount(RequestInfoComponent, {
       imports: [NoopAnimationsModule, HttpClientModule],
-      providers: [{ provide: AddressLookuper, useValue: lookuper }]
+      providers: [{ provide: AddressLookuper, useValue: lookuper }, configurationProvider]
     });
 
     cy.testid('ri-address').type('Domgasse 5');
@@ -141,7 +145,8 @@ Find out the required `TestBed` configuration on your own and verify that the in
 ```typescript
 it('should use a wrapper component to set the address', () => {
   mount(`<eternal-request-info address="Domgasse 5"></eternal-request-info>`, {
-    imports: [RequestInfoComponent, NoopAnimationsModule, HttpClientModule]
+    imports: [RequestInfoComponent, NoopAnimationsModule, HttpClientModule],
+    providers: [configurationProvider]
   });
   cy.testid('ri-address').should('have.value', 'Domgasse 5');
 });
@@ -152,7 +157,7 @@ it('should use a wrapper component to set the address', () => {
 
 # 8. Mocking the `HttpClient`
 
-Write a test, where you mock the `HttpClient` in the same way, as you did with the `AddressLookuper`.
+Write a test, where you mock the `HttpClient` in the same way, as you did the `AddressLookuper`.
 
 <details>
 <summary>Show Solution</summary>
@@ -161,11 +166,14 @@ Write a test, where you mock the `HttpClient` in the same way, as you did with t
 ```typescript
 it(`should mock the HttpClient`, () => {
   const httpClient = { get: () => scheduled([[]], asyncScheduler) };
-
   mount(RequestInfoComponent, {
     imports: [NoopAnimationsModule],
-    providers: [{ provide: HttpClient, useValue: httpClient }]
+    providers: [{ provide: HttpClient, useValue: httpClient }, configurationProvider]
   });
+
+  cy.testid('ri-address').type('Domgasse 5');
+  cy.testid('ri-search').click();
+  cy.testid('ri-message').should('have.text', 'Address not found');
 });
 ```
 
