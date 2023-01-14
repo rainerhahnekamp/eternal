@@ -9,6 +9,11 @@
 - [9. Split up the tests](#9-split-up-the-tests)
 - [10. Headless (CI) Mode](#10-headless-ci-mode)
 - [11. Webkit](#11-webkit)
+- [12. Bonus: Accessibility](#12-bonus-accessibility)
+
+To solve the exercises in this lab, consult the slides and the [official documentation](https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test).
+
+Try to use always the `data-testid` in your selections.
 
 # 1. Setup
 
@@ -56,7 +61,14 @@ it('should do an implicit subject assertion', () => {
 
 # 4. Test via an explicit Subject Assertion
 
-We check again the link for text Holidays. This time, we also check against the class and the link itself.
+Write a test that does multiple assertions against the holidays link in the sidemenu:
+
+1. It should have the text "Holidays".
+2. It should have the CSS class "mat-mdc-raised-button".
+3. It should have an attribute "href" with value "/holidays".
+4. Its text should have the colour "rgb(0, 0, 0)".
+
+Use an explicit assertion (callback parameter in the `should` method).
 
 <details>
 <summary>Show Solution</summary>
@@ -68,8 +80,9 @@ We check again the link for text Holidays. This time, we also check against the 
 it('should do an explicit subject assertion', () => {
   cy.get('[data-testid=btn-holidays]').should(($button) => {
     expect($button).to.have.text('Holidays');
-    expect($button).to.have.class('mat-raised-button');
+    expect($button).to.have.class('mat-mdc-raised-button');
     expect($button).to.have.attr('href', '/holidays');
+    expect($button).to.have.css('color', 'rgb(0, 0, 0)');
   });
 });
 ```
@@ -90,7 +103,7 @@ Go to the customers list and count the rows:
 ```typescript
 it('should count the entries', () => {
   cy.get('[data-testid=btn-customers]').click();
-  cy.get('div.row:not(.header)').should('have.length', 10);
+  cy.get('[data-testid=row-customer]').should('have.length', 10);
 });
 ```
 
@@ -99,7 +112,7 @@ it('should count the entries', () => {
 
 # 6. Edit a customer's firstname
 
-Rename Latitia to Laetitia via the form
+Rename Latitia to Laetitia via the form. Make sure to start typing into the firstname's input field, once its value has been set.
 
 <details>
 <summary>Show Solution</summary>
@@ -110,12 +123,11 @@ Rename Latitia to Laetitia via the form
 ```typescript
 it('should rename Latitia to Laetitia', () => {
   cy.get('[data-testid=btn-customers]').click();
-  cy.get('div').should('contain.text', 'Latitia');
-  cy.get('div').contains('Latitia').siblings('.edit').click();
-  cy.get('.formly-firstname input').clear().type('Laetitia');
-  cy.get('button[type=submit]').click();
+  cy.contains('[data-testid=row-customer]', 'Latitia').find('[data-testid=btn-edit]').click();
+  cy.get('[data-testid=inp-firstname]').should('have.value', 'Latitia').clear().type('Laetitia');
+  cy.get('[data-testid=btn-submit]').click();
 
-  cy.get('div').should('contain.text', 'Laetitia Bellitissa');
+  cy.get('[data-testid=row-customer]').should('contain.text', 'Laetitia Bellitissa');
 });
 ```
 
@@ -136,15 +148,15 @@ Add a new customer and check if it appears on the listing page.
 it('should add a new customer', () => {
   cy.get('[data-testid=btn-customers]').click();
   cy.get('[data-testid=btn-customers-add]').click();
-  cy.get('input:first').type('Tom');
-  cy.get('input:eq(1)').type('Lincoln');
-  cy.get('mat-select').click().get('mat-option').contains('USA').click();
-  cy.get('input:eq(2)').type('12.10.1995');
-  cy.get('button[type=submit]').click();
-  cy.get('[data-testid=btn-customers-next]').click();
+  cy.get('[data-testid=inp-firstname]').type('Tom');
+  cy.get('[data-testid=inp-name]').type('Lincoln');
+  cy.get('[data-testid=sel-country]').click();
+  cy.get('[data-testid=opt-country]').contains('USA').click();
+  cy.get('[data-testid=inp-birthdate]').type('12.10.1995');
+  cy.get('[data-testid=btn-submit]').click();
   cy.get('[data-testid=btn-customers-next]').click();
 
-  cy.get('div').should('contain.text', 'Tom Lincoln');
+  cy.get('[data-testid=row-customer]').should('contain.text', 'Tom Lincoln');
 });
 ```
 
@@ -164,14 +176,10 @@ Write a test that clicks on the Florence holiday's "Get a Brochure" button and v
 ```typescript
 it('should request brochure for Firenze', () => {
   cy.get('[data-testid=btn-holidays]').click();
-  cy.get('eternal-holiday-card')
-    .contains('Firenze')
-    .parents('eternal-holiday-card')
-    .find('a')
-    .click();
+  cy.contains('[data-testid=holiday-card]', 'Firenze').find('[data-testid=btn-brochure]').click();
   cy.get('[data-testid=ri-address]').type('Domgasse 5');
   cy.get('[data-testid=ri-search]').click();
-  cy.get('[data-testid=ri-message]').should('have.text', 'Brochure sent');
+  cy.get('[data-testid=ri-message]').should('contain.text', 'Brochure sent');
 });
 ```
 
@@ -196,3 +204,56 @@ Try to fail a test, re-run them again, and you will see that a screenshot has be
 
 Go to `cypress.config.ts` and temporarily set the parameter `experimentalSessionAndOrigin` to `false`. Now restart Cypress, select Webkit as browser and check if the tests are still working.
 Don't forget to set `experimentalSessionAndOrigin` back to `true`.
+
+# 12. Bonus: Accessibility
+
+Write the tests
+
+- **should request brochure for Firenze** and
+- **should rename Latitia to Laetitia**
+
+by using the testing library bindings for Cypress.
+
+You should be able to write them by using accessibility selectors only. No `data-testid` is necessary.
+
+If you are short on time, you can stop now. Your trainer will discuss the solution with you.
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+**./testing-library.cy.ts**
+
+```typescript
+describe('E2E via Testing Library', () => {
+  beforeEach('', () => {
+    cy.visit('?use-testid=0');
+  });
+
+  it('should request brochure for Firenze', () => {
+    cy.findByRole('link', { name: 'Holidays' }).click();
+
+    cy.findByLabelText(/Firenze/i)
+      .findByRole('link', { name: 'Get a Brochure' })
+      .click();
+    cy.findByLabelText('Address').type('Domgasse 5');
+    cy.findByRole('button', { name: 'Send' }).click();
+    cy.findByRole('status', 'Brochure sent');
+  });
+
+  it('should rename Latitia to Laetitia', () => {
+    cy.findByRole('link', { name: 'Customers' }).click();
+    cy.findByLabelText(/Latitia/)
+      .findByRole('link', { name: 'Edit Customer' })
+      .click();
+    cy.findByLabelText('Firstname').should('have.value', 'Latitia').clear().type('Laetitia');
+    cy.findByRole('button', { name: 'Save' }).click();
+
+    cy.findAllByRole('link', { name: 'Edit Customer' }).should('have.length', 10);
+    cy.findByLabelText(/Latitia/).should('not.exist');
+  });
+});
+```
+
+</p>
+</details>

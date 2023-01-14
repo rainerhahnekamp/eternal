@@ -2,11 +2,11 @@ set -e
 
 git checkout master
 
-branches=(master 01-unit-tests-basic 02-unit-tests-advanced 03-rxjs-marbles 04-ngrx 05-comp-tests-basic 06-comp-tests-advanced 07-integration-tests 08-e2e-tests-basic 09-e2e-tests-advanced)
+branches=(master solution-1-e2e-basics solution-2-e2e-advanced solution-3-unit-tests-async-mock solution-4-rxjs-ngrx solution-5-component-integration-tests solution-6-component-integration-tests-fallback solution-7-visual-regression)
 
 for branch in ${branches[*]}; do
   git checkout $branch
-  git push -u origin HEAD
+  git push $1 $branch
 done
 
 git checkout master

@@ -4,11 +4,18 @@
   <p>
     <mat-form-field>
       <mat-label>Address</mat-label>
-      <input data-testid="ri-address" formControlName="address" matInput />
+      <input testid="ri-address" formControlName="address" matInput />
       <mat-icon matSuffix>location_on</mat-icon>
       <mat-hint>Please enter your address</mat-hint>
     </mat-form-field>
   </p>
-  <button color="primary" data-testid="ri-search" mat-raised-button type="submit">Send</button>
+  <button color="primary" testid="ri-search" mat-raised-button type="submit">Send</button>
 </form>
-<p *ngIf="lookupResult$ | async as lookupResult" data-testid="ri-message">{{ lookupResult }}</p>
+<p
+  *ngIf="lookupResult$ | async as lookupResult"
+  testid="ri-message"
+  aria-live="assertive"
+  role="status"
+>
+  {{ lookupResult }}
+</p>

@@ -6,7 +6,7 @@ import { DiaryEffects } from './diaries/+state/diary.effects';
 import { diaryFeatureKey, diaryReducer } from './diaries/+state/diary.reducer';
 import { DiariesComponent } from './diaries/diaries.component';
 
-export const diaryRoutes: Routes = [
+const diaryRoutes: Routes = [
   {
     path: '',
     providers: [
@@ -18,3 +18,5 @@ export const diaryRoutes: Routes = [
     component: DiariesComponent
   }
 ];
+
+export default diaryRoutes;

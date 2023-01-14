@@ -1,12 +1,32 @@
-import { Routes } from '@angular/router';
-import { UserLoaderGuard } from './core/user-loader.guard';
+import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { NewsletterComponent } from './newsletter/newsletter.component';
+import { SecurityService } from './security/security.service';
+import { inject } from '@angular/core';
+import { filter } from 'rxjs/operators';
+import { Configuration } from './shared/configuration';
 
 export const appRoutes: Routes = [
   {
     path: '',
-    canActivate: [UserLoaderGuard],
+    canActivate: [
+      ({ queryParamMap }: ActivatedRouteSnapshot) => {
+        const config = inject(Configuration);
+
+        if (queryParamMap.has('mock-customers')) {
+          config.updateFeatures({ mockCustomers: queryParamMap.get('mock-customers') == '1' });
+        }
+        if (queryParamMap.has('mock-holidays')) {
+          config.updateFeatures({ mockHolidays: queryParamMap.get('mock-holidays') == '1' });
+        }
+        if (queryParamMap.has('use-testid')) {
+          config.updateFeatures({ useTestid: queryParamMap.get('use-testid') == '1' });
+        }
+      },
+      () => {
+        return inject(SecurityService).loaded$.pipe(filter(Boolean));
+      }
+    ],
     children: [
       {
         path: '',
@@ -16,15 +36,15 @@ export const appRoutes: Routes = [
       { path: 'newsletter', component: NewsletterComponent },
       {
         path: 'customer',
-        loadChildren: () => import('./customer/customer.routes').then((m) => m.customerRoutes)
+        loadChildren: () => import('./customer/customer.routes')
       },
       {
         path: 'holidays',
-        loadChildren: () => import('./holidays/holidays.routes').then((m) => m.holidayRoutes)
+        loadChildren: () => import('./holidays/holidays.routes')
       },
       {
         path: 'diary',
-        loadChildren: () => import('./diary/diary.routes.module').then((m) => m.diaryRoutes)
+        loadChildren: () => import('./diary/diary.routes.module')
       }
     ]
   }

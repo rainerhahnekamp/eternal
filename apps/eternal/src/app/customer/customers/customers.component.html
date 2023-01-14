@@ -1,6 +1,6 @@
 <h2 class="my-2">Customers</h2>
 <p>
-  <a [routerLink]="['.', 'new']" color="primary" data-testid="btn-customers-add" mat-raised-button
+  <a [routerLink]="['.', 'new']" color="primary" testid="btn-customers-add" mat-raised-button
     >Add Customer</a
   >
 </p>
@@ -12,27 +12,35 @@
     <p class="birthdate">Date of Birth</p>
   </div>
   <ng-container *ngIf="data.customers.length > 0; else noCustomers">
-    <div *ngFor="let customer of data.customers" class="row" data-testid="row-customer">
-      <p class="edit">
-        <a [routerLink]="['.', customer.id]">
+    <div
+      *ngFor="let customer of data.customers"
+      class="row"
+      testid="row-customer"
+      [attr.aria-labelledby]="'customer-' + customer.id"
+    >
+      <p class="edit" testid="btn-edit">
+        <a [routerLink]="['.', customer.id]" aria-label="Edit Customer">
           <mat-icon>edit</mat-icon>
         </a>
       </p>
-      <p class="name">{{ customer.firstname }} {{ customer.name }}</p>
+      <p class="name" [id]="'customer-' + customer.id">
+        {{ customer.firstname }} {{ customer.name }}
+      </p>
       <p class="country">{{ customer.country }}</p>
       <p class="birthdate">{{ customer.birthdate | date }}</p>
     </div>
     <div class="paginator">
-      <button [disabled]="data.currentPage == 0" mat-raised-button>
-        <mat-icon (click)="previousPage()" data-testid="btn-customers-back"> arrow_back </mat-icon>
+      <button [disabled]="data.currentPage === 0" mat-raised-button (click)="previousPage()">
+        <mat-icon testid="btn-customers-back"> arrow_back </mat-icon>
       </button>
       {{ data.currentPage + 1 }}
       <button
-        [disabled]="data.currentPage >= data.pageCount - 1"
-        data-testid="btn-customers-next"
+        [disabled]="data.currentPage >= data.pageCount"
+        testid="btn-customers-next"
         mat-raised-button
+        (click)="nextPage()"
       >
-        <mat-icon (click)="nextPage()">arrow_forward</mat-icon>
+        <mat-icon>arrow_forward</mat-icon>
       </button>
     </div>
   </ng-container>

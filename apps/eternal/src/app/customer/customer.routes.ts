@@ -7,19 +7,11 @@ import { CustomerEffects } from './+state/customer.effects';
 import { customersFeature } from './+state/customer.reducer';
 import { CustomerComponent } from './customer/customer.component';
 import { CustomersComponent } from './customers/customers.component';
-import { MockedHttpClient } from './mocked-http-client';
 
-export const customerRoutes: Routes = [
+const customerRoutes: Routes = [
   {
     path: '',
-    providers: [
-      {
-        provide: HttpClient,
-        useClass: environment.mockHttp ? MockedHttpClient : HttpClient
-      },
-      provideState(customersFeature),
-      provideEffects([CustomerEffects])
-    ],
+    providers: [provideState(customersFeature), provideEffects(CustomerEffects)],
     children: [
       {
         path: '',
@@ -34,3 +26,5 @@ export const customerRoutes: Routes = [
     ]
   }
 ];
+
+export default customerRoutes;

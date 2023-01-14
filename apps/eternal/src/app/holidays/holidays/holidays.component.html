@@ -1,4 +1,8 @@
 <div class="container">
-  <eternal-holiday-card *ngFor="let holiday of holidays$ | async" [holiday]="holiday">
+  <eternal-holiday-card
+    *ngFor="let holiday of holidays$ | async"
+    [holiday]="holiday"
+    testid="holiday-card"
+  >
   </eternal-holiday-card>
 </div>

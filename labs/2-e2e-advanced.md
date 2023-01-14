@@ -1,8 +1,8 @@
 - [1. Different Resolutions](#1-different-resolutions)
 - [2. Individual Commands](#2-individual-commands)
 - [3. Intercept Network Requests](#3-intercept-network-requests)
-- [4. Page Object Model: Customer Form & Sidemenu](#4-page-object-model-customer-form--sidemenu)
-- [5. Session Cache & Domain Switching](#5-session-cache--domain-switching)
+- [4. Page Object Model: Customer Form \& Sidemenu](#4-page-object-model-customer-form--sidemenu)
+- [5. Session Cache \& Domain Switching](#5-session-cache--domain-switching)
   - [5.1. `cy.origin`](#51-cyorigin)
   - [5.2. `cy.session`](#52-cysession)
   - [5.3. Validating the Cache](#53-validating-the-cache)
@@ -32,8 +32,8 @@ Cypress has pre-defined resolutions which can be run by `cy.viewport("preset")`.
   it(`should count the entries in ${preset}`, () => {
     cy.viewport(preset);
     cy.visit('');
-    cy.get('[data-testid=btn-customers]').click();
-    cy.get('div.row:not(.header)').should('have.length', 10);
+    cy.testid('btn-customers').click();
+    cy.testid('row-customer').should('have.length', 10);
   });
 });
 ```
@@ -123,9 +123,8 @@ it('should add a new customer', () => {
   customer.setBirthday(new Date(1995, 9, 12));
   customer.submit();
   cy.testid('btn-customers-next').click();
-  cy.testid('btn-customers-next').click();
 
-  cy.get('div').should('contain.text', 'Tom Lincoln');
+  cy.testid('row-customer').should('contain.text', 'Tom Lincoln');
 });
 ```
 
@@ -162,15 +161,16 @@ class Customer {
   }
 
   setCountry(country: string) {
-    return cy.get('mat-select').click().get('mat-option').contains(country).click();
+    cy.testid('sel-country').click();
+    cy.testid('opt-country').contains(country).click();
   }
 
   setBirthday(date: Date) {
-    return cy.get('.formly-birthdate input').clear().type(format(date, 'dd.MM.yyyy'));
+    cy.testid('inp-birthdate').clear().type(format(date, 'dd.MM.yyyy'));
   }
 
   submit() {
-    return cy.get('button[type=submit]').click();
+    cy.testid('btn-submit').click();
   }
 }
 
@@ -303,7 +303,6 @@ import { nxE2EPreset } from '@nrwl/cypress/plugins/cypress-preset';
 export default defineConfig({
   e2e: {
     ...nxE2EPreset(__dirname),
-    experimentalSessionAndOrigin: true,
     experimentalWebKitSupport: true,
     env: {
       loginUsername: 'john.list@host.com',

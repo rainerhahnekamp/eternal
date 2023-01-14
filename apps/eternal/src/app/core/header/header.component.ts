@@ -1,15 +1,16 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterLinkWithHref } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { SecurityService } from '../../security/security.service';
+import { TestidDirective } from '../../shared/testid.directive';
 
 @Component({
   selector: 'eternal-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   standalone: true,
-  imports: [RouterLinkWithHref, MatButtonModule, AsyncPipe, NgIf]
+  imports: [RouterLink, MatButtonModule, AsyncPipe, NgIf, TestidDirective]
 })
 export class HeaderComponent {
   #securityService = inject(SecurityService);

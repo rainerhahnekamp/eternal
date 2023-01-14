@@ -6,10 +6,10 @@ import { holidaysFeature } from './+state/holidays.reducer';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { RequestInfoComponent } from './request-info/request-info.component';
 
-export const holidayRoutes: Routes = [
+const holidayRoutes: Routes = [
   {
     path: '',
-    providers: [provideState(holidaysFeature), provideEffects([HolidaysEffects])],
+    providers: [provideState(holidaysFeature), provideEffects(HolidaysEffects)],
     component: HolidaysComponent
   },
   {
@@ -17,3 +17,5 @@ export const holidayRoutes: Routes = [
     component: RequestInfoComponent
   }
 ];
+
+export default holidayRoutes;
