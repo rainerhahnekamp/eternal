@@ -31,8 +31,8 @@
   <mat-form-field>
     <mat-label>Birthdate</mat-label>
     <input matInput [matDatepicker]="picker" formControlName="birthdate" testid="inp-birthdate" />
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
+    <mat-datepicker-toggle matIconSuffix [for]="picker" />
+    <mat-datepicker #picker/>
     <mat-error
       ><eternal-form-errors [control]="formGroup.controls.birthdate"></eternal-form-errors>
     </mat-error>
