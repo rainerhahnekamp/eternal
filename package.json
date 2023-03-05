@@ -10,8 +10,6 @@
     "ng": "nx",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve",
-    "start:dev-local": "nx serve -c dev-local",
-    "start:non-mock": "nx serve -c non-mock",
     "build": "nx build",
     "test": "nx test",
     "test:component-test": "nx component-test --watch",

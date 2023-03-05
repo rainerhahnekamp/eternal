@@ -47,34 +47,6 @@
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true
-        },
-        "dev-local": {
-          "buildOptimizer": false,
-          "optimization": false,
-          "vendorChunk": true,
-          "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true,
-          "fileReplacements": [
-            {
-              "replace": "apps/eternal/src/environments/environment.ts",
-              "with": "apps/eternal/src/environments/environment.dev-local.ts"
-            }
-          ]
-        },
-        "non-mock": {
-          "buildOptimizer": false,
-          "optimization": false,
-          "vendorChunk": true,
-          "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true,
-          "fileReplacements": [
-            {
-              "replace": "apps/eternal/src/environments/environment.ts",
-              "with": "apps/eternal/src/environments/environment.non-mock.ts"
-            }
-          ]
         }
       },
       "defaultConfiguration": "production"
@@ -87,12 +59,6 @@
         },
         "development": {
           "browserTarget": "eternal:build:development"
-        },
-        "dev-local": {
-          "browserTarget": "eternal:build:dev-local"
-        },
-        "non-mock": {
-          "browserTarget": "eternal:build:non-mock"
         }
       },
       "defaultConfiguration": "development"
