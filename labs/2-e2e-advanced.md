@@ -10,6 +10,8 @@
 - [6. Bonus - Scraping with `cy.task`](#6-bonus---scraping-with-cytask)
 - [7. Bonus - Intelligent (Conditional) Test](#7-bonus---intelligent-conditional-test)
 
+Checkout the branch `lab-2-starter`
+
 **The project's path is: /apps/eternal-e2e/src/**
 
 # 1. Different Resolutions
@@ -41,25 +43,14 @@ Cypress has pre-defined resolutions which can be run by `cy.viewport("preset")`.
 </p>
 </details>
 
-# 2. Individual Commands
+# 2. Custom Commands & Queries
 
-Instead of writing `cy.get("[data-testid=btn-submit]")`, it should be possible to use `cy.testid("btn-submit")`. This would be an extension to the `cy` object and has already been done in **./support/commands.ts**. Open it and study the implementation as well as the declaration for type-safety.
+In holidays, a hidden holiday is loaded, after the images of the 9 holidays are fully available.
 
-If time allows, you can also apply the `cy.testid` in all your tests.
+Locate and run the test `hidden-holiday.cy.ts`. It should fail although the 10th holiday "Hidden Vienna" is visible. This is because the test uses the command `cy.holidayCards` which is not implemented as a query. Fix it.
 
-Based on the existing extension, try to come up with a further command that replaces the snippet
-
-```typescript
-cy.get('eternal-holiday-card').should('contain.text', 'Angkor Wat').contains('Angkor Wat').click();
-```
-
-to
-
-```typescript
-cy.getContains('eternal-holiday-card', 'Angkor Wat').click();
-```
-
-Make sure that the command is also type-safe.
+- Hint 1: Instead of relying on the `get`, you can directly fetch the jQuery elements via `Cypress.$`.
+- Hint 2: An image is loaded, when its `naturalWidth` attribute is larger than 0.
 
 <details>
 <summary>Show Solution</summary>
@@ -68,19 +59,18 @@ Make sure that the command is also type-safe.
 **./support/commands.ts**
 
 ```typescript
-declare namespace Cypress {
-  interface Chainable<Subject> {
-    // ...
+Cypress.Commands.addQuery('holidayCards', () => () => {
+  const cards = Cypress.$(`[data-testid=holiday-card]`);
+  if (cards.length > 0) {
+    const allImagesLoaded = cards
+      .find('img')
+      .toArray()
+      .every((img: HTMLImageElement) => img.naturalWidth > 0);
 
-    getContains(selector: string, contains: string): Chainable;
+    if (allImagesLoaded) {
+      return cards;
+    }
   }
-}
-```
-
-```typescript
-Cypress.Commands.add('getContains', (selector: string, contains: string) => {
-  cy.get(selector).should('contain', contains);
-  return cy.get(selector).contains(contains);
 });
 ```
 
