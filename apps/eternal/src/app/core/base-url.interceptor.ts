@@ -1,11 +1,11 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BASE_URL } from '../shared/base-url.token';
+import { Configuration } from '../shared/configuration';
 
 @Injectable()
 export class BaseUrlInterceptor implements HttpInterceptor {
-  #baseUrl = inject(BASE_URL);
+  #baseUrl = inject(Configuration).baseUrl;
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!req.url.startsWith('/')) {
