@@ -8,9 +8,9 @@ module.exports = {
   stories: [
     ...rootMain.stories,
     '../src/app/**/*.stories.mdx',
-    '../src/app/**/*.stories.@(js|jsx|ts|tsx)',
+    '../src/app/**/*.stories.@(js|jsx|ts|tsx)'
   ],
-  addons: [...rootMain.addons],
+  addons: ['@storybook/addon-essentials', ...rootMain.addons],
   webpackFinal: async (config, { configType }) => {
     // apply any global webpack configs that might have been specified in .storybook/main.js
     if (rootMain.webpackFinal) {
@@ -20,5 +20,5 @@ module.exports = {
     // add your own webpack tweaks if needed
 
     return config;
-  },
+  }
 };
