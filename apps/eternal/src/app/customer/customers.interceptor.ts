@@ -26,21 +26,17 @@ export class CustomersInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    if (req.url.startsWith(`${this.#configuration.baseUrl}/customer`)) {
-      switch (req.method) {
-        case 'GET':
-          return this.#toHttpResponse(this.#get(req.url, { params: req.params }));
-        case 'POST':
-          return this.#post(req.url, req.body as Customer);
-        case 'DELETE':
-          return this.#toHttpResponse(this.#delete(req.url));
-        case 'PUT':
-          return this.#put(req.url, req.body as Customer);
-      }
-      return next.handle(req);
-    } else {
-      return next.handle(req);
+    switch (req.method) {
+      case 'GET':
+        return this.#toHttpResponse(this.#get(req.url, { params: req.params }));
+      case 'POST':
+        return this.#post(req.url, req.body as Customer);
+      case 'DELETE':
+        return this.#toHttpResponse(this.#delete(req.url));
+      case 'PUT':
+        return this.#put(req.url, req.body as Customer);
     }
+    return next.handle(req);
   }
 
   #toHttpResponse(data$: Observable<unknown>) {

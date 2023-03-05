@@ -1,21 +1,16 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { Configuration } from '../shared/configuration';
 
-@Injectable()
-export class BaseUrlInterceptor implements HttpInterceptor {
-  #baseUrl = inject(Configuration).baseUrl;
-
-  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (!req.url.startsWith('/')) {
-      return next.handle(req);
-    }
-    return next.handle(
-      req.clone({
-        url: `${this.#baseUrl}${req.url}`,
-        withCredentials: true
-      })
-    );
+export const baseUrlInterceptor: HttpInterceptorFn = (req, next) => {
+  const baseUrl = inject(Configuration).baseUrl;
+  if (!req.url.startsWith('/')) {
+    return next(req);
   }
-}
+  return next(
+    req.clone({
+      url: `${baseUrl}${req.url}`,
+      withCredentials: true
+    })
+  );
+};

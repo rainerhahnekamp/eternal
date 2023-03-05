@@ -2,6 +2,7 @@ import {
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
+  HttpInterceptorFn,
   HttpRequest,
   HttpResponse
 } from '@angular/common/http';
@@ -10,19 +11,16 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LoadingService } from '../shared/loading.service';
 
-@Injectable()
-export class LoadingInterceptor implements HttpInterceptor {
-  #loadingService = inject(LoadingService);
+export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
+  const loadingService = inject(LoadingService);
 
-  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    this.#loadingService.loading();
+  loadingService.loading();
 
-    return next.handle(req).pipe(
-      tap((event) => {
-        if (event instanceof HttpResponse) {
-          this.#loadingService.loaded();
-        }
-      })
-    );
-  }
-}
+  return next(req).pipe(
+    tap((event) => {
+      if (event instanceof HttpResponse) {
+        loadingService.loaded();
+      }
+    })
+  );
+};

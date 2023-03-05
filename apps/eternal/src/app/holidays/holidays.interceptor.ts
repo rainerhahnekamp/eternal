@@ -1,28 +1,18 @@
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HttpResponse
-} from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { of } from 'rxjs';
 import { Configuration } from '../shared/configuration';
 import { holidays } from './holidays.data';
 
-@Injectable()
-export class HolidaysInterceptor implements HttpInterceptor {
-  #configuration = inject(Configuration);
-
-  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (!this.#configuration.mockHolidays) {
-      return next.handle(req);
-    }
-
-    if (req.method === 'GET' && req.url.startsWith(`${this.#configuration.baseUrl}/holiday`)) {
-      return of(new HttpResponse({ body: holidays }));
-    }
-
-    return next.handle(req);
+export const holidaysInterceptor: HttpInterceptorFn = (req, next) => {
+  const configuration = inject(Configuration);
+  if (!configuration.mockHolidays) {
+    return next(req);
   }
-}
+
+  if (req.method === 'GET' && req.url.startsWith(`${configuration.baseUrl}/holiday`)) {
+    return of(new HttpResponse({ body: holidays }));
+  }
+
+  return next(req);
+};

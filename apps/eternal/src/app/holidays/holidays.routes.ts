@@ -5,11 +5,21 @@ import { findHolidays } from './+state/holidays.effects';
 import { holidaysFeature } from './+state/holidays.reducer';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { RequestInfoComponent } from './request-info/request-info.component';
+import {
+  provideHttpClient,
+  withInterceptors,
+  withRequestsMadeViaParent
+} from '@angular/common/http';
+import { holidaysInterceptor } from './holidays.interceptor';
 
 const holidayRoutes: Routes = [
   {
     path: '',
-    providers: [provideState(holidaysFeature), provideEffects({ holidays: findHolidays })],
+    providers: [
+      provideState(holidaysFeature),
+      provideEffects({ holidays: findHolidays }),
+      provideHttpClient(withRequestsMadeViaParent(), withInterceptors([holidaysInterceptor]))
+    ],
     component: HolidaysComponent
   },
   {
