@@ -245,5 +245,7 @@ Instead of injecting the `HttpClient` in the constructor, use the `inject` funct
 
 You can choose between two mocking approaches:
 
-1. Use the TestBed and its `providers` attribute to define the mock. The solution branch is `solution-3-async-mock-testbed`.
-2. Create a spy on `@angular/core` and its `inject` function. The solution branch is `solution-3-async-mock-inject-spy`.
+1. Use the TestBed and its `providers` attribute to define the mock.
+2. Create a spy on `@angular/core` and its `inject` function.
+
+The alternative solution branch is `solution-3-async-mock-inject`.
