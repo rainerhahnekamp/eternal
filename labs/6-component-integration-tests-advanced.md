@@ -1,18 +1,14 @@
 - [1. Component/Integration Tests "Angular-natively"](#1-componentintegration-tests-angular-natively)
   - [1.1. Component Test](#11-component-test)
   - [1.2. Integration Test](#12-integration-test)
-- [2. Spectator](#2-spectator)
-  - [2.1 Setup TestingModule](#21-setup-testingmodule)
-  - [2.2 Mocked AddressLookuper](#22-mocked-addresslookuper)
-  - [2.3 Integration test](#23-integration-test)
-- [3. Testing Library](#3-testing-library)
-  - [3.1. Setup](#31-setup)
-  - [3.2. Component Test](#32-component-test)
-  - [3.3. Integration Test](#33-integration-test)
-- [4. Harnesses](#4-harnesses)
-  - [4.1 RequestInfoComponentHarness](#41-requestinfocomponentharness)
-  - [4.2. Reusing Material Harnesses](#42-reusing-material-harnesses)
-  - [4.3: Harness with multiple elements](#43-harness-with-multiple-elements)
+- [2. Testing Library](#2-testing-library)
+  - [2.1. Setup](#21-setup)
+  - [2.2. Component Test](#22-component-test)
+  - [2.3. Integration Test](#23-integration-test)
+- [3. Harnesses](#3-harnesses)
+  - [3.1. 4.1 RequestInfoComponentHarness](#31-41-requestinfocomponentharness)
+  - [3.2. Reusing Material Harnesses](#32-reusing-material-harnesses)
+  - [3.3. 4.3: Harness with multiple elements](#33-43-harness-with-multiple-elements)
 
 Double-check, that the `RequestInfoComponent` uses the `AddressLookuper`. If not, merge from the `solution` branch or inject it on your own.
 
@@ -114,123 +110,9 @@ it('should do an integration test for Domgasse 5', fakeAsync(() => {
 </p>
 </details>
 
-# 2. Spectator
+# 2. Testing Library
 
-## 2.1 Setup TestingModule
-
-Create a new file **request-info.component.spectator.spec.ts** and add the following:
-
-```typescript
-import { createComponentFactory } from '@ngneat/spectator/jest';
-import { AddressLookuper } from '../../shared/address-lookuper.service';
-import { RequestInfoComponent } from './request-info.component';
-import { RequestInfoComponentModule } from './request-info.component.module';
-import { configurationProvider } from '../../shared/configuration';
-
-describe('Request Info Spectator', () => {
-  const createComponent = createComponentFactory({
-    component: RequestInfoComponent,
-    providers: [configurationProvider],
-    mocks: [AddressLookuper]
-  });
-
-  const setup = () => {
-    const spectator = createComponent();
-    const lookuperMock = spectator.inject(AddressLookuper);
-    return { spectator, lookuperMock };
-  };
-
-  const inputSelector = '[data-testid=ri-address]';
-  const buttonSelector = '[data-testid=ri-search]';
-  const lookupSelector = '[data-testid=ri-message]';
-
-  it('should instantiate', () => {
-    const { spectator } = setup();
-    expect(spectator.component).toBeInstanceOf(RequestInfoComponent);
-  });
-});
-```
-
-## 2.2 Mocked AddressLookuper
-
-Add the a new test "should find an address" which is the equivalent of the one in **request-info.component.spec.ts**. Do a paramterized tests where you test both "Domgasse 5" and "Domgasse 15".
-
-```typescript
-it.each([
-  { input: 'Domgasse 5', message: 'Brochure sent' },
-  { input: 'Domgasse 15', message: 'Address not found' }
-])('should show $message for $input', ({ input, message }) =>
-  fakeAsync(() => {
-    const { spectator, lookuperMock } = setup();
-
-    lookuperMock.lookup.mockImplementation((query) =>
-      scheduled([query === 'Domgasse 5'], asyncScheduler)
-    );
-
-    spectator.typeInElement(input, inputSelector);
-    spectator.click(buttonSelector);
-    spectator.tick();
-    const messageBox = spectator.query(lookupSelector);
-    expect(messageBox).toHaveText(message);
-  })()
-);
-```
-
-## 2.3 Integration test
-
-Use Spectator for an integration test that only mocks the HttpClient but uses the `AddressLookuper` along `parseAddress`. It should again check against "Domgasse 5" and "Domgasse 15".
-
-We require another `createComponentFactory`. Let's apply the test context strategy. Create a nested test suite by inserting `describe("Component Test", () => {...})` into the existing `describe` method and move all existing code, except the selector variables, inside it.
-
-Then insert a second test suite that contains the test and configuration for the integration test:
-
-```typescript
-describe('Request Info Spectator', () => {
-  const inputSelector = '[data-testid=ri-address]';
-  const buttonSelector = '[data-testid=ri-search]';
-  const lookupSelector = '[data-testid=ri-message]';
-
-  describe('Component Test', () => {
-    // ...
-  });
-
-  describe('Integration Test', () => {
-    const createComponent = createComponentFactory({
-      component: RequestInfoComponent,
-      providers: [configurationProvider],
-      imports: [HttpClientTestingModule]
-    });
-
-    it('should instantiate', () => {
-      const spectator = createComponent();
-      expect(spectator.component).toBeInstanceOf(RequestInfoComponent);
-    });
-
-    it.each([
-      { input: 'Domgasse 5', message: 'Brochure sent', response: [true] },
-      { input: 'Domgasse 15', message: 'Address not found', response: [] }
-    ])('should show $message for $input', ({ input, message, response }) =>
-      fakeAsync(() => {
-        const spectator = createComponent();
-        spectator.typeInElement(input, inputSelector);
-        spectator.click(buttonSelector);
-
-        spectator
-          .inject(HttpTestingController)
-          .expectOne((req) => !!req.url.match(/nominatim/))
-          .flush(response);
-
-        spectator.detectChanges();
-        expect(spectator.query(lookupSelector)).toHaveText(message);
-      })()
-    );
-  });
-});
-```
-
-# 3. Testing Library
-
-## 3.1. Setup
+## 2.1. Setup
 
 Setup a test suite which uses the testing library for the `RequestInfoComponent`.
 
@@ -254,7 +136,7 @@ describe('Request Info with Testing Library', () => {
 });
 ```
 
-## 3.2. Component Test
+## 2.2. Component Test
 
 Write a parameterized component test, where you mock the `AddressLookuper`.
 
@@ -276,7 +158,7 @@ it.each([
 });
 ```
 
-## 3.3. Integration Test
+## 2.3. Integration Test
 
 Write an integration test that only mocks the HttpClient. It should again check against "Domgasse 5" and "Domgasse 15".
 
@@ -325,9 +207,9 @@ describe('Request Info with Testing Library', () => {
 });
 ```
 
-# 4. Harnesses
+# 3. Harnesses
 
-## 4.1 RequestInfoComponentHarness
+## 3.1. 4.1 RequestInfoComponentHarness
 
 Create a harness for the request info component.
 
@@ -405,7 +287,7 @@ expect(await harness.getResult()).toBe('Brochure sent');
 </p>
 </details>
 
-## 4.2. Reusing Material Harnesses
+## 3.2. Reusing Material Harnesses
 
 Our harness can access its sub-components via harnesses, if these components provide them. We are lucky. Angular Material provides harnesses for all its components.
 
@@ -448,7 +330,7 @@ export class RequestInfoComponentHarness extends ComponentHarness {
 </p>
 </details>
 
-## 4.3: Harness with multiple elements
+## 3.3. 4.3: Harness with multiple elements
 
 Add a further button with type `button` in the request-info's template. It must be BEFORE the submit button. Verify that the **should find an adresss** fails.
 
