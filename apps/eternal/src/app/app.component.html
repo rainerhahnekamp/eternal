@@ -1,6 +1,6 @@
-<div class="main">
+<div class="main flex">
   <mat-toolbar color="primary">
-    <mat-toolbar-row>
+    <mat-toolbar-row class="flex justify-between">
       <eternal-header />
     </mat-toolbar-row>
   </mat-toolbar>
@@ -8,8 +8,8 @@
     <mat-drawer mode="side" opened>
       <eternal-sidemenu />
     </mat-drawer>
-    <mat-drawer-content>
-      <eternal-loader/>
+    <mat-drawer-content class="p-4">
+      <eternal-loader />
       <router-outlet />
     </mat-drawer-content>
   </mat-drawer-container>
