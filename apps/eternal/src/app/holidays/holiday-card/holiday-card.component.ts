@@ -5,6 +5,7 @@ import { NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Holiday } from '../model/holiday';
 import { BlinkerDirective } from '../../shared/blinker.directive';
+import { ImageLoadedDirective } from '../../shared/image-loaded.directive';
 
 @Component({
   selector: 'eternal-holiday-card',
@@ -35,7 +36,14 @@ import { BlinkerDirective } from '../../shared/blinker.directive';
     </mat-card>
   </div>`,
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, NgIf, RouterLink, BlinkerDirective]
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    NgIf,
+    RouterLink,
+    BlinkerDirective,
+    ImageLoadedDirective
+  ]
 })
 export class HolidayCardComponent {
   @Input() holiday: Holiday | undefined;
