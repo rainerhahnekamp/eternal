@@ -3,12 +3,11 @@ import { environment } from './environments/environment';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { baseUrlInterceptor } from './app/core/base-url.interceptor';
 import { loadingInterceptor } from './app/core/loading.interceptor';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { FormlyModule } from '@ngx-formly/core';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app/app.routes';
 import localeDe from '@angular/common/locales/de-AT';
@@ -41,15 +40,6 @@ bootstrapApplication(AppComponent, {
       AuthModule.forRoot({
         domain: 'dev-xbu2-fid.eu.auth0.com',
         clientId: 'YgUoOMh2jc4CQuo8Ky9PS7npW3Q4ckX9'
-      }),
-      FormlyModule.forRoot({
-        extras: { lazyRender: true },
-        validationMessages: [
-          {
-            name: 'required',
-            message: 'This field is mandatory'
-          }
-        ]
       }),
       MatDateFnsModule
     ]),

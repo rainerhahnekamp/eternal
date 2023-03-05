@@ -3906,20 +3906,6 @@
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-14.1.0.tgz#2e79fffe93f35939ed3dc65ab5aa830afdb13d39"
   integrity sha512-d4U6ymDCXckVgfjYEv1Wjzd78ZSm0NKgq8mN6FdlrCupg02LPIODjeKyNr4c4zwMAOJeHkVNEZ+USoDEK3XSsw==
 
-"@ngx-formly/core@^6.0.4":
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/@ngx-formly/core/-/core-6.0.4.tgz#a4378d861f1eb620c27f9a0c4a30a5bf5b8db8de"
-  integrity sha512-GH+uIwNivI7EmqIRcGwyWa+CXPBY3ihWi05foMsYV7ghADe2Ap6mHaYdKoejMItLoWz79CrV2pYfwrnjlE3KOQ==
-  dependencies:
-    tslib "^2.0.0"
-
-"@ngx-formly/material@^6.0.4":
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/@ngx-formly/material/-/material-6.0.4.tgz#e796c72bbda72492a91c5c833f1f9532267d9780"
-  integrity sha512-eJjLcR7Kueqg9KfyaPEjQADaF5qB4M4TrNgY0SJ6SWnJjE1hWQWcLvwKxo/7EX93ClD/1Z3ytZMRk1homPK8HA==
-  dependencies:
-    tslib "^2.0.0"
-
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
