@@ -7,16 +7,22 @@ import { AsyncPipe, NgForOf } from '@angular/common';
 
 @Component({
   selector: 'eternal-holidays',
-  templateUrl: './holidays.component.html',
+  template: `<div class="container">
+    <eternal-holiday-card
+      *ngFor="let holiday of holidays$ | async"
+      [holiday]="holiday"
+      data-testid="holiday-card"
+    />
+  </div> `,
   styleUrls: ['./holidays.component.scss'],
   standalone: true,
   imports: [HolidayCardComponent, NgForOf, AsyncPipe]
 })
 export class HolidaysComponent implements OnInit {
   #store = inject(Store);
-  holidays$ = this.#store.select(fromHolidays.get);
+  holidays$ = this.#store.select(fromHolidays.holidays);
 
   ngOnInit(): void {
-    this.#store.dispatch(holidaysActions.findHolidays());
+    this.#store.dispatch(holidaysActions.load());
   }
 }

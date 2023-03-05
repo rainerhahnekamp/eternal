@@ -12,10 +12,7 @@ describe('NewsletterComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NewsletterComponent],
-      providers: [
-        { provide: ComponentFixtureAutoDetect, useValue: true },
-        { provide: Configuration, useValue: new Configuration('', true, true, true) }
-      ]
+      providers: [{ provide: ComponentFixtureAutoDetect, useValue: true }]
     });
     fixture = TestBed.createComponent(NewsletterComponent);
     component = fixture.componentInstance;

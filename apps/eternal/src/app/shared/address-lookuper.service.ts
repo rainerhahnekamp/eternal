@@ -1,17 +1,20 @@
-import { parseAddress } from './parse-address';
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class AddressLookuper {
-  addresses: string[] = [];
-  constructor(addressesSupplier: () => string[]) {
-    this.addresses = addressesSupplier();
+  #addresses: string[];
+
+  constructor(addressSupplier: () => string[]) {
+    this.#addresses = addressSupplier();
   }
-  lookup(query: string): boolean {
-    parseAddress(query);
-    return this.addresses.some((address) => address.startsWith(query));
+  #counter = 0;
+
+  get counter() {
+    return this.#counter;
   }
 
-  // istanbul ignore next
-  noop() {}
+  lookup(query: string): boolean {
+    this.#counter++;
+    return this.#addresses.some((address) => query.startsWith(address));
+  }
 }

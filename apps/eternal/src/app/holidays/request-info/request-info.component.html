@@ -1,20 +1,39 @@
-<h2>{{ title }}</h2>
-<p>Please fill in your address and below and we will send you a brochure with more information.</p>
-<form (ngSubmit)="search()" [formGroup]="formGroup">
+<ng-container *ngIf="holiday$ | async as holiday">
+  <h2>Get your brochure and enjoy your holiday</h2>
   <p>
-    <mat-form-field>
-      <mat-label>Address</mat-label>
-      <input data-testid="ri-address" formControlName="address" matInput />
-      <mat-icon matSuffix>location_on</mat-icon>
-      <mat-hint>Please enter your address</mat-hint>
-    </mat-form-field>
+    Please fill in your address and below and we will send you a brochure with more information.
   </p>
-  <button color="primary" data-testid="ri-search" mat-raised-button type="submit">Send</button>
-</form>
-<p
-  *ngIf="lookupResult$ | async as lookupResult"
-  data-testid="ri-message"
-  aria-live="assertive"
-  role="status"
-  >{{ lookupResult }}</p
->
+  <div class="flex items-center gap-x-16">
+    <div>
+      <form (ngSubmit)="search()" [formGroup]="formGroup">
+        <p>
+          <mat-form-field>
+            <mat-label>Address</mat-label>
+            <input data-testid="inp-address" formControlName="address" matInput />
+            <mat-icon matSuffix>location_on</mat-icon>
+            <mat-hint>Please enter your address</mat-hint>
+          </mat-form-field>
+        </p>
+        <div class="flex justify-evenly my-4">
+          <a routerLink="../.." mat-raised-button>Cancel</a>
+          <button
+            color="primary"
+            data-testid="btn-search"
+            mat-raised-button
+            type="submit"
+            [disabled]="formGroup.invalid"
+            >Send
+          </button>
+        </div>
+      </form>
+      <p data-testid="txt-message" class="text-center h-6" aria-live="assertive" role="status">
+        <span *ngIf="lookupResult$ | async as lookupResult">{{ lookupResult }}</span>
+      </p>
+    </div>
+    <eternal-holiday-card
+      *ngIf="holiday$ | async as holiday"
+      [holiday]="holiday"
+      [requestBrochure]="false"
+    ></eternal-holiday-card>
+  </div>
+</ng-container>

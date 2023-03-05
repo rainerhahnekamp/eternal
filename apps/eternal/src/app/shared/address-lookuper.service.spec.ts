@@ -10,11 +10,10 @@ describe('Address Lookuper', () => {
     expect(lookuper.lookup('Domgasse 5, 1010 Wien')).toBe(true);
   });
 
-  it('should throw an error if no street number is given', () => {
+  it('should cound the queries', () => {
     const lookuper = new AddressLookuper(() => []);
-
-    expect(() => lookuper.lookup('Domgasse')).toThrowError(
-      'Could not parse address. Invalid format.'
-    );
+    expect(lookuper.counter).toBe(0);
+    lookuper.lookup('Domgasse');
+    expect(lookuper.counter).toBe(1);
   });
 });

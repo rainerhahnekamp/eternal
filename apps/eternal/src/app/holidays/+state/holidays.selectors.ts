@@ -1,5 +1,11 @@
 import { holidaysFeature } from './holidays.reducer';
+import { createSelector } from '@ngrx/store';
 
 export const fromHolidays = {
-  get: holidaysFeature.selectHolidays
+  holidays: holidaysFeature.selectHolidays,
+  selected: createSelector(
+    holidaysFeature.selectHolidays,
+    holidaysFeature.selectSelectedId,
+    (holidays, selectedId) => holidays.find((holiday) => holiday.id === selectedId)
+  )
 };

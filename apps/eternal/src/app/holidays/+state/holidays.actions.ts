@@ -1,13 +1,12 @@
-import { createAction, props } from '@ngrx/store';
-import { Holiday } from '../holiday';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { Holiday } from '../model/holiday';
 
-const findHolidays = createAction('[Holidays] Find');
-const findHolidaysSuccess = createAction(
-  '[Holidays] Find Success',
-  props<{ holidays: Holiday[] }>()
-);
-
-export const holidaysActions = {
-  findHolidays,
-  findHolidaysSuccess,
-};
+export const holidaysActions = createActionGroup({
+  source: 'Holidays',
+  events: {
+    load: emptyProps(),
+    'load success': props<{ holidays: Holiday[] }>(),
+    select: props<{ id: number }>(),
+    unselect: emptyProps()
+  }
+});
