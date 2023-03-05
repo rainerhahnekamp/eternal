@@ -68,6 +68,6 @@ bootstrapApplication(AppComponent, {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' }
     },
-    { provide: Configuration, useValue: new Configuration(environment.baseUrl, true, false, true) }
+    { provide: Configuration, useValue: new Configuration(environment.baseUrl, true, false) }
   ]
 });

@@ -1,6 +1,6 @@
 <h2 class="my-2">Customers</h2>
 <p>
-  <a [routerLink]="['.', 'new']" color="primary" testid="btn-customers-add" mat-raised-button
+  <a [routerLink]="['.', 'new']" color="primary" data-testid="btn-customers-add" mat-raised-button
     >Add Customer</a
   >
 </p>
@@ -15,10 +15,10 @@
     <div
       *ngFor="let customer of data.customers"
       class="row"
-      testid="row-customer"
+      data-testid="row-customer"
       [attr.aria-labelledby]="'customer-' + customer.id"
     >
-      <p class="edit" testid="btn-edit">
+      <p class="edit" data-testid="btn-edit">
         <a [routerLink]="['.', customer.id]" aria-label="Edit Customer">
           <mat-icon>edit</mat-icon>
         </a>
@@ -31,12 +31,12 @@
     </div>
     <div class="paginator">
       <button [disabled]="data.currentPage === 0" mat-raised-button (click)="previousPage()">
-        <mat-icon testid="btn-customers-back"> arrow_back </mat-icon>
+        <mat-icon data-testid="btn-customers-back"> arrow_back </mat-icon>
       </button>
       {{ data.currentPage + 1 }}
       <button
         [disabled]="data.currentPage >= data.pageCount"
-        testid="btn-customers-next"
+        data-testid="btn-customers-next"
         mat-raised-button
         (click)="nextPage()"
       >

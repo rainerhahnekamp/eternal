@@ -19,9 +19,6 @@ export const appRoutes: Routes = [
         if (queryParamMap.has('mock-holidays')) {
           config.updateFeatures({ mockHolidays: queryParamMap.get('mock-holidays') == '1' });
         }
-        if (queryParamMap.has('use-testid')) {
-          config.updateFeatures({ useTestid: queryParamMap.get('use-testid') == '1' });
-        }
       },
       () => {
         return inject(SecurityService).loaded$.pipe(filter(Boolean));

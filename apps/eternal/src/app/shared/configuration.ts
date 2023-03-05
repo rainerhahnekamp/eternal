@@ -1,26 +1,21 @@
 export type ConfigurationFeatures = {
   mockHolidays: boolean;
   mockCustomers: boolean;
-  useTestid: boolean;
 };
 
 export class Configuration {
   #baseUrl: string;
   #mockCustomers: boolean;
   #mockHolidays: boolean;
-  #useTestid: boolean;
 
   #storageKey = 'eternal-configuration';
 
-  constructor(baseUrl: string, mockCustomers = true, mockHolidays = true, useTestid = true) {
+  constructor(baseUrl: string, mockCustomers = true, mockHolidays = true) {
     this.#baseUrl = baseUrl;
-    const values = { mockCustomers, mockHolidays, useTestid };
-    // const savedValues = JSON.parse(localStorage.getItem(this.#storageKey) || '{}');
-    // Object.assign(values, savedValues);
+    const values = { mockCustomers, mockHolidays };
 
     this.#mockCustomers = values.mockCustomers;
     this.#mockHolidays = values.mockHolidays;
-    this.#useTestid = values.useTestid;
   }
 
   get baseUrl() {
@@ -33,30 +28,20 @@ export class Configuration {
   get mockHolidays() {
     return this.#mockHolidays;
   }
-  get useTestid() {
-    return this.#useTestid;
-  }
 
   get features() {
     return {
       mockHolidays: this.#mockHolidays,
-      mockCustomers: this.#mockCustomers,
-      useTestid: this.#useTestid
+      mockCustomers: this.#mockCustomers
     };
   }
 
   updateFeatures(configurationFeatures: Partial<ConfigurationFeatures>) {
-    const { mockHolidays, mockCustomers, useTestid } = configurationFeatures;
+    const { mockHolidays, mockCustomers } = configurationFeatures;
 
-    this.#useTestid = useTestid ?? this.#useTestid;
     this.#mockHolidays = mockHolidays ?? this.#mockHolidays;
     this.#mockCustomers = mockCustomers ?? this.#mockCustomers;
 
     localStorage.setItem(this.#storageKey, JSON.stringify(configurationFeatures));
   }
 }
-
-export const configurationProvider = {
-  provide: Configuration,
-  useValue: new Configuration('', true, true, true)
-};

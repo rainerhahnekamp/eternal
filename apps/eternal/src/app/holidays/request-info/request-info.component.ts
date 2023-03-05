@@ -7,7 +7,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { TestidDirective } from '../../shared/testid.directive';
 
 @Component({
   selector: 'eternal-request-info',
@@ -20,8 +19,7 @@ import { TestidDirective } from '../../shared/testid.directive';
     MatFormFieldModule,
     MatIconModule,
     MatButtonModule,
-    MatInputModule,
-    TestidDirective
+    MatInputModule
   ]
 })
 export class RequestInfoComponent implements OnInit {

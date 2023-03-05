@@ -7,12 +7,12 @@
 <div class="security">
   <ng-container *ngIf="user$ | async as user">
     <ng-container *ngIf="user.anonymous; else logout">
-      <button testid="btn-sign-in" mat-raised-button (click)="signIn()">Sign In</button>
+      <button data-testid="btn-sign-in" mat-raised-button (click)="signIn()">Sign In</button>
     </ng-container>
     <ng-template #logout>
       <div class="flex items-center">
-        <p class="mr-4" testid="p-username">Welcome {{ user.name }}</p>
-        <button (click)="signOut()" testid="btn-sign-out" mat-raised-button>Sign Out</button>
+        <p class="mr-4" data-testid="p-username">Welcome {{ user.name }}</p>
+        <button (click)="signOut()" data-testid="btn-sign-out" mat-raised-button>Sign Out</button>
       </div>
     </ng-template>
   </ng-container>

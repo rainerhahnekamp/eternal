@@ -9,7 +9,6 @@ import { fromCustomer } from '../+state/customer.selectors';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { TestidDirective } from '../../shared/testid.directive';
 import { FormErrorsComponent } from '../../shared/form-errors.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -28,7 +27,6 @@ import { countries } from '../countries';
     RouterLink,
     AsyncPipe,
     NgIf,
-    TestidDirective,
     MatFormFieldModule,
     FormErrorsComponent,
     MatInputModule,
