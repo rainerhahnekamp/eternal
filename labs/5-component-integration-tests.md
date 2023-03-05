@@ -7,11 +7,11 @@
 - [7. Wrapper Component](#7-wrapper-component)
 - [8. Mocking the `HttpClient`](#8-mocking-the-httpclient)
 
+Checkout the branch `lab-5-starter`.
+
 Write a test for the `RequestInfoComponent` by using Cypress' component runner. That feature allows you to test a component in isolation by using all the capabilities of the Cypress framework.
 
 Start Cypress with the configuration for component testing via `npm run test:component-test`
-
-**Important**: Make sure that the `RequestInfoComponent` injects the real `AddressLookuper`. The `HttpClient` in the `AddressLookuper` must not be `private`.
 
 # 1. Mounting
 
