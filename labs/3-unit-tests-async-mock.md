@@ -90,8 +90,10 @@ for (const { query, expected, response } of [
 export class AddressLookuper {
   constructor(private httpClient: HttpClient) {}
 
+  // ...
+
   lookup(query: string): Observable<boolean> {
-    parseAddress(query);
+    this.#counter++;
 
     return this.httpClient.get<unknown[]>('').pipe(map((addresses) => addresses.length > 0));
   }
@@ -237,27 +239,11 @@ it('should call nominatim with right parameters, (mock property version)', () =>
 </p>
 </details>
 
-# 7. Bonus - Mock via `inject` function
+# 7. Bonus - `inject` function
 
-Instead of using constructor-based dependency injection, use the `inject` function introduced in Angular 14.
+Instead of injecting the `HttpClient` in the constructor, use the `inject` function
 
-The `AddressLookuper` would look like that:
+You can choose between two mocking approaches:
 
-```typescript
-@Injectable({ providedIn: 'root' })
-export class AddressLookuper {
-  private httpClient = inject(HttpClient);
-
-  // ...
-}
-```
-
-You'll have to use a spy for the `inject` function. It is a little bit hacky though. Add the following import in your test:
-
-```typescript
-import * as angularCore from "@angular/core",
-```
-
-You can then run a `jest.spyOn` against the `angularCore` and use the `inject` function.
-
-Lookup the final solution in the branch **solution-3-unit-tests-async-mock**.
+1. Use the TestBed and its `providers` attribute to define the mock. The solution branch is `solution-3-async-mock-testbed`.
+2. Create a spy on `@angular/core` and its `inject` function. The solution branch is `solution-3-async-mock-inject-spy`.
