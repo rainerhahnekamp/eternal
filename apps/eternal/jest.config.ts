@@ -3,8 +3,6 @@ export default {
   displayName: 'eternal',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  globals: {},
-  coverageDirectory: '../../coverage/apps/eternal',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
