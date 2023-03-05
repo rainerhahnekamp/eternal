@@ -19,7 +19,9 @@ export class HolidaysEffects implements OnInitEffects {
       map((holidays) =>
         holidays.map((holiday) => ({
           ...holiday,
-          imageUrl: `${this.#baseUrl}${holiday.imageUrl}`
+          imageUrl: holiday.imageUrl.startsWith('http')
+            ? holiday.imageUrl
+            : `${this.#baseUrl}${holiday.imageUrl}`
         }))
       ),
       map((holidays) => holidaysActions.loadSuccess({ holidays }))

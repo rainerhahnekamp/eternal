@@ -15,26 +15,58 @@ Start Cypress with the configuration for component testing via `npm run test:com
 
 # 1. Mounting
 
+The hardest part is the mounting of the component. Once you have that up and running, you can re-use it in other tests.
+
 Create and add following content to the file **/apps/eternal/src/app/holidays/request-info/request-info.cy.ts**.
+
+Go to Cypress initial screen, click on component testing and run the test. It should be successful, i.e. you should see the rendered component.
+
+<details>
+<summary>Show Solution</summary>
+<p>
 
 ```typescript
 import { RequestInfoComponent } from './request-info.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { mount } from 'cypress/angular';
-import { configurationProvider } from '../../shared/configuration';
+import { asyncScheduler, scheduled } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { provideState, provideStore } from '@ngrx/store';
+import { holidaysFeature } from '../+state/holidays.reducer';
+import { provideEffects } from '@ngrx/effects';
+import { HolidaysEffects } from '../+state/holidays.effects';
+import { Configuration } from '../../shared/configuration';
+import { createHoliday } from '../model/holiday';
 
 describe('Request Info Component', () => {
   it('should mount', () => {
+    const activatedRouter = { paramMap: scheduled([{ get: () => 1 }], asyncScheduler) };
+    cy.intercept('/holiday', {
+      body: [
+        createHoliday({
+          title: 'Vienna',
+          imageUrl: 'https://api.eternal-holidays.net/holiday/vienna.jpg'
+        })
+      ]
+    });
     mount(RequestInfoComponent, {
-      imports: [NoopAnimationsModule, HttpClientModule],
-      providers: [configurationProvider]
+      imports: [NoopAnimationsModule],
+      providers: [
+        provideHttpClient(),
+        provideStore(),
+        provideState(holidaysFeature),
+        provideEffects(HolidaysEffects),
+        { provide: ActivatedRoute, useValue: activatedRouter },
+        { provide: Configuration, useValue: { baseUrl: 'http://localhost:4200' } }
+      ]
     });
   });
 });
 ```
 
-Go to Cypress initial screen, click on component testing and run the test. It should be successful, i.e. you should see the rendered component.
+</p>
+</details>
 
 # 2. Add fonts and icons
 
@@ -54,11 +86,28 @@ Verify that the input field's value is set.
 
 ```typescript
 it('should set the address', () => {
+  const activatedRouter = { paramMap: scheduled([{ get: () => 1 }], asyncScheduler) };
+  cy.intercept('/holiday', {
+    body: [
+      createHoliday({
+        title: 'Vienna',
+        imageUrl: 'https://api.eternal-holidays.net/holiday/vienna.jpg'
+      })
+    ]
+  });
   mount(RequestInfoComponent, {
-    imports: [NoopAnimationsModule, HttpClientModule],
-    providers: [configurationProvider],
+    imports: [NoopAnimationsModule],
+    providers: [
+      provideHttpClient(),
+      provideStore(),
+      provideState(holidaysFeature),
+      provideEffects(HolidaysEffects),
+      { provide: ActivatedRoute, useValue: activatedRouter },
+      { provide: Configuration, useValue: { baseUrl: 'http://localhost:4200' } }
+    ],
     componentProperties: { address: 'Domgasse 5' }
   });
+
   cy.get('[data-testid=ri-address]').should('have.value', 'Domgasse 5');
 });
 ```
@@ -86,10 +135,28 @@ for (const { message, response } of [
   { message: 'Address not found', response: [] }
 ]) {
   it(`should intercept the network and return ${response} for ${message}`, () => {
+    const activatedRouter = { paramMap: scheduled([{ get: () => 1 }], asyncScheduler) };
+
+    cy.intercept('/holiday', {
+      body: [
+        createHoliday({
+          title: 'Vienna',
+          imageUrl: 'https://api.eternal-holidays.net/holiday/vienna.jpg'
+        })
+      ]
+    });
     cy.intercept(/nominatim/, { body: response });
+
     mount(RequestInfoComponent, {
-      imports: [NoopAnimationsModule, HttpClientModule],
-      providers: [configurationProvider]
+      imports: [NoopAnimationsModule],
+      providers: [
+        provideHttpClient(),
+        provideStore(),
+        provideState(holidaysFeature),
+        provideEffects(HolidaysEffects),
+        { provide: ActivatedRoute, useValue: activatedRouter },
+        { provide: Configuration, useValue: { baseUrl: 'http://localhost:4200' } }
+      ]
     });
 
     cy.testid('ri-address').type('Domgasse 5');
@@ -116,10 +183,20 @@ for (const { message, response } of [
   { message: 'Address not found', response: false }
 ]) {
   it(`should mock the AddressLookuper and return ${response} for ${message}`, () => {
+    const activatedRouter = { paramMap: scheduled([{ get: () => 1 }], asyncScheduler) };
     const lookuper = { lookup: () => scheduled([response], asyncScheduler) };
+
     mount(RequestInfoComponent, {
-      imports: [NoopAnimationsModule, HttpClientModule],
-      providers: [{ provide: AddressLookuper, useValue: lookuper }, configurationProvider]
+      imports: [NoopAnimationsModule],
+      providers: [
+        provideHttpClient(),
+        provideStore(),
+        provideState(holidaysFeature),
+        provideEffects(HolidaysEffects),
+        { provide: ActivatedRoute, useValue: activatedRouter },
+        { provide: Configuration, useValue: { baseUrl: 'http://localhost:4200' } },
+        { provide: AddressLookuper, useValue: lookuper }
+      ]
     });
 
     cy.testid('ri-address').type('Domgasse 5');
@@ -144,9 +221,25 @@ Find out the required `TestBed` configuration on your own and verify that the in
 
 ```typescript
 it('should use a wrapper component to set the address', () => {
+  const activatedRouter = { paramMap: scheduled([{ get: () => 1 }], asyncScheduler) };
+  cy.intercept('/holiday', {
+    body: [
+      createHoliday({
+        title: 'Vienna',
+        imageUrl: 'https://api.eternal-holidays.net/holiday/vienna.jpg'
+      })
+    ]
+  });
   mount(`<eternal-request-info address="Domgasse 5"></eternal-request-info>`, {
-    imports: [RequestInfoComponent, NoopAnimationsModule, HttpClientModule],
-    providers: [configurationProvider]
+    imports: [NoopAnimationsModule, RequestInfoComponent],
+    providers: [
+      provideHttpClient(),
+      provideStore(),
+      provideState(holidaysFeature),
+      provideEffects(HolidaysEffects),
+      { provide: ActivatedRoute, useValue: activatedRouter },
+      { provide: Configuration, useValue: { baseUrl: 'http://localhost:4200' } }
+    ]
   });
   cy.testid('ri-address').should('have.value', 'Domgasse 5');
 });
@@ -165,10 +258,33 @@ Write a test, where you mock the `HttpClient` in the same way, as you did the `A
 
 ```typescript
 it(`should mock the HttpClient`, () => {
-  const httpClient = { get: () => scheduled([[]], asyncScheduler) };
+  const httpClient = {
+    get: (url: string) => {
+      if (url.match(/holiday/)) {
+        return of(
+          createHoliday({
+            title: 'Vienna',
+            imageUrl: 'https://api.eternal-holidays.net/holiday/vienna.jpg'
+          })
+        );
+      } else if (url.match(/nominatim/)) {
+        return scheduled([[]], asyncScheduler);
+      }
+      throw `unnknown url: ${url}`;
+    }
+  };
+  const activatedRouter = { paramMap: scheduled([{ get: () => 1 }], asyncScheduler) };
+
   mount(RequestInfoComponent, {
     imports: [NoopAnimationsModule],
-    providers: [{ provide: HttpClient, useValue: httpClient }, configurationProvider]
+    providers: [
+      { provide: HttpClient, useValue: httpClient },
+      provideStore(),
+      provideState(holidaysFeature),
+      provideEffects(HolidaysEffects),
+      { provide: ActivatedRoute, useValue: activatedRouter },
+      { provide: Configuration, useValue: { baseUrl: 'http://localhost:4200' } }
+    ]
   });
 
   cy.testid('ri-address').type('Domgasse 5');
