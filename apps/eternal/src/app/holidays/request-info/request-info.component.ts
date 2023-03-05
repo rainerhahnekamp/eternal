@@ -31,7 +31,7 @@ import { validateAddress } from '../../shared/validate-address';
   ]
 })
 export class RequestInfoComponent implements OnInit {
-  #lookuper = { lookup: (query: string) => of(false) };
+  #lookuper = { lookup: (query: string) => of(true) };
   #formBuilder = inject(NonNullableFormBuilder);
   #route = inject(ActivatedRoute);
   #holidaysRepository = inject(HolidaysRepository);

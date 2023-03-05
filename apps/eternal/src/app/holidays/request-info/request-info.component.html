@@ -9,7 +9,7 @@
         <p>
           <mat-form-field>
             <mat-label>Address</mat-label>
-            <input data-testid="inp-address" formControlName="address" matInput />
+            <input data-testid="ri-address" formControlName="address" matInput />
             <mat-icon matSuffix>location_on</mat-icon>
             <mat-hint>Please enter your address</mat-hint>
           </mat-form-field>
@@ -18,7 +18,7 @@
           <a routerLink="../.." mat-raised-button>Cancel</a>
           <button
             color="primary"
-            data-testid="btn-search"
+            data-testid="ri-search"
             mat-raised-button
             type="submit"
             [disabled]="formGroup.invalid"
@@ -26,7 +26,7 @@
           </button>
         </div>
       </form>
-      <p data-testid="txt-message" class="text-center h-6" aria-live="assertive" role="status">
+      <p data-testid="ri-message" class="text-center h-6" aria-live="assertive" role="status">
         <span *ngIf="lookupResult$ | async as lookupResult">{{ lookupResult }}</span>
       </p>
     </div>

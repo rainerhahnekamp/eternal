@@ -4,13 +4,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Holiday } from '../model/holiday';
+import { BlinkerDirective } from '../../shared/blinker.directive';
 
 @Component({
   selector: 'eternal-holiday-card',
   template: ` <div class="flex flex-wrap justify-evenly">
-    <mat-card *ngIf="holiday" class="mt-4 max-w-xs">
+    <mat-card
+      *ngIf="holiday"
+      class="mt-4 max-w-xs"
+      eternalBlinker
+      [attr.aria-labelledby]="'holiday-card-' + holiday.id"
+      aria-labelledby="holiday-title"
+    >
       <mat-card-header>
-        <mat-card-title>{{ holiday.title }}</mat-card-title>
+        <mat-card-title [id]="'holiday-card-' + holiday.id">{{ holiday.title }}</mat-card-title>
         <mat-card-subtitle>{{ holiday.teaser }}</mat-card-subtitle>
       </mat-card-header>
       <img [src]="holiday.imageUrl" [alt]="holiday.title" />
@@ -18,14 +25,17 @@ import { Holiday } from '../model/holiday';
         {{ holiday.description }}
       </mat-card-content>
       <mat-card-actions *ngIf="requestBrochure" class="justify-center">
-        <a [routerLink]="['/holidays/request-info', holiday.id]" mat-raised-button
-          >Request Brochure</a
+        <a
+          data-testid="btn-brochure"
+          [routerLink]="['/holidays/request-info', holiday.id]"
+          mat-raised-button
+          >Get a Brochure</a
         >
       </mat-card-actions>
     </mat-card>
   </div>`,
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, NgIf, RouterLink]
+  imports: [MatCardModule, MatButtonModule, NgIf, RouterLink, BlinkerDirective]
 })
 export class HolidayCardComponent {
   @Input() holiday: Holiday | undefined;

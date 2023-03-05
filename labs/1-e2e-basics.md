@@ -227,7 +227,7 @@ If you are short on time, you can stop now. Your trainer will discuss the soluti
 ```typescript
 describe('E2E via Testing Library', () => {
   beforeEach('', () => {
-    cy.visit('?use-testid=0');
+    cy.visit('');
   });
 
   it('should request brochure for Firenze', () => {
