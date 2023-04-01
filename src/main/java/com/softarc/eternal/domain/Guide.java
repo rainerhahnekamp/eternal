@@ -1,6 +1,5 @@
 package com.softarc.eternal.domain;
 
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,5 +16,5 @@ public class Guide {
   private String lastname;
   private String email;
   private String phoneNr;
-  private String text;
+  private String bio;
 }
