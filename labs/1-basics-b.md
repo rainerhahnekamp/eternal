@@ -6,12 +6,14 @@
   - [2.1. Properties via `@Value()`](#21-properties-via-value)
   - [2.2. Properties via `ConfigurationProperties()`](#22-properties-via-configurationproperties)
 - [3. Setup Logging](#3-setup-logging)
-  - [3.1. Logging & Profiles](#31-logging--profiles)
+  - [3.1. Logging \& Profiles](#31-logging--profiles)
   - [3.2. Logging to file and console](#32-logging-to-file-and-console)
   - [3.3. Profile-based logging](#33-profile-based-logging)
   - [3.4. Profile-based Repository via `@Profile`](#34-profile-based-repository-via-profile)
   - [3.5. Profile-based Repository via Configuration](#35-profile-based-repository-via-configuration)
 - [4. Bonus: Enable Automatic Restart](#4-bonus-enable-automatic-restart)
+
+The solution branch for the whole lab is `solution-1-2-advanced`.
 
 # 1. Advanced Dependency Injection
 
