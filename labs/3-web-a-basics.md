@@ -1,5 +1,13 @@
 # DTOs
 
+An endpoint should be able to consume a complete `Holiday` object. For that we need to access it via a `POST` or `PUT` body and we only want to use a subset of the original `Holiday`.
+
+For that purpose, create a `HolidayDto` record which only contains `id`, `name`, `description`. `HolidaysController` is repsonsible to map `Holiday` to `HolidayDto`. Make sure that `name` and `description` are required.
+
+Create another record, called `HolidayResponse` which the endpoint uses for its answer. In the beginning, it should have the same properties as the `HolidayDto`.
+
+# DTOs
+
 - Come up with DTOs and update the frontend code as well. Use HolidayDto, HolidayResponse
 - GlobalAdvice and Explain Problem Http
 - Caching
@@ -33,3 +41,10 @@
 -
 - Progress
 - Quota Check
+
+# Further Exercises
+
+- Static Serving of Files
+- Filters (LoggingFilter)
+- Cookies
+- ResponseEntity
