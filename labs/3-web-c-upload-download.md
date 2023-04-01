@@ -9,13 +9,11 @@
   - [Quota](#quota)
   - [Image Type Recognition](#image-type-recognition)
 
-
 # 1. Uploading Files
 
 The solution branch for this exercise is `solution-3-3-upload-download-1-basic`.
 
 ## 1.1. Controller & Models
-
 
 We want to be able to upload a cover image for every holiday.
 
@@ -135,7 +133,7 @@ class HolidaysControllerIntegrationTest {
   @Autowired
   WebTestClient webTestClient;
 
-  @AfterEach
+  @BeforeEach
   void removeViennaFile() throws IOException {
     if (Files.exists(destinationPath)) {
       Files.delete(destinationPath);
@@ -207,7 +205,6 @@ If you're short on time - or don't want to deal too much with Angular in a Sprin
 
 # 2. Downloading/Viewing Files
 
-
 The solution branch for this exercise is `solution-3-3-upload-download-2-download`.
 
 ## 2.1. Endpoint
@@ -243,6 +240,7 @@ Try it out as well!
     );
   }
 ```
+
 </p>
 </details>
 
@@ -269,11 +267,11 @@ Increase the maximum upload size of an image to 4MB. You can do that by setting 
 **application.yml**
 
 ```yml
-
 spring.servlet.multipart:
   max-file-size: 4MB
   max-request-size: 4MB
 ```
+
 </p>
 </details>
 
