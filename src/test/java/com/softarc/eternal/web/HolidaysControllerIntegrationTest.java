@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.AfterAll;
 import java.util.Collections;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -43,8 +44,8 @@ class HolidaysControllerIntegrationTest {
   @MockBean
   HolidaysRepository repository;
 
-  @AfterAll
-  static void removeViennaFile() throws IOException {
+  @BeforeEach
+  void removeViennaFile() throws IOException {
     if (Files.exists(destinationPath)) {
       Files.delete(destinationPath);
     }
