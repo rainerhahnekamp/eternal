@@ -357,7 +357,7 @@ Register the MySQL connector by adding the a dependency in `build.gradle`.
 dependencies {
   // ...
 
-  implementation 'mysql:mysql-connector-java'
+  implementation 'mysql:mysql-connector-java:8.0.32'
 }
 ```
 
