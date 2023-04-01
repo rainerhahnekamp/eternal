@@ -1,9 +1,9 @@
 set -e
 
-git checkout master
+git checkout main
 
 declare -a branches=(
-  master
+  main
   solution-1-1-basics solution-1-2-advanced
   solution-2-1-basics solution-2-2-advanced
   solution-3-1-basics solution-3-2-openapi
@@ -32,4 +32,4 @@ done
 git checkout $branch
 git merge $current $branch -m merge
 
-git checkout master
+git checkout main
