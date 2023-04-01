@@ -24,7 +24,7 @@ If everything ran successfully, you should see new two files in your project's r
 
 In order to run the web console, add the following two dependencies to your **build.gradle**
 
-```kotlin
+```groovy
 implementation 'com.h2database:h2'
 testImplementation 'org.springframework.boot:spring-boot-starter-test'
 ```
