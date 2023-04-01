@@ -38,25 +38,7 @@ Apply the `@Converter` approach to persist the `enum` and create the necessary `
 
 Use the `WebClient` to send an order command to the printing service when a holiday is created. `WebClient` is part of the `org.springframework.boot:spring-boot-starter-webflux` dependency. You'll have to add it to your **build.gradle**.
 
-The `WebClient` should be provided as bean from the `AppConfiguration`. For the instantiation, execute
-
-```java
-package com.softarc.eternal;
-
-import org.springframework.web.reactive.function.client.WebClient;
-
-@Configuration
-public class AppConfiguration {
-
-  // ...
-
-  @Bean
-  public WebClient webClient() {
-    return WebClient.create("http://localhost:8081");
-  }
-}
-
-```
+Create a separate service which generates the `WebClient` instance and executes the communication. You'll have to mock that one.
 
 If the printing service returns a status code of 200, it should save the value `confirmed`, otherwise `failed`.
 
