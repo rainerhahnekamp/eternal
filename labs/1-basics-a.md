@@ -6,6 +6,8 @@
 - [4. Beans \& Dependency Injection](#4-beans--dependency-injection)
 - [5. Connecting the Frontend](#5-connecting-the-frontend)
 
+The solution branch for the whole lab is `solution-1-1-basics`.
+
 # 1. Create Domain Classes with Lombok support
 
 Create a new class `Holiday` under the package `com.softarc.eternal`. It should have the following properties:
