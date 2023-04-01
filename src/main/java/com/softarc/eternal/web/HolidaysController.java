@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.nio.file.Path;
+import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
