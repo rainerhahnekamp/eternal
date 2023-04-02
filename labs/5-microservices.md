@@ -1,3 +1,8 @@
+- [1. Preparation](#1-preparation)
+- [2. Native WebClient](#2-native-webclient)
+- [3. Feign Client](#3-feign-client)
+- [4. Message Broker](#4-message-broker)
+
 When a new holiday is created, we want to inform our printing department to start the production of new brochures.
 
 An API, powered by Spring Boot does already exist. It is located in the directory **/printing-service**.
@@ -22,7 +27,7 @@ In this lab, we communicate with the printing microservice in three different wa
 - synchronously via Feign
 - asynchronously via RabbitMQ
 
-# Preparation
+# 1. Preparation
 
 First, add a new property `brochureStatus` to `Holiday`. It should be an enum type with following types
 
@@ -36,7 +41,7 @@ Apply the `@Converter` approach to persist the `enum` and create the necessary `
 
 If you are short on time, you can also checkout or merge from **solution-6-microservices-1-brochure-status**.
 
-# Native WebClient
+# 2. Native WebClient
 
 Use the `WebClient` to send an order command to the printing service when a holiday is created. `WebClient` is part of the `org.springframework.boot:spring-boot-starter-webflux` dependency. You'll have to add it to your **build.gradle**.
 
@@ -219,7 +224,7 @@ class HolidaysControllerIntegrationTest {
 </p>
 </details>
 
-# Feign Client
+# 3. Feign Client
 
 Install Spring Cloud and replace the WebClient with an OpenFeign client. Enable it in **Application.java** by adding `@EnableFeignClients`.
 
@@ -314,7 +319,7 @@ public class AddPrintingJob {
 </p>
 </details>
 
-# Message Broker
+# 4. Message Broker
 
 Let's assume, we can send the print request to our printing service, but it could take a very long time until the printing-service is finished.
 
