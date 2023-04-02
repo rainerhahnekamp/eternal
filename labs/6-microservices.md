@@ -221,4 +221,97 @@ class HolidaysControllerIntegrationTest {
 
 # Feign Client
 
+Install Spring Cloud and replace the WebClient with an OpenFeign client. Enable it in **Application.java** by adding `@EnableFeignClients`.
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+Setup Spring Cloud first
+
+**build.gradle**
+
+```groovy
+// add this property
+ext {
+  set('springCloudVersion', "2022.0.2")
+}
+
+dependencies {
+  // ...
+  implementation 'org.springframework.cloud:spring-cloud-starter-openfeign' // <- add this
+}
+
+// add the property for dependency management
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+  }
+}
+
+
+```
+
+Create a Feign-enabled `PrintingClient`
+
+**PrintingClient.java**
+
+```java
+package com.softarc.eternal.remote.printing;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+
+@FeignClient(name = "printing", url = "http://localhost:8081")
+public interface PrintingClient {
+  @PostMapping(value = "/api/order")
+  boolean addPrintingJob(AddPrintingJobRequest addPrintingJobRequest);
+}
+
+```
+
+Update the `AddPrintingJob` so that it uses the newly created `PrintingClient`.
+
+**AddPrintingJob.java**
+
+```java
+package com.softarc.eternal.remote.printing;
+
+import com.softarc.eternal.domain.BrochureStatus;
+import com.softarc.eternal.domain.Holiday;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@Service
+public class AddPrintingJob {
+
+  private final PrintingClient printingClient;
+
+  public AddPrintingJob(PrintingClient printingClient) {
+    this.printingClient = printingClient;
+  }
+
+  public BrochureStatus add(Holiday holiday) {
+    try {
+      this.printingClient.addPrintingJob(
+          new AddPrintingJobRequest(
+            holiday.getId(),
+            holiday.getName(),
+            holiday.getDescription()
+          )
+        );
+      return BrochureStatus.CONFIRMED;
+    } catch (Exception e) {
+      return BrochureStatus.FAILED;
+    }
+  }
+}
+
+```
+
+</p>
+</details>
+
 # Message Broker
