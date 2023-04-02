@@ -14,6 +14,15 @@ services:
       - db_data:/var/lib/mysql
       - db_logs:/var/log/mysql
       - db_config:/etc/mysql/mysql.conf.d
+  amqp:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=eternal
+      - RABBITMQ_DEFAULT_PASS=eternal123
+    ports:
+      - 5672:5672
+      - 15672:15672
+
 
 volumes:
   db_data:
