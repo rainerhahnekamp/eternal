@@ -1,3 +1,8 @@
+- [1. Preparation](#1-preparation)
+- [2. Native WebClient](#2-native-webclient)
+- [3. Feign Client](#3-feign-client)
+- [4. Message Broker](#4-message-broker)
+
 When a new holiday is created, we want to inform our printing department to start the production of new brochures.
 
 An API, powered by Spring Boot does already exist. It is located in the directory **/printing-service**.
@@ -22,7 +27,7 @@ In this lab, we communicate with the printing microservice in three different wa
 - synchronously via Feign
 - asynchronously via RabbitMQ
 
-# Preparation
+# 1. Preparation
 
 First, add a new property `brochureStatus` to `Holiday`. It should be an enum type with following types
 
@@ -36,7 +41,7 @@ Apply the `@Converter` approach to persist the `enum` and create the necessary `
 
 If you are short on time, you can also checkout or merge from **solution-6-microservices-1-brochure-status**.
 
-# Native WebClient
+# 2. Native WebClient
 
 Use the `WebClient` to send an order command to the printing service when a holiday is created. `WebClient` is part of the `org.springframework.boot:spring-boot-starter-webflux` dependency. You'll have to add it to your **build.gradle**.
 
@@ -219,7 +224,7 @@ class HolidaysControllerIntegrationTest {
 </p>
 </details>
 
-# Feign Client
+# 3. Feign Client
 
 Install Spring Cloud and replace the WebClient with an OpenFeign client. Enable it in **Application.java** by adding `@EnableFeignClients`.
 
@@ -314,4 +319,136 @@ public class AddPrintingJob {
 </p>
 </details>
 
-# Message Broker
+# 4. Message Broker
+
+Let's assume, we can send the print request to our printing service, but it could take a very long time until the printing-service is finished.
+
+Keep the request as it is, but set the `brochureStatus` to `requested`.
+
+The printing service has with `POST http://localhost:8081/api/order/printed/{id}` and endpoint, that has to be triggered, when a print is done. It sends a message to RabbitMQ with the following details:
+
+- exchange: `printing-events`
+- routerKey: `printing.routing`
+
+Setup a queue along a receiver that consumes that message and sets the holiday to the status `printed`.
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+**build.gradle**
+
+```groovy
+dependencies {
+  // ...
+  implementation 'org.springframework.boot:spring-boot-starter-amqp' // <- add this
+}
+
+```
+
+Setup a `PrintedJobReceiver`, which receives the messages from RabbitMQ and changes the `brochureStatus` of that particular holiday.
+
+Then configure the queue for RabbitMQ
+
+**PrintedJobReceiver.java**
+
+```java
+package com.softarc.eternal.remote.printing;
+
+import com.softarc.eternal.data.HolidaysRepository;
+import com.softarc.eternal.domain.BrochureStatus;
+import lombok.extern.java.Log;
+import org.springframework.stereotype.Service;
+
+@Service
+@Log
+public class PrintedJobReceiver {
+
+  private final HolidaysRepository holidaysRepository;
+
+  PrintedJobReceiver(HolidaysRepository holidaysRepository) {
+    this.holidaysRepository = holidaysRepository;
+  }
+
+  public void processMessage(String message) {
+    Long holidayId = Long.parseLong(message);
+    this.holidaysRepository.findById(holidayId)
+      .ifPresentOrElse(
+        holiday -> {
+          holiday.setBrochureStatus(BrochureStatus.PRINTED);
+          this.holidaysRepository.save(holiday);
+        },
+        () -> {
+          log.warning("Could not find Holiday with ID " + holidayId);
+        }
+      );
+  }
+}
+
+```
+
+Last, setup the RabbitMQ configuration.
+
+**MessagingConfiguration.java**
+
+```java
+package com.softarc.eternal.messaging;
+
+import com.softarc.eternal.remote.printing.PrintedJobReceiver;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class MessagingConfiguration {
+
+  public static final String exchangeName = "printing-events";
+  public static final String queueName = "printing-events-queue";
+  public static final String routingKey = "printing.routing";
+
+  @Bean
+  Queue getQueue() {
+    return new Queue(queueName, false);
+  }
+
+  @Bean
+  TopicExchange getExchange() {
+    return new TopicExchange(exchangeName);
+  }
+
+  @Bean
+  Binding getBinding(Queue queue, TopicExchange exchange) {
+    return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+  }
+
+  @Bean
+  MessageListenerAdapter listenerAdapter(
+    PrintedJobReceiver printedJobReceiver
+  ) {
+    return new MessageListenerAdapter(printedJobReceiver, "processMessage");
+  }
+
+  @Bean
+  SimpleMessageListenerContainer getContainer(
+    ConnectionFactory connectionFactory,
+    MessageListenerAdapter listenerAdapter
+  ) {
+    SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+    container.setConnectionFactory(connectionFactory);
+    container.setQueueNames(queueName);
+    container.setMessageListener(listenerAdapter);
+
+    return container;
+  }
+}
+
+```
+
+</p>
+</details>
