@@ -3,7 +3,6 @@
 - [3. Customize method and service names](#3-customize-method-and-service-names)
 - [4. Datatype Mapping](#4-datatype-mapping)
 
-
 The solution branch for the whole lab is `solution-3-1-basics`.
 
 In this - short - exercise, we are going to setup OpenAPI, its UI and its code generator.
@@ -14,7 +13,7 @@ Install SpringDoc by adding its dependency to **build.gradle**
 
 ```groovy
 dependencies {
-  implementation 'org.springframework.boot:spring-boot-starter-validation'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.0-RC1'
 }
 ```
 
@@ -135,7 +134,7 @@ Add the property `List<HolidayTrip> trips` to `HolidayResponse`. In the controll
 
 Regenerate the Angular module and check out the **holidayTrip.ts**. You should see that it generated `string` as type for `fromData` and `toDate`.
 
-You can manipulate the type mapping via updating your generator script in the **package.json** to 
+You can manipulate the type mapping via updating your generator script in the **package.json** to
 
 ```bash
 openapi-generator-cli generate -i http://localhost:8080/v3/api-docs -g typescript-angular -o libs/openapi --type-mappings=DateTime=number
