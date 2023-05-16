@@ -13,7 +13,7 @@ Install SpringDoc by adding its dependency to **build.gradle**
 
 ```groovy
 dependencies {
-  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.0-RC1'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 }
 ```
 
