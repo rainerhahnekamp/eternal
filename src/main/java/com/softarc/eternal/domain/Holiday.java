@@ -37,4 +37,15 @@ public class Holiday {
   @Builder.Default
   @OneToMany(mappedBy = "holiday")
   private List<HolidayTrip> trips = new ArrayList<>();
+
+  @ManyToMany
+  @JoinTable(
+    name = "holiday_trip",
+    joinColumns = @JoinColumn(name = "holiday_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(
+      name = "guide_id",
+      referencedColumnName = "id"
+    )
+  )
+  public List<Guide> guides;
 }

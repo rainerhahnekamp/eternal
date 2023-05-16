@@ -9,9 +9,9 @@ import com.softarc.eternal.web.response.HolidayResponse;
 import com.softarc.eternal.web.response.HolidayTripDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Path;
-import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -74,7 +74,8 @@ public class HolidaysController {
       holidayDto.name(),
       holidayDto.description(),
       filename,
-      Collections.emptyList()
+      Collections.emptyList(),
+      null
     );
     this.repository.save(holiday);
     return true;

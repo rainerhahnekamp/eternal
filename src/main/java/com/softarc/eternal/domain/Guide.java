@@ -1,6 +1,7 @@
 package com.softarc.eternal.domain;
 
 import jakarta.persistence.*;
+import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,4 +27,7 @@ public class Guide {
 
   @OneToMany
   private Set<HolidayTrip> holidayTrips;
+
+  @ManyToMany(mappedBy = "guides")
+  private List<Holiday> holidays;
 }

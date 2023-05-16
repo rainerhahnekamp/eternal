@@ -54,11 +54,19 @@ public class FsHolidays implements Holidays {
         "Canada",
         "Visit Rocky Mountains",
         null,
-        new ArrayList<>()
+        new ArrayList<>(),
+        null
       )
     );
     holidays.add(
-      new Holiday(2L, "China", "To the Middle Kingdom", null, new ArrayList<>())
+      new Holiday(
+        2L,
+        "China",
+        "To the Middle Kingdom",
+        null,
+        new ArrayList<>(),
+        null
+      )
     );
     this.currentId = this.getCurrentId();
     this.persist();
@@ -82,7 +90,8 @@ public class FsHolidays implements Holidays {
           name,
           description,
           optCover.get(),
-          new ArrayList<>()
+          new ArrayList<>(),
+          null
         )
       );
     this.persist();
