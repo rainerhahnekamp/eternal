@@ -79,9 +79,9 @@ package com.softarc.eternal.data;
 
 import com.softarc.eternal.domain.Holiday;
 import java.util.List;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.JpaRepository;
 
-public interface HolidaysRepository extends CrudRepository<Holiday, Long> {
+public interface HolidaysRepository extends JpaRepository<Holiday, Long> {
   List<Holiday> findAll();
 }
 
