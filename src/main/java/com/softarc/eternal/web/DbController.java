@@ -7,18 +7,22 @@ import com.softarc.eternal.data.HolidaysRepository;
 import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.domain.HolidayTrip;
 import com.softarc.eternal.web.response.HolidayDbResponse;
+import jakarta.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.extern.java.Log;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("db")
+@Log
 public class DbController {
 
   private final HolidaysRepository repository;
@@ -88,5 +92,24 @@ public class DbController {
       .stream()
       .map(Holiday::getName)
       .toList();
+  }
+
+  @PostMapping("change-holiday")
+  @Transactional
+  public void changeHoliday() {
+    var holiday = repository.findAll().stream().findFirst().orElseThrow();
+    log.info("update");
+    holiday.setName("Canada");
+    repository.save(holiday);
+  }
+
+  @PostMapping("change-holiday-delayed")
+  @Transactional
+  public void changeHolidayDelayed() throws InterruptedException {
+    var holiday = repository.findAll().stream().findFirst().orElseThrow();
+    Thread.sleep(3000);
+    log.info("delayed update");
+    holiday.setName("Korea");
+    repository.save(holiday);
   }
 }

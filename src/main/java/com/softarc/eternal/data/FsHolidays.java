@@ -54,6 +54,7 @@ public class FsHolidays implements Holidays {
         "Canada",
         "Visit Rocky Mountains",
         null,
+        1L,
         new ArrayList<>(),
         null
       )
@@ -64,6 +65,7 @@ public class FsHolidays implements Holidays {
         "China",
         "To the Middle Kingdom",
         null,
+        1L,
         new ArrayList<>(),
         null
       )
@@ -90,6 +92,7 @@ public class FsHolidays implements Holidays {
           name,
           description,
           optCover.get(),
+          1L,
           new ArrayList<>(),
           null
         )

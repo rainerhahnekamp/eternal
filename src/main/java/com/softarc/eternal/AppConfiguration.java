@@ -36,6 +36,7 @@ public class AppConfiguration {
               "Canada",
               "Visit Rocky Mountains",
               null,
+              1L,
               Collections.emptyList(),
               null
             ),
@@ -44,6 +45,7 @@ public class AppConfiguration {
               "China",
               "To the Middle Kingdom",
               null,
+              1L,
               Collections.emptyList(),
               null
             )

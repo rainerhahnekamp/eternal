@@ -34,6 +34,7 @@ public class DefaultHolidays implements Holidays {
       name,
       description,
       optCover.orElse(""),
+      1L,
       new ArrayList<>(),
       null
     );
