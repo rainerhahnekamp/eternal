@@ -1,0 +1,11 @@
+div.container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+
+  app-holiday-card {
+    display: flex;
+    flex: 1 0 232px;
+    margin: 2em;
+  }
+}

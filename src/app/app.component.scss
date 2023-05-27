@@ -1,0 +1,15 @@
+div.main {
+  max-width: 1280px;
+  margin: 0 auto;
+  flex-direction: column;
+  justify-content: stretch;
+
+  mat-drawer-container {
+    flex: 1 1 auto;
+    min-height: 25em;
+
+    mat-drawer {
+      background: #fafafa;
+    }
+  }
+}
