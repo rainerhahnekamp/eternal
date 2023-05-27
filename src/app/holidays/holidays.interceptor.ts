@@ -1,7 +1,7 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { of } from 'rxjs';
-import { Configuration } from '../shared/configuration';
+import { Configuration } from '@app/shared';
 import { holidays } from './holidays.data';
 
 export const holidaysInterceptor: HttpInterceptorFn = (req, next) => {

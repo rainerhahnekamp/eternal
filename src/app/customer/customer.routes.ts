@@ -1,6 +1,5 @@
 import {
   HTTP_INTERCEPTORS,
-  HttpClient,
   provideHttpClient,
   withInterceptorsFromDi,
   withRequestsMadeViaParent
@@ -8,7 +7,6 @@ import {
 import { Routes } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideState } from '@ngrx/store';
-import { environment } from '../../environments/environment';
 import { CustomerEffects } from './+state/customer.effects';
 import { customersFeature } from './+state/customer.reducer';
 import { CustomerComponent } from './customer/customer.component';

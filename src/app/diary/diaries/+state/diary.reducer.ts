@@ -1,5 +1,4 @@
 import { createReducer, on } from '@ngrx/store';
-import { flatten } from 'lodash-es';
 import { diaryActions } from './diary.actions';
 
 export const diaryFeatureKey = 'diary';
@@ -41,16 +40,16 @@ export const diaryReducer = createReducer<DiaryState>(
     ...state,
     loaded: true,
     diaries: diaryResponse.diaries.map((diary) => {
-      const { entries, ...rest } = diary;
-      return rest;
+      const { id, title, description } = diary;
+      return { id, title, description };
     }),
-    diaryEntries: flatten(diaryResponse.diaries.map((diary) => diary.entries))
+    diaryEntries: diaryResponse.diaries.map((diary) => diary.entries).flat()
   })),
   on(diaryActions.addSuccess, (state, action) => {
-    const { entries, ...diary } = action.diaryWithEntries;
+    const { id, title, description } = action.diaryWithEntries;
     return {
       ...state,
-      diaries: [...state.diaries, diary]
+      diaries: [...state.diaries, { id, title, description }]
     };
   })
 );

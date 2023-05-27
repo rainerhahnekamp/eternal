@@ -4,7 +4,7 @@ import { JsonPipe, NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
-  selector: 'eternal-form-errors',
+  selector: 'app-form-errors',
   template: ` <ng-container *ngIf="control">
     <span *ngIf="control.hasError('required')">This field is mandatory</span>
   </ng-container>`,

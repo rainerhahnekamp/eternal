@@ -3,8 +3,8 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType, OnInitEffects } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs/operators';
 import { holidaysActions } from './holidays.actions';
-import { Holiday } from '../model/holiday';
-import { Configuration } from '../../shared/configuration';
+import { Holiday } from '../model';
+import { Configuration } from '@app/shared';
 
 @Injectable()
 export class HolidaysEffects implements OnInitEffects {

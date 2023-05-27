@@ -1,9 +1,7 @@
 import { ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { describe, expect, beforeEach } from '@jest/globals';
+// import { beforeEach, describe, expect } from '@jest/globals';
 import { NewsletterComponent } from './newsletter.component';
-import { Configuration } from '../shared/configuration';
 
 describe('NewsletterComponent', () => {
   let component: NewsletterComponent;

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'eternal-diaries',
+  selector: 'app-diaries',
   templateUrl: './diaries.component.html',
   styleUrls: ['./diaries.component.scss'],
   standalone: true

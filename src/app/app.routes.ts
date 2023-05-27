@@ -1,10 +1,10 @@
 import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { NewsletterComponent } from './newsletter/newsletter.component';
-import { SecurityService } from './security/security.service';
+import { SecurityService } from '@app/security';
 import { inject } from '@angular/core';
 import { filter } from 'rxjs/operators';
-import { Configuration } from './shared/configuration';
+import { Configuration } from '@app/shared';
 
 export const appRoutes: Routes = [
   {

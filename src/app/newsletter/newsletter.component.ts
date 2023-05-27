@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'eternal-newsletter',
+  selector: 'app-newsletter',
   templateUrl: './newsletter.component.html',
   standalone: true,
   imports: [ReactiveFormsModule]

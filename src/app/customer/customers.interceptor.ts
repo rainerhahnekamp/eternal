@@ -12,7 +12,7 @@ import { Observable, of } from 'rxjs';
 import { delay, map, tap } from 'rxjs/operators';
 import { Customer } from './customer';
 import { customers as originalCustomers } from './data';
-import { Configuration } from '../shared/configuration';
+import { Configuration } from '@app/shared';
 
 @Injectable()
 export class CustomersInterceptor implements HttpInterceptor {

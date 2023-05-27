@@ -3,7 +3,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'eternal-cookie-confirmer',
+  selector: 'app-cookie-confirmer',
   standalone: true,
   imports: [MatButtonModule, MatDialogModule],
   template: ` <div>

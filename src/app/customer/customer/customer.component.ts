@@ -9,14 +9,14 @@ import { fromCustomer } from '../+state/customer.selectors';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { FormErrorsComponent } from '../../shared/form-errors.component';
+import { FormErrorsComponent } from '@app/shared';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { countries } from '../countries';
 
 @Component({
-  selector: 'eternal-customer',
+  selector: 'app-customer',
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss'],
   standalone: true,

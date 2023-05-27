@@ -4,16 +4,14 @@
     <mat-label>Firstname</mat-label>
     <input data-testid="inp-firstname" formControlName="firstname" matInput />
     <mat-error
-      ><eternal-form-errors [control]="formGroup.controls.firstname"></eternal-form-errors>
+      ><app-form-errors [control]="formGroup.controls.firstname"></app-form-errors>
     </mat-error>
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Name</mat-label>
     <input data-testid="inp-name" formControlName="name" matInput />
-    <mat-error
-      ><eternal-form-errors [control]="formGroup.controls.name"></eternal-form-errors>
-    </mat-error>
+    <mat-error><app-form-errors [control]="formGroup.controls.name"></app-form-errors> </mat-error>
   </mat-form-field>
 
   <mat-form-field>
@@ -27,7 +25,7 @@
       >
     </mat-select>
     <mat-error
-      ><eternal-form-errors [control]="formGroup.controls.country"></eternal-form-errors>
+      ><app-form-errors [control]="formGroup.controls.country"></app-form-errors>
     </mat-error>
   </mat-form-field>
 
@@ -42,7 +40,7 @@
     <mat-datepicker-toggle matIconSuffix [for]="picker" />
     <mat-datepicker #picker />
     <mat-error
-      ><eternal-form-errors [control]="formGroup.controls.birthdate"></eternal-form-errors>
+      ><app-form-errors [control]="formGroup.controls.birthdate"></app-form-errors>
     </mat-error>
   </mat-form-field>
 

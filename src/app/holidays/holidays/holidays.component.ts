@@ -1,14 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { holidaysActions } from '../+state/holidays.actions';
-import { fromHolidays } from '../+state/holidays.selectors';
 import { HolidayCardComponent } from '../holiday-card/holiday-card.component';
 import { AsyncPipe, NgForOf } from '@angular/common';
-import { createHoliday } from '../model/holiday';
-import { ImagesLoadedService } from '../../shared/images-loaded.service';
-import { concatMap, delay, filter, map } from 'rxjs/operators';
-import { concat, first, of } from 'rxjs';
+import { createHoliday } from '../model';
+import { ImagesLoadedService } from '@app/shared';
+import { HolidaysRepository } from '../+state';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const hiddenVienna = createHoliday({
   id: -1,
   title: 'Hidden Vienna',
@@ -18,9 +16,9 @@ const hiddenVienna = createHoliday({
 });
 
 @Component({
-  selector: 'eternal-holidays',
+  selector: 'app-holidays',
   template: `<div class="container">
-    <eternal-holiday-card
+    <app-holiday-card
       *ngFor="let holiday of holidays$ | async"
       [holiday]="holiday"
       data-testid="holiday-card"
@@ -30,28 +28,27 @@ const hiddenVienna = createHoliday({
   standalone: true,
   imports: [HolidayCardComponent, NgForOf, AsyncPipe]
 })
-export class HolidaysComponent implements OnInit {
+export class HolidaysComponent {
+  #repo = inject(HolidaysRepository);
   #store = inject(Store);
   #imagesLoadedService = inject(ImagesLoadedService);
 
-  holidays$ = this.#store.select(fromHolidays.holidays).pipe(
-    concatMap((holidays) =>
-      holidays.length
-        ? concat(
-            of(holidays),
+  holidays$ = this.#repo.holidays$;
 
-            this.#imagesLoadedService.loaded$.pipe(
-              filter(Boolean),
-              map(() => [...holidays, hiddenVienna]),
-              delay(1000),
-              first()
-            )
-          )
-        : of(holidays)
-    )
-  );
-
-  ngOnInit(): void {
-    this.#store.dispatch(holidaysActions.load());
-  }
+  // holidays$ = this.#store.select(fromHolidays.holidays).pipe(
+  //   concatMap((holidays) =>
+  //     holidays.length
+  //       ? concat(
+  //           of(holidays),
+  //
+  //           this.#imagesLoadedService.loaded$.pipe(
+  //             filter(Boolean),
+  //             map(() => [...holidays, hiddenVienna]),
+  //             delay(1000),
+  //             first()
+  //           )
+  //         )
+  //       : of(holidays)
+  //   )
+  // );
 }

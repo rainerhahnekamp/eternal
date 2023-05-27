@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[eternalBlinker]',
+  selector: '[appBlinker]',
   standalone: true
 })
 export class BlinkerDirective {

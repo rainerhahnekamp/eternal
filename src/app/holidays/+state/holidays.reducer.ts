@@ -1,5 +1,5 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { Holiday } from '../model/holiday';
+import { Holiday } from '../model';
 import { holidaysActions } from './holidays.actions';
 
 export interface HolidaysState {

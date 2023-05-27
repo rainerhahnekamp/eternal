@@ -29,9 +29,9 @@
       <span *ngIf="lookupResult$ | async as lookupResult">{{ lookupResult }}</span>
     </p>
   </div>
-  <eternal-holiday-card
+  <app-holiday-card
     *ngIf="holiday$ | async as holiday"
     [holiday]="holiday"
     [requestBrochure]="false"
-  ></eternal-holiday-card>
+  ></app-holiday-card>
 </div>

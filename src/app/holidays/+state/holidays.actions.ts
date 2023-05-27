@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { Holiday } from '../model/holiday';
+import { Holiday } from '../model';
 
 export const holidaysActions = createActionGroup({
   source: 'Holidays',

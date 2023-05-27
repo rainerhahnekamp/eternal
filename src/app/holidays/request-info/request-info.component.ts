@@ -8,13 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Holiday } from '../model/holiday';
-import { HolidaysRepository } from '../+state/holidays-repository.service';
+import { Holiday } from '../model';
 import { HolidayCardComponent } from '../holiday-card/holiday-card.component';
-import { validateAddress } from '../../shared/validate-address';
+import { validateAddress } from '@app/shared';
+import { HolidaysRepository } from '../+state';
 
 @Component({
-  selector: 'eternal-request-info',
+  selector: 'app-request-info',
   templateUrl: './request-info.component.html',
   standalone: true,
   imports: [
@@ -31,7 +31,7 @@ import { validateAddress } from '../../shared/validate-address';
   ]
 })
 export class RequestInfoComponent implements OnInit {
-  #lookuper = { lookup: (query: string) => of(true) };
+  #lookuper = { lookup: (query: string) => of(Boolean(query)) };
   #formBuilder = inject(NonNullableFormBuilder);
   #route = inject(ActivatedRoute);
   #holidaysRepository = inject(HolidaysRepository);

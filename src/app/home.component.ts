@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { Configuration } from './shared/configuration';
+import { Configuration } from '@app/shared';
 
 @Component({
-  selector: 'eternal-home',
+  selector: 'app-home',
   template: `<h2 data-testid="greeting">Welcome to Eternal</h2>
     <p data-testid="txt-greeting-1">
       Eternal is an imaginary travel agency and is used as training application for Angular

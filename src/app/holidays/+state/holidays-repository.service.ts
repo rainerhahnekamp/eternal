@@ -4,7 +4,7 @@ import { fromHolidays } from './holidays.selectors';
 import { filter } from 'rxjs/operators';
 import { holidaysActions } from './holidays.actions';
 import { Observable } from 'rxjs';
-import { Holiday } from '../model/holiday';
+import { Holiday } from '../model';
 
 @Injectable({ providedIn: 'root' })
 export class HolidaysRepository {
@@ -20,5 +20,5 @@ export class HolidaysRepository {
 
   select = (id: number) => this.#store.dispatch(holidaysActions.select({ id }));
 
-  unselect = (id: number) => this.#store.dispatch(holidaysActions.unselect());
+  unselect = () => this.#store.dispatch(holidaysActions.unselect());
 }

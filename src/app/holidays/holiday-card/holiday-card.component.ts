@@ -3,17 +3,16 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Holiday } from '../model/holiday';
-import { BlinkerDirective } from '../../shared/blinker.directive';
-import { ImageLoadedDirective } from '../../shared/image-loaded.directive';
+import { Holiday } from '../model';
+import { BlinkerDirective, ImageLoadedDirective } from '@app/shared';
 
 @Component({
-  selector: 'eternal-holiday-card',
+  selector: 'app-holiday-card',
   template: ` <div class="flex flex-wrap justify-evenly">
     <mat-card
       *ngIf="holiday"
       class="mt-4 max-w-xs"
-      eternalBlinker
+      appBlinker
       [attr.aria-labelledby]="'holiday-card-' + holiday.id"
       aria-labelledby="holiday-title"
     >
