@@ -50,3 +50,6 @@ Thumbs.db
 /debug.log
 .yarn
 .angular
+/test-results/
+/playwright-report/
+/playwright/.cache/
