@@ -5,7 +5,9 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "e2e": "nx e2e e2e",
+    "e2e:watch": "nx e2e e2e --watch"
   },
   "private": true,
   "dependencies": {
@@ -39,7 +41,7 @@
     "@angular/cli": "~16.0.0",
     "@angular/compiler-cli": "~16.0.0",
     "@angular/language-service": "~16.0.0",
-    "@nx/cypress": "16.2.2",
+    "@nx/cypress": "^16.2.2",
     "@nx/eslint-plugin": "16.2.2",
     "@nx/jest": "16.2.2",
     "@nx/js": "16.2.2",
