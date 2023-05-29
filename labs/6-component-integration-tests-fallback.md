@@ -6,9 +6,10 @@
   - [2.2. Component Test](#22-component-test)
   - [2.3. Integration Test](#23-integration-test)
 - [3. Harnesses](#3-harnesses)
-  - [3.1. 4.1 RequestInfoComponentHarness](#31-41-requestinfocomponentharness)
+  - [3.1. RequestInfoComponentHarness](#31-requestinfocomponentharness)
   - [3.2. Reusing Material Harnesses](#32-reusing-material-harnesses)
-  - [3.3. 4.3: Harness with multiple elements](#33-43-harness-with-multiple-elements)
+
+Checkout the branch `starter-06-rxjs`.
 
 Double-check, that the `RequestInfoComponent` uses the `AddressLookuper`. If not, merge from the `solution` branch or inject it on your own.
 
@@ -27,31 +28,37 @@ Place this test into a new file: **holidays/request-info/request-info.component.
 <p>
 
 ```typescript
-import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
-import { By } from '@angular/platform-browser';
+import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { asyncScheduler, scheduled } from 'rxjs';
-import { AddressLookuper } from '../../shared/address-lookuper.service';
-import { assertType } from '../../shared/assert-type';
 import { RequestInfoComponent } from './request-info.component';
-import { RequestInfoComponentModule } from './request-info.component.module';
-import { configurationProvider } from '../../shared/configuration';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { AddressLookuper, Configuration } from '@app/shared';
+import { provideRouter } from '@angular/router';
+import { provideLocationMocks } from '@angular/common/testing';
+import { By } from '@angular/platform-browser';
 
 describe('Request Info Component', () => {
   it('should find an address', fakeAsync(() => {
     const lookuper = {
-      lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
+      lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler),
     };
     const fixture = TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, RequestInfoComponentModule],
-      providers: [{ provide: AddressLookuper, useValue: lookuper }, configurationProvider]
+      imports: [NoopAnimationsModule, RequestInfoComponent],
+      providers: [
+        provideRouter([]),
+        provideLocationMocks(),
+        { provide: AddressLookuper, useValue: lookuper },
+        {
+          provide: Configuration,
+          useValue: { baseUrl: 'http://localhost:4200' },
+        },
+      ],
     }).createComponent(RequestInfoComponent);
-    const input = fixture.debugElement.query(By.css('[data-testid=ri-address]'))
-      .nativeElement as HTMLInputElement;
-    const button = fixture.debugElement.query(By.css('[data-testid=ri-search]'))
-      .nativeElement as HTMLButtonElement;
+    const input = fixture.debugElement.query(By.css('[data-testid=ri-address]')).nativeElement as HTMLInputElement;
+    const button = fixture.debugElement.query(By.css('[data-testid=ri-search]')).nativeElement as HTMLButtonElement;
 
     fixture.detectChanges();
+    flush();
 
     input.value = 'Domgasse 5';
     input.dispatchEvent(new Event('input'));
@@ -59,8 +66,7 @@ describe('Request Info Component', () => {
     tick();
     fixture.detectChanges();
 
-    const lookupResult = fixture.debugElement.query(By.css('[data-testid=ri-message]'))
-      .nativeElement as HTMLButtonElement;
+    const lookupResult = fixture.debugElement.query(By.css('[data-testid=ri-message]')).nativeElement as HTMLButtonElement;
     expect(lookupResult.textContent).toContain('Brochure sent');
   }));
 });
@@ -82,15 +88,23 @@ Add an integration where you don't mock the `AddressLookuper`, but only the `Htt
 ```typescript
 it('should do an integration test for Domgasse 5', fakeAsync(() => {
   const fixture = TestBed.configureTestingModule({
-    imports: [NoopAnimationsModule, RequestInfoComponentModule, HttpClientTestingModule],
-    providers: [configurationProvider]
+    imports: [NoopAnimationsModule, RequestInfoComponent],
+    providers: [
+      provideRouter([]),
+      provideLocationMocks(),
+      provideHttpClient(),
+      provideHttpClientTesting(),
+      {
+        provide: Configuration,
+        useValue: { baseUrl: 'http://localhost:4200' },
+      },
+    ],
   }).createComponent(RequestInfoComponent);
-  const input = fixture.debugElement.query(By.css('[data-testid=ri-address]'))
-    .nativeElement as HTMLInputElement;
-  const button = fixture.debugElement.query(By.css('[data-testid=ri-search]'))
-    .nativeElement as HTMLButtonElement;
+  const input = fixture.debugElement.query(By.css('[data-testid=ri-address]')).nativeElement as HTMLInputElement;
+  const button = fixture.debugElement.query(By.css('[data-testid=ri-search]')).nativeElement as HTMLButtonElement;
 
   fixture.detectChanges();
+  flush();
 
   input.value = 'Domgasse 5';
   input.dispatchEvent(new Event('input'));
@@ -101,8 +115,7 @@ it('should do an integration test for Domgasse 5', fakeAsync(() => {
   tick();
   fixture.detectChanges();
 
-  const lookupResult = fixture.debugElement.query(By.css('[data-testid=ri-message]'))
-    .nativeElement as HTMLButtonElement;
+  const lookupResult = fixture.debugElement.query(By.css('[data-testid=ri-message]')).nativeElement as HTMLButtonElement;
   expect(lookupResult.textContent).toContain('Brochure sent');
 }));
 ```
@@ -122,7 +135,13 @@ Name the test file **request-info.component.tl.spec.ts**.
 describe('Request Info with Testing Library', () => {
   const setup = async () => {
     const renderResult = await render(RequestInfoComponent, {
-      providers: [provideMock(AddressLookuper), configurationProvider]
+      providers: [
+        provideMock(AddressLookuper),
+        {
+          provide: Configuration,
+          useValue: { baseUrl: 'http://localhost:4200' },
+        },
+      ],
     });
     const user = userEvent.setup();
 
@@ -143,13 +162,11 @@ Write a parameterized component test, where you mock the `AddressLookuper`.
 ```typescript
 it.each([
   { input: 'Domgasse 5', message: 'Brochure sent' },
-  { input: 'Domgasse 15', message: 'Address not found' }
+  { input: 'Domgasse 15', message: 'Address not found' },
 ])('should show $message for $input', async ({ input, message }) => {
   const { user } = await setup();
   const lookuper = TestBed.inject(AddressLookuper);
-  jest
-    .spyOn(lookuper, 'lookup')
-    .mockImplementation((query) => scheduled([query === 'Domgasse 5'], asyncScheduler));
+  jest.spyOn(lookuper, 'lookup').mockImplementation((query) => scheduled([query === 'Domgasse 5'], asyncScheduler));
 
   await user.type(screen.getByTestId('ri-address'), input);
   await user.click(screen.getByTestId('ri-search'));
@@ -175,8 +192,14 @@ describe('Request Info with Testing Library', () => {
   describe('Integration Test', () => {
     const setup = async () => {
       const renderResult = await render(RequestInfoComponent, {
-        imports: [HttpClientTestingModule],
-        providers: [configurationProvider]
+        providers: [
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          {
+            provide: Configuration,
+            useValue: { baseUrl: 'http://localhost:4200' },
+          },
+        ],
       });
       const user = userEvent.setup();
 
@@ -190,7 +213,7 @@ describe('Request Info with Testing Library', () => {
 
     it.each([
       { input: 'Domgasse 5', message: 'Brochure sent', response: [true] },
-      { input: 'Domgasse 15', message: 'Address not found', response: [] }
+      { input: 'Domgasse 15', message: 'Address not found', response: [] },
     ])('should show $message for $input', async ({ input, message, response }) => {
       const { user } = await setup();
 
@@ -209,7 +232,7 @@ describe('Request Info with Testing Library', () => {
 
 # 3. Harnesses
 
-## 3.1. 4.1 RequestInfoComponentHarness
+## 3.1. RequestInfoComponentHarness
 
 Create a harness for the request info component.
 
@@ -249,23 +272,20 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { asyncScheduler, scheduled } from 'rxjs';
-import { AddressLookuper } from '../../shared/address-lookuper.service';
 import { RequestInfoComponent } from './request-info.component';
 import { RequestInfoComponentHarness } from './request-info.component.harness';
+import { AddressLookuper } from '@app/shared';
 
 describe('Request Info Component', () => {
   it('should find an address', async () => {
     const lookuper = {
-      lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler)
+      lookup: (query: string) => scheduled([query === 'Domgasse 5'], asyncScheduler),
     };
     const fixture = TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, RequestInfoComponent],
-      providers: [{ provide: AddressLookuper, useValue: lookuper }]
+      providers: [provideRouter([]), { provide: AddressLookuper, useValue: lookuper }],
     }).createComponent(RequestInfoComponent);
-    const harness = await TestbedHarnessEnvironment.harnessForFixture(
-      fixture,
-      RequestInfoComponentHarness
-    );
+    const harness = await TestbedHarnessEnvironment.harnessForFixture(fixture, RequestInfoComponentHarness);
 
     // use harness here to set the queries and submit
   });
@@ -307,7 +327,7 @@ import { MatInputHarness } from '@angular/material/input/testing';
 export class RequestInfoComponentHarness extends ComponentHarness {
   static hostSelector = 'eternal-request-info';
   protected getInput = this.locatorFor(MatInputHarness);
-  protected getButton = this.locatorFor(MatButtonHarness);
+  protected getButton = this.locatorFor(MatButtonHarness.with({ selector: '[data-testid=ri-search]' }));
   protected getLookupResult = this.locatorFor('[data-testid=ri-message]');
 
   async search(): Promise<void> {
@@ -329,15 +349,3 @@ export class RequestInfoComponentHarness extends ComponentHarness {
 
 </p>
 </details>
-
-## 3.3. 4.3: Harness with multiple elements
-
-Add a further button with type `button` in the request-info's template. It must be BEFORE the submit button. Verify that the **should find an adresss** fails.
-
-Upgrade the `getButton` method in the harness so that it find the right one:
-
-```typescript
-  protected getButton = this.locatorFor(
-    MatButtonHarness.with({ selector: '[data-testid=ri-search]' })
-  );
-```

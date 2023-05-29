@@ -1,10 +1,11 @@
 - [1. ngrx Reducer](#1-ngrx-reducer)
 - [2. ngrx Selectors](#2-ngrx-selectors)
 - [3. ngrx Effect](#3-ngrx-effect)
+  Checkout the branch `starter-05-rxjs`.
 
 # 1. ngrx Reducer
 
-Let's test the reducer. Very easy actually.
+Let's test the reducer.
 
 **holidays/+state/holidays.reducer.spec.ts**
 
@@ -12,13 +13,10 @@ Let's test the reducer. Very easy actually.
 it('should add the holidays on findHolidaySuccess', () => {
   const holidays = [
     { id: 1, title: 'Pyramids' },
-    { id: 2, title: 'Tower Bridge' }
+    { id: 2, title: 'Tower Bridge' },
   ] as Holiday[];
 
-  const state = holidaysFeature.reducer(
-    { holidays: [] },
-    holidaysActions.findHolidaysSuccess({ holidays })
-  );
+  const state = holidaysFeature.reducer({ holidays: [] }, holidaysActions.findHolidaysSuccess({ holidays }));
 
   expect(state).toEqual({ holidays });
 });
@@ -45,7 +43,7 @@ it('should replace existing holidays on findHolidaySuccess', () => {
   const state = holidaysFeature.reducer(
     initialState,
     holidaysActions.findHolidaysSuccess({
-      holidays: [{ id: 2, title: 'Tower Bridge' } as Holiday]
+      holidays: [{ id: 2, title: 'Tower Bridge' } as Holiday],
     })
   );
 
@@ -67,13 +65,13 @@ it('should select the holidays', () => {
   const state: HolidaysState = {
     holidays: [
       { id: 1, title: 'Pyramids' },
-      { id: 2, title: 'Tower Bridge' }
-    ] as Holiday[]
+      { id: 2, title: 'Tower Bridge' },
+    ] as Holiday[],
   };
 
   expect(fromHolidays.get.projector(state)).toEqual([
     { id: 1, title: 'Pyramids' },
-    { id: 2, title: 'Tower Bridge' }
+    { id: 2, title: 'Tower Bridge' },
   ] as Holiday[]);
 });
 ```
@@ -87,24 +85,20 @@ it(
   'should test find$',
   marbles((m) => {
     const httpClient = {
-      get: () => m.cold('---a', { a: [{ id: 1, imageUrl: '/pyramids.jpg' }] })
+      get: () => m.cold('---a', { a: [{ id: 1, imageUrl: '/pyramids.jpg' }] }),
     };
     const actions$ = m.cold('a', { a: holidaysActions.findHolidays() });
 
-    const effect = new HolidaysEffects(
-      actions$,
-      (httpClient as unknown) as HttpClient,
-      'http://api.eternal-holidays.net'
-    );
+    const effect = new HolidaysEffects(actions$, httpClient as unknown as HttpClient, 'http://api.eternal-holidays.net');
     m.expect(effect.find$).toBeObservable('3ms a', {
       a: holidaysActions.findHolidaysSuccess({
         holidays: [
-          ({
+          {
             id: 1,
-            imageUrl: 'http://api.eternal-holidays.net/pyramids.jpg'
-          } as unknown) as Holiday
-        ]
-      })
+            imageUrl: 'http://api.eternal-holidays.net/pyramids.jpg',
+          } as unknown as Holiday,
+        ],
+      }),
     });
   })
 );

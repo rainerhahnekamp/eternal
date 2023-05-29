@@ -5,8 +5,10 @@
 - [5. Custom Operator: filterTruthy](#5-custom-operator-filtertruthy)
 - [6. AddressLookuper](#6-addresslookuper)
 - [7. Error](#7-error)
-- [8. Bonus: Asynchronity](#8-bonus-asynchronity)
+- [8. Bonus: Asynchrony](#8-bonus-asynchrony)
 - [9. Bonus: Proofing Higher Order Observable](#9-bonus-proofing-higher-order-observable)
+
+Checkout the branch `starter-05-rxjs`.
 
 If not explicitly said otherwise, all test should be done with the `rxjs-marbles` library.
 
@@ -33,7 +35,7 @@ test(
     m.expect(destination).toBeObservable('--x-y-z', {
       x: 4,
       y: 20,
-      z: 50
+      z: 50,
     });
   })
 );
@@ -50,7 +52,7 @@ m.cold('abcde', {
   b: '',
   c: 'Domgasse 5',
   d: 'Kärntnerring 12',
-  e: 'Praterstern 2'
+  e: 'Praterstern 2',
 });
 ```
 
@@ -71,7 +73,7 @@ test(
       b: '',
       c: 'Domgasse 5',
       d: 'Kärntnerring 12',
-      e: 'Praterstern 2'
+      e: 'Praterstern 2',
     });
 
     const destination = source.pipe(
@@ -127,7 +129,7 @@ let queryCounter = 0;
 const source = m.cold('d 2ms p 2ms h', {
   d: 'Domgasse 5',
   p: 'Praterstern',
-  h: 'Herrengasse 12'
+  h: 'Herrengasse 12',
 });
 ```
 
@@ -147,7 +149,7 @@ test(
     const source = m.cold('d 2ms p 2ms h', {
       d: 'Domgasse 5',
       p: 'Praterstern',
-      h: 'Herrengasse 12'
+      h: 'Herrengasse 12',
     });
     const destination = source.pipe(
       map((address) => address.match(/(.+)\s(\d+)$/) || []),
@@ -155,12 +157,12 @@ test(
       tap(() => searchCounter++),
       map(([, street, streetNumber]) => ({
         street,
-        streetNumber
+        streetNumber,
       }))
     );
     m.expect(destination).toBeObservable('d 5ms h', {
       d: { street: 'Domgasse', streetNumber: '5' },
-      h: { street: 'Herrengasse', streetNumber: '12' }
+      h: { street: 'Herrengasse', streetNumber: '12' },
     });
     m.flush();
     expect(searchCounter).toBe(2);
@@ -182,7 +184,7 @@ m.cold('abcdef', {
   c: false,
   d: '',
   e: 0,
-  f: 1
+  f: 1,
 });
 ```
 
@@ -211,11 +213,10 @@ test(
       c: false,
       d: '',
       e: 0,
-      f: 1
+      f: 1,
     });
 
-    const filterTruthy = (observable: Observable<unknown>) =>
-      observable.pipe(filter((data) => !!data));
+    const filterTruthy = (observable: Observable<unknown>) => observable.pipe(filter((data) => !!data));
     const destination = source.pipe(filterTruthy);
     m.expect(destination).toBeObservable('-----f', { f: 1 });
   })
@@ -238,7 +239,7 @@ it(
   'should use rxjs-marbles',
   marbles((m) => {
     const httpClient = assertType<HttpClient>({
-      get: () => m.cold('150ms r', { r: [true] })
+      get: () => m.cold('150ms r', { r: [true] }),
     });
     const lookuper = new AddressLookuper(httpClient);
     const isValid$ = lookuper.lookup('Domgasse 5');
@@ -275,7 +276,7 @@ test(
 </p>
 </details>
 
-# 8. Bonus: Asynchronity
+# 8. Bonus: Asynchrony
 
 For this exercise, you CANNOT use `rxjs-marbles`.
 
@@ -336,9 +337,7 @@ test(
   'switchMap',
   marbles((m) => {
     const source: Observable<string> = m.cold('pd', { p: 'Praterstern', d: 'Domgasse 5' });
-    const dest: Observable<boolean> = source.pipe(
-      switchMap((query) => m.cold('---b', { b: query === 'Domgasse 5' }))
-    );
+    const dest: Observable<boolean> = source.pipe(switchMap((query) => m.cold('---b', { b: query === 'Domgasse 5' })));
 
     m.expect(dest).toBeObservable('insert your marble');
   })
@@ -354,9 +353,7 @@ test(
   'switchMap',
   marbles((m) => {
     const source: Observable<string> = m.cold('pd', { p: 'Praterstern', d: 'Domgasse 5' });
-    const dest: Observable<boolean> = source.pipe(
-      switchMap((query) => m.cold('---b', { b: query === 'Domgasse 5' }))
-    );
+    const dest: Observable<boolean> = source.pipe(switchMap((query) => m.cold('---b', { b: query === 'Domgasse 5' })));
 
     m.expect(dest).toBeObservable('----t', { t: true });
   })
@@ -366,9 +363,7 @@ test(
   'mergeMap',
   marbles((m) => {
     const source: Observable<string> = m.cold('pd', { p: 'Praterstern', d: 'Domgasse 5' });
-    const dest: Observable<boolean> = source.pipe(
-      mergeMap((query) => m.cold('---b', { b: query === 'Domgasse 5' }))
-    );
+    const dest: Observable<boolean> = source.pipe(mergeMap((query) => m.cold('---b', { b: query === 'Domgasse 5' })));
 
     m.expect(dest).toBeObservable('---ft', { f: false, t: true });
   })
@@ -378,9 +373,7 @@ test(
   'concatMap',
   marbles((m) => {
     const source: Observable<string> = m.cold('pd', { p: 'Praterstern', d: 'Domgasse 5' });
-    const dest: Observable<boolean> = source.pipe(
-      concatMap((query) => m.cold('---b|', { b: query === 'Domgasse 5' }))
-    );
+    const dest: Observable<boolean> = source.pipe(concatMap((query) => m.cold('---b|', { b: query === 'Domgasse 5' })));
 
     m.expect(dest).toBeObservable('---f---t', { f: false, t: true });
   })
@@ -390,9 +383,7 @@ test(
   'exhaustMap',
   marbles((m) => {
     const source: Observable<string> = m.cold('pd', { p: 'Praterstern', d: 'Domgasse 5' });
-    const dest: Observable<boolean> = source.pipe(
-      exhaustMap((query) => m.cold('---b', { b: query === 'Domgasse 5' }))
-    );
+    const dest: Observable<boolean> = source.pipe(exhaustMap((query) => m.cold('---b', { b: query === 'Domgasse 5' })));
 
     m.expect(dest).toBeObservable('---f', { f: false, t: true });
   })

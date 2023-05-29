@@ -6,7 +6,9 @@
 - [6. Bonus - Use `mock` property of `jest.fn`](#6-bonus---use-mock-property-of-jestfn)
 - [7. Bonus - Mock via `inject` function](#7-bonus---mock-via-inject-function)
 
-In this lab, we are going to upgrade our lookuper to use the API of nominatim (OpenStreet Map).
+Checkout the branch `starter-04-unit-tests-async-mock`.
+
+In this lab, we are going to upgrade the `AddressLookuper` in TDD-style to use the API of nominatim (OpenStreet Map).
 
 We use the file **shared/address-lookuper.serivce.spec.ts**.
 
@@ -23,8 +25,8 @@ for (const { query, expected } of [
   { query: 'Domgasse 5', expected: true },
   {
     query: 'Domgasse 15',
-    expected: false
-  }
+    expected: false,
+  },
 ]) {
   it(`should return ${expected} for ${query}`, () => {
     const addresses = ['Domgasse 5, 1010 Wien'];
@@ -67,11 +69,11 @@ import { assertType } from './assert-type';
 // ...
 for (const { query, expected, response } of [
   { query: 'Domgasse 5', response: ['Domgasse 5'], expected: true },
-  { query: 'Domgasse 15', response: [], expected: false }
+  { query: 'Domgasse 15', response: [], expected: false },
 ]) {
   it(`should return ${expected} for ${query}`, fakeAsync(() => {
     const httpClient = assertType<HttpClient>({
-      get: () => scheduled([response], asyncScheduler)
+      get: () => scheduled([response], asyncScheduler),
     });
     const lookuper = new AddressLookuper(httpClient);
 
@@ -130,7 +132,7 @@ it('should call nominatim with right parameters', () => {
   lookuper.lookup('Domgasse 5');
 
   expect(httpClient.get).toHaveBeenCalledWith('https://nominatim.openstreetmap.org/search.php', {
-    params: new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5')
+    params: new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'),
   });
 });
 ```
@@ -141,7 +143,7 @@ it('should call nominatim with right parameters', () => {
 // inside the lookup method
 return this.httpClient
   .get<string[]>('https://nominatim.openstreetmap.org/search.php', {
-    params: new HttpParams().set('format', 'jsonv2').set('q', query)
+    params: new HttpParams().set('format', 'jsonv2').set('q', query),
   })
   .pipe(map((addresses) => addresses.length > 0));
 ```
@@ -162,12 +164,10 @@ it(`should have an assertive stub`, async () => {
   const httpClientStub = assertType<HttpClient>({
     get(url: string, options: { params: HttpParams }) {
       expect(url).toBe('https://nominatim.openstreetmap.org/search.php');
-      expect(options.params).toEqual(
-        new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5')
-      );
+      expect(options.params).toEqual(new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'));
 
       return scheduled([['']], asyncScheduler);
-    }
+    },
   });
 
   const lookuper = new AddressLookuper(httpClientStub);
@@ -205,7 +205,7 @@ it('should test http with createMock', () => {
   lookuper.lookup('Domgasse 5');
 
   expect(httpClient.get).toHaveBeenCalledWith('https://nominatim.openstreetmap.org/search.php', {
-    params: new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5')
+    params: new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'),
   });
 });
 ```
@@ -224,7 +224,7 @@ Write another version of the mocked "should call nominatim with right parameters
 ```typescript
 it('should call nominatim with right parameters, (mock property version)', () => {
   const httpClient = {
-    get: jest.fn<Observable<undefined[]>, [string, { params: HttpParams }]>()
+    get: jest.fn<Observable<undefined[]>, [string, { params: HttpParams }]>(),
   };
   httpClient.get.mockReturnValue(of([]));
   const lookuper = new AddressLookuper(assertType<HttpClient>(httpClient));
@@ -248,4 +248,4 @@ You can choose between two mocking approaches:
 1. Use the TestBed and its `providers` attribute to define the mock.
 2. Create a spy on `@angular/core` and its `inject` function.
 
-The alternative solution branch is `solution-3-async-mock-inject`.
+The alternative solution branch is `solution-04-async-mock-inject`.
