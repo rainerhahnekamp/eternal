@@ -7,7 +7,7 @@ import { baseUrlInterceptor } from '@app/core/base-url.interceptor';
 import { loadingInterceptor } from '@app/core/loading.interceptor';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { appRoutes } from '@app/app.routes';
 import localeDe from '@angular/common/locales/de-AT';
 import { registerLocaleData } from '@angular/common';
@@ -26,28 +26,33 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideAnimations(),
     provideStore(),
-    provideRouter(appRoutes),
-    provideHttpClient(withInterceptors([baseUrlInterceptor, loadingInterceptor])),
+    provideRouter(appRoutes, withComponentInputBinding()),
+    provideHttpClient(
+      withInterceptors([baseUrlInterceptor, loadingInterceptor])
+    ),
     provideStoreDevtools(),
     ...provideSecurity,
     ...sharedProviders,
     importProvidersFrom([
       AuthModule.forRoot({
         domain: 'dev-xbu2-fid.eu.auth0.com',
-        clientId: 'YgUoOMh2jc4CQuo8Ky9PS7npW3Q4ckX9'
+        clientId: 'YgUoOMh2jc4CQuo8Ky9PS7npW3Q4ckX9',
       }),
-      MatDateFnsModule
+      MatDateFnsModule,
     ]),
     {
       provide: MAT_DATE_LOCALE,
-      useValue: deAT
+      useValue: deAT,
     },
     { provide: LOCALE_ID, useValue: 'de-AT' },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: { appearance: 'outline' }
+      useValue: { appearance: 'outline' },
     },
-    { provide: Configuration, useValue: new Configuration(environment.baseUrl, true, false) },
-    provideAnimations()
-  ]
+    {
+      provide: Configuration,
+      useValue: new Configuration(environment.baseUrl, true, false),
+    },
+    provideAnimations(),
+  ],
 });

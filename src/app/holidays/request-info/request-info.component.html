@@ -1,6 +1,7 @@
 <h2>Get your brochure and enjoy your holiday</h2>
 <p>
-  Please fill in your address and below and we will send you a brochure with more information.
+  Please fill in your address and below and we will send you a brochure with
+  more information.
 </p>
 <div class="flex items-center gap-x-16">
   <div>
@@ -21,17 +22,23 @@
           mat-raised-button
           type="submit"
           [disabled]="formGroup.invalid"
-          >Send
+        >
+          Send
         </button>
       </div>
     </form>
-    <p data-testid="ri-message" class="text-center h-6" aria-live="assertive" role="status">
-      <span *ngIf="lookupResult$ | async as lookupResult">{{ lookupResult }}</span>
+    <p
+      data-testid="ri-message"
+      class="text-center h-6"
+      aria-live="assertive"
+      role="status"
+    >
+      <span *ngIf="lookupResult()">{{ lookupResult() }}</span>
     </p>
   </div>
   <app-holiday-card
-    *ngIf="holiday$ | async as holiday"
-    [holiday]="holiday"
+    *ngIf="holiday() as value"
+    [holiday]="value"
     [requestBrochure]="false"
   ></app-holiday-card>
 </div>

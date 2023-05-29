@@ -1,14 +1,20 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+  signal,
+} from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { Observable, of, Subject } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { AsyncPipe, NgIf, NgStyle } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Holiday } from '../model';
+import { RouterLink } from '@angular/router';
 import { HolidayCardComponent } from '../holiday-card/holiday-card.component';
 import { validateAddress } from '@app/shared';
 import { HolidaysRepository } from '../+state';
@@ -27,44 +33,36 @@ import { HolidaysRepository } from '../+state';
     NgIf,
     AsyncPipe,
     NgStyle,
-    RouterLink
-  ]
+    RouterLink,
+  ],
 })
 export class RequestInfoComponent implements OnInit {
-  #lookuper = { lookup: (query: string) => of(Boolean(query)) };
-  #formBuilder = inject(NonNullableFormBuilder);
-  #route = inject(ActivatedRoute);
-  #holidaysRepository = inject(HolidaysRepository);
-
-  formGroup = this.#formBuilder.group({
-    address: ['', [validateAddress]]
-  });
   @Input() address = '';
+  @Input() id: string | undefined;
   @Output() brochureSent = new EventEmitter<string>();
 
-  submitter$ = new Subject<void>();
-  lookupResult$: Observable<string> | undefined;
-  holiday$: Observable<Holiday> = this.#holidaysRepository.selected$;
+  #lookuper = { lookup: (query: string) => of(Boolean(query)) };
+  #formBuilder = inject(NonNullableFormBuilder);
+  #repo = inject(HolidaysRepository);
+
+  protected lookupResult = signal('');
+  protected formGroup = this.#formBuilder.group({
+    address: ['', [validateAddress]],
+  });
+  protected holiday = this.#repo.selected;
 
   ngOnInit(): void {
-    this.#route.paramMap.subscribe((paramMap) =>
-      this.#holidaysRepository.select(Number(paramMap.get('id')))
-    );
+    this.#repo.select(Number(this.id));
 
     if (this.address) {
       this.formGroup.setValue({ address: this.address });
     }
-
-    this.lookupResult$ = this.submitter$.pipe(
-      switchMap(() => {
-        const { address } = this.formGroup.getRawValue();
-        return this.#lookuper.lookup(address).pipe(tap(() => this.brochureSent.emit(address)));
-      }),
-      map((found) => (found ? 'Brochure sent' : 'Address not found'))
-    );
   }
 
-  search(): void {
-    this.submitter$.next();
+  async search() {
+    const isValid = await this.#lookuper.lookup(
+      this.formGroup.getRawValue().address
+    );
+    this.lookupResult.set(isValid ? 'Brochure sent' : 'Address not found');
   }
 }

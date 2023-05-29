@@ -17,7 +17,9 @@ import { BlinkerDirective, ImageLoadedDirective } from '@app/shared';
       aria-labelledby="holiday-title"
     >
       <mat-card-header>
-        <mat-card-title [id]="'holiday-card-' + holiday.id">{{ holiday.title }}</mat-card-title>
+        <mat-card-title [id]="'holiday-card-' + holiday.id">{{
+          holiday.title
+        }}</mat-card-title>
         <mat-card-subtitle>{{ holiday.teaser }}</mat-card-subtitle>
       </mat-card-header>
       <img [src]="holiday.imageUrl" [alt]="holiday.title" />
@@ -41,10 +43,10 @@ import { BlinkerDirective, ImageLoadedDirective } from '@app/shared';
     NgIf,
     RouterLink,
     BlinkerDirective,
-    ImageLoadedDirective
-  ]
+    ImageLoadedDirective,
+  ],
 })
 export class HolidayCardComponent {
-  @Input() holiday: Holiday | undefined;
+  @Input({ required: true }) holiday: Holiday | undefined;
   @Input() requestBrochure = true;
 }
