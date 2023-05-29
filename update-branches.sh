@@ -6,7 +6,7 @@ branches=(
   main
   solution-01-e2e-basics
   starter-02-e2e-advanced solution-02-e2e-advanced
-  starter-03-component-integration-testssolution-03-component-integration-tests
+  starter-03-component-integration-tests solution-03-component-integration-tests
   starter-04-unit-tests-async-mock solution-04-unit-tests-async-mock solution-04-unit-tests-async-mock-inject
   starter-05-rxjs solution-05-rxjs
   starter-06-component-integration-tests-fallback solution-06-component-integration-tests-fallback
