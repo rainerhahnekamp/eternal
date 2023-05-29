@@ -2,7 +2,15 @@ set -e
 
 git checkout main
 
-branches=(main solution-1-e2e-basics lab-2-starter solution-2-e2e-advanced solution-3-async-mock-constructor solution-3-async-mock-inject solution-4-rxjs-ngrx lab-5-starter solution-5-component-integration-tests solution-6-component-integration-tests-fallback solution-7-visual-regression)
+branches=(
+  main
+  solution-01-e2e-basics
+  starter-02-e2e-advanced solution-02-e2e-advanced
+  starter-03-component-integration-tests solution-03-component-integration-tests
+  starter-04-unit-tests-async-mock solution-04-unit-tests-async-mock solution-04-unit-tests-async-mock-inject
+  starter-05-rxjs solution-05-rxjs
+  starter-06-component-integration-tests-fallback solution-06-component-integration-tests-fallback
+)
 
 for branch in ${branches[*]}; do
   git checkout $branch
