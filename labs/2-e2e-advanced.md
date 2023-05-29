@@ -10,9 +10,9 @@
 - [6. Bonus - Scraping with `cy.task`](#6-bonus---scraping-with-cytask)
 - [7. Bonus - Intelligent (Conditional) Test](#7-bonus---intelligent-conditional-test)
 
-Checkout the branch `lab-2-starter`
+Checkout the branch `starter-02-e2e-advanced`
 
-**The project's path is: /apps/eternal-e2e/src/**
+**The project's path is: /e2e/src/**
 
 # 1. Different Resolutions
 
@@ -59,18 +59,22 @@ Locate and run the test `hidden-holiday.cy.ts`. It should fail although the 10th
 **./support/commands.ts**
 
 ```typescript
-Cypress.Commands.addQuery('holidayCards', () => () => {
-  const cards = Cypress.$(`[data-testid=holiday-card]`);
-  if (cards.length > 0) {
-    const allImagesLoaded = cards
-      .find('img')
-      .toArray()
-      .every((img: HTMLImageElement) => img.naturalWidth > 0);
+Cypress.Commands.addQuery('holidayCards', () => {
+  const cardsFn = cy.now('get', '[data-testid=holiday-card]') as () => JQuery<HTMLElement>;
+  return () => {
+    const cards = cardsFn();
+    if (cards.length > 0) {
+      const allImagesLoaded = cards
+        .find('img')
+        .toArray()
+        .every((img) => (img as HTMLImageElement).naturalWidth > 0);
 
-    if (allImagesLoaded) {
-      return cards;
+      if (allImagesLoaded) {
+        return cards;
+      }
     }
-  }
+    return null;
+  };
 });
 ```
 
@@ -92,7 +96,7 @@ it('should mock the holidays', () => {
   cy.intercept('GET', '**/holiday', { fixture: 'holidays.json' });
   cy.visit('');
   cy.testid('btn-holidays').click();
-  cy.get('eternal-holiday-card').should('contain.text', 'Unicorn');
+  cy.get('app-holiday-card').should('contain.text', 'Unicorn');
 });
 ```
 
@@ -118,23 +122,11 @@ it('should add a new customer', () => {
 });
 ```
 
-Implement the required POM `customer` and `sidemenu`.
+Implement the required POM `customer`.
 
 <details>
 <summary>Show Solution</summary>
 <p>
-
-**./pom/sidemenu.pom.ts**
-
-```typescript
-class Sidemenu {
-  open(name: 'Customers' | 'Holidays') {
-    cy.testid(`btn-${name.toLowerCase()}`).click();
-  }
-}
-
-export const sidemenu = new Sidemenu();
-```
 
 **./pom/customer.pom.ts**
 
@@ -174,9 +166,9 @@ export const customer = new Customer();
 
 It is quite usual to use a signed-in user for the majority of the tests.
 
-Our application uses Auth0 as authentication provides. In a first step, we'll do a login where we switch directly to Auth0 and enter the credentials there.
+Our application uses Auth0 as authentication provider. In a first step, we'll do a login where we directly switch to Auth0.
 
-In a further step, we will cache the session data by using `cy.session`.
+In a second step, we will cache the session data by using `cy.session`.
 
 Third, we'll pack the session cache along the login into an own command.
 
@@ -246,15 +238,11 @@ Cypress.Commands.add('login', (username: string, password: string) => {
   cy.session({ username, password }, () => {
     cy.visit('');
     cy.testid('btn-sign-in').click();
-    cy.origin(
-      'dev-xbu2-fid.eu.auth0.com/',
-      { args: { username, password } },
-      ({ username, password }) => {
-        cy.get('.auth0-lock-input-email').type(username);
-        cy.get('.auth0-lock-input-show-password').type(password);
-        cy.get('.auth0-lock-submit').click();
-      }
-    );
+    cy.origin('dev-xbu2-fid.eu.auth0.com/', { args: { username, password } }, ({ username, password }) => {
+      cy.get('.auth0-lock-input-email').type(username || '');
+      cy.get('.auth0-lock-input-show-password').type(password || '');
+      cy.get('.auth0-lock-submit').click();
+    });
     cy.testid('p-username').should('have.text', 'Welcome John List');
   });
 });
@@ -296,9 +284,9 @@ export default defineConfig({
     experimentalWebKitSupport: true,
     env: {
       loginUsername: 'john.list@host.com',
-      loginPassword: 'John List'
-    }
-  }
+      loginPassword: 'John List',
+    },
+  },
 });
 ```
 
@@ -322,15 +310,11 @@ Cypress.Commands.add('login', (username?: string, password?: string) => {
   cy.session({ username, password }, () => {
     cy.visit('');
     cy.testid('btn-sign-in').click();
-    cy.origin(
-      'dev-xbu2-fid.eu.auth0.com/',
-      { args: { username, password } },
-      ({ username, password }) => {
-        cy.get('.auth0-lock-input-email').type(username);
-        cy.get('.auth0-lock-input-show-password').type(password);
-        cy.get('.auth0-lock-submit').click();
-      }
-    );
+    cy.origin('dev-xbu2-fid.eu.auth0.com/', { args: { username, password } }, ({ username, password }) => {
+      cy.get('.auth0-lock-input-email').type(username);
+      cy.get('.auth0-lock-input-show-password').type(password);
+      cy.get('.auth0-lock-submit').click();
+    });
     cy.testid('p-username').should('have.text', 'Welcome John List');
   });
 });
@@ -353,4 +337,4 @@ That test should replace the existing "add a new customer" test.
 
 **Note**: That is very advanced exercise and not for beginners. It is **highly** recommended that you copy the solution and try to understand it.
 
-Checkout the solution from the branch **solution-2-e2e-advanced**.
+Checkout the solution from the branch **solution-02-e2e-advanced**.
