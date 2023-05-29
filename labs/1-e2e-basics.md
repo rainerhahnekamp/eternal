@@ -15,13 +15,15 @@ To solve the exercises in this lab, consult the slides and the [official documen
 
 Try to use always the `data-testid` in your selections.
 
+You start Cypress in the interactive mode via `npm run e2e:watch`.
+
 # 1. Setup
 
-1. Open the **/apps/eternal-e2e/src** folder and make yourself acquainted with its content.
+1. Open the **/e2e** folder and make yourself acquainted with its content.
 
 # 2. Add a first sanity check test
 
-Create a new **/apps/eternal-e2e/src/e2e/e2e.cy.ts** file and add the following first test:
+Create a new **/e2e/src/e2e/e2e.cy.ts** file and add the following first test:
 
 <details>
 <summary>Show Solution</summary>
