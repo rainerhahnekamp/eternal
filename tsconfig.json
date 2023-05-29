@@ -35,6 +35,9 @@
     },
     {
       "path": "./tsconfig.editor.json"
+    },
+    {
+      "path": "./cypress/tsconfig.json"
     }
   ],
   "compileOnSave": false,

@@ -90,6 +90,15 @@
       "options": {
         "buildTarget": "eternal:build"
       }
+    },
+    "component-test": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "cypress.config.ts",
+        "testingType": "component",
+        "skipServe": true,
+        "devServerTarget": "eternal:build"
+      }
     }
   }
 }
