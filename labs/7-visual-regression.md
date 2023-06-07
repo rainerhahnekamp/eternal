@@ -30,7 +30,7 @@ const defaultHoliday: Holiday = {
   id: 1,
   title: 'Wien / Vienna',
   teaser: 'Dive into the capital of the Habsburg empire',
-  imageUrl: '/assets/vienna.jpg',
+  imageUrl: 'vienna.jpg',
   description: 'With a population of almost 2 million, Vienna is the second largest German-speaking city and breathes history in every corner.',
   typeId: 1,
   durationInDays: 7,
@@ -70,7 +70,7 @@ export const Empty = createStory({
 });
 
 export const TinyImage = createStory({
-  imageUrl: '/assets/vienna-small.jpg',
+  imageUrl: 'vienna-small.jpg',
 });
 
 export const OnSale = createStory({ onSale: true });
@@ -80,7 +80,7 @@ export const SaleAndSold = createStory({ onSale: true, soldOut: true });
 
 # 3: Visual Regression with Storybook
 
-Write a VR test that screenshots all HolidayCard variations from Storybook. This time though, run them against a built Storybook instance. Run following commands sequentially:
+Write a VR test with Playwright for all HolidayCard stories
 
 1. `npm run storybook:build`
 2. `npm run storybook:build:run`

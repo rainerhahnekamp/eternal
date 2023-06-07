@@ -1,5 +1,6 @@
 const config = {
   stories: ['../src/app/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
+  staticDirs: ['../src/assets'],
   addons: ['@storybook/addon-essentials'],
   framework: {
     name: '@storybook/angular',

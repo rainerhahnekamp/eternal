@@ -10,6 +10,7 @@ branches=(
   starter-04-rxjs solution-04-rxjs
   starter-05-component-integration-tests solution-05-component-integration-tests
   starter-06-component-integration-tests-fallback solution-06-component-integration-tests-fallback
+  starter-07-visual-regression solution-07-visual-regression
 )
 previous=
 current=

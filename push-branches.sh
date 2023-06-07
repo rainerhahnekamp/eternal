@@ -10,6 +10,7 @@ branches=(
   starter-04-unit-tests-async-mock solution-04-unit-tests-async-mock solution-04-unit-tests-async-mock-inject
   starter-05-rxjs solution-05-rxjs
   starter-06-component-integration-tests-fallback solution-06-component-integration-tests-fallback
+  starter-07-visual-regression solution-07-visual-regression
 )
 
 for branch in ${branches[*]}; do
