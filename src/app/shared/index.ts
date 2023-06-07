@@ -6,3 +6,4 @@ export { ImageLoadedDirective } from './image-loaded.directive';
 export { ImagesLoadedService } from './images-loaded.service';
 export { validateAddress } from './validate-address';
 export { sharedProviders } from './shared.providers';
+export { AddressLookuper } from './address-lookuper.service';
