@@ -4,11 +4,17 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Meta, moduleMetadata } from '@storybook/angular';
 import { HolidayCardComponent } from './holiday-card.component';
 
-export default {
-  title: 'Eternal/HolidayCard',
+const meta: Meta<HolidayCardComponent> = {
+  title: 'Eternal/Holiday Card',
   component: HolidayCardComponent,
-  decorators: [moduleMetadata({ imports: [MatButtonModule, MatCardModule, RouterTestingModule] })]
-} as Meta;
+  decorators: [
+    moduleMetadata({
+      imports: [MatButtonModule, MatCardModule, RouterTestingModule],
+    }),
+  ],
+};
+
+export default meta;
 
 export const Default = () => ({
   props: {
@@ -21,7 +27,7 @@ export const Default = () => ({
       minCount: 8,
       maxCount: 17,
       typeId: 1,
-      durationInDays: 10
-    }
-  }
+      durationInDays: 10,
+    },
+  },
 });
