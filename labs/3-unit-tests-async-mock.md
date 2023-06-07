@@ -6,7 +6,7 @@
 - [6. Bonus - Use `mock` property of `jest.fn`](#6-bonus---use-mock-property-of-jestfn)
 - [7. Bonus - Mock via `inject` function](#7-bonus---mock-via-inject-function)
 
-Checkout the branch `starter-04-unit-tests-async-mock`.
+Checkout the branch `starter-03-unit-tests-async-mock`.
 
 In this lab, we are going to upgrade the `AddressLookuper` in TDD-style to use the API of nominatim (OpenStreet Map).
 

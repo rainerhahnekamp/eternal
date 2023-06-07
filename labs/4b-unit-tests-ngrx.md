@@ -1,7 +1,8 @@
 - [1. ngrx Reducer](#1-ngrx-reducer)
 - [2. ngrx Selectors](#2-ngrx-selectors)
 - [3. ngrx Effect](#3-ngrx-effect)
-  Checkout the branch `starter-05-rxjs`.
+
+Checkout the branch `starter-04-rxjs`.
 
 # 1. ngrx Reducer
 

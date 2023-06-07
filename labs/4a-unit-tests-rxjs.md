@@ -8,7 +8,7 @@
 - [8. Bonus: Asynchrony](#8-bonus-asynchrony)
 - [9. Bonus: Proofing Higher Order Observable](#9-bonus-proofing-higher-order-observable)
 
-Checkout the branch `starter-05-rxjs`.
+Checkout the branch `starter-04-rxjs`.
 
 If not explicitly said otherwise, all test should be done with the `rxjs-marbles` library.
 
