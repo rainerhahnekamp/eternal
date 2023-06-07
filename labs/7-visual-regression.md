@@ -1,7 +1,6 @@
 - [1: HolidayCard in Storybook](#1-holidaycard-in-storybook)
 - [2: HolidayCard Variations](#2-holidaycard-variations)
-- [3: Visual Regression with Storybook](#3-visual-regression-with-storybook)
-- [4: Bonus - Visual Regression with Cypress](#4-bonus---visual-regression-with-cypress)
+- [3: Visual Regression with Storybook \& Playwright](#3-visual-regression-with-storybook--playwright)
 
 # 1: HolidayCard in Storybook
 
@@ -78,73 +77,29 @@ export const OnSale = createStory({ onSale: true });
 export const SaleAndSold = createStory({ onSale: true, soldOut: true });
 ```
 
-# 3: Visual Regression with Storybook
+# 3: Visual Regression with Storybook & Playwright
 
-Write a VR test with Playwright for all HolidayCard stories
+Write a Visual Regression test with Playwright, where you check against stories of HolidaysCard.
 
-1. `npm run storybook:build`
-2. `npm run storybook:build:run`
+You don't have to configure Playwright. That's already done.
 
-Storybook will run on port 5000.
-
-# 4: Bonus - Visual Regression with Cypress
-
-1. Setup the required plugin:
-
-**apps/eternal-e2e/cypress.json**
-
-Add the `cypress-plugin-snapshots` configuration to the `env` property.
-
-```json
-{
-  "env": {
-    ...
-    "cypress-plugin-snapshots": {
-      "imageConfig": {
-        "threshold": 0
-      }
-    }
-  }
-}
-```
-
-**apps/eternal-e2e/tsconfig.e2e.json**
-
-The property `compiler.types` should have the following value `"types": ["cypress", "node", "cypress-plugin-snapshots"]`.
-
-**apps/eternal-e2e/src/support/index.js**
-
-Append the following line
-
-```javascript
-import 'cypress-plugin-snapshots/commands';
-```
-
-**apps/eternal-e2e/src/plugins/index.js**
-
-Replace the existing `module.exports` with
-
-```javascript
-const { initPlugin } = require('cypress-plugin-snapshots/plugin');
-// eslint-disable-next-line no-unused-vars
-module.exports = (on, config) => {
-  initPlugin(on, config);
-};
-```
-
-2. Write the test
+You have to modify the existing test in **/tests/visual-regression.spec.ts**.
 
 <details>
 <summary>Show Solution</summary>
 <p>
 
-**apps/eternal-e2e/src/integration/holiday-card.spec.ts**
+**tests/visual-regression.spec.ts**
 
 ```typescript
-it('should do visual regression against the holidaycard', () => {
-  cy.visit('http://localhost:4400/iframe?id=eternal-holidaycard--default&viewMode=story');
-  cy.document().toMatchImageSnapshot();
-});
+import { expect, test } from '@playwright/test';
+
+for (const story of ['default', 'minimal', 'overflown', 'sold-out', 'empty', 'tiny-image', 'on-sale', 'sale-and-sold']) {
+  test(`visual regression for ${story}`, async ({ page }) => {
+    await page.goto(`http://localhost:4400/iframe.html?id=eternal-holiday-card--${story}&viewMode=story`);
+    await expect(page).toHaveScreenshot();
+  });
+}
 ```
 
 </p>
