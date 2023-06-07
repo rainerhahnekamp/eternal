@@ -10,7 +10,7 @@ describe('Address Lookuper', () => {
     expect(lookuper.lookup('Domgasse 5, 1010 Wien')).toBe(true);
   });
 
-  it('should cound the queries', () => {
+  it('should count the queries', () => {
     const lookuper = new AddressLookuper(() => []);
     expect(lookuper.counter).toBe(0);
     lookuper.lookup('Domgasse');

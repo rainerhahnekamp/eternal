@@ -15,6 +15,6 @@ export class AddressLookuper {
 
   lookup(query: string): boolean {
     this.#counter++;
-    return this.#addresses.some((address) => query.startsWith(address));
+    return this.#addresses.some((address) => address.startsWith(query));
   }
 }
