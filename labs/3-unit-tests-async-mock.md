@@ -1,10 +1,10 @@
 - [1. Parameterised Test](#1-parameterised-test)
-- [2. HttpClient Injection](#2-httpclient-injection)
-- [3. Test Mock](#3-test-mock)
-- [4. Bonus - Assertive Stub](#4-bonus---assertive-stub)
-- [5. Bonus - `createMock` of testing library](#5-bonus---createmock-of-testing-library)
-- [6. Bonus - Use `mock` property of `jest.fn`](#6-bonus---use-mock-property-of-jestfn)
-- [7. Bonus - Mock via `inject` function](#7-bonus---mock-via-inject-function)
+- [2. `HttpClient` as Stub](#2-httpclient-as-stub)
+- [3. `HttpClient` as Mock](#3-httpclient-as-mock)
+- [4. `inject()` \& TestBed](#4-inject--testbed)
+- [5. Bonus - Assertive Stub](#5-bonus---assertive-stub)
+- [6. Bonus - `createMock` of `@testing-library/angular`](#6-bonus---createmock-of-testing-libraryangular)
+- [7. Bonus - Use `mock` property of `jest.fn`](#7-bonus---use-mock-property-of-jestfn)
 
 Checkout the branch `starter-03-unit-tests-async-mock`.
 
