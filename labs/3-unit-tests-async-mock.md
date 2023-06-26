@@ -14,7 +14,7 @@ We use the file **shared/address-lookuper.serivce.spec.ts**.
 
 # 1. Parameterised Test
 
-Change the **should pass addresses in the constructor** to a parameterised test. Its name should be **should return $expected for $query**. ` $expected` and ` $address` should be the parameters.
+Change the **should pass addresses in the constructor** to a parameterised test. Its name should be **`should return ${expected} for ${query}`**. `expected` and `address` should be the parameters.
 
 <details>
 <summary>Show Solution</summary>
@@ -40,9 +40,9 @@ for (const { query, expected } of [
 </p>
 </details>
 
-# 2. HttpClient Injection
+# 2. `HttpClient` as Stub
 
-We pick Nominatim as our GeoService. It offers a free HTTP API.
+We use Nominatim as our API to verify the address.
 
 The `AddressLookuper`'s constructor will use Angular's `HttpClient` to connect to Nominatim. We will have to stub the `HttpClient`.
 
@@ -107,15 +107,15 @@ export class AddressLookuper {
 </p>
 </details>
 
-# 3. Test Mock
+# 3. `HttpClient` as Mock
 
 We want to make sure, that the right parameters are passed to the `HttpClient`.
 
-The url should be https://nominatim.openstreetmap.org/search.php and we should pass query strings for format and the actual query.
+The url should be https://nominatim.openstreetmap.org/search.php and we should pass query strings for the format and the actual query.
 
-A search request for "Domgasse 5" is https://nominatim.openstreetmap.org/search.php?format=jsonv2&q=Domgasse%205.
+For example: a request for "Domgasse 5" is https://nominatim.openstreetmap.org/search.php?format=jsonv2&q=Domgasse%205.
 
-Create a new test that verifies the mocked is called in the right way.
+Create a new test that verifies the mocked `HttpClient` is called with the right parameters.
 
 <details>
 <summary>Show Solution</summary>
@@ -151,57 +151,66 @@ return this.httpClient
 </p>
 </details>
 
-# 4. Bonus - Assertive Stub
+# 4. `inject()` & TestBed
 
-Try to come up with a stub for the `HttpClient` that also asserts that the right parameters are used.
+Angular 14 introduced the `inject` function which is the recommended way to use the dependency injection.
+
+Rewrite the `AddressLookuper` so that it uses that `inject` function. Adapt your tests so that you let Angular's DI do the instantiation of the `AddressLookuper` via `TestBed.inject`. Mock the `HttpClient` with `TestBed.configureTestingModule`.
+
+Create a `setup` method
+
+- which has the mocked `HttpClient` as parameter,
+- uses internally the `TestBed`, and
+- returns the instance of the `AddressLookuper`.
+
+Every test can then define its own version of the mock and gets the `AddressLookuper` via that `setup` method.
+
+```typescript
+const setup = (httpClient: HttpClient): AddressLookuper => {
+  // instantiation with TestBed
+};
+```
 
 <details>
 <summary>Show Solution</summary>
 <p>
 
-```typescript
-it(`should have an assertive stub`, async () => {
-  const httpClientStub = assertType<HttpClient>({
-    get(url: string, options: { params: HttpParams }) {
-      expect(url).toBe('https://nominatim.openstreetmap.org/search.php');
-      expect(options.params).toEqual(new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'));
-
-      return scheduled([['']], asyncScheduler);
-    },
-  });
-
-  const lookuper = new AddressLookuper(httpClientStub);
-  const result = await firstValueFrom(lookuper.lookup('Domgasse 5'));
-
-  expect(result).toBe(true);
-});
-```
-
-</p>
-</details>
-
-# 5. Bonus - `createMock` of testing library
-
-Use the installed library "@testing-library/angular" to verify the behaviour of the HttpClient. `createMock` instantiates a new object and replaces all its methods with `jest.fn`.
-
-You can apply it on `HttpClient` by
+**shared/address-lookuper.service.spec.ts**
 
 ```typescript
-const httpClient = createMock(HttpClient);
-```
+const setup = (httpClient: HttpClient): AddressLookuper =>
+  TestBed.configureTestingModule({
+    providers: [
+      {
+        provide: HttpClient,
+        useValue: httpClient,
+      },
+    ],
+  }).inject(AddressLookuper);
 
-You will see that `httpClient.get`can then be used as any other `jest.fn`.
+for (const { query, expected, response } of [
+  { query: 'Domgasse 5', response: ['Domgasse 5'], expected: true },
+  { query: 'Domgasse 15', response: [], expected: false },
+]) {
+  it(`should return ${expected} for ${query}`, fakeAsync(() => {
+    const httpClient = assertType<HttpClient>({
+      get: () => scheduled([response], asyncScheduler),
+    });
+    const lookuper = setup(httpClient);
 
-<details>
-<summary>Show Solution</summary>
-<p>
+    lookuper.lookup(query).subscribe((isValid) => {
+      expect(isValid).toBe(expected);
+    });
 
-```typescript
-it('should test http with createMock', () => {
-  const httpClient = createMock(HttpClient);
+    tick();
+  }));
+}
+
+it('should call nominatim with right parameters', () => {
+  const httpClient = { get: jest.fn() };
   httpClient.get.mockReturnValue(of([]));
 
-  const lookuper = new AddressLookuper(httpClient);
+  const lookuper = setup(assertType(httpClient));
   lookuper.lookup('Domgasse 5');
 
   expect(httpClient.get).toHaveBeenCalledWith('https://nominatim.openstreetmap.org/search.php', {
@@ -213,9 +222,71 @@ it('should test http with createMock', () => {
 </p>
 </details>
 
-# 6. Bonus - Use `mock` property of `jest.fn`
+# 5. Bonus - Assertive Stub
 
-Write another version of the mocked "should call nominatim with right parameters" test. This time, don't use the matcher `hasBeenCalledWith` but get the passed arguments from the `mock` property of your stub and match against them.
+Try to come up with a stub for the `HttpClient` that also asserts that the right parameters are used.
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+```typescript
+it(`should have an assertive stub`, async () => {
+  const httpClientStub = {
+    get(url: string, options: { params: HttpParams }) {
+      expect(url).toBe('https://nominatim.openstreetmap.org/search.php');
+      expect(options.params).toEqual(new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'));
+
+      return scheduled([['']], asyncScheduler);
+    },
+  };
+
+  const lookuper = setup(assertType(httpClientStub));
+  const result = await firstValueFrom(lookuper.lookup('Domgasse 5'));
+
+  expect(result).toBe(true);
+});
+```
+
+</p>
+</details>
+
+# 6. Bonus - `createMock` of `@testing-library/angular`
+
+Use the installed library "@testing-library/angular" to verify the behaviour of the `HttpClient`. `createMock` instantiates a new object and replaces all its methods with `jest.fn`.
+
+You can apply it to the `HttpClient` by
+
+```typescript
+const httpClient = createMock(HttpClient);
+```
+
+You will see that `httpClient.get` can then be used as any other `jest.fn`.
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+```typescript
+it('should test http with createMock', () => {
+  const httpClient = createMock(HttpClient);
+  httpClient.get.returnValue(of([]));
+
+  const lookuper = setup(httpClient);
+  lookuper.lookup('Domgasse 5');
+
+  expect(httpClient.get).toHaveBeenCalledWith('https://nominatim.openstreetmap.org/search.php', {
+    params: new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'),
+  });
+});
+```
+
+</p>
+</details>
+
+# 7. Bonus - Use `mock` property of `jest.fn`
+
+Write another version of the mocked "should call nominatim with right parameters" test. This time, don't use the matcher `hasBeenCalledWith` but get the passed parameter from the `mock` property of your `httpClient` and match against them.
 
 <details>
 <summary>Show Solution</summary>
@@ -238,14 +309,3 @@ it('should call nominatim with right parameters, (mock property version)', () =>
 
 </p>
 </details>
-
-# 7. Bonus - `inject` function
-
-Instead of injecting the `HttpClient` in the constructor, use the `inject` function
-
-You can choose between two mocking approaches:
-
-1. Use the TestBed and its `providers` attribute to define the mock.
-2. Create a spy on `@angular/core` and its `inject` function.
-
-The alternative solution branch is `solution-04-async-mock-inject`.
