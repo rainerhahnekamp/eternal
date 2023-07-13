@@ -37,6 +37,9 @@ bootstrapApplication(AppComponent, {
       AuthModule.forRoot({
         domain: 'dev-xbu2-fid.eu.auth0.com',
         clientId: 'YgUoOMh2jc4CQuo8Ky9PS7npW3Q4ckX9',
+        authorizationParams: {
+          redirect_uri: window.location.origin,
+        },
       }),
       MatDateFnsModule,
     ]),
