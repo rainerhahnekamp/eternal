@@ -71,8 +71,8 @@ It should return a list of holidays. You can use these as an example or create y
 
 ```java
 List<Holiday> holidays = new ArrayList<>();
-this.holidays.add(new Holiday(1L, "Canada", "Visit Rocky Mountains"));
-this.holidays.add(new Holiday(2L, "China", "To the Middle Kingdom"));
+holidays.add(new Holiday(1L, "Canada", "Visit Rocky Mountains"));
+holidays.add(new Holiday(2L, "China", "To the Middle Kingdom"));
 return holidays;
 ```
 
@@ -285,6 +285,7 @@ public class WebConfig {
     };
   }
 }
+
 ```
 
 Now modify the `HolidaysRepository` in Angular so that it connects to the newly created API. At the moment, we can't edit a holiday, so that feature has to be skipped.
@@ -343,4 +344,3 @@ export class HolidaysRepository {
 
 </p>
 </details>
-
