@@ -3,7 +3,6 @@
 - [3. WebTests](#3-webtests)
 - [4. Further Exercises](#4-further-exercises)
 
-
 The solution branch for the whole lab is `solution-3-1-basics`.
 
 # 1. DTOs
@@ -46,7 +45,7 @@ public record HolidayResponse(Long id, String name, String description) {}
 public interface HolidaysRepository {
   void add(String name, String description);
 
-  void update(Long id, String name, String description  );
+  void update(Long id, String name, String description);
 }
 
 ```
@@ -59,7 +58,7 @@ The implementation for `DefaultHolidaysRepository`, `FsHolidaysRepository` and a
 // ...
 public class HolidaysController {
 
-    // ...
+  // ...
 
   @GetMapping
   public List<HolidayResponse> index() {
@@ -158,8 +157,8 @@ import jakarta.validation.constraints.NotNull;
 
 public record HolidayDto(
   Long id,
-  @NotNull @NotBlank String name,
-  @NotNull @NotBlank String description
+  @NotBlank String name,
+  @NotBlank String description
 ) {}
 
 ```
@@ -218,7 +217,6 @@ dependencies {
 ```
 
 These kind of tests cover quite a lot. Try to come up with additional tests on your own.
-
 
 <details>
 <summary>Show Solution</summary>
@@ -295,6 +293,7 @@ class HolidaysControllerIntegrationTest {
 }
 
 ```
+
 </p>
 </details>
 
