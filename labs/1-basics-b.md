@@ -236,7 +236,7 @@ public class AppConfiguration {
   @Value("${app.holidays.persistence-type}")
   private String persistenceType;
 
-  @Value("@{app.holidays.persistence-file}")
+  @Value("${app.holidays.persistence-file}")
   private String persistenceFile;
 
   @Bean
