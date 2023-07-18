@@ -26,7 +26,7 @@ In order to run the web console, add the following two dependencies to your **bu
 
 ```groovy
 implementation 'com.h2database:h2'
-testImplementation 'org.springframework.boot:spring-boot-starter-test'
+implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 ```
 
 Start Spring and navigate to _http://localhost:8080/h2-console_. You should see the H2 Console where you can try to connect. Make sure you use the right path.
@@ -79,9 +79,9 @@ package com.softarc.eternal.data;
 
 import com.softarc.eternal.domain.Holiday;
 import java.util.List;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.JpaRepository;
 
-public interface HolidaysRepository extends CrudRepository<Holiday, Long> {
+public interface HolidaysRepository extends JpaRepository<Holiday, Long> {
   List<Holiday> findAll();
 }
 
