@@ -17,7 +17,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter'
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
-  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.0-RC1'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
   annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
