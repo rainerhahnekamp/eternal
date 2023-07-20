@@ -1,7 +1,8 @@
 - [1. DTOs](#1-dtos)
 - [2. Validated DTOs](#2-validated-dtos)
-- [3. WebTests](#3-webtests)
-- [4. Further Exercises](#4-further-exercises)
+- [3. Exception Handling](#3-exception-handling)
+- [4. WebTests](#4-webtests)
+- [5. Further Exercises](#5-further-exercises)
 
 The solution branch for the whole lab is `solution-3-1-basics`.
 
@@ -202,7 +203,117 @@ public class HolidaysController {
 </p>
 </details>
 
-# 3. WebTests
+# 3. Exception Handling
+
+When `/api/holidays/{id}` is called with an invalid id, i.e. no holiday available, return a HttpStatus code of 400 by using the `ResponseStatusException`.
+
+<details>
+<summary>Show Solution</summary>
+
+**/src/main/java/com/softarc/eternal/web/HolidaysController.java**
+
+```java
+@RequestMapping("/api/holidays")
+@RestController
+public class HolidaysController {
+
+  // ...
+
+  @GetMapping("{id}")
+  public HolidayResponse find(@PathVariable("id") Long id) {
+    return this.repository.find(id)
+      .map(this::toHolidayResponse)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+  }
+}
+
+```
+
+</details>
+
+---
+
+Add an understandable explanation to the `ResponseStatusException`. Test it and make sure that the response contains the a `detail` property and the content type is `application/problem+json`.
+
+<details>
+<summary>Show Solution</summary>
+
+**/src/main/java/com/softarc/eternal/web/HolidaysController.java**
+
+```java
+@RequestMapping("/api/holidays")
+@RestController
+public class HolidaysController {
+
+  // ...
+
+  @GetMapping("{id}")
+  public HolidayResponse find(@PathVariable("id") Long id) {
+    return this.repository.find(id)
+      .map(this::toHolidayResponse)
+      .orElseThrow(() ->
+        new ResponseStatusException(
+          HttpStatus.BAD_REQUEST,
+          String.format("Holiday with ID %d does not exist", id)
+        )
+      );
+  }
+}
+
+```
+
+</details>
+
+Create a new RuntimeException `IdNotFound`, and replace the throwing of the `ResponseStatusException` with an `@ControllerAdvice` which deals with `IdNotFound` exception.
+
+<details>
+<summary>Show Solution</summary>
+
+**/src/main/java/com/softarc/eternal/web/exception/IdNotFoundException.java**
+
+```java
+package com.softarc.eternal.web.exception;
+
+public class IdNotFoundException extends RuntimeException {}
+
+```
+
+**/src/main/java/com/softarc/eternal/web/HolidaysController.java**
+
+```java
+@RequestMapping("/api/holidays")
+@RestController
+public class HolidaysController {
+
+  // ...
+
+  @GetMapping("{id}")
+  public HolidayResponse find(@PathVariable("id") Long id) {
+    return this.repository.find(id)
+      .map(this::toHolidayResponse)
+      .orElseThrow(IdNotFoundException::new);
+  }
+}
+
+```
+
+**/src/main/java/com/softarc/eternal/web/GlobalControllerAdvice.java**
+
+```java
+@ControllerAdvice
+public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
+
+  @ExceptionHandler(IdNotFoundException.class)
+  public ProblemDetail handleIdNotFound() {
+    return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Wrong Id");
+  }
+}
+
+```
+
+</details>
+
+# 4. WebTests
 
 For these kinds of tests, we use the powerful `WebTestClient` that comes with webflux (alternative to Spring MVC). As we stick to MVC, we only need that dependency in testing. Add it to our dependencies in **build.gradle**.
 
@@ -297,7 +408,7 @@ class HolidaysControllerIntegrationTest {
 </p>
 </details>
 
-# 4. Further Exercises
+# 5. Further Exercises
 
 - Static Serving of Files
 - Filters (LoggingFilter)
