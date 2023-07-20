@@ -3,7 +3,9 @@ package com.softarc.eternal.web;
 import com.softarc.eternal.data.HolidaysRepository;
 import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.domain.HolidayTrip;
+import com.softarc.eternal.web.exception.IdNotFoundException;
 import com.softarc.eternal.multimedia.ImageValidator;
+import com.softarc.eternal.web.exception.IdNotFoundException;
 import com.softarc.eternal.web.request.HolidayDto;
 import com.softarc.eternal.web.response.HolidayResponse;
 import com.softarc.eternal.web.response.HolidayTripDto;
@@ -11,7 +13,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.nio.file.Path;
-import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +56,7 @@ public class HolidaysController {
   public HolidayResponse find(@PathVariable("id") Long id) {
     return this.repository.findById(id)
       .map(this::toHolidayResponse)
-      .orElseThrow();
+      .orElseThrow(IdNotFoundException::new));
   }
 
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
