@@ -21,5 +21,5 @@ public class Guide {
   private String lastname;
   private String email;
   private String phoneNr;
-  private String text;
+  private String bio;
 }
