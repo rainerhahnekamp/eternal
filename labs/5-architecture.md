@@ -1,7 +1,54 @@
-- [1. Preparation](#1-preparation)
-- [2. Native WebClient](#2-native-webclient)
-- [3. Feign Client](#3-feign-client)
-- [4. Message Broker](#4-message-broker)
+- [1. Monolith](#1-monolith)
+  - [Modulith](#modulith)
+- [2. MicroServices](#2-microservices)
+  - [2.1. Preparation](#21-preparation)
+  - [2.2. Native WebClient](#22-native-webclient)
+  - [2.3. Feign Client](#23-feign-client)
+  - [2.4. Message Broker](#24-message-broker)
+
+# 1. Monolith
+
+## Modulith
+
+Install Spring Modulith in its current version. If necessary, add the snapshot repo.
+
+```groovy
+repositories {
+  // ..
+  maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+  // ..
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+}
+```
+
+In Modulith, the first subdirectory of `@SpringApplication` class represents a module by convention. All files in that subdirectory are public (in the sense of Modulith).
+
+---
+
+Write a test that prints out the perceived modules of Modulith.
+
+**src/test/java/com/softarc/eternal/ModuleTest.java**\
+
+```java
+package com.softarc.eternal;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.modulith.core.ApplicationModules;
+
+public class ModuleTests {
+
+  @Test
+  void testModules() {
+    ApplicationModules.of(Application.class).verify();
+  }
+}
+
+```
+
+# 2. MicroServices
 
 When a new holiday is created, we want to inform our printing department to start the production of new brochures.
 
@@ -27,7 +74,7 @@ In this lab, we communicate with the printing microservice in three different wa
 - synchronously via Feign
 - asynchronously via RabbitMQ
 
-# 1. Preparation
+## 2.1. Preparation
 
 First, add a new property `brochureStatus` to `Holiday`. It should be an enum type with following types
 
@@ -41,7 +88,7 @@ Apply the `@Converter` approach to persist the `enum` and create the necessary `
 
 If you are short on time, you can also checkout or merge from **solution-6-microservices-1-brochure-status**.
 
-# 2. Native WebClient
+## 2.2. Native WebClient
 
 Use the `WebClient` to send an order command to the printing service when a holiday is created. `WebClient` is part of the `org.springframework.boot:spring-boot-starter-webflux` dependency. You'll have to add it to your **build.gradle**.
 
@@ -224,7 +271,7 @@ class HolidaysControllerIntegrationTest {
 </p>
 </details>
 
-# 3. Feign Client
+## 2.3. Feign Client
 
 Install Spring Cloud and replace the WebClient with an OpenFeign client. Enable it in **Application.java** by adding `@EnableFeignClients`.
 
@@ -319,7 +366,7 @@ public class AddPrintingJob {
 </p>
 </details>
 
-# 4. Message Broker
+## 2.4. Message Broker
 
 Let's assume, we can send the print request to our printing service, but it could take a very long time until the printing-service is finished.
 
