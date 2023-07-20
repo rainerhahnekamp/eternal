@@ -2,10 +2,13 @@ package com.softarc.eternal.web;
 
 import com.softarc.eternal.data.HolidaysRepository;
 import com.softarc.eternal.domain.Holiday;
+import com.softarc.eternal.web.exception.IdNotFoundException;
 import com.softarc.eternal.web.request.HolidayDto;
 import com.softarc.eternal.web.response.HolidayResponse;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RequestMapping("/api/holidays")
 @RestController
@@ -27,7 +30,9 @@ public class HolidaysController {
 
   @GetMapping("{id}")
   public HolidayResponse find(@PathVariable("id") Long id) {
-    return this.repository.find(id).map(this::toHolidayResponse).orElseThrow();
+    return this.repository.find(id)
+      .map(this::toHolidayResponse)
+      .orElseThrow(IdNotFoundException::new);
   }
 
   @PostMapping
