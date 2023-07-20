@@ -1,14 +1,17 @@
-- [1. Monolith](#1-monolith)
-  - [Modulith](#modulith)
-- [2. MicroServices](#2-microservices)
+- [1. Monolithic Architectures](#1-monolithic-architectures)
+  - [1.1. Modulith](#11-modulith)
+    - [1.1.1. Cycle Detection](#111-cycle-detection)
+    - [1.1.2. Module Violation](#112-module-violation)
+  - [1.2. ArchUnit](#12-archunit)
+- [2. MicroService Architectures](#2-microservice-architectures)
   - [2.1. Preparation](#21-preparation)
   - [2.2. Native WebClient](#22-native-webclient)
   - [2.3. Feign Client](#23-feign-client)
   - [2.4. Message Broker](#24-message-broker)
 
-# 1. Monolith
+# 1. Monolithic Architectures
 
-## Modulith
+## 1.1. Modulith
 
 Install Spring Modulith in its current version. If necessary, add the snapshot repo.
 
@@ -28,7 +31,7 @@ In Modulith, the first subdirectory of `@SpringApplication` class represents a m
 
 ---
 
-Write a test that prints out the perceived modules of Modulith.
+Write a test that prints out the perceived modules of Modulith and also verifies them.
 
 **src/test/java/com/softarc/eternal/ModuleTest.java**\
 
@@ -42,13 +45,120 @@ public class ModuleTests {
 
   @Test
   void testModules() {
+    ApplicationModules.of(Application.class).forEach(System.out::println);
     ApplicationModules.of(Application.class).verify();
   }
 }
 
 ```
 
-# 2. MicroServices
+### 1.1.1. Cycle Detection
+
+Add the following method to `Holidays`.
+
+```java
+public interface Holidays {
+  // ..
+
+  default void add(HolidayDto holidayDto) {}
+  // ..
+}
+
+```
+
+It uses `HolidayDto` which will generate a cyclic dependency. Run the test. It should fail with the correct error message.
+
+### 1.1.2. Module Violation
+
+Create the package `com.softarc.eternal.data.impl` and move `GuideRepository` to it. From now on, `GuideRepository` is an internal bean of the module `data`.
+
+Inject `GuideRepository` into `HolidaysController` and run the test. It should fail with an appropriate error message.
+
+## 1.2. ArchUnit
+
+First let's install ArchUnit as test dependency.
+
+```groovy
+
+dependencies {
+  // ..
+  testImplementation 'com.tngtech.archunit:archunit-junit5:1.0.1'
+}
+```
+
+Create the package `com.softarc.eternal.db` and move `GuideRepository` to it.
+
+Now come with a test that verifies that this is an illegal access.
+
+**src/test/java/com/softarc/eternal/ArchitectureTest.java**
+
+```java
+@AnalyzeClasses(
+  packages = "com.softarc.eternal",
+  importOptions = ImportOption.DoNotIncludeTests.class
+)
+public class ArchitectureTest {
+
+  @ArchTest
+  public static final ArchRule noDependencyFromWebToDb = noClasses()
+    .that()
+    .resideInAPackage("com.softarc.eternal.web")
+    .should()
+    .dependOnClassesThat()
+    .resideInAPackage("com.softarc.eternal.db");
+}
+
+```
+
+Run it, and make sure it fails. Move `GuideRepository` back. Then re-run the test. It should'nt fail this time.
+
+Now, try to write two further tests:
+
+1. All classes in `com.softarc.eternal.web` should have names ending with `Controller`.
+2. All classes in `com.softarc.eternal.web` should have an annotation of `@RestController`.
+
+Consult the official documentation, for help.
+
+<details>
+<summary>Show Solution</summary>
+<p>
+
+```java
+@AnalyzeClasses(
+  packages = "com.softarc.eternal",
+  importOptions = ImportOption.DoNotIncludeTests.class
+)
+public class ArchitectureTest {
+
+  @ArchTest
+  public static final ArchRule noDependencyFromWebToDb = noClasses()
+    .that()
+    .resideInAPackage("com.softarc.eternal.web")
+    .should()
+    .dependOnClassesThat()
+    .resideInAPackage("com.softarc.eternal.db");
+
+  @ArchTest
+  public static final ArchRule controllerNamesInWeb = classes()
+    .that()
+    .resideInAPackage("com.softarc.eternal.web")
+    .should()
+    .haveSimpleNameEndingWith("Controller");
+
+  @ArchTest
+  public static final ArchRule onlyRestControllers = classes()
+    .that()
+    .resideInAPackage("com.softarc.eternal.web")
+    .should()
+    .beAnnotatedWith(RestController.class);
+}
+
+```
+
+</p>
+</details>
+
+# 2. MicroService Architectures
 
 When a new holiday is created, we want to inform our printing department to start the production of new brochures.
 
