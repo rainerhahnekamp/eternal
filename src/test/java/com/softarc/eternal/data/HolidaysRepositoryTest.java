@@ -4,18 +4,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import com.softarc.eternal.domain.HolidayMother;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-@DataJpaTest
+@SpringBootTest
+@Testcontainers
 class HolidaysRepositoryTest {
+
+  @Container
+  @ServiceConnection
+  static MySQLContainer mySQLContainer = new MySQLContainer("mysql:8.0.30");
 
   @Autowired
   private HolidaysRepository repository;
+
+  @BeforeEach
+  void removeHolidays() {
+    repository.deleteAll();
+  }
 
   @Test
   void testFindAll() {
