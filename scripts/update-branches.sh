@@ -23,9 +23,8 @@ for branch in ${branches[*]}; do
 
   if [ ! $current = $mainBranch ]
   then
-    echo merging
-#    git checkout $current
-#    git rebase $previous
+    git checkout $current
+    git rebase $previous
   fi;
 done
 
