@@ -13,22 +13,20 @@ mainBranch=${branches[0]}
 git checkout $mainBranch
 
 previous=
-current=
+current=$mainBranch
 
 for branch in ${branches[*]}; do
   previous=$current
-  current=$next
-  next=$branch
+  current=$branch
 
-  if [ ! $current = "" ]
+  echo $current
+
+  if [ ! $current = $mainBranch ]
   then
-    git checkout $current
-    git tag -d `git tag | grep -E '.'`
-    git rebase $previous
+    echo merging
+#    git checkout $current
+#    git rebase $previous
   fi;
 done
-
-git checkout $branch
-git rebase $current $branch
 
 git checkout $mainBranch
