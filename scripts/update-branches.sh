@@ -24,11 +24,11 @@ for branch in ${branches[*]}; do
   then
     git checkout $current
     git tag -d `git tag | grep -E '.'`
-    git merge $previous -m merge
+    git rebase $previous
   fi;
 done
 
 git checkout $branch
-git merge $current $branch -m merge
+git rebase $current $branch
 
 git checkout $mainBranch
