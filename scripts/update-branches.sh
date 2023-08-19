@@ -24,7 +24,7 @@ for branch in ${branches[*]}; do
   if [ ! $current = $mainBranch ]
   then
     git checkout $current
-    git merge $previous
+    git merge $previous -m merge
   fi;
 done
 
