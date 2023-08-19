@@ -8,6 +8,7 @@ export const countries = [
   ['DK', 'Denmark'],
   ['ES', 'Spain'],
   ['FR', 'France'],
+  ['GR', 'Greece'],
   ['HU', 'Hungary'],
   ['IN', 'India'],
   ['IT', 'Italy'],
@@ -16,5 +17,5 @@ export const countries = [
   ['RU', 'Russia'],
   ['SE', 'Sweden'],
   ['UK', 'United Kingdom'],
-  ['US', 'USA']
+  ['US', 'USA'],
 ].map(([value, label]) => ({ value, label }));
