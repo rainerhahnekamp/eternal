@@ -35,7 +35,7 @@ test.describe('Basics', () => {
 
   test('add Nicholas Dimou as new customer', async ({ page }) => {
     await page.getByTestId('btn-customers').click();
-    await page.getByTestId('btn-add-customer').click();
+    await page.getByTestId('btn-customers-add').click();
     await page.getByTestId('inp-firstname').fill('Nicholas');
     await page.getByTestId('inp-name').fill('Dimou');
     await page.getByTestId('sel-country').click();
@@ -71,23 +71,21 @@ test.describe('Basics', () => {
   });
 
   test('delete Knut Eggen', async ({ page }) => {
-    test('delete Knut Eggen', async ({ page }) => {
-      await page.getByTestId('btn-customers').click();
+    await page.getByTestId('btn-customers').click();
 
-      await page
-        .locator('[data-testid=row-customer]', { hasText: 'Knut Eggen' })
-        .getByTestId('btn-edit')
-        .click();
-      page.on('dialog', (dialog) => dialog.accept());
-      await page.getByTestId('btn-delete').click();
+    await page
+      .locator('[data-testid=row-customer]', { hasText: 'Knut Eggen' })
+      .getByTestId('btn-edit')
+      .click();
+    page.on('dialog', (dialog) => dialog.accept());
+    await page.getByTestId('btn-delete').click();
 
-      const locator = page.getByTestId('row-customer');
-      await expect(locator).toHaveCount(10);
+    const locator = page.getByTestId('row-customer');
+    await expect(locator).toHaveCount(10);
 
-      await expect(
-        page.locator('data-testid=row-customer', { hasText: 'Knut Eggen' }),
-      ).not.toBeVisible();
-    });
+    await expect(
+      page.locator('data-testid=row-customer', { hasText: 'Knut Eggen' }),
+    ).not.toBeVisible();
   });
 
   test('select the same country again', async ({ page }) => {
