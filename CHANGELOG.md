@@ -1,6 +1,6 @@
 ## 2.0.0
 
-- Merge all workshops in one repo with multipe branches
+- Merge all workshops in one repo with multiple branches
 - Use GitHub Actions
 - Fallback to Angular CLI
 
