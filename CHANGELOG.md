@@ -1,3 +1,9 @@
+## 2.0.0
+
+- Merge all workshops in one repo with multipe branches
+- Use GitHub Actions
+- Fallback to Angular CLI
+
 ## 1.9.0
 
 - Usage of Testing Library in Cypress
