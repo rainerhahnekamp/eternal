@@ -18,7 +18,6 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { AuthModule } from '@auth0/auth0-angular';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
 import { deAT } from 'date-fns/locale';
-import { environment } from './environments/environment.development';
 
 registerLocaleData(localeDe, 'de-AT');
 
@@ -28,7 +27,7 @@ bootstrapApplication(AppComponent, {
     provideStore(),
     provideRouter(appRoutes, withComponentInputBinding()),
     provideHttpClient(
-      withInterceptors([baseUrlInterceptor, loadingInterceptor])
+      withInterceptors([baseUrlInterceptor, loadingInterceptor]),
     ),
     provideStoreDevtools(),
     ...provideSecurity,
@@ -54,7 +53,11 @@ bootstrapApplication(AppComponent, {
     },
     {
       provide: Configuration,
-      useValue: new Configuration(environment.baseUrl, true, false),
+      useValue: new Configuration(
+        'https://api.eternal-holidays.net',
+        true,
+        false,
+      ),
     },
     provideAnimations(),
   ],

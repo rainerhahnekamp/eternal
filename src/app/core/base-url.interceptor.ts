@@ -10,7 +10,7 @@ export const baseUrlInterceptor: HttpInterceptorFn = (req, next) => {
   return next(
     req.clone({
       url: `${baseUrl}${req.url}`,
-      withCredentials: true
-    })
+      withCredentials: true,
+    }),
   );
 };
