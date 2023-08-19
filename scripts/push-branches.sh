@@ -1,3 +1,4 @@
+#!/bin/bash
 set -e
 
 i=0
@@ -8,12 +9,16 @@ do
 done < scripts/branches.txt
 
 mainBranch=${branches[0]}
-
 git checkout $mainBranch
+current=$mainBranch
 
 for branch in ${branches[*]}; do
-  git checkout $branch
-  git push $1 $branch
+  if [ ! $current = $mainBranch ]
+  then
+    git checkout $branch
+    git push $1 $branch
+  fi;
 done
 
 git checkout $mainBranch
+
