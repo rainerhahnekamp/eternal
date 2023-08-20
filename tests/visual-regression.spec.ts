@@ -33,18 +33,29 @@ test.describe('Visual Regression', () => {
       });
     });
 
-    test('holiday card for Lübeck', async ({ page, sidemenuPage }) => {
+    test('holiday card for Vienna', async ({ page, sidemenuPage }) => {
       await sidemenuPage.select('Holidays');
-      await expect(page.getByLabel('Lübeck')).toHaveScreenshot('luebeck.png');
+      await expect(page.getByLabel('Vienna')).toHaveScreenshot('vienna.png');
     });
   });
 
   test.describe('Storybook', () => {
-    test('Angkor Wat', async ({ page }) => {
-      await page.goto(
-        'http://localhost:6006/iframe.html?id=eternal-holiday-card--angkor-wat&viewMode=story',
-      );
-      await expect(page).toHaveScreenshot('holiday-card.png');
-    });
+    for (const story of [
+      'angkor-wat',
+      'minimal',
+      'overflown',
+      'sold-out',
+      'empty',
+      'tiny-image',
+      'on-sale',
+      'sale-and-sold',
+    ]) {
+      test(`story: ${story}`, async ({ page }) => {
+        await page.goto(
+          `http://localhost:6006/iframe.html?id=eternal-holiday-card--${story}&viewMode=story`,
+        );
+        await expect(page).toHaveScreenshot(`holiday-card-${story}.png`);
+      });
+    }
   });
 });
