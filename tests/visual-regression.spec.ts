@@ -32,5 +32,19 @@ test.describe('Visual Regression', () => {
         maskColor: 'white',
       });
     });
+
+    test('holiday card for Lübeck', async ({ page, sidemenuPage }) => {
+      await sidemenuPage.select('Holidays');
+      await expect(page.getByLabel('Lübeck')).toHaveScreenshot('luebeck.png');
+    });
+  });
+
+  test.describe('Storybook', () => {
+    test('Angkor Wat', async ({ page }) => {
+      await page.goto(
+        'http://localhost:6006/iframe.html?id=eternal-holiday-card--angkor-wat&viewMode=story',
+      );
+      await expect(page).toHaveScreenshot('holiday-card.png');
+    });
   });
 });
