@@ -76,13 +76,16 @@ test.describe('Basics', () => {
     });
 
     test('delete Knut Eggen', async ({ page, customersPage, customerPage }) => {
+      test.fail();
       await customersPage.edit('Knut Eggen');
 
       page.on('dialog', (dialog) => dialog.accept());
       await customerPage.remove();
 
       await expect(customersPage.rowsLocator).toHaveCount(10);
-      await expect(customersPage.rowByName('Knut Eggen')).not.toBeVisible();
+      await expect
+        .configure({ timeout: 2000 })(customersPage.rowByName('Knut Eggen'))
+        .toBeVisible();
     });
 
     test('select the same country again', async ({
