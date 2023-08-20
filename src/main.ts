@@ -29,7 +29,7 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(
       withInterceptors([baseUrlInterceptor, loadingInterceptor]),
     ),
-    provideStoreDevtools(),
+    provideStoreDevtools({ connectOutsideZone: true }),
     ...provideSecurity,
     ...sharedProviders,
     importProvidersFrom([
