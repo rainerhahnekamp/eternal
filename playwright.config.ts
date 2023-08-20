@@ -42,7 +42,7 @@ export default defineConfig({
     },
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], storageState: 'session.json' },
+      use: { ...devices['Desktop Chrome'] },
       dependencies: ['setup'],
     },
 
