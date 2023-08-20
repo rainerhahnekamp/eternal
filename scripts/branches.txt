@@ -3,3 +3,9 @@ pw-01-starter
 pw-01-solution
 pw-02-starter
 pw-02-solution
+pw-03-starter
+pw-03-solution
+pw-04-starter
+pw-04-solution
+pw-05-starter
+pw-05-solution
