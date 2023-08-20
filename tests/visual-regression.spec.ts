@@ -11,6 +11,7 @@ const test = base.extend<ShellFixtures & CustomersFixtures>({
 });
 
 test.describe('Visual Regression', () => {
+  test.slow();
   test.describe('Application', () => {
     test.beforeEach(async ({ page }) => {
       await page.goto('');
@@ -40,6 +41,9 @@ test.describe('Visual Regression', () => {
   });
 
   test.describe('Storybook', () => {
+    test.use({
+      baseURL: process.env['STORYBOOK_INSTANCE'] || 'http://localhost:6006',
+    });
     for (const story of [
       'angkor-wat',
       'minimal',
@@ -52,7 +56,7 @@ test.describe('Visual Regression', () => {
     ]) {
       test(`story: ${story}`, async ({ page }) => {
         await page.goto(
-          `http://localhost:6006/iframe.html?id=eternal-holiday-card--${story}&viewMode=story`,
+          `iframe.html?id=eternal-holiday-card--${story}&viewMode=story`,
         );
         await expect(page).toHaveScreenshot(`holiday-card-${story}.png`);
       });
