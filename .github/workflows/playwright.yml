@@ -66,3 +66,19 @@ jobs:
           name: html-report--attempt-${{ github.run_attempt }}
           path: playwright-report
           retention-days: 14
+
+      - name: Download Coverage reports
+        uses: actions/download-artifact@v3
+        with:
+          name: all-coverage-data
+          path: nyc
+
+      - name: Generate Coverage Report
+        run:  npx nyc -t nyc report --reporter html
+
+      - name: Upload Coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage
+          retention-days: 14
