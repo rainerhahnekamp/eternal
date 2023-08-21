@@ -9,3 +9,5 @@ pw-04-starter
 pw-04-solution
 pw-05-starter
 pw-05-solution
+pw-06-starter
+pw-06-solution
