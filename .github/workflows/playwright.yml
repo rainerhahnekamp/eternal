@@ -29,6 +29,14 @@ jobs:
           path: blob-report
           retention-days: 1
 
+      - name: Upload coverage data
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: all-coverage-data
+          path: nyc
+          retention-days: 1
+
   merge-reports:
     # Merge reports after playwright-tests, even if some shards have failed
     if: always()
