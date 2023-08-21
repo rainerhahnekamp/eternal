@@ -12,12 +12,8 @@ mainBranch=${branches[0]}
 git checkout $mainBranch
 
 for branch in ${branches[*]}; do
-
-  if [ ! $branch = $mainBranch ]
-  then
     git checkout $branch
     git push $1 $branch
-  fi;
 done
 
 git checkout $mainBranch
