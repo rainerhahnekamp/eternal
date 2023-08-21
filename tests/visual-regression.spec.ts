@@ -1,14 +1,5 @@
-import { expect, test as base } from '@playwright/test';
-import { ShellFixtures, shellFixtures } from './fixtures/shell.fixtures';
-import {
-  CustomersFixtures,
-  customersFixtures,
-} from './fixtures/customer.fixtures';
-
-const test = base.extend<ShellFixtures & CustomersFixtures>({
-  ...shellFixtures,
-  ...customersFixtures,
-});
+import { expect } from '@playwright/test';
+import { test } from './fixtures';
 
 test.describe('Visual Regression', () => {
   test.slow();

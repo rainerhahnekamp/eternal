@@ -22,6 +22,9 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
 
+  globalSetup: './tests/scripts/global-setup.ts',
+  globalTeardown: './tests/scripts/global-teardown.ts',
+
   expect: { timeout: 4000 },
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */

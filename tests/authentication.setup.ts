@@ -1,5 +1,5 @@
-import test from '@playwright/test';
 import { storagePath } from './storage-path';
+import { test } from '@playwright/test';
 
 test.describe('Authentication', () => {
   test('auth0 authenticates when already signed in', async ({ page }) => {
