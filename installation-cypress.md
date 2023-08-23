@@ -33,3 +33,5 @@ declare namespace Cypress {
   }
 }
 ```
+
+Update **scripts/branches.txt**
