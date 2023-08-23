@@ -8,7 +8,8 @@ describe('Buggy Tests', () => {
     cy.contains('[data-testid=row-customer]', 'Angelika Hoffmann')
       .find('[data-testid=btn-edit]')
       .click();
-    cy.testid('inp-name').clear().type('Hofmann');
+    cy.testid('inp-name').should('have.value', 'Hoffmann').clear();
+    cy.testid('inp-name').type('Hofmann');
     cy.testid('btn-submit').click();
 
     cy.testid('row-customer').should('contain.text', 'Angelika Hofmann');
@@ -20,11 +21,12 @@ describe('Buggy Tests', () => {
       .find('[data-testid=btn-edit]')
       .click();
     cy.testid('btn-delete').click();
-    cy.get('div').should('not.contain.text', 'Knut Eggen');
+    cy.testid('row-customer').should('not.contain.text', 'Knut Eggen');
   });
 
   it('should toggle the loading indicator', () => {
     cy.testid('btn-holidays').click();
-    cy.testid('loading-indicator').should('not.be.visible');
+    cy.testid('loading-indicator').should('be.visible');
+    cy.testid('loading-indicator').should('not.exist');
   });
 });

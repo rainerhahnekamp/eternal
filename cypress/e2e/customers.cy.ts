@@ -1,11 +1,19 @@
+import ViewportPreset = Cypress.ViewportPreset;
+
 describe('Customers', () => {
   beforeEach(() => {
     cy.visit('');
   });
 
-  it('should count the entries', () => {
-    cy.testid('btn-customers').click();
-    cy.testid('row-customer').should('have.length', 10);
+  (
+    ['ipad-2', 'ipad-mini', 'iphone-6', 'samsung-s10'] as ViewportPreset[]
+  ).forEach((preset) => {
+    it(`should count the entries in ${preset}`, () => {
+      cy.viewport(preset);
+      cy.visit('');
+      cy.testid('btn-customers').click();
+      cy.testid('row-customer').should('have.length', 10);
+    });
   });
 
   it('should rename Latitia to Laetitia', () => {
@@ -20,16 +28,16 @@ describe('Customers', () => {
   });
 
   it('should add a new customer', () => {
-    cy.testid('btn-customers').click();
-    cy.testid('btn-customers-add').click();
-    cy.testid('inp-firstname').type('Tom');
-    cy.testid('inp-name').type('Lincoln');
-    cy.testid('sel-country').click();
-    cy.testid('opt-country').contains('USA').click();
-    cy.testid('inp-birthdate').type('12.10.1995');
-    cy.testid('btn-submit').click();
-    cy.testid('btn-customers-next').click();
+    cy.findByRole('link', { name: 'Customers' }).click();
+    cy.findByRole('link', { name: 'Add Customer' }).click();
+    cy.findByLabelText('Firstname').type('Tom');
+    cy.findByLabelText('Name').type('Lincoln');
+    cy.findByLabelText('Country').click();
+    cy.findByRole('option', { name: 'USA' }).click();
+    cy.findByLabelText('Birthdate').type('12.10.1995');
+    cy.findByRole('button', { name: 'Save' }).click();
+    cy.findByRole('button', { name: 'next' }).click();
 
-    cy.testid('row-customer').should('contain.text', 'Tom Lincoln');
+    cy.findByLabelText('Tom Lincoln').should('be.visible');
   });
 });

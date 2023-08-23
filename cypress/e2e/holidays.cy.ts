@@ -25,12 +25,12 @@ describe('Holidays', () => {
   });
 
   it('should request brochure for Firenze', () => {
-    cy.testid('btn-holidays').click();
-    cy.contains('[data-testid=holiday-card]', 'Firenze')
-      .find('[data-testid=btn-brochure]')
+    cy.findByRole('link', { name: 'Holidays' }).click();
+    cy.findByLabelText(/Firenze/)
+      .findByRole('link', { name: 'Get a Brochure' })
       .click();
-    cy.testid('ri-address').type('Domgasse 5');
-    cy.testid('ri-search').click();
-    cy.testid('ri-message').should('contain.text', 'Brochure sent');
+    cy.findByLabelText('Address').type('Domgasse 5');
+    cy.findByRole('button', { name: 'Send' }).click();
+    cy.findByRole('status').should('have.text', 'Brochure sent');
   });
 });

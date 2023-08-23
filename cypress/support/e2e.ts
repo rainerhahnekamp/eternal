@@ -16,3 +16,4 @@
 // When a command from ./commands is ready to use, import with `import './commands'` syntax
 import './commands';
 import '@testing-library/cypress/add-commands';
+import 'cypress-axe';
