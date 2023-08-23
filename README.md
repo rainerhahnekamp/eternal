@@ -1,1 +1,1 @@
-# Playwright Workshop
+# Cypress Workshop
