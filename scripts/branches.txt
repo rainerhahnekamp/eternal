@@ -2,3 +2,5 @@ cypress-main
 cy-01-basics-solution
 cy-02-advanced-starter
 cy-02-advanced-solution
+cy-03-network-starter
+cy-03-network-solution
