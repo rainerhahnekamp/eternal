@@ -18,7 +18,7 @@
     <a data-testid="btn-diary" mat-raised-button routerLink="/diary">Diary</a>
   </li>
 
-  <li *ngIf="chatService.messages().length">
+  <li *ngIf="chatService.status() === 'connected'">
     <a
       data-testid="btn-chat"
       mat-raised-button
