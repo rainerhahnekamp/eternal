@@ -1,14 +1,31 @@
 <ul *ngIf="securityService.loaded$ | async">
   <li>
-    <a data-testid="btn-holidays" mat-raised-button routerLink="/holidays">Holidays</a>
+    <a data-testid="btn-holidays" mat-raised-button routerLink="/holidays"
+      >Holidays</a
+    >
   </li>
   <li>
-    <a data-testid="btn-customers" mat-raised-button routerLink="/customer">Customers</a>
+    <a data-testid="btn-customers" mat-raised-button routerLink="/customer"
+      >Customers</a
+    >
   </li>
   <li>
-    <a data-testid="btn-newsletter" mat-raised-button routerLink="/newsletter">Newsletter</a>
+    <a data-testid="btn-newsletter" mat-raised-button routerLink="/newsletter"
+      >Newsletter</a
+    >
   </li>
   <li *ngIf="securityService.signedIn$ | async">
     <a data-testid="btn-diary" mat-raised-button routerLink="/diary">Diary</a>
+  </li>
+
+  <li *ngIf="chatService.messages().length">
+    <a
+      data-testid="btn-chat"
+      mat-raised-button
+      routerLink="/chat"
+      [matBadge]="chatService.messages().length"
+      [matBadgeHidden]="chatService.messages().length === 0"
+      >Chat</a
+    >
   </li>
 </ul>
