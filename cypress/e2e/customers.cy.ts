@@ -1,5 +1,7 @@
-import ViewportPreset = Cypress.ViewportPreset;
+import { sidemenu } from 'cypress/page-objects/sidemenu';
 import { Customer } from '@app/customer/customer';
+import { customer } from '../page-objects/customer';
+import ViewportPreset = Cypress.ViewportPreset;
 
 describe('Customers', () => {
   describe('mocked', () => {
@@ -30,17 +32,16 @@ describe('Customers', () => {
     });
 
     it('should add a new customer', () => {
-      cy.findByRole('link', { name: 'Customers' }).click();
+      sidemenu.open('Customers');
       cy.findByRole('link', { name: 'Add Customer' }).click();
-      cy.findByLabelText('Firstname').type('Tom');
-      cy.findByLabelText('Name').type('Lincoln');
-      cy.findByLabelText('Country').click();
-      cy.findByRole('option', { name: 'USA' }).click();
-      cy.findByLabelText('Birthdate').type('12.10.1995');
-      cy.findByRole('button', { name: 'Save' }).click();
-      cy.findByRole('button', { name: 'next' }).click();
+      customer.setFirstname('Tom');
+      customer.setName('Lincoln');
+      customer.setCountry('USA');
+      customer.setBirthday(new Date(1995, 9, 12));
+      customer.submit();
+      cy.testid('btn-customers-next').click();
 
-      cy.findByLabelText('Tom Lincoln').should('be.visible');
+      cy.testid('row-customer').should('contain.text', 'Tom Lincoln');
     });
   });
 

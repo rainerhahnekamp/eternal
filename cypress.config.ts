@@ -13,6 +13,13 @@ export default defineConfig({
         },
       });
     },
+
+    env: {
+      loginUsernameStandard: 'john.list@host.com',
+      loginPasswordStandard: 'John List',
+      loginUsernameAdmin: 'anna.brecht@host.com',
+      loginPasswordAdmin: 'Anna Brecht',
+    },
   },
 
   component: {
