@@ -1,5 +1,7 @@
 testing-playwright
-testing-playwright-01-starter
-testing-playwright-01-solution
-testing-playwright-02-starter
-testing-playwright-02-solution
+testing-playwright-01-e2e-basics-starter
+testing-playwright-01-e2e-basics-solution
+testing-playwright-02-e2e-advanced-i-starter
+testing-playwright-02-e2e-advanced-i-solution
+testing-playwright-03-e2e-advanced-ii-starter
+testing-playwright-03-e2e-advanced-ii-solution
