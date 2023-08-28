@@ -43,6 +43,7 @@ Thumbs.db
 
 # Playwright
 /test-results
+session.json
 /test-results/
 /playwright-report/
 /playwright/.cache/
