@@ -44,6 +44,8 @@ npx ng add @cypress/schematic
 
 Remove the `e2e` property from **cypress.config.json**. In the Playwright version, Cypress only provides component testing.
 
+In **cypress/tsconfig.json**, make sure it only matches against `*.cy.ts` files.
+
 ## Storybook
 
 Install Storybook via
@@ -67,7 +69,28 @@ npm i -D jest @types/jest @angular-builders/jest
 Uninstall Karma via
 
 ```bash
+npm remove @types/jasmine jasmine-core karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter
+```
 
+In **tsconfig.spec.json**, change the value "jasmine" to "jest" of the tye `types` property.
+
+In **angular.json**, remove all properties from `projects.eternal.architect.test.builder`.
+
+Create **jest.config.js** with following contents:
+
+```js
+// all properties are inherited from the Angular's jest builder
+
+/** @type {import('jest').Config} */
+const config = {
+  verbose: true,
+  testMatch: ["<rootDir>/src/app/**/*.spec.ts"],
+  moduleNameMapper: {
+    "@app/(.*)$": "<rootDir>/src/app/$1",
+  },
+};
+
+module.exports = config;
 ```
 
 ## Testing Utils
