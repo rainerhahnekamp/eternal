@@ -1,1 +1,1 @@
-# Playwright Workshop
+# Angular Testing Workshop (Playwright Edition)
