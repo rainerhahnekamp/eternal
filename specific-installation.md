@@ -39,13 +39,17 @@ test("has title", async ({ page }) => {
 ## Cypress
 
 ```bash
-
+npx ng add @cypress/schematic
 ```
 
+Remove the `e2e` property from **cypress.config.json**. In the Playwright version, Cypress only provides component testing.
+
 ## Storybook
+
+## Setup Jest
 
 ## Testing Utils
 
 ```bash
-npm i -D @testing-library/angular ng-mocks
+npm i -D @testing-library/angular ng-mocks rxjs-marbles
 ```
