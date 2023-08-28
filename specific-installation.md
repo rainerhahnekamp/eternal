@@ -46,7 +46,29 @@ Remove the `e2e` property from **cypress.config.json**. In the Playwright versio
 
 ## Storybook
 
+Install Storybook via
+
+```bash
+npx sb init
+```
+
+Remove the folder **src/stories**.
+
+Make sure to add the property `staticDirs` to **.storybook/main.ts**.
+
 ## Setup Jest
+
+Install Jest via
+
+```bash
+npm i -D jest @types/jest @angular-builders/jest
+```
+
+Uninstall Karma via
+
+```bash
+
+```
 
 ## Testing Utils
 
