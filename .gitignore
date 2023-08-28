@@ -43,3 +43,4 @@ Thumbs.db
 
 # Playwright
 /test-results
+session.json
