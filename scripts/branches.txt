@@ -7,5 +7,5 @@ testing-playwright-02b-e2e-advanced-ii-starter
 testing-playwright-02b-e2e-advanced-ii-solution
 testing-playwright-03-unit-tests-async-mock-starter
 testing-playwright-03-unit-tests-async-mock-solution
-testing-playwright-04-rxjs-starter
-testing-playwright-04-rxjs-solution
+testing-playwright-04-unit-tests-rxjs-starter
+testing-playwright-04-unit-tests-rxjs-solution
