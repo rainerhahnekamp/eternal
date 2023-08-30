@@ -3,42 +3,35 @@
   Please fill in your address and below and we will send you a brochure with
   more information.
 </p>
-<div class="flex items-center gap-x-16">
-  <div>
-    <form (ngSubmit)="search()" [formGroup]="formGroup">
-      <p>
-        <mat-form-field>
-          <mat-label>Address</mat-label>
-          <input data-testid="ri-address" formControlName="address" matInput />
-          <mat-icon matSuffix>location_on</mat-icon>
-          <mat-hint>Please enter your address</mat-hint>
-        </mat-form-field>
-      </p>
-      <div class="flex justify-evenly my-4">
-        <a routerLink="../.." mat-raised-button>Cancel</a>
-        <button
-          color="primary"
-          data-testid="ri-search"
-          mat-raised-button
-          type="submit"
-          [disabled]="formGroup.invalid"
-        >
-          Send
-        </button>
-      </div>
-    </form>
-    <p
-      data-testid="ri-message"
-      class="text-center h-6"
-      aria-live="assertive"
-      role="status"
-    >
-      <span *ngIf="lookupResult()">{{ lookupResult() }}</span>
+<div class="w-[300px]">
+  <form (ngSubmit)="search()" [formGroup]="formGroup">
+    <p>
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <input data-testid="ri-address" formControlName="address" matInput />
+        <mat-icon matSuffix>location_on</mat-icon>
+        <mat-hint>Please enter your address</mat-hint>
+      </mat-form-field>
     </p>
-  </div>
-  <app-holiday-card
-    *ngIf="holiday() as value"
-    [holiday]="value"
-    [requestBrochure]="false"
-  ></app-holiday-card>
+    <div class="flex justify-evenly my-4">
+      <a routerLink="../.." mat-raised-button>Cancel</a>
+      <button
+        color="primary"
+        data-testid="ri-search"
+        mat-raised-button
+        type="submit"
+        [disabled]="formGroup.invalid"
+      >
+        Send
+      </button>
+    </div>
+  </form>
+  <p
+    data-testid="ri-message"
+    class="text-center h-6"
+    aria-live="assertive"
+    role="status"
+  >
+    <span *ngIf="lookupResult()">{{ lookupResult() }}</span>
+  </p>
 </div>
