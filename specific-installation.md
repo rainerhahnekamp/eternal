@@ -96,5 +96,5 @@ module.exports = config;
 ## Testing Utils
 
 ```bash
-npm i -D @testing-library/angular ng-mocks rxjs-marbles
+npm i -D @testing-library/angular @testing-library/dom @testing-library/user-event ng-mocks rxjs-marbles
 ```
