@@ -9,3 +9,5 @@ testing-playwright-03-unit-tests-async-mock-starter
 testing-playwright-03-unit-tests-async-mock-solution
 testing-playwright-04-unit-tests-rxjs-starter
 testing-playwright-04-unit-tests-rxjs-solution
+testing-playwright-05-component-integration-tests-starter
+testing-playwright-05-component-integration-tests-solution
