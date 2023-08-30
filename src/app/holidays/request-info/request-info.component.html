@@ -31,7 +31,8 @@
     class="text-center h-6"
     aria-live="assertive"
     role="status"
+    *ngIf="lookupResult()"
   >
-    <span *ngIf="lookupResult()">{{ lookupResult() }}</span>
+    {{ lookupResult() }}
   </p>
 </div>
