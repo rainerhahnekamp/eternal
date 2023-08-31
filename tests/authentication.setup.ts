@@ -19,7 +19,7 @@ async function isAuthenticated() {
     return !data.cookies
       .filter((cookie) => cookie.expires && cookie.domain?.match(/auth0/))
       .some((cookie) => {
-        if (cookie.expires && cookie.domain?.match(/auth0/)) {
+        if (cookie.expires) {
           const expires = cookie.expires * 1000;
           return expires < now;
         }
