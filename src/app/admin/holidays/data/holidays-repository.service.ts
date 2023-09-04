@@ -8,6 +8,7 @@ export class HolidaysRepository {
   #holidays$ = new BehaviorSubject<Holiday[]>([]);
   #httpClient = inject(HttpClient);
   #initialized = false;
+  #baseUrl = 'http://localhost:8080/api';
 
   get holidays$(): Observable<Holiday[]> {
     if (!this.#initialized) {
@@ -18,7 +19,9 @@ export class HolidaysRepository {
   }
 
   findById(id: number): Observable<Holiday | undefined> {
-    return this.#httpClient.get<Holiday | undefined>(`/holidays/${id}`);
+    return this.#httpClient.get<Holiday | undefined>(
+      `${this.#baseUrl}/holidays/${id}`,
+    );
   }
 
   async save(holiday: Holiday) {
@@ -27,19 +30,24 @@ export class HolidaysRepository {
 
   async add(holiday: Holiday): Promise<void> {
     await firstValueFrom(
-      this.#httpClient.post<void>(`/holidays/${holiday.name}`, {}),
+      this.#httpClient.post<void>(
+        `${this.#baseUrl}/holidays/${holiday.name}`,
+        {},
+      ),
     );
     await this.#update();
   }
 
   async remove(id: number): Promise<void> {
-    await firstValueFrom(this.#httpClient.delete(`/holidays/${id}`));
+    await firstValueFrom(
+      this.#httpClient.delete(`${this.#baseUrl}/holidays/${id}`),
+    );
     await this.#update();
   }
 
   async #update() {
     const holidays = await firstValueFrom(
-      this.#httpClient.get<Holiday[]>('/holidays'),
+      this.#httpClient.get<Holiday[]>(`${this.#baseUrl}/holidays`),
     );
     this.#holidays$.next(holidays);
   }
