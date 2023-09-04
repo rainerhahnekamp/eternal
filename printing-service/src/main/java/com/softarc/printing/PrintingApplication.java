@@ -1,13 +1,13 @@
-package com.softarc.eternal;
+package com.softarc.printing;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Application {
+public class PrintingApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(PrintingApplication.class, args);
     }
 
 }

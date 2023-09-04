@@ -48,3 +48,8 @@ session.json
 #Spring
 .gradle/
 /build/
+filestore/**
+!filestore/.gitkeep
+dev-db.mv.db
+dev-db.trace.db
+
