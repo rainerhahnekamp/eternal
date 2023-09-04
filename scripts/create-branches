@@ -23,7 +23,7 @@ for branch in ${branches[*]}; do
 
   if [ ! $current = $mainBranch ]
   then
-    git checkout -b $current
+    git checkout $current 2>/dev/null || git checkout -b $current
   fi;
 done
 

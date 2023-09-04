@@ -3,3 +3,7 @@ spring-01a-basics-starter
 spring-01a-basics-solution
 spring-01b-basics-starter
 spring-01b-basics-solution
+spring-01a-testing-starter
+spring-01a-testing-solution
+spring-01b-testing-starter
+spring-01b-testing-solution
