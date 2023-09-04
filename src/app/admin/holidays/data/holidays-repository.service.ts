@@ -1,43 +1,46 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
-import { Holiday } from '@app/admin/holidays/model';
-import { dummyHolidays } from './dummy-holidays';
+import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { Holiday } from '@eternal/admin/holidays/model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class HolidaysRepository {
-  #holidayId = 1;
-  #holidays: Holiday[] = [];
-  #holidays$ = new BehaviorSubject<Holiday[]>(dummyHolidays);
+  #holidays$ = new BehaviorSubject<Holiday[]>([]);
+  #httpClient = inject(HttpClient);
+  #initialized = false;
 
   get holidays$(): Observable<Holiday[]> {
+    if (!this.#initialized) {
+      this.#update();
+      this.#initialized = true;
+    }
     return this.#holidays$.asObservable();
   }
 
   findById(id: number): Observable<Holiday | undefined> {
-    return this.holidays$.pipe(
-      map((holidays) => holidays.find((h) => h.id === id)),
+    return this.#httpClient.get<Holiday | undefined>(`/holidays/${id}`);
+  }
+
+  async save(holiday: Holiday) {
+    throw new Error('not implemented');
+  }
+
+  async add(holiday: Holiday): Promise<void> {
+    await firstValueFrom(
+      this.#httpClient.post<void>(`/holidays/${holiday.name}`, {})
     );
+    await this.#update();
   }
 
-  save(holiday: Holiday): void {
-    this.#holidays = this.#holidays.map((h) => {
-      if (h.id === holiday.id) {
-        return holiday;
-      } else {
-        return h;
-      }
-    });
-
-    this.#holidays$.next(this.#holidays);
+  async remove(id: number): Promise<void> {
+    await firstValueFrom(this.#httpClient.delete(`/holidays/${id}`));
+    await this.#update();
   }
 
-  add(holiday: Holiday): void {
-    this.#holidays = [...this.#holidays, { ...holiday, id: this.#holidayId++ }];
-    this.#holidays$.next(this.#holidays);
-  }
-
-  remove(id: number): void {
-    this.#holidays = this.#holidays.filter((holiday) => holiday.id !== id);
-    this.#holidays$.next(this.#holidays);
+  async #update() {
+    const holidays = await firstValueFrom(
+      this.#httpClient.get<Holiday[]>('/holidays')
+    );
+    this.#holidays$.next(holidays);
   }
 }
