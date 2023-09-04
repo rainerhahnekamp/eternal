@@ -1,0 +1,3 @@
+app.holidays:
+  persistence-type: file
+  persistence-file: holidays.json
