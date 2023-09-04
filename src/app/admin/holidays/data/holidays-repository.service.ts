@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
-import { Holiday } from '@eternal/admin/holidays/model';
+import { Holiday } from '@app/admin/holidays/model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
@@ -27,7 +27,7 @@ export class HolidaysRepository {
 
   async add(holiday: Holiday): Promise<void> {
     await firstValueFrom(
-      this.#httpClient.post<void>(`/holidays/${holiday.name}`, {})
+      this.#httpClient.post<void>(`/holidays/${holiday.name}`, {}),
     );
     await this.#update();
   }
@@ -39,7 +39,7 @@ export class HolidaysRepository {
 
   async #update() {
     const holidays = await firstValueFrom(
-      this.#httpClient.get<Holiday[]>('/holidays')
+      this.#httpClient.get<Holiday[]>('/holidays'),
     );
     this.#holidays$.next(holidays);
   }
