@@ -1,7 +1,6 @@
 package com.softarc.eternal.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,12 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Holiday {
+public class Guide {
 
   private Long id;
-  private String name;
-  private String description;
-
-  @Builder.Default
-  private List<HolidayTrip> trips = new ArrayList<>();
+  private String firstname;
+  private String lastname;
+  private String email;
+  private String phoneNr;
+  private String text;
 }
