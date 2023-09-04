@@ -14,35 +14,43 @@ export const appRoutes: Routes = [
         const config = inject(Configuration);
 
         if (queryParamMap.has('mock-customers')) {
-          config.updateFeatures({ mockCustomers: queryParamMap.get('mock-customers') == '1' });
+          config.updateFeatures({
+            mockCustomers: queryParamMap.get('mock-customers') == '1',
+          });
         }
         if (queryParamMap.has('mock-holidays')) {
-          config.updateFeatures({ mockHolidays: queryParamMap.get('mock-holidays') == '1' });
+          config.updateFeatures({
+            mockHolidays: queryParamMap.get('mock-holidays') == '1',
+          });
         }
       },
       () => {
         return inject(SecurityService).loaded$.pipe(filter(Boolean));
-      }
+      },
     ],
     children: [
       {
         path: '',
-        component: HomeComponent
+        component: HomeComponent,
       },
       { path: 'home', redirectTo: '' },
       { path: 'newsletter', component: NewsletterComponent },
       {
         path: 'customer',
-        loadChildren: () => import('./customer/customer.routes')
+        loadChildren: () => import('./customer/customer.routes'),
       },
       {
         path: 'holidays',
-        loadChildren: () => import('./holidays/holidays.routes')
+        loadChildren: () => import('./holidays/holidays.routes'),
+      },
+      {
+        path: 'admin/holidays',
+        loadChildren: () => import('./admin/holidays/feature'),
       },
       {
         path: 'diary',
-        loadChildren: () => import('./diary/diary.routes.module')
-      }
-    ]
-  }
+        loadChildren: () => import('./diary/diary.routes.module'),
+      },
+    ],
+  },
 ];

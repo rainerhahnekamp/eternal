@@ -1,0 +1,42 @@
+<form (ngSubmit)="submit()" *ngIf="holiday" class="w-96" #ngForm="ngForm">
+  <mat-form-field>
+    <mat-label>Firstname</mat-label>
+    <input
+      name="name"
+      data-testid="inp-name"
+      [(ngModel)]="holiday.name"
+      matInput
+    />
+    <mat-error
+      ><app-form-errors
+        [control]="ngForm.form.controls['name']"
+      ></app-form-errors>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Firstname</mat-label>
+    <input
+      name="description"
+      data-testid="inp-description"
+      [(ngModel)]="holiday.description"
+      matInput
+    />
+    <mat-error
+      ><app-form-errors
+        [control]="ngForm.form.controls['description']"
+      ></app-form-errors>
+    </mat-error>
+  </mat-form-field>
+  <div class="flex justify-evenly">
+    <a [routerLink]="['..']" mat-raised-button>Back</a>
+    <button
+      (click)="handleRemove()"
+      color="warn"
+      mat-raised-button
+      type="button"
+    >
+      Delete
+    </button>
+    <button color="primary" mat-raised-button type="submit">Save</button>
+  </div>
+</form>

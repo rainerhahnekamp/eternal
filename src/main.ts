@@ -18,6 +18,7 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { AuthModule } from '@auth0/auth0-angular';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
 import { deAT } from 'date-fns/locale';
+import { sharedUiMessagingProvider } from '@app/shared/ui-messaging';
 
 registerLocaleData(localeDe, 'de-AT');
 
@@ -32,6 +33,7 @@ bootstrapApplication(AppComponent, {
     provideStoreDevtools({ connectOutsideZone: true }),
     ...provideSecurity,
     ...sharedProviders,
+    ...sharedUiMessagingProvider,
     importProvidersFrom([
       AuthModule.forRoot({
         domain: 'dev-xbu2-fid.eu.auth0.com',
@@ -61,4 +63,4 @@ bootstrapApplication(AppComponent, {
     },
     provideAnimations(),
   ],
-});
+}).catch(console.error);
