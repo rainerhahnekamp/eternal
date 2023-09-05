@@ -25,12 +25,16 @@ export class HolidaysRepository {
   }
 
   async save(holiday: Holiday) {
-    await firstValueFrom(this.#httpClient.put<void>(`/holidays`, holiday));
+    await firstValueFrom(
+      this.#httpClient.put<void>(`${this.#baseUrl}/holidays`, holiday),
+    );
     await this.#update();
   }
 
   async add(holiday: Holiday): Promise<void> {
-    await firstValueFrom(this.#httpClient.post<void>(`/holidays`, holiday));
+    await firstValueFrom(
+      this.#httpClient.post<void>(`${this.#baseUrl}/holidays`, holiday),
+    );
     await this.#update();
   }
 
