@@ -14,7 +14,9 @@ import lombok.NoArgsConstructor;
 public class Holiday {
 
   private Long id;
+
   private String name;
+
   private String description;
 
   @Builder.Default

@@ -6,15 +6,15 @@ import static org.mockito.Mockito.when;
 
 import com.softarc.eternal.data.HolidaysRepository;
 import com.softarc.eternal.domain.HolidayMother;
+import com.softarc.eternal.web.request.HolidayDto;
+import com.softarc.eternal.web.response.HolidayResponse;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
-@ActiveProfiles
+@WebMvcTest(HolidaysController.class)
 public class HolidaysControllerUnitTest {
 
   @Autowired
@@ -25,14 +25,24 @@ public class HolidaysControllerUnitTest {
 
   @Test
   public void testRepositoryIsCalled() {
-    controller.add("Vienna");
-    verify(repository).add("Vienna");
+    var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien");
+    controller.add(vienna);
+    verify(repository).add("Vienna", "Urlaub in Wien");
   }
 
   @Test
   public void testMockRepository() {
     var holiday = HolidayMother.vienna().build();
     when(repository.findAll()).thenReturn(Collections.singletonList(holiday));
-    assertThat(controller.index()).containsExactly(holiday);
+    assertThat(controller.index())
+      .isEqualTo(
+        Collections.singletonList(
+          new HolidayResponse(
+            holiday.getId(),
+            holiday.getName(),
+            holiday.getDescription()
+          )
+        )
+      );
   }
 }

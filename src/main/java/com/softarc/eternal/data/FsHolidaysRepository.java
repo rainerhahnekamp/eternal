@@ -4,8 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softarc.eternal.domain.Guide;
 import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.domain.HolidayTrip;
+import lombok.SneakyThrows;
+import lombok.extern.java.Log;
+
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,12 +74,20 @@ public class FsHolidaysRepository implements HolidaysRepository {
   }
 
   @Override
-  public void add(String name) {
+  public void add(String name, String description) {
     this.holidays.add(
-        new Holiday(++this.currentId, name, "-", new ArrayList<>())
+        new Holiday(++this.currentId, name, description, new ArrayList<>())
       );
     this.persist();
     FsHolidaysRepository.log.info(String.format("Holiday %s was added", name));
+  }
+
+  @Override
+  public void update(Long id, String name, String description) {
+    var holiday = this.find(id).orElseThrow();
+    holiday.setName(name);
+    holiday.setDescription(description);
+    this.persist();
   }
 
   @Override

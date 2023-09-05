@@ -6,8 +6,10 @@ import com.softarc.eternal.data.FsHolidaysRepository;
 import com.softarc.eternal.data.HolidaysRepository;
 import com.softarc.eternal.data.OverlappingCalculator;
 import com.softarc.eternal.domain.Holiday;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,20 +28,21 @@ public class AppConfiguration {
         appProperties.getPersistenceFile()
       );
     } else {
-      var holidays = Arrays.asList(
-        new Holiday(
-          1L,
-          "Canada",
-          "Visit Rocky Mountains",
-          Collections.emptyList()
-        ),
-        new Holiday(
-          2L,
-          "China",
-          "To the Middle Kingdom",
-          Collections.emptyList()
-        )
-      );
+      List<Holiday> holidays;
+      if (appProperties.isPreSeed()) {
+        holidays =
+          Arrays.asList(
+            new Holiday(
+              1L,
+              "Canada",
+              "Visit Rocky Mountains",
+              new ArrayList<>()
+            ),
+            new Holiday(2L, "China", "To the Middle Kingdom", new ArrayList<>())
+          );
+      } else {
+        holidays = Collections.emptyList();
+      }
       return new DefaultHolidaysRepository(holidays, calculator);
     }
   }
