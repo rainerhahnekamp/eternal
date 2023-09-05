@@ -7,3 +7,9 @@ spring-02a-testing-starter
 spring-02a-testing-solution
 spring-02b-testing-starter
 spring-02b-testing-solution
+spring-03a-web-basics-starter
+spring-03a-web-basics-solution
+spring-03b-web-openapi-starter
+spring-03b-web-openapi-solution
+spring-03c-web-upload-download-starter
+spring-03c-web-upload-download-solution
