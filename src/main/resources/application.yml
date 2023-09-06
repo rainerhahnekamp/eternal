@@ -9,11 +9,9 @@ spring:
   datasource:
     url: jdbc:h2:./dev-db
     driver-class-name: org.h2.Driver
-  servlet.multipart:
-    max-file-size: 4MB
-    max-request-size: 4MB
-
-spring:
   mvc:
     problemdetails:
       enabled: true
+  servlet.multipart:
+    max-file-size: 4MB
+    max-request-size: 4MB

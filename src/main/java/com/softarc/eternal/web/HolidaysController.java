@@ -115,7 +115,7 @@ public class HolidaysController {
     var holiday = this.repository.findById(id).orElseThrow();
     var cover = holiday.getCoverPath();
     if (cover == null) {
-      throw new RuntimeException("Cover not set");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cover not set");
     }
     var file = Path.of("", "filestore", cover);
     FileSystemResource resource = new FileSystemResource(file);
