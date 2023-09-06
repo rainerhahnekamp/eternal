@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 import com.softarc.eternal.data.HolidaysRepository;
+import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.domain.HolidayMother;
 import com.softarc.eternal.multimedia.ImageValidator;
 import com.softarc.eternal.web.request.HolidayDto;
@@ -52,7 +53,14 @@ public class HolidaysControllerUnitTest {
     var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien");
     setImageValidatorToTrue();
     controller.add(vienna, cover);
-    verify(repository).add("Vienna", "Urlaub in Wien", Optional.of("vienna"));
+    var holiday = new Holiday(
+      null,
+      "Vienna",
+      "Urlaub in Wien",
+      "vienna",
+      Collections.emptyList()
+    );
+    verify(repository).save(holiday);
   }
 
   @Test
@@ -88,11 +96,13 @@ public class HolidaysControllerUnitTest {
     MultipartFile file = createMultipartFile();
     var inputStream = file.getInputStream();
     setImageValidatorToTrue();
-    var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien");
+    var viennaDto = new HolidayDto(1L, "Vienna", "Urlaub in Wien");
+    var vienna = HolidayMother.vienna().build();
+    when(repository.findById(1L)).thenReturn(Optional.ofNullable(vienna));
 
-    controller.add(vienna, file);
+    controller.add(viennaDto, file);
     verify(imageValidator).isFileImage(inputStream);
-    controller.update(vienna, file);
+    controller.update(viennaDto, file);
     verify(imageValidator, times(2)).isFileImage(inputStream);
   }
 

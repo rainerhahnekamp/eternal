@@ -21,20 +21,20 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class DefaultHolidaysRepositoryTest {
+class DefaultHolidaysTest {
 
   @Mock
   OverlappingCalculator mockedOverlappingCalculator;
 
-  public DefaultHolidaysRepository setup() {
-    return new DefaultHolidaysRepository(
+  public DefaultHolidays setup() {
+    return new DefaultHolidays(
       Collections.emptyList(),
       this.mockedOverlappingCalculator
     );
   }
 
-  public DefaultHolidaysRepository setup(Holiday... holidays) {
-    return new DefaultHolidaysRepository(
+  public DefaultHolidays setup(Holiday... holidays) {
+    return new DefaultHolidays(
       Arrays.asList(holidays),
       this.mockedOverlappingCalculator
     );

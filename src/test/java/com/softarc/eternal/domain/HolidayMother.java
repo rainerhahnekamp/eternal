@@ -1,7 +1,5 @@
 package com.softarc.eternal.domain;
 
-import java.util.Optional;
-
 public class HolidayMother extends Holiday {
 
   private static Long id = 1L;
@@ -11,7 +9,7 @@ public class HolidayMother extends Holiday {
       .builder()
       .id(++HolidayMother.id)
       .name("Vienna")
-      .coverPath(Optional.empty())
+      .coverPath(null)
       .description("This is a default description");
   }
 }

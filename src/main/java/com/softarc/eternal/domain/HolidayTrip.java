@@ -1,5 +1,7 @@
 package com.softarc.eternal.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import java.math.BigDecimal;
 import java.time.Instant;
 import lombok.AllArgsConstructor;
@@ -11,9 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
 public class HolidayTrip {
 
+  @Id
   private Long id;
+
   private Instant fromDate;
   private Instant toDate;
   private BigDecimal priceSingleRoom;

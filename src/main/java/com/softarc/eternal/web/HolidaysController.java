@@ -1,13 +1,20 @@
 package com.softarc.eternal.web;
 
 import com.softarc.eternal.data.HolidaysRepository;
+import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.multimedia.ImageValidator;
 import com.softarc.eternal.web.exception.IdNotFoundException;
 import com.softarc.eternal.web.mapping.HolidaysMapper;
+import com.softarc.eternal.web.exception.IdNotFoundException;
+import com.softarc.eternal.web.exception.IdNotFoundException;
 import com.softarc.eternal.web.request.HolidayDto;
 import com.softarc.eternal.web.response.HolidayResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
 import lombok.SneakyThrows;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -55,7 +62,7 @@ public class HolidaysController {
   @GetMapping("{id}")
   @Operation(operationId = "findById")
   public HolidayResponse find(@PathVariable("id") Long id) {
-    return this.repository.find(id)
+    return this.repository.findById(id)
       .map(holidaysMapper::holidayToResponse)
       .orElseThrow(IdNotFoundException::new);
   }
@@ -70,12 +77,15 @@ public class HolidaysController {
 
     var filename = cover.getOriginalFilename();
     var path = Path.of("", "filestore", filename);
-    this.repository.add(
+    cover.transferTo(path);
+    var holiday = new Holiday(
+      null,
       holidayDto.name(),
       holidayDto.description(),
-      Optional.ofNullable(filename)
+      filename,
+      Collections.emptyList()
     );
-    cover.transferTo(path);
+    this.repository.save(holiday);
     return true;
   }
 
@@ -86,22 +96,21 @@ public class HolidaysController {
     @RequestPart MultipartFile cover
   ) throws IOException {
     this.assertFileIsImage(cover);
-
     var filename = cover.getOriginalFilename();
-    this.repository.update(
-      holidayDto.id(),
-      holidayDto.name(),
-      holidayDto.description(),
-      Optional.ofNullable(filename)
-    );
     var path = Path.of("", "filestore", filename);
     cover.transferTo(path);
+
+    Holiday holiday = this.repository.findById(holidayDto.id()).orElseThrow();
+    holiday.setDescription(holidayDto.description());
+    holiday.setName(holidayDto.name());
+    holiday.setCoverPath(filename);
+    this.repository.save(holiday);
   }
 
   @DeleteMapping("{id}")
   @Operation(operationId = "remove")
   public void remove(@PathVariable("id") Long id) {
-    this.repository.remove(id);
+    this.repository.deleteById(id);
   }
 
   @GetMapping(
@@ -109,8 +118,11 @@ public class HolidaysController {
     produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
   )
   public ResponseEntity<Resource> viewCover(@PathVariable("id") Long id) {
-    var holiday = this.repository.find(id).orElseThrow();
-    var cover = holiday.getCoverPath().orElseThrow();
+    var holiday = this.repository.findById(id).orElseThrow();
+    var cover = holiday.getCoverPath();
+    if (cover == null) {
+      throw new RuntimeException("Cover not set");
+    }
     var file = Path.of("", "filestore", cover);
     FileSystemResource resource = new FileSystemResource(file);
     return new ResponseEntity<>(resource, new HttpHeaders(), HttpStatus.OK);

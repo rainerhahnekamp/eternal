@@ -1,5 +1,6 @@
 package com.softarc.eternal.domain;
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,16 +13,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
 public class Holiday {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String name;
 
   private String description;
 
-  private Optional<String> coverPath;
+  private String coverPath;
 
   @Builder.Default
+  @Transient
   private List<HolidayTrip> trips = new ArrayList<>();
 }
