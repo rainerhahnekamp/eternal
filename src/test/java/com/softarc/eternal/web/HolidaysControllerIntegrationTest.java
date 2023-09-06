@@ -25,14 +25,16 @@ class HolidaysControllerIntegrationTest {
   @Autowired
   HolidaysRepository repository;
 
+  @Autowired
+  WebTestClient webTestClient;
+
   @Test
   public void testInjectedDefaultRepository() {
     assertThat(repository).isInstanceOf(DefaultHolidaysRepository.class);
   }
 
   @Test
-  public void testAddHoliday(@Autowired WebTestClient webTestClient)
-    throws Exception {
+  public void testAddHoliday() throws Exception {
     var amsterdam = new HolidayDto(1L, "Amsterdam", "Netherlands");
     webTestClient
       .post()
@@ -48,5 +50,17 @@ class HolidaysControllerIntegrationTest {
       .expectBody()
       .jsonPath("[0].name")
       .isEqualTo("Amsterdam");
+  }
+
+  @Test
+  public void testAddHolidayIsValidated() {
+    var amsterdam = new HolidayDto(1L, "Amsterdam", "");
+    webTestClient
+      .post()
+      .uri("/api/holidays")
+      .bodyValue(amsterdam)
+      .exchange()
+      .expectStatus()
+      .isBadRequest();
   }
 }
