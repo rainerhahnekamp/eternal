@@ -5,16 +5,10 @@ import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.multimedia.ImageValidator;
 import com.softarc.eternal.web.exception.IdNotFoundException;
 import com.softarc.eternal.web.mapping.HolidaysMapper;
-import com.softarc.eternal.web.exception.IdNotFoundException;
-import com.softarc.eternal.web.exception.IdNotFoundException;
 import com.softarc.eternal.web.request.HolidayDto;
 import com.softarc.eternal.web.response.HolidayResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Collections;
-import java.util.List;
 import lombok.SneakyThrows;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -28,8 +22,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("/api/holidays")
 @RestController
