@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -118,7 +119,7 @@ public class HolidaysController {
   @SneakyThrows
   private void assertFileIsImage(MultipartFile file) {
     if (!this.imageValidator.isFileImage(file.getInputStream())) {
-      throw new RuntimeException(
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
         String.format("'%s' is not an image.", file.getName())
       );
     }
