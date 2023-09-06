@@ -2,3 +2,8 @@ app.holidays:
   persistence-type: file
   persistence-file: holidays.json
   pre-seed: true
+
+spring:
+  mvc:
+    problemdetails:
+      enabled: true
