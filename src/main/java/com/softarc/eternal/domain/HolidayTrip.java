@@ -2,14 +2,13 @@ package com.softarc.eternal.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.*;
+
 import java.math.BigDecimal;
 import java.time.Instant;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
