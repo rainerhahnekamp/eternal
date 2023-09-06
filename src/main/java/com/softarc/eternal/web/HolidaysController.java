@@ -1,7 +1,6 @@
 package com.softarc.eternal.web;
 
 import com.softarc.eternal.data.HolidaysRepository;
-import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.multimedia.ImageValidator;
 import com.softarc.eternal.web.exception.IdNotFoundException;
 import com.softarc.eternal.web.mapping.HolidaysMapper;
@@ -21,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,16 +113,6 @@ public class HolidaysController {
     var file = Path.of("", "filestore", cover);
     FileSystemResource resource = new FileSystemResource(file);
     return new ResponseEntity<>(resource, new HttpHeaders(), HttpStatus.OK);
-  }
-
-  private HolidayResponse toHolidayResponse(Holiday holiday) {
-    return new HolidayResponse(
-      holiday.getId(),
-      holiday.getName(),
-      holiday.getDescription(),
-      holiday.getCoverPath().isPresent(),
-      Collections.emptyList()
-    );
   }
 
   @SneakyThrows

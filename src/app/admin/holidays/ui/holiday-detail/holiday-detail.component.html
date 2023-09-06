@@ -27,6 +27,22 @@
       ></app-form-errors>
     </mat-error>
   </mat-form-field>
+
+  <div class="my-4">
+    <button type="button" mat-raised-button (click)="fileInput.click()">
+      Select Cover Image
+    </button>
+    <input
+      hidden
+      (change)="onFileSelected()"
+      #fileInput
+      type="file"
+      id="file"
+    />
+    <div class="mt-4 text-center" *ngIf="imageSrc">
+      <img [src]="imageSrc" alt="Cover Image" />
+    </div>
+  </div>
   <div class="flex justify-evenly">
     <a [routerLink]="['..']" mat-raised-button>Back</a>
     <button

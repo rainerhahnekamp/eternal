@@ -11,9 +11,10 @@
  */
 
 
-export interface HolidayDto { 
+export interface Booking { 
     id?: number;
-    name?: string;
-    description?: string;
+    holidayTripId: number;
+    bookingDate: string;
+    comment?: string;
 }
 

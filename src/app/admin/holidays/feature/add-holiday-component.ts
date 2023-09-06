@@ -3,10 +3,7 @@ import {
   HolidayDetailComponent,
   HolidayForm,
   HolidayFormInput,
-} from '@eternal/admin/holidays/ui';
-import { HolidaysRepository } from '@eternal/admin/holidays/data';
-import { HolidayDetailComponent } from '@app/admin/holidays/ui';
-import { Holiday } from '@app/admin/holidays/model';
+} from '@app/admin/holidays/ui';
 import { HolidaysRepository } from '@app/admin/holidays/data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from '@app/shared/ui-messaging';
@@ -22,6 +19,8 @@ export class AddHolidayComponent {
   emptyHoliday: HolidayFormInput = {
     name: '',
     description: '',
+    hasCover: false,
+    coverLink: '',
   };
   #repo = inject(HolidaysRepository);
   #router = inject(Router);
