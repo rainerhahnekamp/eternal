@@ -8,9 +8,6 @@ import com.softarc.eternal.web.response.HolidayResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.Collections;
-import java.util.List;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,10 +53,10 @@ public class HolidaysController {
   @Operation(operationId = "save")
   public void update(@RequestBody @Valid HolidayDto holidayDto) {
     this.repository.update(
-        holidayDto.id(),
-        holidayDto.name(),
-        holidayDto.description()
-      );
+      holidayDto.id(),
+      holidayDto.name(),
+      holidayDto.description()
+    );
   }
 
   @DeleteMapping("{id}")

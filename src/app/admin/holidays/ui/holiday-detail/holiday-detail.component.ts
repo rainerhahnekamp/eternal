@@ -31,7 +31,7 @@ import { MatInputModule } from '@angular/material/input';
 export class HolidayDetailComponent {
   @ViewChild(NgForm) ngForm: NgForm | undefined;
 
-  @Input() holiday: Holiday = { id: 0, name: '', description: '', trips: [] };
+  @Input() holiday: Holiday = { id: 0, name: '', description: '' };
 
   @Output() save = new EventEmitter<Holiday>();
   @Output() remove = new EventEmitter<Holiday>();

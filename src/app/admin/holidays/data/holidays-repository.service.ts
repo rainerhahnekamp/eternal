@@ -1,10 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
-import { Holiday } from '@app/admin/holidays/model';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, firstValueFrom, map, Observable } from 'rxjs';
-import { Holiday } from '@eternal/admin/holidays/model';
-import { HolidaysService } from '@eternal/openapi';
+import { Holiday } from '@app/admin/holidays/model';
+import { HolidaysService } from '@app/admin/holidays/openapi';
 
 @Injectable({ providedIn: 'root' })
 export class HolidaysRepository {
@@ -22,7 +19,7 @@ export class HolidaysRepository {
 
   findById(id: number): Observable<Holiday | undefined> {
     return this.holidays$.pipe(
-      map((holidays) => holidays.find((holiday) => holiday.id === id))
+      map((holidays) => holidays.find((holiday) => holiday.id === id)),
     );
   }
 
