@@ -53,13 +53,13 @@ public class HolidaysControllerUnitTest {
     var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien");
     setImageValidatorToTrue();
     controller.add(vienna, cover);
-    var holiday = new Holiday(
-      null,
-      "Vienna",
-      "Urlaub in Wien",
-      "vienna",
-      Collections.emptyList()
-    );
+    var holiday = HolidayMother
+      .vienna()
+      .name("Vienna")
+      .description("Urlaub in Wien")
+      .coverPath("vienna")
+      .id(null)
+      .build();
     verify(repository).save(holiday);
   }
 

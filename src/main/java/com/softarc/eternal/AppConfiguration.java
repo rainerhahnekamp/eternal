@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -36,14 +36,18 @@ public class AppConfiguration {
               "Canada",
               "Visit Rocky Mountains",
               null,
-              Collections.emptyList()
+              1L,
+              Collections.emptyList(),
+              null
             ),
             new Holiday(
               2L,
               "China",
               "To the Middle Kingdom",
               null,
-              Collections.emptyList()
+              1L,
+              Collections.emptyList(),
+              null
             )
           );
       } else {

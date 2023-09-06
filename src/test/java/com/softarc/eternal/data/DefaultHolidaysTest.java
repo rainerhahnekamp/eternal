@@ -84,7 +84,7 @@ class DefaultHolidaysTest {
   @Test
   public void testAssignGuideShouldThrowOnOverlap() {
     // arrange
-    var holiday = HolidayMother.vienna().build();
+    var vienna = HolidayMother.vienna().build();
     var start1 = LocalDate
       .parse("2022-01-01")
       .atStartOfDay(ZoneOffset.UTC)
@@ -97,26 +97,26 @@ class DefaultHolidaysTest {
     var end2 = start2.plus(7, ChronoUnit.DAYS);
 
     var trip1 = HolidayTripMother
-      .start2022(holiday)
+      .start2022(vienna)
       .fromDate(start1)
       .toDate(end1)
       .build();
     var trip2 = HolidayTripMother
-      .start2022(holiday)
+      .start2022(vienna)
       .fromDate(start2)
       .toDate(end2)
       .build();
     var deborah = GuideMother.deborah().build();
-    var repository = setup(holiday);
+    var repository = setup(vienna);
     when(
       this.mockedOverlappingCalculator.isOverlapping(start1, end1, start2, end2)
     )
       .thenReturn(true);
 
     // act
-    repository.addTrip(holiday.getId(), trip1);
+    repository.addTrip(vienna.getId(), trip1);
     repository.assignGuide(trip1.getId(), deborah);
-    repository.addTrip(holiday.getId(), trip2);
+    repository.addTrip(vienna.getId(), trip2);
 
     // assert
     assertThatThrownBy(() -> repository.assignGuide(trip2.getId(), deborah))

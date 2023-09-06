@@ -7,8 +7,11 @@ springdoc:
 
 spring:
   datasource:
-    url: jdbc:h2:./dev-db
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/eternal
+    username: eternal
+    password: eternal123
+  jpa:
+    show-sql: true
   mvc:
     problemdetails:
       enabled: true
