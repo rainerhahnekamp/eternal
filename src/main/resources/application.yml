@@ -4,3 +4,8 @@ app.holidays:
   pre-seed: true
 springdoc:
   default-produces-media-type: application/json
+
+spring:
+  mvc:
+    problemdetails:
+      enabled: true
