@@ -51,8 +51,6 @@ export class HolidayDetailComponent {
   imageSrc = '';
 
   submit() {
-    debugger;
-    console.log(this);
     if (this.ngForm?.valid && this.holiday && this.cover) {
       this.save.emit({ ...this.holiday, cover: this.cover });
     }
