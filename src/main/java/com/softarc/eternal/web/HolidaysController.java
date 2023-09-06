@@ -1,18 +1,14 @@
 package com.softarc.eternal.web;
 
 import com.softarc.eternal.data.HolidaysRepository;
+import com.softarc.eternal.domain.Holiday;
+import com.softarc.eternal.multimedia.ImageValidator;
 import com.softarc.eternal.web.exception.IdNotFoundException;
 import com.softarc.eternal.web.mapping.HolidaysMapper;
-import com.softarc.eternal.multimedia.ImageValidator;
 import com.softarc.eternal.web.request.HolidayDto;
 import com.softarc.eternal.web.response.HolidayResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import lombok.SneakyThrows;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -20,11 +16,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/api/holidays")
 @RestController
@@ -73,10 +72,10 @@ public class HolidaysController {
     var filename = cover.getOriginalFilename();
     var path = Path.of("", "filestore", filename);
     this.repository.add(
-        holidayDto.name(),
-        holidayDto.description(),
-        Optional.ofNullable(filename)
-      );
+      holidayDto.name(),
+      holidayDto.description(),
+      Optional.ofNullable(filename)
+    );
     cover.transferTo(path);
     return true;
   }
@@ -91,11 +90,11 @@ public class HolidaysController {
 
     var filename = cover.getOriginalFilename();
     this.repository.update(
-        holidayDto.id(),
-        holidayDto.name(),
-        holidayDto.description(),
-        Optional.ofNullable(filename)
-      );
+      holidayDto.id(),
+      holidayDto.name(),
+      holidayDto.description(),
+      Optional.ofNullable(filename)
+    );
     var path = Path.of("", "filestore", filename);
     cover.transferTo(path);
   }
