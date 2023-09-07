@@ -13,14 +13,15 @@
       ></app-form-errors>
     </mat-error>
   </mat-form-field>
-  <mat-form-field>
+  <mat-form-field class="w-full">
     <mat-label>Description</mat-label>
-    <input
+    <textarea
       name="description"
+      rows="6"
       data-testid="inp-description"
       [(ngModel)]="holiday.description"
       matInput
-    />
+    ></textarea>
     <mat-error
       ><app-form-errors
         [control]="ngForm.form.controls['description']"
