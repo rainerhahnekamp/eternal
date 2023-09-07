@@ -13,3 +13,7 @@ spring-03b-web-openapi-starter
 spring-03b-web-openapi-solution
 spring-03c-web-upload-download-starter
 spring-03c-web-upload-download-solution
+spring-04a-db-basics-starter
+spring-04a-db-basics-solution
+spring-04b-db-advanced-starter
+spring-04b-db-advanced-solution
