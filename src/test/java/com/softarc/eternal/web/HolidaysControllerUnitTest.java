@@ -1,26 +1,26 @@
 package com.softarc.eternal.web;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
-
 import com.softarc.eternal.data.HolidaysRepository;
-import com.softarc.eternal.domain.Holiday;
 import com.softarc.eternal.domain.HolidayMother;
 import com.softarc.eternal.multimedia.ImageValidator;
 import com.softarc.eternal.web.request.HolidayDto;
 import com.softarc.eternal.web.response.HolidayResponse;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Optional;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.web.multipart.MultipartFile;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
 
 @WebMvcTest(HolidaysController.class)
 public class HolidaysControllerUnitTest {
@@ -50,7 +50,7 @@ public class HolidaysControllerUnitTest {
   @Test
   public void testRepositoryIsCalled() throws IOException {
     MultipartFile cover = createMultipartFile();
-    var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien");
+    var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien", Collections.emptyList());
     setImageValidatorToTrue();
     controller.add(vienna, cover);
     var holiday = HolidayMother
@@ -67,7 +67,7 @@ public class HolidaysControllerUnitTest {
   public void testCoverFileIsMovedToStorage() throws IOException {
     MultipartFile cover = createMultipartFile();
     setImageValidatorToTrue();
-    var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien");
+    var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien", Collections.emptyList());
 
     controller.add(vienna, cover);
     verify(cover).transferTo(Path.of("", "filestore", "vienna"));
@@ -96,7 +96,7 @@ public class HolidaysControllerUnitTest {
     MultipartFile file = createMultipartFile();
     var inputStream = file.getInputStream();
     setImageValidatorToTrue();
-    var viennaDto = new HolidayDto(1L, "Vienna", "Urlaub in Wien");
+    var viennaDto = new HolidayDto(1L, "Vienna", "Urlaub in Wien", Collections.emptyList());
     var vienna = HolidayMother.vienna().build();
     when(repository.findById(1L)).thenReturn(Optional.ofNullable(vienna));
 
@@ -110,7 +110,7 @@ public class HolidaysControllerUnitTest {
   public void testNonImageThrowsError() throws IOException {
     var file = createMultipartFile();
     when(imageValidator.isFileImage(any())).thenReturn(false);
-    var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien");
+    var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien", Collections.emptyList());
 
     assertThatThrownBy(() -> controller.add(vienna, file))
       .hasMessage("'Vienna' is not an image.");
