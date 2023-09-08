@@ -9,7 +9,6 @@ import com.softarc.eternal.web.request.HolidayDto;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.junit.jupiter.api.AfterAll;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,15 +19,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(
   properties = {
-    "app.holidays.persistence-type=default",
-    "app.holidays.pre-seed=false",
     "spring.datasource.url=jdbc:h2:mem:holidays-controller",
   }
 )
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 class HolidaysControllerIntegrationTest {
 
