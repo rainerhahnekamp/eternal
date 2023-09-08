@@ -1,0 +1,4 @@
+app:
+  holidays:
+    persistence-type: default
+    pre-seed: false
