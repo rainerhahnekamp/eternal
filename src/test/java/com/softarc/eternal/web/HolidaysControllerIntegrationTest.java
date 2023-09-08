@@ -1,16 +1,16 @@
 package com.softarc.eternal.web;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.softarc.eternal.data.DefaultHolidaysRepository;
 import com.softarc.eternal.data.HolidaysRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-
-@SpringBootTest(properties = {"app.holidays.persistence-type=default"})
-//@ActiveProfiles("demo")
+@SpringBootTest()
+@ActiveProfiles("test")
 class HolidaysControllerIntegrationTest {
   @Autowired
   HolidaysController controller;
