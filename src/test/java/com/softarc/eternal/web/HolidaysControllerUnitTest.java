@@ -84,8 +84,7 @@ public class HolidaysControllerUnitTest {
             holiday.getId(),
             holiday.getName(),
             holiday.getDescription(),
-            false,
-            Collections.emptyList()
+            false
           )
         )
       );
@@ -113,6 +112,6 @@ public class HolidaysControllerUnitTest {
     var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien");
 
     assertThatThrownBy(() -> controller.add(vienna, file))
-      .hasMessage("'Vienna' is not an image.");
+      .hasMessage("400 BAD_REQUEST \"'Vienna' is not an image.\"");
   }
 }
