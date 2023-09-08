@@ -13,7 +13,7 @@
 
 export interface HolidayDto { 
     id?: number;
-    name?: string;
-    description?: string;
+    name: string;
+    description: string;
 }
 

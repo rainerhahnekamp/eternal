@@ -11,9 +11,10 @@
  */
 
 
-export interface HolidayResponse { 
-    id: number;
-    name: string;
-    description: string;
+export interface Booking { 
+    id?: number;
+    holidayTripId: number;
+    bookingDate: string;
+    comment?: string;
 }
 

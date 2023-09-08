@@ -2,14 +2,15 @@
 README.md
 api.module.ts
 api/api.ts
+api/bookingsController.service.ts
 api/holidays.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/booking.ts
 model/holidayDto.ts
 model/holidayResponse.ts
-model/holidayTrip.ts
 model/models.ts
 param.ts
 variables.ts
