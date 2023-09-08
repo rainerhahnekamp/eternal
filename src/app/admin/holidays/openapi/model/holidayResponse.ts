@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { HolidayTrip } from './holidayTrip';
 
 
 export interface HolidayResponse { 
@@ -17,6 +16,5 @@ export interface HolidayResponse {
     name: string;
     description: string;
     hasCover: boolean;
-    holidayTrips: Array<HolidayTrip>;
 }
 

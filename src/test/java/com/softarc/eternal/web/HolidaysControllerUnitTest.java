@@ -1,38 +1,34 @@
 package com.softarc.eternal.web;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
+
 import com.softarc.eternal.data.HolidaysRepository;
 import com.softarc.eternal.domain.HolidayMother;
 import com.softarc.eternal.multimedia.ImageValidator;
 import com.softarc.eternal.web.request.HolidayDto;
 import com.softarc.eternal.web.response.HolidayResponse;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Optional;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.web.multipart.MultipartFile;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
-
-@WebMvcTest(HolidaysController.class)
+@SpringBootTest
 public class HolidaysControllerUnitTest {
 
-  @Autowired
-  HolidaysController controller;
+  @Autowired HolidaysController controller;
 
-  @MockBean
-  HolidaysRepository repository;
+  @MockBean HolidaysRepository repository;
 
-  @MockBean
-  ImageValidator imageValidator;
+  @MockBean ImageValidator imageValidator;
 
   private MultipartFile createMultipartFile() throws IOException {
     InputStream inputStream = new ByteArrayInputStream(new byte[0]);
@@ -53,13 +49,13 @@ public class HolidaysControllerUnitTest {
     var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien", Collections.emptyList());
     setImageValidatorToTrue();
     controller.add(vienna, cover);
-    var holiday = HolidayMother
-      .vienna()
-      .name("Vienna")
-      .description("Urlaub in Wien")
-      .coverPath("vienna")
-      .id(null)
-      .build();
+    var holiday =
+        HolidayMother.vienna()
+            .name("Vienna")
+            .description("Urlaub in Wien")
+            .coverPath("vienna")
+            .id(null)
+            .build();
     verify(repository).save(holiday);
   }
 
@@ -78,17 +74,10 @@ public class HolidaysControllerUnitTest {
     var holiday = HolidayMother.vienna().build();
     when(repository.findAll()).thenReturn(Collections.singletonList(holiday));
     assertThat(controller.index())
-      .isEqualTo(
-        Collections.singletonList(
-          new HolidayResponse(
-            holiday.getId(),
-            holiday.getName(),
-            holiday.getDescription(),
-            false,
-            Collections.emptyList()
-          )
-        )
-      );
+        .isEqualTo(
+            Collections.singletonList(
+                new HolidayResponse(
+                    holiday.getId(), holiday.getName(), holiday.getDescription(), false, Collections.emptyList())));
   }
 
   @Test
@@ -113,6 +102,6 @@ public class HolidaysControllerUnitTest {
     var vienna = new HolidayDto(1L, "Vienna", "Urlaub in Wien", Collections.emptyList());
 
     assertThatThrownBy(() -> controller.add(vienna, file))
-      .hasMessage("'Vienna' is not an image.");
+        .hasMessage("400 BAD_REQUEST \"'Vienna' is not an image.\"");
   }
 }
