@@ -38,6 +38,7 @@
         [disabled]="data.currentPage === 0"
         mat-raised-button
         (click)="previousPage()"
+        aria-label="previous"
       >
         <mat-icon data-testid="btn-customers-back"> arrow_back </mat-icon>
       </button>
@@ -47,6 +48,7 @@
         data-testid="btn-customers-next"
         mat-raised-button
         (click)="nextPage()"
+        aria-label="next"
       >
         <mat-icon>arrow_forward</mat-icon>
       </button>
