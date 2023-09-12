@@ -17,7 +17,6 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { HolidayCardComponent } from '../holiday-card/holiday-card.component';
 import { AddressLookuper, validateAddress } from '@app/shared';
-import { HolidaysRepository } from '../+state';
 
 @Component({
   selector: 'app-request-info',
@@ -43,17 +42,13 @@ export class RequestInfoComponent implements OnInit {
 
   #lookuper = inject(AddressLookuper);
   #formBuilder = inject(NonNullableFormBuilder);
-  #repo = inject(HolidaysRepository);
 
   protected lookupResult = signal('');
   protected formGroup = this.#formBuilder.group({
     address: ['', [validateAddress]],
   });
-  protected holiday = this.#repo.selected;
 
   ngOnInit(): void {
-    this.#repo.select(Number(this.id));
-
     if (this.address) {
       this.formGroup.setValue({ address: this.address });
     }
