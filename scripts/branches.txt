@@ -1,7 +1,7 @@
 main-testing-cypress
 testing-cypress-01-e2e-basics-solution
-testing-cypress-02-e2e-basics-init
-testing-cypress-02-e2e-basics-solution
+testing-cypress-02-e2e-advanced-init
+testing-cypress-02-e2e-advanced-solution
 testing-cypress-03-unit-tests-async-mock-init
 testing-cypress-03-unit-tests-async-mock-solution
 testing-cypress-04a-unit-tests-rxjs-init
