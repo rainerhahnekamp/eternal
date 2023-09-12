@@ -1,14 +1,4 @@
-import { expect, test as base } from '@playwright/test';
-import { ShellFixtures, shellFixtures } from './fixtures/shell.fixtures';
-import {
-  CustomersFixtures,
-  customersFixtures,
-} from './fixtures/customer.fixtures';
-
-const test = base.extend<ShellFixtures & CustomersFixtures>({
-  ...shellFixtures,
-  ...customersFixtures,
-});
+import { expect, test } from '@playwright/test';
 
 test.describe('Visual Regression', () => {
   test.slow();
@@ -22,10 +12,10 @@ test.describe('Visual Regression', () => {
       await expect(page).toHaveScreenshot('home.png');
     });
 
-    test('customers', async ({ page, sidemenuPage, customersPage }) => {
+    test('customers', async ({ page }) => {
       await page.setViewportSize({ width: 1300, height: 430 });
-      await sidemenuPage.select('Customers');
-      await customersPage.rowsLocator.first().waitFor();
+      await page.getByRole('link', { name: 'Customers', exact: true }).click();
+      await page.getByTestId('row-customer').first().waitFor();
       await expect(page).toHaveScreenshot('customers.png', {
         fullPage: true,
         omitBackground: true,
@@ -34,8 +24,8 @@ test.describe('Visual Regression', () => {
       });
     });
 
-    test('holiday card for Vienna', async ({ page, sidemenuPage }) => {
-      await sidemenuPage.select('Holidays');
+    test('holiday card for Vienna', async ({ page }) => {
+      await page.getByRole('link', { name: 'Holidays', exact: true }).click();
       await expect(page.getByLabel('Vienna')).toHaveScreenshot('vienna.png');
     });
   });
