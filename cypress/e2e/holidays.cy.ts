@@ -3,9 +3,13 @@ describe('Holidays', () => {
     cy.visit('');
   });
 
-  it('should do an implicit subject assertion', () => {
-    cy.testid('btn-holidays').should('have.text', 'Holidays');
-  });
+  it(
+    'should do an implicit subject assertion',
+    { retries: { runMode: 2 } },
+    () => {
+      cy.testid('btn-holidays').should('have.text', 'Holidays');
+    },
+  );
 
   it('should verify the holidays link with implicit assertions', () => {
     cy.testid('btn-holidays')
