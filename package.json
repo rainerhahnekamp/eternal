@@ -9,8 +9,6 @@
     "test": "ng test",
     "test:dev": "ng test --watch",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "e2e:dev": "playwright test --ui",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "storybook": "ng run eternal:storybook",
