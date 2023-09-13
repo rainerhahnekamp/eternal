@@ -58,7 +58,7 @@
     "@storybook/blocks": "^7.3.2",
     "@storybook/testing-library": "^0.2.0",
     "@testing-library/angular": "^14.3.0",
-    "@testing-library/cypress": "^9.0.0",
+    "@testing-library/cypress": "^10.0.0",
     "@testing-library/dom": "^9.3.1",
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.5.4",
