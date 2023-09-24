@@ -1,4 +1,4 @@
-testing-playwright
+main-testing-playwright
 testing-playwright-01-e2e-basics-starter
 testing-playwright-01-e2e-basics-solution
 testing-playwright-02a-e2e-advanced-i-starter
