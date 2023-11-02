@@ -1,1 +1,1 @@
-# Angular Testing Workshop (Playwright Edition)
+# Angular Testing Workshop (Cypress Edition)
