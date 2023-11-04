@@ -13,6 +13,7 @@ describe('Customers', () => {
     cy.contains('[data-testid=row-customer]', 'Latitia')
       .find('[data-testid=btn-edit]')
       .click();
+    cy.testid('inp-firstname').should('have.value', 'Latitia');
     cy.testid('inp-firstname').clear().type('Laetitia');
     cy.testid('btn-submit').click();
 

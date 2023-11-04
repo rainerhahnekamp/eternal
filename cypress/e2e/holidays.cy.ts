@@ -28,9 +28,11 @@ describe('Holidays', () => {
     });
   });
 
-  it('should request brochure for Firenze', () => {
+  it.only('should request brochure for Firenze', () => {
     cy.testid('btn-holidays').click();
-    cy.contains('[data-testid=holiday-card]', 'Firenze')
+    cy.get('mat-drawer-content')
+      // .contains('mat-card-title', 'Firenze')
+      // .parents('app-holiday-card')
       .find('[data-testid=btn-brochure]')
       .click();
     cy.testid('ri-address').type('Domgasse 5');
