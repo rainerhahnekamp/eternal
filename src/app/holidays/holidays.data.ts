@@ -11,20 +11,21 @@ export const holidays = [
     minCount: 5,
     maxCount: 12,
     onSale: true,
-    soldOut: false
+    soldOut: false,
   },
   {
     id: 2,
     title: 'London',
     teaser: "Explore one of the world's most famous cities",
-    description: 'Being a tourist magnet, this city needs no further introduction.',
+    description:
+      'Being a tourist magnet, this city needs no further introduction.',
     imageUrl: '/holiday/london.jpg',
     typeId: 1,
     durationInDays: 12,
     minCount: 8,
     maxCount: 15,
     onSale: false,
-    soldOut: false
+    soldOut: false,
   },
   {
     id: 3,
@@ -38,7 +39,7 @@ export const holidays = [
     minCount: 2,
     maxCount: 10,
     onSale: false,
-    soldOut: false
+    soldOut: false,
   },
   {
     id: 4,
@@ -52,7 +53,7 @@ export const holidays = [
     minCount: 5,
     maxCount: 15,
     onSale: false,
-    soldOut: false
+    soldOut: false,
   },
   {
     id: 5,
@@ -66,7 +67,7 @@ export const holidays = [
     minCount: 5,
     maxCount: 15,
     onSale: false,
-    soldOut: true
+    soldOut: true,
   },
   {
     id: 6,
@@ -80,7 +81,7 @@ export const holidays = [
     minCount: 5,
     maxCount: 15,
     onSale: false,
-    soldOut: false
+    soldOut: false,
   },
   {
     id: 7,
@@ -94,7 +95,7 @@ export const holidays = [
     minCount: 5,
     maxCount: 15,
     onSale: false,
-    soldOut: false
+    soldOut: false,
   },
   {
     id: 8,
@@ -108,7 +109,7 @@ export const holidays = [
     minCount: 5,
     maxCount: 15,
     onSale: false,
-    soldOut: false
+    soldOut: false,
   },
   {
     id: 9,
@@ -122,6 +123,6 @@ export const holidays = [
     minCount: 5,
     maxCount: 15,
     onSale: false,
-    soldOut: false
-  }
+    soldOut: false,
+  },
 ];

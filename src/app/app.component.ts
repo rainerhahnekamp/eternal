@@ -17,7 +17,7 @@ import { LoaderComponent } from './core/loader/loader.component';
     SidemenuComponent,
     MatToolbarModule,
     MatSidenavModule,
-    RouterOutlet
-  ]
+    RouterOutlet,
+  ],
 })
 export class AppComponent {}

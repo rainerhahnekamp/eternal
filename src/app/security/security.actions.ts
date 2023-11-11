@@ -8,6 +8,6 @@ export const securityActions = createActionGroup({
     'sign in': emptyProps(),
     'sign in success': props<{ user: User }>(),
     'sign out': emptyProps(),
-    'sign out success': props<{ user: User }>()
-  }
+    'sign out success': props<{ user: User }>(),
+  },
 });

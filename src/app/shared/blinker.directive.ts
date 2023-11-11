@@ -2,7 +2,7 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
   selector: '[appBlinker]',
-  standalone: true
+  standalone: true,
 })
 export class BlinkerDirective {
   currentColor = '';

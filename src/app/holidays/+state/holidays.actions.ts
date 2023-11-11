@@ -7,6 +7,6 @@ export const holidaysActions = createActionGroup({
     load: emptyProps(),
     'load success': props<{ holidays: Holiday[] }>(),
     select: props<{ id: number }>(),
-    unselect: emptyProps()
-  }
+    unselect: emptyProps(),
+  },
 });

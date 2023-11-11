@@ -5,5 +5,5 @@ const httpRequestEnded = createAction('[Shared] Http Request Ended');
 
 export const sharedActions = {
   httpRequestStarted,
-  httpRequestEnded
+  httpRequestEnded,
 };

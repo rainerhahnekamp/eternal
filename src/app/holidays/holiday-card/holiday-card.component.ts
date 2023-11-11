@@ -10,8 +10,8 @@ import { BlinkerDirective, ImageLoadedDirective } from '@app/shared';
   selector: 'app-holiday-card',
   styleUrls: ['./holiday-card.component.scss'],
   template: ` <div class="flex flex-wrap justify-evenly">
+    @if (holiday) {
     <mat-card
-      *ngIf="holiday"
       class="mt-4 max-w-xs"
       [ngClass]="{ 'sold-out': holiday.soldOut }"
       appBlinker
@@ -29,15 +29,17 @@ import { BlinkerDirective, ImageLoadedDirective } from '@app/shared';
         <figure>
           <img [src]="holiday.imageUrl" [alt]="holiday.title" />
           <div class="badge-overlay">
-            <span *ngIf="holiday.onSale" class="top-left badge">On Sale</span>
-            <span *ngIf="holiday.soldOut" class="middle-full badge"
-              >Sold out</span
-            >
+            @if (holiday.onSale) {
+            <span class="top-left badge">On Sale</span>
+            } @if (holiday.soldOut) {
+            <span class="middle-full badge">Sold out</span>
+            }
           </div>
         </figure>
         {{ holiday.description }}
       </mat-card-content>
-      <mat-card-actions *ngIf="requestBrochure" class="justify-center">
+      @if (requestBrochure) {
+      <mat-card-actions class="justify-center">
         <a
           data-testid="btn-brochure"
           [routerLink]="['/holidays/request-info', holiday.id]"
@@ -45,7 +47,9 @@ import { BlinkerDirective, ImageLoadedDirective } from '@app/shared';
           >Get a Brochure</a
         >
       </mat-card-actions>
+      }
     </mat-card>
+    }
   </div>`,
   standalone: true,
   imports: [

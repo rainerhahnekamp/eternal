@@ -28,8 +28,8 @@ export function createHoliday(holiday: Partial<Holiday> = {}): Holiday {
       minCount: 5,
       maxCount: 12,
       soldOut: false,
-      onSale: false
+      onSale: false,
     },
-    ...holiday
+    ...holiday,
   };
 }

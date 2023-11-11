@@ -13,6 +13,6 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
       if (event instanceof HttpResponse) {
         loadingService.loaded();
       }
-    })
+    }),
   );
 };

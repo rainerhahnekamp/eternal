@@ -5,7 +5,7 @@ import {
   HttpInterceptor,
   HttpParams,
   HttpRequest,
-  HttpResponse
+  HttpResponse,
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
@@ -21,7 +21,10 @@ export class CustomersInterceptor implements HttpInterceptor {
 
   #configuration = inject(Configuration);
 
-  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(
+    req: HttpRequest<unknown>,
+    next: HttpHandler,
+  ): Observable<HttpEvent<unknown>> {
     if (!this.#configuration.mockCustomers) {
       return next.handle(req);
     }
@@ -45,15 +48,16 @@ export class CustomersInterceptor implements HttpInterceptor {
 
   #get(
     url: string,
-    options: { params: HttpParams }
+    options: { params: HttpParams },
   ): Observable<HttpResponse<{ content: Customer[]; total: number }>> {
     if (!options.params.has('page')) {
-      return of({ content: this.#customers, total: this.#customers.length }).pipe(
-        this.#logRequest('GET', url)
-      );
+      return of({
+        content: this.#customers,
+        total: this.#customers.length,
+      }).pipe(this.#logRequest('GET', url));
     } else {
       return this.#pagedCustomers(Number(options.params.get('page'))).pipe(
-        this.#logRequest('GET', url)
+        this.#logRequest('GET', url),
       );
     }
   }
@@ -65,8 +69,8 @@ export class CustomersInterceptor implements HttpInterceptor {
     return this.#toHttpResponse(
       this.#pagedCustomers(1).pipe(
         map((customers) => ({ customers, id: nextId })),
-        this.#logRequest('POST', url, customer)
-      )
+        this.#logRequest('POST', url, customer),
+      ),
     );
   }
 
@@ -77,14 +81,16 @@ export class CustomersInterceptor implements HttpInterceptor {
           if (customer.name === 'asdf') {
             throw new HttpErrorResponse({
               status: 400,
-              error: 'no dummy names please'
+              error: 'no dummy names please',
             });
           } else {
-            this.#customers = this.#customers.map((c) => (c.id === customer.id ? customer : c));
+            this.#customers = this.#customers.map((c) =>
+              c.id === customer.id ? customer : c,
+            );
             return customer;
           }
-        })
-      )
+        }),
+      ),
     );
   }
 
@@ -103,19 +109,21 @@ export class CustomersInterceptor implements HttpInterceptor {
     return Math.max(...this.#customers.map((customer) => customer.id)) + 1;
   }
 
-  #pagedCustomers(page: number): Observable<{ content: Customer[]; total: number }> {
+  #pagedCustomers(
+    page: number,
+  ): Observable<{ content: Customer[]; total: number }> {
     const start = page * this.#pageSize;
     const end = start + this.#pageSize;
     return of({
       content: this.#customers.slice(start, end),
-      total: this.#customers.length
+      total: this.#customers.length,
     });
   }
 
   #logRequest<D>(
     httpMethod: string,
     url: string,
-    body?: unknown
+    body?: unknown,
   ): (source$: Observable<D>) => Observable<HttpResponse<D>> {
     return (observable: Observable<D>) =>
       observable.pipe(
@@ -129,7 +137,7 @@ export class CustomersInterceptor implements HttpInterceptor {
           console.log(response);
           console.groupEnd();
         }),
-        map(toHttpResponse)
+        map(toHttpResponse),
       );
   }
 }

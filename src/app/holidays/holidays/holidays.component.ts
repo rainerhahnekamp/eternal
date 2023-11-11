@@ -7,11 +7,9 @@ import { HolidaysRepository } from '../+state';
   selector: 'app-holidays',
   template: `
     <div class="container">
-      <app-holiday-card
-        *ngFor="let holiday of holidays()"
-        [holiday]="holiday"
-        data-testid="holiday-card"
-      />
+      @for (holiday of holidays(); track holiday) {
+      <app-holiday-card [holiday]="holiday" data-testid="holiday-card" />
+      }
     </div>
   `,
   styleUrls: ['./holidays.component.scss'],

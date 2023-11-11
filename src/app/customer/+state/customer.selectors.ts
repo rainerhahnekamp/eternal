@@ -5,7 +5,9 @@ import { customersFeature } from './customer.reducer';
 const selectAll = customersFeature.selectCustomers;
 
 const selectById = (id: number) =>
-  createSelector(selectAll, (state: Customer[]) => state.find((p) => p.id === id));
+  createSelector(selectAll, (state: Customer[]) =>
+    state.find((p) => p.id === id),
+  );
 
 const { selectCurrentPage, selectPageCount } = customersFeature;
 
@@ -16,13 +18,13 @@ const selectCustomersAndPage = createSelector(
   (customers, currentPage, pageCount) => ({
     customers,
     currentPage,
-    pageCount
-  })
+    pageCount,
+  }),
 );
 
 export const fromCustomer = {
   selectAll,
   selectById,
   selectCurrentPage,
-  selectCustomersAndPage
+  selectCustomersAndPage,
 };

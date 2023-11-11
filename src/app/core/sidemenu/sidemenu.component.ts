@@ -9,7 +9,7 @@ import { SecurityService } from '@app/security';
   templateUrl: './sidemenu.component.html',
   styleUrls: ['./sidemenu.component.scss'],
   standalone: true,
-  imports: [AsyncPipe, NgIf, MatButtonModule, RouterLink]
+  imports: [AsyncPipe, NgIf, MatButtonModule, RouterLink],
 })
 export class SidemenuComponent {
   securityService = inject(SecurityService);

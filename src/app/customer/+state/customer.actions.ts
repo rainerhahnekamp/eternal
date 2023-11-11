@@ -15,6 +15,6 @@ export const customerActions = createActionGroup({
     'next page': emptyProps(),
     'next page success': props<{ customers: Customer[] }>(),
     'previous page': emptyProps(),
-    'previous page success': props<{ customers: Customer[] }>()
-  }
+    'previous page success': props<{ customers: Customer[] }>(),
+  },
 });

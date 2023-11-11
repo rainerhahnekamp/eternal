@@ -32,7 +32,7 @@ export class Configuration {
   get features() {
     return {
       mockHolidays: this.#mockHolidays,
-      mockCustomers: this.#mockCustomers
+      mockCustomers: this.#mockCustomers,
     };
   }
 
@@ -42,6 +42,9 @@ export class Configuration {
     this.#mockHolidays = mockHolidays ?? this.#mockHolidays;
     this.#mockCustomers = mockCustomers ?? this.#mockCustomers;
 
-    localStorage.setItem(this.#storageKey, JSON.stringify(configurationFeatures));
+    localStorage.setItem(
+      this.#storageKey,
+      JSON.stringify(configurationFeatures),
+    );
   }
 }

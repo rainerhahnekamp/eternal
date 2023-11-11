@@ -8,7 +8,7 @@ import { LoadingService } from '@app/shared';
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss'],
   standalone: true,
-  imports: [MatProgressBarModule, AsyncPipe, NgIf]
+  imports: [MatProgressBarModule, AsyncPipe, NgIf],
 })
 export class LoaderComponent {
   loadingService = inject(LoadingService);

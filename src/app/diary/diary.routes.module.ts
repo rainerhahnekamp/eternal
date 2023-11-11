@@ -12,11 +12,11 @@ const diaryRoutes: Routes = [
     providers: [
       importProvidersFrom(
         StoreModule.forFeature(diaryFeatureKey, diaryReducer),
-        EffectsModule.forFeature([DiaryEffects])
-      )
+        EffectsModule.forFeature([DiaryEffects]),
+      ),
     ],
-    component: DiariesComponent
-  }
+    component: DiariesComponent,
+  },
 ];
 
 export default diaryRoutes;

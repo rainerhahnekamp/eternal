@@ -4,7 +4,7 @@ import { RequestInfoComponent } from './request-info/request-info.component';
 import {
   provideHttpClient,
   withInterceptors,
-  withRequestsMadeViaParent
+  withRequestsMadeViaParent,
 } from '@angular/common/http';
 import { holidaysInterceptor } from './holidays.interceptor';
 import { provideHolidays } from './+state';
@@ -14,14 +14,17 @@ const holidayRoutes: Routes = [
     path: '',
     providers: [
       provideHolidays,
-      provideHttpClient(withRequestsMadeViaParent(), withInterceptors([holidaysInterceptor]))
+      provideHttpClient(
+        withRequestsMadeViaParent(),
+        withInterceptors([holidaysInterceptor]),
+      ),
     ],
-    component: HolidaysComponent
+    component: HolidaysComponent,
   },
   {
     path: 'request-info/:id',
-    component: RequestInfoComponent
-  }
+    component: RequestInfoComponent,
+  },
 ];
 
 export default holidayRoutes;

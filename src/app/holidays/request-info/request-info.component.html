@@ -33,12 +33,15 @@
       aria-live="assertive"
       role="status"
     >
-      <span *ngIf="lookupResult()">{{ lookupResult() }}</span>
+      @if (lookupResult()) {
+      <span>{{ lookupResult() }}</span>
+      }
     </p>
   </div>
+  @if (holiday(); as value) {
   <app-holiday-card
-    *ngIf="holiday() as value"
     [holiday]="value"
     [requestBrochure]="false"
   ></app-holiday-card>
+  }
 </div>

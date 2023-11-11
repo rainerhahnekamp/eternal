@@ -9,7 +9,7 @@ import { SecurityService } from '@app/security';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   standalone: true,
-  imports: [RouterLink, MatButtonModule, AsyncPipe, NgIf]
+  imports: [RouterLink, MatButtonModule, AsyncPipe, NgIf],
 })
 export class HeaderComponent {
   #securityService = inject(SecurityService);

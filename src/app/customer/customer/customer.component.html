@@ -21,12 +21,11 @@
   <mat-form-field>
     <mat-label>Country</mat-label>
     <mat-select formControlName="country" data-testid="sel-country"
-      ><mat-option
-        *ngFor="let country of countries"
-        [value]="country.value"
-        data-testid="opt-country"
-        >{{ country.label }}</mat-option
-      >
+      >@for (country of countries; track country) {
+      <mat-option [value]="country.value" data-testid="opt-country">{{
+        country.label
+      }}</mat-option>
+      }
     </mat-select>
     <mat-error
       ><app-form-errors

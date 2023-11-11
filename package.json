@@ -49,6 +49,7 @@
     "@typescript-eslint/parser": "^6.10.0",
     "autoprefixer": "^10.4.15",
     "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",

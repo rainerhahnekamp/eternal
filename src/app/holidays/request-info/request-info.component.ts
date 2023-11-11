@@ -61,7 +61,7 @@ export class RequestInfoComponent implements OnInit {
 
   async search() {
     const isValid = await firstValueFrom(
-      this.#lookuper.lookup(this.formGroup.getRawValue().address)
+      this.#lookuper.lookup(this.formGroup.getRawValue().address),
     );
     this.lookupResult.set(isValid ? 'Brochure sent' : 'Address not found');
   }

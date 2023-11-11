@@ -1,1 +1,3 @@
-<mat-progress-bar *ngIf="loadingService.isLoading$ | async" mode="indeterminate" />
+@if (loadingService.isLoading$ | async) {
+<mat-progress-bar mode="indeterminate" />
+}

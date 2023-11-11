@@ -5,11 +5,11 @@ import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-form-errors',
-  template: ` <ng-container *ngIf="control">
-    <span *ngIf="control.hasError('required')">This field is mandatory</span>
-  </ng-container>`,
+  template: ` @if (control) { @if (control.hasError('required')) {
+    <span>This field is mandatory</span>
+    } }`,
   standalone: true,
-  imports: [NgIf, JsonPipe, MatInputModule]
+  imports: [NgIf, JsonPipe, MatInputModule],
 })
 export class FormErrorsComponent {
   @Input() control: FormControl | undefined;
