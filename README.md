@@ -1,3 +1,5 @@
+![build status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg)
+
 # Eternal: Demo Application for Angular/Spring Workshops
 
 This project is the basis for some workshops provided by Angular Architects.

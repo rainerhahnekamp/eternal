@@ -11,5 +11,5 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npx ng lint
-      - run: cd github-tests && npx playwright test
+      - run: cd github-tests && npm ci && npx playwright test
 
