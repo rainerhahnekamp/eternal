@@ -40,6 +40,10 @@
     {
       "files": ["*.ts"],
       "extends": ["plugin:@ngrx/strict"]
+    },
+    {
+      "files": ["*.ts"],
+      "extends": ["plugin:@softarc/sheriff/default"]
     }
   ]
 }

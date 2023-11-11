@@ -19,55 +19,61 @@ export class CustomerEffects {
   #http = inject(HttpClient);
   #router = inject(Router);
 
-  add$ = createEffect(() =>
-    this.#actions$.pipe(
+  add$ = createEffect(() => {
+    return this.#actions$.pipe(
       ofType(customerActions.add),
-      concatMap(({ customer }) => this.#http.post<Customer>(this.url, customer)),
+      concatMap(({ customer }) =>
+        this.#http.post<Customer>(this.url, customer),
+      ),
       map((customer) => customerActions.added({ customer })),
-      tap(() => this.#router.navigateByUrl('/customer'))
-    )
-  );
+      tap(() => this.#router.navigateByUrl('/customer')),
+    );
+  });
 
-  update$ = createEffect(() =>
-    this.#actions$.pipe(
+  update$ = createEffect(() => {
+    return this.#actions$.pipe(
       ofType(customerActions.update),
       concatMap(({ customer }) => this.#http.put<Customer>(this.url, customer)),
       map((customer) => customerActions.updated({ customer })),
-      tap(() => this.#router.navigateByUrl('/customer'))
-    )
-  );
+      tap(() => this.#router.navigateByUrl('/customer')),
+    );
+  });
 
   remove$ = createEffect(() => {
     return this.#actions$.pipe(
       ofType(customerActions.remove),
       concatMap(({ id }) => this.#http.delete<void>(`${this.url}/${id}`)),
       map(() => customerActions.removed()),
-      tap(() => this.#router.navigateByUrl('/customer'))
+      tap(() => this.#router.navigateByUrl('/customer')),
     );
   });
 
   #fetchCustomers = <T>(
-    observable: Observable<T>
+    observable: Observable<T>,
   ): Observable<{ customers: Customer[]; pageCount: number }> =>
     observable.pipe(
-      concatLatestFrom(() => this.#store.select(fromCustomer.selectCurrentPage)),
+      concatLatestFrom(() =>
+        this.#store.select(fromCustomer.selectCurrentPage),
+      ),
       switchMap(([, page]) =>
         this.#http.get<{ content: Customer[]; total: number }>(this.url, {
-          params: new HttpParams().append('page', '' + page).append('pageSize', this.pageSize)
-        })
+          params: new HttpParams()
+            .append('page', '' + page)
+            .append('pageSize', this.pageSize),
+        }),
       ),
       map(({ content, total }) => ({
         customers: content,
-        pageCount: Math.floor(total / this.pageSize)
+        pageCount: Math.floor(total / this.pageSize),
       })),
-      tap(console.log)
+      tap(console.log),
     );
 
   nextPage$ = createEffect(() => {
     return this.#actions$.pipe(
       ofType(customerActions.nextPage),
       this.#fetchCustomers,
-      map(({ customers }) => customerActions.nextPageSuccess({ customers }))
+      map(({ customers }) => customerActions.nextPageSuccess({ customers })),
     );
   });
 
@@ -75,20 +81,22 @@ export class CustomerEffects {
     return this.#actions$.pipe(
       ofType(customerActions.previousPage),
       this.#fetchCustomers,
-      map(({ customers }) => customerActions.previousPageSuccess({ customers }))
+      map(({ customers }) =>
+        customerActions.previousPageSuccess({ customers }),
+      ),
     );
   });
 
-  load$ = createEffect(() =>
-    this.#actions$.pipe(
+  load$ = createEffect(() => {
+    return this.#actions$.pipe(
       ofType(customerActions.load),
       this.#fetchCustomers,
       map(({ customers, pageCount }) =>
         customerActions.loaded({
           customers,
-          pageCount
-        })
-      )
-    )
-  );
+          pageCount,
+        }),
+      ),
+    );
+  });
 }

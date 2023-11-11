@@ -1,7 +1,7 @@
-import { sharedFeature } from './shared.reducer';
+import { sharedFeature } from './sharedState';
 
 const { selectActiveHttpRequest } = sharedFeature;
 
 export const fromShared = {
-  selectActiveHttpRequest
+  selectActiveHttpRequest,
 };

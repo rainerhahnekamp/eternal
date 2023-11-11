@@ -12,8 +12,8 @@ export class HolidaysEffects implements OnInitEffects {
   #httpClient = inject(HttpClient);
   #baseUrl = inject(Configuration).baseUrl;
 
-  load$ = createEffect(() =>
-    this.#actions$.pipe(
+  load$ = createEffect(() => {
+    return this.#actions$.pipe(
       ofType(holidaysActions.load),
       switchMap(() => this.#httpClient.get<Holiday[]>(`/holiday`)),
       map((holidays) =>
@@ -21,12 +21,12 @@ export class HolidaysEffects implements OnInitEffects {
           ...holiday,
           imageUrl: holiday.imageUrl.startsWith('http')
             ? holiday.imageUrl
-            : `${this.#baseUrl}${holiday.imageUrl}`
-        }))
+            : `${this.#baseUrl}${holiday.imageUrl}`,
+        })),
       ),
-      map((holidays) => holidaysActions.loadSuccess({ holidays }))
-    )
-  );
+      map((holidays) => holidaysActions.loadSuccess({ holidays })),
+    );
+  });
 
   ngrxOnInitEffects = () => holidaysActions.load();
 }

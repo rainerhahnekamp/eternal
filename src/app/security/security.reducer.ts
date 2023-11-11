@@ -12,31 +12,38 @@ export const ANONYMOUS_USER: User = {
   id: '',
   email: 'nomail',
   name: 'no user',
-  anonymous: true
+  anonymous: true,
 };
 
-export interface SecurityReducer {
+export interface SecurityState {
   loaded: boolean;
   user: User | undefined;
 }
 
-const initialState: SecurityReducer = {
+const initialState: SecurityState = {
   loaded: false,
-  user: undefined
+  user: undefined,
 };
 
 export const securityFeature = createFeature({
   name: 'security',
-  reducer: createReducer<SecurityReducer>(
+  reducer: createReducer<SecurityState>(
     initialState,
-    on(securityActions.loaded, securityActions.signInSuccess, (state, { user }) => ({
-      ...state,
-      user,
-      loaded: true
-    })),
-    on(securityActions.signInSuccess, (state, { user }) => ({
-      ...state,
-      user
-    }))
-  )
+    on(
+      securityActions.loaded,
+      securityActions.signInSuccess,
+      (state, { user }): SecurityState => ({
+        ...state,
+        user,
+        loaded: true,
+      }),
+    ),
+    on(
+      securityActions.signInSuccess,
+      (state, { user }): SecurityState => ({
+        ...state,
+        user,
+      }),
+    ),
+  ),
 });

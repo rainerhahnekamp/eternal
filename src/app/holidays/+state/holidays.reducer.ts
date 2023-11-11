@@ -13,17 +13,26 @@ export const holidaysFeature = createFeature({
   name: 'holiday',
   reducer: createReducer(
     initialState,
-    on(holidaysActions.loadSuccess, (state, { holidays }) => ({
-      ...state,
-      holidays
-    })),
-    on(holidaysActions.select, (state, { id }) => ({
-      ...state,
-      selectedId: id
-    })),
-    on(holidaysActions.unselect, (state) => ({
-      ...state,
-      selectedId: undefined
-    }))
-  )
+    on(
+      holidaysActions.loadSuccess,
+      (state, { holidays }): HolidaysState => ({
+        ...state,
+        holidays,
+      }),
+    ),
+    on(
+      holidaysActions.select,
+      (state, { id }): HolidaysState => ({
+        ...state,
+        selectedId: id,
+      }),
+    ),
+    on(
+      holidaysActions.unselect,
+      (state): HolidaysState => ({
+        ...state,
+        selectedId: undefined,
+      }),
+    ),
+  ),
 });

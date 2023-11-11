@@ -13,7 +13,7 @@ export class HolidaysRepository {
   }
 
   get selected(): Signal<Holiday | undefined> {
-    return this.#store.selectSignal(fromHolidays.selected);
+    return this.#store.selectSignal(fromHolidays.selectSelected);
   }
 
   select = (id: number) => this.#store.dispatch(holidaysActions.select({ id }));

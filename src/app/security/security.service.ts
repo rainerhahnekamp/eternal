@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { User } from './security.reducer';
 import { fromSecurity } from './security.selectors';
 import { securityActions } from './security.actions';
@@ -12,14 +12,9 @@ export class SecurityService {
 
   readonly loaded$ = this.store.select(fromSecurity.selectLoaded);
 
-  readonly loadedUser$ = combineLatest([
-    this.store.select(fromSecurity.selectLoaded),
-    this.store.select(fromSecurity.selectUser)
-  ]).pipe(
-    filter(([loaded]) => loaded),
-    map(([, user]) => user),
-    this.#verifyUser
-  );
+  readonly loadedUser$ = this.store
+    .select(fromSecurity.selectLoadedUser)
+    .pipe(this.#verifyUser);
 
   readonly signedIn$ = this.store.select(fromSecurity.selectSignedIn);
 

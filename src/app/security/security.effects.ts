@@ -10,8 +10,8 @@ export class SecurityEffects {
   #actions$ = inject(Actions);
   #authService = inject(AuthService);
 
-  user$ = createEffect(() =>
-    this.#authService.user$.pipe(
+  user$ = createEffect(() => {
+    return this.#authService.user$.pipe(
       delay(1000),
       map((user) =>
         securityActions.loaded({
@@ -20,29 +20,31 @@ export class SecurityEffects {
                 id: user.email || '',
                 email: user.email || '',
                 name: user.name || '',
-                anonymous: false
+                anonymous: false,
               }
-            : ANONYMOUS_USER
-        })
-      )
-    )
-  );
+            : ANONYMOUS_USER,
+        }),
+      ),
+    );
+  });
 
   signInUser$ = createEffect(
-    () =>
-      this.#actions$.pipe(
+    () => {
+      return this.#actions$.pipe(
         ofType(securityActions.signIn),
-        tap(() => this.#authService.loginWithRedirect())
-      ),
-    { dispatch: false }
+        tap(() => this.#authService.loginWithRedirect()),
+      );
+    },
+    { dispatch: false },
   );
 
   signOutUser$ = createEffect(
-    () =>
-      this.#actions$.pipe(
+    () => {
+      return this.#actions$.pipe(
         ofType(securityActions.signOut),
-        tap(() => this.#authService.logout())
-      ),
-    { dispatch: false }
+        tap(() => this.#authService.logout()),
+      );
+    },
+    { dispatch: false },
   );
 }
