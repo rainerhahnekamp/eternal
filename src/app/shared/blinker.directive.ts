@@ -6,18 +6,18 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 })
 export class BlinkerDirective {
   currentColor = '';
-  intervalId: number | undefined;
+  intervalId: NodeJS.Timeout | undefined;
   constructor(private el: ElementRef) {}
 
   @HostListener('mouseenter') onMouseEnter() {
     this.toggle();
-    this.intervalId = window.setInterval(() => this.toggle(), 500);
+    this.intervalId = setInterval(() => this.toggle(), 500);
   }
 
   @HostListener('mouseleave') onMouseLeave() {
     this.el.nativeElement.style.backgroundColor = '';
     if (this.intervalId) {
-      window.clearInterval(this.intervalId);
+      clearInterval(this.intervalId);
       this.intervalId = undefined;
     }
   }
