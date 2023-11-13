@@ -15,7 +15,6 @@ import { loadingInterceptor } from '@app/core/loading.interceptor';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideSecurity } from '@app/security';
 import { Configuration, sharedProviders } from '@app/shared';
-import { AuthModule } from '@auth0/auth0-angular';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { deAT } from 'date-fns/locale';
@@ -33,16 +32,7 @@ export const appConfig: ApplicationConfig = {
     provideStoreDevtools(),
     ...provideSecurity,
     ...sharedProviders,
-    importProvidersFrom([
-      AuthModule.forRoot({
-        domain: 'dev-xbu2-fid.eu.auth0.com',
-        clientId: 'YgUoOMh2jc4CQuo8Ky9PS7npW3Q4ckX9',
-        authorizationParams: {
-          redirect_uri: window.location.origin,
-        },
-      }),
-      MatDateFnsModule,
-    ]),
+    importProvidersFrom([MatDateFnsModule]),
     {
       provide: MAT_DATE_LOCALE,
       useValue: deAT,
