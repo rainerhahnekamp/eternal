@@ -8,7 +8,7 @@ const selectHolidaysWithFavourite = createSelector(
     holidays.map((holiday) => ({
       ...holiday,
       isFavourite: favouriteIds.includes(holiday.id),
-    }))
+    })),
 );
 
 export const fromHolidays = {

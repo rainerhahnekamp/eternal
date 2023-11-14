@@ -12,11 +12,13 @@ describe('parseAddress', () => {
       street: 'Domgasse',
       streetNumber: '5',
       city: 'Wien',
-      zip: '1010'
+      zip: '1010',
     });
   });
 
   it('should throw an error if no street number is given', () => {
-    expect(() => parseAddress('Domgasse')).toThrowError('Could not parse address. Invalid format.');
+    expect(() => parseAddress('Domgasse')).toThrowError(
+      'Could not parse address. Invalid format.',
+    );
   });
 });

@@ -36,6 +36,6 @@ export const bookingsFeature = createFeature({
         bookings: action.bookings,
         loaded: true,
       };
-    })
+    }),
   ),
 });

@@ -42,5 +42,5 @@ export const masterFeature = createFeature({
 export const selectCountries = createSelector(
   masterFeature.selectCountries,
   (countries) =>
-    countries.map(({ code, name }) => ({ value: code, label: name }))
+    countries.map(({ code, name }) => ({ value: code, label: name })),
 );
