@@ -10,6 +10,6 @@ it('should scrap the customers', () => {
         customers.push($ps.get(i).textContent);
       }
       console.log(customers);
-      cy.task('saveCustomers', customers);
+      cy.task('saveCustomers', customers)
     });
 });
