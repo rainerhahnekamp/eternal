@@ -1,28 +1,27 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { render, screen } from '@testing-library/angular';
 import {
-  HttpClientTestingModule,
   HttpTestingController,
+  provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { HolidaysComponent } from './holidays.component';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
+import { provideState, provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
 import { holidaysFeature } from '../+state/holidays.reducer';
 import { HolidaysEffects } from '../+state/holidays.effects';
 import { Configuration } from '@app/shared/config';
 import { createHolidays } from '@app/holidays/model';
+import { provideHttpClient } from '@angular/common/http';
 
-describe('Request Info Component', () => {
+describe('Holidays Component', () => {
   const setup = async () =>
     render(HolidaysComponent, {
-      imports: [
-        StoreModule.forRoot({}),
-        EffectsModule.forRoot([]),
-        StoreModule.forFeature(holidaysFeature),
-        EffectsModule.forFeature([HolidaysEffects]),
-        HttpClientTestingModule,
-      ],
       providers: [
+        provideStore(),
+        provideState(holidaysFeature),
+        provideEffects([HolidaysEffects]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
         {
           provide: Configuration,
           useValue: {

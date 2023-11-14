@@ -6,7 +6,7 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 })
 export class BlinkerDirective {
   currentColor = '';
-  intervalId: NodeJS.Timeout | undefined;
+  intervalId: ReturnType<typeof setInterval> | undefined;
   constructor(private el: ElementRef) {}
 
   @HostListener('mouseenter') onMouseEnter() {
