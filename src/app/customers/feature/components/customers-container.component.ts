@@ -7,13 +7,14 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { CustomersComponent, CustomersViewModel } from '@app/customers/ui';
 
 @Component({
-  template: ` <app-customers
-    *ngIf="viewModel$ | async as viewModel"
-    [viewModel]="viewModel"
-    (setSelected)="setSelected($event)"
-    (setUnselected)="setUnselected()"
-    (switchPage)="switchPage($event)"
-  ></app-customers>`,
+  template: ` @if (viewModel$ | async; as viewModel) {
+    <app-customers
+      [viewModel]="viewModel"
+      (setSelected)="setSelected($event)"
+      (setUnselected)="setUnselected()"
+      (switchPage)="switchPage($event)"
+    ></app-customers>
+    }`,
   standalone: true,
   imports: [CustomersComponent, NgIf, AsyncPipe, AsyncPipe],
 })

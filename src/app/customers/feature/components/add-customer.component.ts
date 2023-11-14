@@ -8,13 +8,14 @@ import { customersActions } from '@app/customers/feature/+state/customers.action
 
 @Component({
   selector: 'app-add-customer',
-  template: ` <app-customer
-    [customer]="customer"
-    *ngIf="countries$ | async as countries"
-    [countries]="countries"
-    (save)="submit($event)"
-    [showDeleteButton]="false"
-  ></app-customer>`,
+  template: ` @if (countries$ | async; as countries) {
+    <app-customer
+      [customer]="customer"
+      [countries]="countries"
+      (save)="submit($event)"
+      [showDeleteButton]="false"
+    ></app-customer>
+    }`,
   standalone: true,
   imports: [CustomerComponent, NgIf, AsyncPipe],
 })

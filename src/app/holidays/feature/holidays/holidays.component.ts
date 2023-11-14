@@ -10,13 +10,14 @@ import { Holiday } from '@app/holidays/model';
   selector: 'app-holidays',
   template: `<h2>Choose among our Holidays</h2>
     <div class="flex flex-wrap justify-evenly">
+      @for (holiday of holidays$ | async; track byId($index, holiday)) {
       <app-holiday-card
-        *ngFor="let holiday of holidays$ | async; trackBy: byId"
         [holiday]="holiday"
         (addFavourite)="addFavourite($event)"
         (removeFavourite)="removeFavourite($event)"
       >
       </app-holiday-card>
+      }
     </div> `,
   standalone: true,
   imports: [AsyncPipe, HolidayCardComponent, NgForOf],

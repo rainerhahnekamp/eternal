@@ -22,6 +22,8 @@
     Send
   </button>
 </form>
-<p *ngIf="lookupResult$ | async as lookupResult" data-testid="lookup-result">
+@if (lookupResult$ | async; as lookupResult) {
+<p data-testid="lookup-result">
   {{ lookupResult }}
 </p>
+}

@@ -13,13 +13,14 @@ import { selectCountries } from '@app/shared/master-data';
 
 @Component({
   selector: 'app-edit-customer',
-  template: ` <app-customer
-    *ngIf="data$ | async as data"
-    [customer]="data.customer"
-    [countries]="data.countries"
-    (save)="this.submit($event)"
-    (remove)="this.remove($event)"
-  ></app-customer>`,
+  template: ` @if (data$ | async; as data) {
+    <app-customer
+      [customer]="data.customer"
+      [countries]="data.countries"
+      (save)="this.submit($event)"
+      (remove)="this.remove($event)"
+    ></app-customer>
+    }`,
   standalone: true,
   imports: [CustomerComponent, NgIf, AsyncPipe],
 })
