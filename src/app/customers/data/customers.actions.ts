@@ -4,6 +4,8 @@ import { Customer } from '@app/customers/model';
 export const customersActions = createActionGroup({
   source: 'Customers',
   events: {
+    Init: emptyProps(),
+    Get: props<{ page: number }>(),
     Load: props<{ page: number }>(),
     Loaded: props<{ customers: Customer[]; total: number; page: number }>(),
     Add: props<{ customer: Customer }>(),
