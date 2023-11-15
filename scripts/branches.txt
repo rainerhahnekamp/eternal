@@ -1,3 +1,4 @@
+main-ngrx
 ngrx-01-01-01-holidays-solution
 ngrx-01-01-02-customers-solution
 ngrx-02-01-customers-api-init
