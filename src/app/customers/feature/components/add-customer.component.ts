@@ -1,10 +1,10 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { CustomerComponent } from '@app/customers/ui';
 import { Customer } from '@app/customers/model';
 import { selectCountries } from '@app/shared/master-data';
-import { customersActions } from '@app/customers/data';
+import { CustomersRepository } from '@app/customers/data';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-add-customer',
@@ -19,6 +19,7 @@ import { customersActions } from '@app/customers/data';
 })
 export class AddCustomerComponent {
   #store = inject(Store);
+  #repo = inject(CustomersRepository);
   customer: Customer = {
     id: 0,
     firstname: '',
@@ -29,8 +30,6 @@ export class AddCustomerComponent {
   protected countries = this.#store.selectSignal(selectCountries);
 
   submit(customer: Customer) {
-    this.#store.dispatch(
-      customersActions.add({ customer: { ...customer, id: 0 } }),
-    );
+    this.#repo.add({ ...customer, id: 0 });
   }
 }
