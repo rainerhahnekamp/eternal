@@ -2,6 +2,7 @@
   "name": "eternal",
   "version": "2.0.0-SNAPSHOT",
   "scripts": {
+    "cucumber": "NODE_OPTIONS=\"--loader ts-node/esm\" cucumber-js",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -46,6 +47,7 @@
     "@angular-eslint/template-parser": "16.1.0",
     "@angular/cli": "~16.2.0",
     "@angular/compiler-cli": "^16.2.0",
+    "@cucumber/cucumber": "^9.4.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
     "@playwright/test": "^1.37.1",
