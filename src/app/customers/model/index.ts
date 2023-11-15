@@ -1,1 +1,1 @@
-export { Customer } from './customer';
+export { Customer, createCustomer, createCustomers } from './customer';
