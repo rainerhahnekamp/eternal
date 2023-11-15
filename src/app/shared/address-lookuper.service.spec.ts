@@ -1,10 +1,11 @@
 import { AddressLookuper } from './address-lookuper.service';
 import { expect } from '@jest/globals';
-import { asyncScheduler, lastValueFrom, of, scheduled } from 'rxjs';
+import { asyncScheduler, of, scheduled } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { assertType } from '@app/assert-type';
 import { createMock } from '@testing-library/angular/jest-utils';
+import { marbles } from 'rxjs-marbles/jest';
 
 describe('Address Lookuper', () => {
   const setup = (httpClient: HttpClient) =>
@@ -16,14 +17,16 @@ describe('Address Lookuper', () => {
     { query: 'Domgasse 15, 1010 Wien', isValid: false },
     { query: 'Domgasse 5, 1010 Wien', isValid: true },
   ]) {
-    it(`should return ${isValid} for ${query}`, waitForAsync(async () => {
+    it(`should return ${isValid} for ${query}`, fakeAsync(async () => {
       const addresses = ['Domgasse 5, 1010 Wien'];
       const httpClientStub = assertType<HttpClient>({
         get: () => scheduled([addresses], asyncScheduler),
       });
       const lookuper = setup(httpClientStub);
-
-      expect(await lastValueFrom(lookuper.lookup(query))).toBe(isValid);
+      let actual: undefined | boolean = undefined;
+      lookuper.lookup(query).subscribe((value) => (actual = value));
+      tick();
+      expect(actual).toBe(isValid);
     }));
   }
 
@@ -40,6 +43,19 @@ describe('Address Lookuper', () => {
       new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'),
     );
   }));
+
+  it(
+    `should use RxJs marbles`,
+    marbles((m) => {
+      const addresses = ['Domgasse 5, 1010 Wien'];
+      const httpClientStub = assertType<HttpClient>({
+        get: () => m.cold('750ms (r|)', { r: ['Domgasse 5, 1010 Wien'] }),
+      });
+      const lookuper = setup(httpClientStub);
+      const destination$ = lookuper.lookup('Domgasse 5');
+      m.expect(destination$).toBeObservable('750ms (b|)', { b: true });
+    }),
+  );
 
   // it('should count the queries', () => {
   //   const lookuper = new AddressLookuper(() => []);

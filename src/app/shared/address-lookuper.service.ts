@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 
@@ -20,6 +20,7 @@ export class AddressLookuper {
         params: new HttpParams().set('format', 'jsonv2').set('q', query),
       })
       .pipe(
+        debounceTime(200),
         map((addresses) =>
           addresses.some((address) => address.startsWith(query)),
         ),

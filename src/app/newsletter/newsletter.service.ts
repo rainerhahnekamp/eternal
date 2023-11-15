@@ -6,10 +6,13 @@ import { inject, Injectable } from '@angular/core';
 export class NewsletterService {
   httpClient = inject(HttpClient);
 
+  email = '';
+
   send(email: string): Observable<boolean> {
+    this.email = email;
     return this.httpClient.post<boolean>(
       'http://some.host.com/newsletter/subscribe',
-      { email }
+      { email },
     );
   }
 }
