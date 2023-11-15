@@ -1,11 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Store } from '@ngrx/store';
-import { filter } from 'rxjs';
-import { bookingsActions } from '../+state/bookings.actions';
 import { Booking } from '../+state/bookings.reducer';
-import { fromBookings } from '../+state/bookings.selectors';
 import { DatePipe } from '@angular/common';
+import { BookingsRepository } from '@app/bookings/+state/bookings-repository.service';
 
 @Component({
   selector: 'app-overview',
@@ -18,19 +15,22 @@ export class OverviewComponent implements OnInit {
   displayedColumns = ['holidayId', 'date', 'status', 'comment'];
   dataSource = new MatTableDataSource<Booking>([]);
 
-  #store = inject(Store);
+  #repo = inject(BookingsRepository);
+
+  constructor() {
+    effect(() => {
+      const bookingData = this.#repo.bookingsData();
+      if (!bookingData) {
+        return;
+      }
+      if (bookingData.loaded) {
+        this.userName = bookingData.customerName;
+        this.dataSource.data = bookingData.bookings;
+      }
+    });
+  }
 
   ngOnInit(): void {
-    this.#store
-      .select(fromBookings.selectBookingData)
-      .pipe(filter(Boolean))
-      .subscribe((bookingData) => {
-        if (bookingData?.loaded === false) {
-          this.#store.dispatch(bookingsActions.load());
-        } else {
-          this.userName = bookingData.customerName;
-          this.dataSource.data = bookingData.bookings;
-        }
-      });
+    this.#repo.load();
   }
 }
