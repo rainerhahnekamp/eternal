@@ -1,5 +1,5 @@
-import { Component, Signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, signal, Signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { AsyncPipe, NgIf } from '@angular/common';
@@ -14,12 +14,13 @@ import { Store } from '@ngrx/store';
 @Component({
   selector: 'app-edit-customer',
   template: `
-    @if (data(); as value) {
+    @if (data();as value) {
     <app-customer
       [customer]="value.customer"
       [countries]="value.countries"
       (save)="this.submit($event)"
       (remove)="this.remove($event)"
+      [showSubmitButton]="showSubmitButton()"
     ></app-customer>
     }
   `,
@@ -27,6 +28,7 @@ import { Store } from '@ngrx/store';
   imports: [CustomerComponent, NgIf, AsyncPipe],
 })
 export class EditCustomerComponent {
+  showSubmitButton = signal(true);
   data: Signal<{ customer: Customer; countries: Options } | undefined>;
   customerId = 0;
 
@@ -34,6 +36,7 @@ export class EditCustomerComponent {
     private store: Store,
     private repo: CustomersRepository,
     private route: ActivatedRoute,
+    private router: Router,
   ) {
     const countries$: Observable<Options> = this.store.select(selectCountries);
     const customer$ = toObservable(
@@ -55,8 +58,16 @@ export class EditCustomerComponent {
   }
 
   submit(customer: Customer) {
-    console.log('hi');
-    this.repo.update({ ...customer, id: this.customerId });
+    const urlTree = this.router.createUrlTree(['..'], {
+      relativeTo: this.route,
+    });
+    this.showSubmitButton.set(false);
+    this.repo.update(
+      { ...customer, id: this.customerId },
+      urlTree.toString(),
+      'Customer has been updated',
+      () => this.showSubmitButton.set(true),
+    );
   }
 
   remove(customer: Customer) {

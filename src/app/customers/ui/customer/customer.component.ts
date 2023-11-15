@@ -43,6 +43,7 @@ export class CustomerComponent implements OnChanges {
   @Input() customer: Customer | undefined;
   @Input() countries: Options = [];
   @Input() showDeleteButton = true;
+  @Input() showSubmitButton = true;
   @Output() save = new EventEmitter<Customer>();
   @Output() remove = new EventEmitter<Customer>();
 

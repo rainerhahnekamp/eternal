@@ -15,7 +15,12 @@ export const customersActions = createActionGroup({
     }>(),
     Add: props<{ customer: Customer }>(),
     Added: props<{ customers: Customer[] }>(),
-    Update: props<{ customer: Customer }>(),
+    Update: props<{
+      customer: Customer;
+      forward: string;
+      message: string;
+      callback?: () => void;
+    }>(),
     Updated: props<{ customers: Customer[] }>(),
     Remove: props<{ customer: Customer }>(),
     Removed: props<{ customers: Customer[] }>(),
