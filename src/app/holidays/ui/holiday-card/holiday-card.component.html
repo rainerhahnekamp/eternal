@@ -8,7 +8,9 @@
     aria-labelledby="holiday-title"
   >
     <mat-card-header>
-      <mat-card-title> {{ holiday.title }}</mat-card-title>
+      <mat-card-title [id]="'holiday-card-' + holiday.id">
+        {{ holiday.title }}</mat-card-title
+      >
       <mat-card-subtitle>{{ holiday.teaser }}</mat-card-subtitle>
     </mat-card-header>
 
