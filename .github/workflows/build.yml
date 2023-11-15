@@ -10,6 +10,7 @@ jobs:
           node-version: '18'
           cache: 'npm'
       - run: npm ci
+      - run: npx ng test
       - run: npx ng lint
       - run: cd github-tests && npm ci && npx playwright install && npx playwright test
 
