@@ -28,8 +28,12 @@ export class CustomersRepository {
     return this.#store.selectSignal(fromCustomers.selectById(id));
   }
 
-  load(page: number = 1): void {
-    this.#store.dispatch(customersActions.load({ page }));
+  init(): void {
+    this.#store.dispatch(customersActions.init());
+  }
+
+  get(page: number = 1): void {
+    this.#store.dispatch(customersActions.get({ page }));
   }
 
   add(customer: Customer): void {
