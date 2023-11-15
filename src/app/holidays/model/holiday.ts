@@ -33,3 +33,7 @@ export function createHoliday(holiday: Partial<Holiday> = {}): Holiday {
     ...holiday,
   };
 }
+
+export function createHolidays(...holidays: Partial<Holiday>[]) {
+  return holidays.map(createHoliday);
+}
