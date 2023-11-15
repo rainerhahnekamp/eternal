@@ -1,4 +1,13 @@
-// eslint-disable-next-line @softarc/sheriff/deep-import
-import { fromCustomers } from '@app/customers/data/customers.selectors';
+import { inject, Injectable, Signal } from '@angular/core';
+import { Customer } from '@app/customers/model';
+import { CustomersRepository } from '@app/customers/data';
 
-export const selectSelectedCustomer = fromCustomers.selectSelectedCustomer;
+@Injectable({
+  providedIn: 'root',
+})
+export class CustomersApi {
+  #repo = inject(CustomersRepository);
+  get selectedCustomer(): Signal<Customer | undefined> {
+    return this.#repo.selectedCustomer;
+  }
+}

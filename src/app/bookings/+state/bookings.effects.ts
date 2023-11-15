@@ -1,10 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { selectSelectedCustomer } from '@app/customers/api';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs';
 import { bookingsActions } from './bookings.actions';
 import { Booking } from './bookings.reducer';
+import { CustomersApi } from '@app/customers/api';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { tap } from 'rxjs/operators';
 
 const bookings: Map<number, Booking[]> = new Map<number, Booking[]>();
 bookings.set(1, [
@@ -36,14 +37,16 @@ bookings.set(3, [
 
 @Injectable()
 export class BookingsEffects {
+  #customersApi = inject(CustomersApi);
   #actions$ = inject(Actions);
-  #store = inject(Store);
+  #selectedCustomer = toObservable(this.#customersApi.selectedCustomer);
 
   load$ = createEffect(() => {
     return this.#actions$.pipe(
       ofType(bookingsActions.load),
-      concatLatestFrom(() => this.#store.select(selectSelectedCustomer)),
+      concatLatestFrom(() => this.#selectedCustomer),
       map(([, customerId]) => customerId),
+      tap((value) => console.log(`id: ${value}`)),
       filter(Boolean),
       map((customer) =>
         bookingsActions.loaded({ bookings: bookings.get(customer.id) || [] }),
