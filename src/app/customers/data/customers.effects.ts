@@ -2,12 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, filter, map, switchMap, tap } from 'rxjs/operators';
+import { concatMap, filter, map, tap } from 'rxjs/operators';
 import { customersActions } from './customers.actions';
 import { MessageService } from '@app/shared/ui-messaging';
 import { Customer } from '@app/customers/model';
 import { Store } from '@ngrx/store';
 import { customersFeature } from '@app/customers/data/customers.reducer';
+import { safeSwitchMap } from '@app/shared/ngrx-utils';
 
 @Injectable()
 export class CustomersEffects {
@@ -41,16 +42,22 @@ export class CustomersEffects {
   load$ = createEffect(() => {
     return this.#actions$.pipe(
       ofType(customersActions.load),
-      switchMap(({ page }) =>
-        this.#http
-          .get<{ content: Customer[]; total: number }>(this.#baseUrl, {
-            params: new HttpParams().set('page', page),
-          })
-          .pipe(
-            map(({ content, total }) =>
-              customersActions.loaded({ customers: content, total, page }),
+      safeSwitchMap(
+        ({ page }) =>
+          this.#http
+            .get<{ content: Customer[]; total: number }>(this.#baseUrl, {
+              params: new HttpParams().set('page', page),
+            })
+            .pipe(
+              map(({ content, total }) =>
+                customersActions.loadSuccess({
+                  customers: content,
+                  total,
+                  page,
+                }),
+              ),
             ),
-          ),
+        () => customersActions.loadFailure(),
       ),
     );
   });
