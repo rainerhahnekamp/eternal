@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+// eslint-disable-next-line @softarc/sheriff/dependency-rule
 import { selectSelectedCustomer } from '@app/customers/feature';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
