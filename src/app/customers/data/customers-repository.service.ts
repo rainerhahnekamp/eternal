@@ -24,6 +24,10 @@ export class CustomersRepository {
     return this.#store.selectSignal(fromCustomers.selectSelectedCustomer);
   }
 
+  get hasError(): Signal<boolean> {
+    return this.#store.selectSignal(fromCustomers.selectHasError);
+  }
+
   findById(id: number): Signal<Customer | undefined> {
     return this.#store.selectSignal(fromCustomers.selectById(id));
   }

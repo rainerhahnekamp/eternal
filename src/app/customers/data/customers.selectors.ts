@@ -2,7 +2,7 @@ import { createSelector } from '@ngrx/store';
 import { customersFeature } from './customers.reducer';
 import { Customer } from '@app/customers/model';
 
-const { selectCustomers, selectSelectedId } = customersFeature;
+const { selectCustomers, selectSelectedId, selectHasError } = customersFeature;
 
 const selectById = (id: number) =>
   createSelector(selectCustomers, (state: Customer[]): Customer | undefined =>
@@ -36,4 +36,5 @@ export const fromCustomers = {
   selectPagedCustomers,
   selectSelectedCustomer,
   selectById,
+  selectHasError,
 };

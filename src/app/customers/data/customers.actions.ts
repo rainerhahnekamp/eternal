@@ -7,7 +7,12 @@ export const customersActions = createActionGroup({
     Init: emptyProps(),
     Get: props<{ page: number }>(),
     Load: props<{ page: number }>(),
-    Loaded: props<{ customers: Customer[]; total: number; page: number }>(),
+    'Load Failure': emptyProps(),
+    'Load Success': props<{
+      customers: Customer[];
+      total: number;
+      page: number;
+    }>(),
     Add: props<{ customer: Customer }>(),
     Added: props<{ customers: Customer[] }>(),
     Update: props<{ customer: Customer }>(),
