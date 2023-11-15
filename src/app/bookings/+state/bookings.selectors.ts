@@ -1,5 +1,4 @@
-// eslint-disable-next-line @softarc/sheriff/dependency-rule
-import { selectSelectedCustomer } from '@app/customers/feature';
+import { selectSelectedCustomer } from '@app/customers/api';
 import { createSelector } from '@ngrx/store';
 import { bookingsFeature } from './bookings.reducer';
 
