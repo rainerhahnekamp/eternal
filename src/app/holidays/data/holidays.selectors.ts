@@ -11,7 +11,13 @@ const selectHolidaysWithFavourite = createSelector(
     })),
 );
 
+const selectIsLoaded = createSelector(
+  holidaysFeature.selectLoadStatus,
+  (loadStatus) => loadStatus === 'loaded',
+);
+
 export const fromHolidays = {
   get: holidaysFeature.selectHolidays,
+  selectIsLoaded,
   selectHolidaysWithFavourite,
 };

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AsyncPipe, NgForOf } from '@angular/common';
 import { HolidayCardComponent } from '@app/holidays/ui';
@@ -21,13 +21,9 @@ import { fromHolidays, holidaysActions } from '@app/holidays/data';
   standalone: true,
   imports: [AsyncPipe, HolidayCardComponent, NgForOf],
 })
-export class HolidaysComponent implements OnInit {
+export class HolidaysComponent {
   #store = inject(Store);
   holidays = this.#store.selectSignal(fromHolidays.selectHolidaysWithFavourite);
-
-  ngOnInit(): void {
-    this.#store.dispatch(holidaysActions.load());
-  }
 
   addFavourite(id: number) {
     this.#store.dispatch(holidaysActions.addFavourite({ id }));
