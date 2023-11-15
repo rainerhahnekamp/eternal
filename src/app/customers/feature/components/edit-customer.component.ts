@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
@@ -10,22 +10,25 @@ import { CustomerComponent } from '@app/customers/ui';
 import { Customer } from '@app/customers/model';
 import { Options } from '@app/shared/form';
 import { selectCountries } from '@app/shared/master-data';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-edit-customer',
-  template: ` @if (data$ | async; as data) {
+  template: `
+    @if (data(); as value) {
     <app-customer
-      [customer]="data.customer"
-      [countries]="data.countries"
+      [customer]="value.customer"
+      [countries]="value.countries"
       (save)="this.submit($event)"
       (remove)="this.remove($event)"
     ></app-customer>
-    }`,
+    }
+  `,
   standalone: true,
   imports: [CustomerComponent, NgIf, AsyncPipe],
 })
 export class EditCustomerComponent {
-  data$: Observable<{ customer: Customer; countries: Options }>;
+  data: Signal<{ customer: Customer; countries: Options } | undefined>;
   customerId = 0;
 
   constructor(
@@ -47,13 +50,16 @@ export class EditCustomerComponent {
         }),
       );
 
-    this.data$ = combineLatest({
-      countries: countries$,
-      customer: customer$,
-    }).pipe(map(({ countries, customer }) => ({ countries, customer })));
+    this.data = toSignal(
+      combineLatest({
+        countries: countries$,
+        customer: customer$,
+      }).pipe(map(({ countries, customer }) => ({ countries, customer }))),
+    );
   }
 
   submit(customer: Customer) {
+    console.log('hi');
     this.store.dispatch(
       customersActions.update({
         customer: { ...customer, id: this.customerId },

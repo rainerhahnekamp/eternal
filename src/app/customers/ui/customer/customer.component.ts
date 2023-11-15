@@ -1,4 +1,12 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -31,7 +39,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatSelectModule,
   ],
 })
-export class CustomerComponent {
+export class CustomerComponent implements OnChanges {
   @Input() customer: Customer | undefined;
   @Input() countries: Options = [];
   @Input() showDeleteButton = true;
@@ -54,6 +62,12 @@ export class CustomerComponent {
   handleRemove() {
     if (this.customer && confirm(`Really delete ${this.customer}?`)) {
       this.remove.emit(this.customer);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('customer' in changes && this.customer) {
+      this.formGroup.setValue(this.customer);
     }
   }
 }

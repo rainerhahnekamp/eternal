@@ -1,26 +1,23 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { createSelector, Store } from '@ngrx/store';
 import { customersActions } from '../+state/customers.actions';
 import { fromCustomers } from '../+state/customers.selectors';
-import { Observable } from 'rxjs';
-import { AsyncPipe, NgIf } from '@angular/common';
 import { CustomersComponent, CustomersViewModel } from '@app/customers/ui';
 
 @Component({
-  template: ` @if (viewModel$ | async; as viewModel) {
-    <app-customers
-      [viewModel]="viewModel"
-      (setSelected)="setSelected($event)"
-      (setUnselected)="setUnselected()"
-      (switchPage)="switchPage($event)"
-    ></app-customers>
-    }`,
+  selector: 'app-customers-container',
+  template: ` <app-customers
+    [viewModel]="viewModel()"
+    (setSelected)="setSelected($event)"
+    (setUnselected)="setUnselected()"
+    (switchPage)="switchPage($event)"
+  ></app-customers>`,
   standalone: true,
-  imports: [CustomersComponent, NgIf, AsyncPipe, AsyncPipe],
+  imports: [CustomersComponent],
 })
 export class CustomersContainerComponent {
   #store = inject(Store);
-  viewModel$: Observable<CustomersViewModel> = this.#store.select(
+  viewModel: Signal<CustomersViewModel> = this.#store.selectSignal(
     createSelector(fromCustomers.selectPagedCustomers, (pagedCustomers) => ({
       customers: pagedCustomers.customers,
       pageIndex: pagedCustomers.page - 1,

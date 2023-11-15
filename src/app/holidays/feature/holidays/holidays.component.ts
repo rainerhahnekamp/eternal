@@ -10,7 +10,7 @@ import { Holiday } from '@app/holidays/model';
   selector: 'app-holidays',
   template: `<h2>Choose among our Holidays</h2>
     <div class="flex flex-wrap justify-evenly">
-      @for (holiday of holidays$ | async; track byId($index, holiday)) {
+      @for (holiday of holidays(); track byId($index, holiday)) {
       <app-holiday-card
         [holiday]="holiday"
         (addFavourite)="addFavourite($event)"
@@ -24,7 +24,7 @@ import { Holiday } from '@app/holidays/model';
 })
 export class HolidaysComponent implements OnInit {
   #store = inject(Store);
-  holidays$ = this.#store.select(fromHolidays.selectHolidaysWithFavourite);
+  holidays = this.#store.selectSignal(fromHolidays.selectHolidaysWithFavourite);
 
   ngOnInit(): void {
     this.#store.dispatch(holidaysActions.load());
