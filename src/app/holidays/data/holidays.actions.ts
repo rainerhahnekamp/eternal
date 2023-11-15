@@ -4,6 +4,7 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 export const holidaysActions = createActionGroup({
   source: 'Holidays',
   events: {
+    Get: emptyProps(),
     Load: emptyProps(),
     Loaded: props<{ holidays: Holiday[] }>(),
     'Add Favourite': props<{ id: number }>(),
