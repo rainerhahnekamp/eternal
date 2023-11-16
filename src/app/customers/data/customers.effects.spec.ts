@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Configuration } from '@app/shared/config';
 import { MessageService } from '@app/shared/ui-messaging';
-import { createSpyFromClass } from 'jasmine-auto-spies';
+import { createSpyFromClass, Spy } from 'jasmine-auto-spies';
 import { TestBed } from '@angular/core/testing';
 import { Actions } from '@ngrx/effects';
 import { marbles } from 'rxjs-marbles/jasmine';
@@ -15,7 +15,8 @@ import { createCustomer } from '@app/customers/model';
 
 describe('Customer Effects', () => {
   const setup = (actions$: Observable<Action>, httpClientMock?: unknown) => {
-    const httpClient = httpClientMock ?? createSpyFromClass(HttpClient);
+    const httpClient = (httpClientMock ??
+      createSpyFromClass(HttpClient)) as Spy<HttpClient>;
     const store = createSpyFromClass(Store);
     const configuration = createSpyFromClass(Configuration);
     const router = createSpyFromClass(Router);
@@ -121,4 +122,16 @@ describe('Customer Effects', () => {
       });
     }),
   );
+
+  describe('add$', () => {
+    it('should redirect to /customers', () => {
+      const actions$ = of(customersActions.add({ customer: createCustomer() }));
+      const { effects, httpClient, router } = setup(actions$);
+      httpClient.post.and.returnValue(of(true));
+
+      effects.add$.subscribe();
+
+      expect(router.navigateByUrl).toHaveBeenCalledWith('/customers');
+    });
+  });
 });
