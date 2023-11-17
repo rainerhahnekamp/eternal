@@ -33,6 +33,6 @@ export class CustomersContainerComponent {
   }
 
   switchPage(page: number) {
-    console.log('switch to page ' + page + ' is not implemented');
+    this.#repo.get(page + 1);
   }
 }

@@ -24,20 +24,35 @@ export class CustomersRepository {
     return this.#store.selectSignal(fromCustomers.selectSelectedCustomer);
   }
 
+  get hasError(): Signal<boolean> {
+    return this.#store.selectSignal(fromCustomers.selectHasError);
+  }
+
   findById(id: number): Signal<Customer | undefined> {
     return this.#store.selectSignal(fromCustomers.selectById(id));
   }
 
-  load(page: number = 1): void {
-    this.#store.dispatch(customersActions.load({ page }));
+  init(): void {
+    this.#store.dispatch(customersActions.init());
+  }
+
+  get(page: number = 1): void {
+    this.#store.dispatch(customersActions.get({ page }));
   }
 
   add(customer: Customer): void {
     this.#store.dispatch(customersActions.add({ customer }));
   }
 
-  update(customer: Customer): void {
-    this.#store.dispatch(customersActions.update({ customer }));
+  update(
+    customer: Customer,
+    forward: string,
+    message: string,
+    callback?: () => void,
+  ): void {
+    this.#store.dispatch(
+      customersActions.update({ customer, forward, message, callback }),
+    );
   }
 
   remove(customer: Customer): void {

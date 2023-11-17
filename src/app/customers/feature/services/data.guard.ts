@@ -4,6 +4,6 @@ import { CustomersRepository } from '@app/customers/data';
 
 export const dataGuard: CanActivateFn = () => {
   const repo = inject(CustomersRepository);
-  repo.load(1);
+  repo.init();
   return true;
 };

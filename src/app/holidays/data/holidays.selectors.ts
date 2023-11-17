@@ -18,6 +18,6 @@ const selectIsLoaded = createSelector(
 
 export const fromHolidays = {
   get: holidaysFeature.selectHolidays,
-  selectHolidaysWithFavourite,
   selectIsLoaded,
+  selectHolidaysWithFavourite,
 };

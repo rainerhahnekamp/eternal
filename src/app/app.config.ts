@@ -29,6 +29,7 @@ import {
 import { baseUrlInterceptor, errorInterceptor } from '@app/shared/http';
 import { Configuration } from '@app/shared/config';
 import { sharedMasterDataProvider } from '@app/shared/master-data';
+import { provideCustomers } from '@app/customers/data';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -48,6 +49,7 @@ export const appConfig: ApplicationConfig = {
     ...provideSecurity,
     ...sharedMasterDataProvider,
     ...sharedUiMessagingProvider,
+    provideCustomers(),
     importProvidersFrom([MatDateFnsModule]),
     {
       provide: MAT_DATE_LOCALE,

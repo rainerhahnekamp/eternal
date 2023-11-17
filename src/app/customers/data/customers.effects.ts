@@ -1,13 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { concatMap, filter, map, tap } from 'rxjs/operators';
 import { customersActions } from './customers.actions';
 import { MessageService } from '@app/shared/ui-messaging';
 import { Customer } from '@app/customers/model';
-import { catchError, of } from 'rxjs';
-import { noopAction } from '@app/shared/ngrx-utils';
+import { Store } from '@ngrx/store';
+import { customersFeature } from '@app/customers/data/customers.reducer';
+import { safeSwitchMap } from '@app/shared/ngrx-utils';
 
 @Injectable()
 export class CustomersEffects {
@@ -15,22 +16,48 @@ export class CustomersEffects {
   #http = inject(HttpClient);
   #router = inject(Router);
   #uiMessage = inject(MessageService);
+  #store = inject(Store);
   #baseUrl = '/customers';
+
+  init$ = createEffect(() => {
+    return this.#actions$.pipe(
+      ofType(customersActions.init),
+      concatLatestFrom(() =>
+        this.#store.select(customersFeature.selectIsLoaded),
+      ),
+      filter(([, isLoaded]) => isLoaded === false),
+      map(() => customersActions.get({ page: 1 })),
+    );
+  });
+
+  get$ = createEffect(() => {
+    return this.#actions$.pipe(
+      ofType(customersActions.get),
+      concatLatestFrom(() => this.#store.select(customersFeature.selectPage)),
+      filter(([action, page]) => action.page !== page),
+      map(([{ page }]) => customersActions.load({ page })),
+    );
+  });
 
   load$ = createEffect(() => {
     return this.#actions$.pipe(
       ofType(customersActions.load),
-      switchMap(({ page }) =>
-        this.#http
-          .get<{ content: Customer[]; total: number }>(this.#baseUrl, {
-            params: new HttpParams().set('page', page),
-          })
-          .pipe(
-            map(({ content, total }) =>
-              customersActions.loaded({ customers: content, total, page }),
+      safeSwitchMap(
+        ({ page }) =>
+          this.#http
+            .get<{ content: Customer[]; total: number }>(this.#baseUrl, {
+              params: new HttpParams().set('page', page),
+            })
+            .pipe(
+              map(({ content, total }) =>
+                customersActions.loadSuccess({
+                  customers: content,
+                  total,
+                  page,
+                }),
+              ),
             ),
-            catchError(() => of(noopAction())),
-          ),
+        () => customersActions.loadFailure(),
       ),
     );
   });
@@ -53,10 +80,16 @@ export class CustomersEffects {
   update$ = createEffect(() => {
     return this.#actions$.pipe(
       ofType(customersActions.update),
-      concatMap(({ customer }) =>
-        this.#http
-          .put<Customer[]>(this.#baseUrl, customer)
-          .pipe(tap(() => this.#uiMessage.info('Customer has been updated'))),
+      concatMap(({ customer, forward, message, callback }) =>
+        this.#http.put<Customer[]>(this.#baseUrl, customer).pipe(
+          tap(() => {
+            if (callback !== undefined) {
+              callback();
+            }
+          }),
+          tap(() => this.#uiMessage.info(message)),
+          tap(() => this.#router.navigateByUrl(forward)),
+        ),
       ),
       map(() => customersActions.load({ page: 1 })),
     );
