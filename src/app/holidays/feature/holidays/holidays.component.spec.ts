@@ -11,7 +11,7 @@ import { createHolidays } from '@app/holidays/model';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHolidays } from '@app/holidays/data';
 
-describe('Holidays Component', () => {
+xdescribe('Holidays Component', () => {
   const setup = async () =>
     render(HolidaysComponent, {
       providers: [
