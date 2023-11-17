@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { CustomerComponent } from '@app/customers/ui';
 import { Customer } from '@app/customers/model';
 import { selectCountries } from '@app/shared/master-data';
-import { CustomersRepository } from '@app/customers/data';
+import { CustomersRepository, CustomersStore } from '@app/customers/data';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -19,7 +19,7 @@ import { Store } from '@ngrx/store';
 })
 export class AddCustomerComponent {
   #store = inject(Store);
-  #repo = inject(CustomersRepository);
+  #customersStore = inject(CustomersStore);
   customer: Customer = {
     id: 0,
     firstname: '',
@@ -30,6 +30,6 @@ export class AddCustomerComponent {
   protected countries = this.#store.selectSignal(selectCountries);
 
   submit(customer: Customer) {
-    this.#repo.add({ ...customer, id: 0 });
+    this.#customersStore.add({ ...customer, id: 0 });
   }
 }

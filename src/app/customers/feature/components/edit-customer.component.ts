@@ -1,4 +1,4 @@
-import { Component, signal, Signal } from '@angular/core';
+import { Component, inject, signal, Signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -8,7 +8,7 @@ import { Customer } from '@app/customers/model';
 import { Options } from '@app/shared/form';
 import { selectCountries } from '@app/shared/master-data';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { CustomersRepository } from '@app/customers/data';
+import { CustomersStore } from '@app/customers/data';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -31,16 +31,18 @@ export class EditCustomerComponent {
   showSubmitButton = signal(true);
   data: Signal<{ customer: Customer; countries: Options } | undefined>;
   customerId = 0;
+  customersStore = inject(CustomersStore);
 
   constructor(
     private store: Store,
-    private repo: CustomersRepository,
     private route: ActivatedRoute,
     private router: Router,
   ) {
     const countries$: Observable<Options> = this.store.select(selectCountries);
     const customer$ = toObservable(
-      this.repo.findById(Number(this.route.snapshot.paramMap.get('id') || '')),
+      this.customersStore.findById(
+        Number(this.route.snapshot.paramMap.get('id') || ''),
+      ),
     ).pipe(
       this.#verifyCustomer,
       map((customer) => {
@@ -62,7 +64,7 @@ export class EditCustomerComponent {
       relativeTo: this.route,
     });
     this.showSubmitButton.set(false);
-    this.repo.update(
+    this.customersStore.update(
       { ...customer, id: this.customerId },
       urlTree.toString(),
       'Customer has been updated',
@@ -71,7 +73,7 @@ export class EditCustomerComponent {
   }
 
   remove(customer: Customer) {
-    this.repo.remove({ ...customer, id: this.customerId });
+    this.customersStore.remove({ ...customer, id: this.customerId });
   }
 
   #verifyCustomer(customer$: Observable<undefined | Customer>) {
