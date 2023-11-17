@@ -4,7 +4,6 @@ import { Booking } from './bookings.reducer';
 export const bookingsActions = createActionGroup({
   source: 'Customer Bookings',
   events: {
-    Load: emptyProps(),
     Loaded: props<{ bookings: Booking[] }>(),
     Reset: emptyProps(),
   },

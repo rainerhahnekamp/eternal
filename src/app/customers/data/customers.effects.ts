@@ -6,6 +6,8 @@ import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { customersActions } from './customers.actions';
 import { MessageService } from '@app/shared/ui-messaging';
 import { Customer } from '@app/customers/model';
+import { catchError, of } from 'rxjs';
+import { noopAction } from '@app/shared/ngrx-utils';
 
 @Injectable()
 export class CustomersEffects {
@@ -27,6 +29,7 @@ export class CustomersEffects {
             map(({ content, total }) =>
               customersActions.loaded({ customers: content, total, page }),
             ),
+            catchError(() => of(noopAction())),
           ),
       ),
     );
