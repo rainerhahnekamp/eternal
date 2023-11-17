@@ -8,3 +8,4 @@ export const provideCustomers = () => [
   provideEffects([CustomersEffects]),
 ];
 export { CustomersRepository } from './customers-repository.service';
+export { CustomersStore } from './customers-store.service';

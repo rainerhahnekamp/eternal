@@ -1,6 +1,6 @@
 import { Component, computed, inject, Signal } from '@angular/core';
 import { CustomersComponent, CustomersViewModel } from '@app/customers/ui';
-import { CustomersRepository } from '@app/customers/data';
+import { CustomersRepository, CustomersStore } from '@app/customers/data';
 
 @Component({
   selector: 'app-customers-container',
@@ -14,9 +14,9 @@ import { CustomersRepository } from '@app/customers/data';
   imports: [CustomersComponent],
 })
 export class CustomersContainerComponent {
-  #repo = inject(CustomersRepository);
+  #store = inject(CustomersStore);
   viewModel: Signal<CustomersViewModel> = computed(() => {
-    const pagedCustomers = this.#repo.pagedCustomers();
+    const pagedCustomers = this.#store.pagedCustomers();
     return {
       customers: pagedCustomers.customers,
       pageIndex: pagedCustomers.page - 1,
@@ -25,14 +25,14 @@ export class CustomersContainerComponent {
   });
 
   setSelected(id: number) {
-    this.#repo.select(id);
+    this.#store.select(id);
   }
 
   setUnselected() {
-    this.#repo.unselect();
+    this.#store.unselect();
   }
 
   switchPage(page: number) {
-    this.#repo.get(page + 1);
+    this.#store.get(page + 1);
   }
 }
