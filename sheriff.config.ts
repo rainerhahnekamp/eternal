@@ -34,7 +34,12 @@ export const sheriffConfig: SheriffConfig = {
       'shared:ui-messaging',
       'shared:util',
     ],
-    'type:data': ['type:model', 'shared:config', 'shared:ui-messaging'],
+    'type:data': [
+      'type:model',
+      'shared:config',
+      'shared:ui-messaging',
+      'shared:ngrx-utils',
+    ],
     'type:ui': ['type:model', 'shared:form', 'shared:ui'],
     'type:model': noDependencies,
     'shared:http': ['shared:config', 'shared:ui-messaging'],

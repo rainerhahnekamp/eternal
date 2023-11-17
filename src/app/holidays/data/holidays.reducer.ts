@@ -1,23 +1,34 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { holidaysActions } from './holidays.actions';
 import { Holiday } from '@app/holidays/model';
+import { LoadStatus } from '@app/shared/ngrx-utils';
 
 export interface HolidaysState {
   holidays: Holiday[];
   favouriteIds: number[];
+  loadStatus: LoadStatus;
 }
 
-const initialState: HolidaysState = { holidays: [], favouriteIds: [] };
+const initialState: HolidaysState = {
+  holidays: [],
+  favouriteIds: [],
+  loadStatus: 'not loaded',
+};
 
 export const holidaysFeature = createFeature({
   name: 'holidays',
   reducer: createReducer<HolidaysState>(
     initialState,
     on(
+      holidaysActions.load,
+      (state): HolidaysState => ({ ...state, loadStatus: 'loading' }),
+    ),
+    on(
       holidaysActions.loaded,
       (state, { holidays }): HolidaysState => ({
         ...state,
         holidays,
+        loadStatus: 'loaded',
       }),
     ),
     on(holidaysActions.favouriteAdded, (state, { id }): HolidaysState => {

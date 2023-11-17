@@ -25,6 +25,10 @@ export class HolidaysRepository {
     return this.#store.select(fromHolidays.get).pipe(deepClone);
   }
 
+  get isLoaded(): Signal<boolean> {
+    return this.#store.selectSignal(fromHolidays.selectIsLoaded);
+  }
+
   person = signal({ id: 1, name: 'Konrad' });
 
   get holidaysWithFavourites() {
@@ -32,7 +36,7 @@ export class HolidaysRepository {
   }
 
   load() {
-    this.#store.dispatch(holidaysActions.load());
+    this.#store.dispatch(holidaysActions.get());
   }
 
   addFavourite(id: number) {
