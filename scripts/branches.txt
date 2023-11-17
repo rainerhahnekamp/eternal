@@ -25,3 +25,4 @@ ngrx-04-02-01-integration-tests-holidays-init
 ngrx-04-02-01-integration-tests-holidays-solution
 ngrx-04-02-02-integration-tests-customers-init
 ngrx-04-02-02-integration-tests-customers-solution
+ngrx-05-01-signal-store
