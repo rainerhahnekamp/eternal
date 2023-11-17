@@ -2,8 +2,8 @@ import { Component, computed, inject, OnInit } from '@angular/core';
 import { AsyncPipe, NgForOf } from '@angular/common';
 import { HolidayCardComponent } from '@app/holidays/ui';
 import { Holiday } from '@app/holidays/model';
-import { HolidaysRepository } from '@app/holidays/data';
 import { FormsModule } from '@angular/forms';
+import { HolidaysStore } from '@app/holidays/data/holiday-store';
 
 @Component({
   selector: 'app-holidays',
@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
     <input [(ngModel)]="holiday.title" />
     }
     <div class="flex flex-wrap justify-evenly">
-      @for (holiday of repository.holidaysWithFavourites(); track byId($index,
+      @for (holiday of store.holidaysWithFavourites(); track byId($index,
       holiday)) {
       <app-holiday-card
         [holiday]="holiday"
@@ -27,8 +27,8 @@ import { FormsModule } from '@angular/forms';
   imports: [AsyncPipe, HolidayCardComponent, NgForOf, FormsModule],
 })
 export class HolidaysComponent implements OnInit {
-  protected repository = inject(HolidaysRepository);
-  protected holidays = this.repository.holidays;
+  protected store = inject(HolidaysStore);
+  protected holidays = this.store.holidays;
   holiday = computed(() => {
     const holidays = this.holidays();
     if (holidays.length) {
@@ -38,16 +38,14 @@ export class HolidaysComponent implements OnInit {
     return undefined;
   });
 
-  ngOnInit(): void {
-    this.repository.load();
-  }
+  ngOnInit(): void {}
 
   addFavourite(id: number) {
-    this.repository.addFavourite(id);
+    this.store.addFavourite(id);
   }
 
   removeFavourite(id: number) {
-    this.repository.removeFavourite(id);
+    this.store.removeFavourite(id);
   }
 
   byId(index: number, holiday: Holiday) {
