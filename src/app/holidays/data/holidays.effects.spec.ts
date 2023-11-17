@@ -9,7 +9,7 @@ import { holidaysActions } from '@app/holidays/data/holidays.actions';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 
-xdescribe('Holidays Effects', () => {
+describe('Holidays Effects', () => {
   const setup = (actions$: Actions, httpClientMock?: unknown) => {
     const httpClient = httpClientMock ?? createSpyFromClass(HttpClient);
     const config = createSpyFromClass(Configuration);
