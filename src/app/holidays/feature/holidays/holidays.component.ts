@@ -3,7 +3,7 @@ import { AsyncPipe, NgForOf } from '@angular/common';
 import { HolidayCardComponent } from '@app/holidays/ui';
 import { Holiday } from '@app/holidays/model';
 import { FormsModule } from '@angular/forms';
-import { HolidaysStore } from '@app/holidays/data/holiday-store';
+import { HolidaysStore } from '@app/holidays/data';
 
 @Component({
   selector: 'app-holidays',

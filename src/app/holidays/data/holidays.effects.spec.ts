@@ -37,8 +37,8 @@ describe('Holidays Effects', () => {
   });
 
   it('get should trigger load is status is not-loaded', async () => {
-    const { effects, store } = setup(of(holidaysActions.get()));
+    const { effects } = setup(of(holidaysActions.get()));
     // store.select.and.returnValue(of('not loaded'));
-    const action = await lastValueFrom(effects.get$);
+    await lastValueFrom(effects.get$);
   });
 });
