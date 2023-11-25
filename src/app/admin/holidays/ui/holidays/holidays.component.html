@@ -18,7 +18,9 @@
 
       <ng-container matColumnDef="description">
         <mat-header-cell *matHeaderCellDef> Description</mat-header-cell>
-        <mat-cell *matCellDef="let element"><p class="line-clamp-5">{{ element.description }}</p></mat-cell>
+        <mat-cell *matCellDef="let element"
+          ><p class="line-clamp-5">{{ element.description }}</p></mat-cell
+        >
       </ng-container>
 
       <ng-container matColumnDef="action">
