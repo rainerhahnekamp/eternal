@@ -1,43 +1,40 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { computed, Injectable, Signal, signal } from '@angular/core';
 import { Holiday } from '@app/admin/holidays/model';
-import { dummyHolidays } from './dummy-holidays';
+import { dummyHolidays } from '@app/admin/holidays/data/dummy-holidays';
 
 @Injectable({ providedIn: 'root' })
 export class HolidaysRepository {
-  #holidayId = 1;
-  #holidays: Holiday[] = [];
-  #holidays$ = new BehaviorSubject<Holiday[]>(dummyHolidays);
+  #holidays = signal<Holiday[]>(dummyHolidays);
 
-  get holidays$(): Observable<Holiday[]> {
-    return this.#holidays$.asObservable();
+  get holidays(): Signal<Holiday[]> {
+    return this.#holidays.asReadonly();
   }
 
-  findById(id: number): Observable<Holiday | undefined> {
-    return this.holidays$.pipe(
-      map((holidays) => holidays.find((h) => h.id === id)),
+  findById(id: number): Signal<Holiday | undefined> {
+    return computed(() =>
+      this.#holidays().find((holiday) => holiday.id === id),
     );
   }
 
   save(holiday: Holiday): void {
-    this.#holidays = this.#holidays.map((h) => {
-      if (h.id === holiday.id) {
-        return holiday;
-      } else {
-        return h;
-      }
-    });
-
-    this.#holidays$.next(this.#holidays);
+    this.#holidays.update((holidays) =>
+      holidays.map((h) => {
+        if (h.id === holiday.id) {
+          return holiday;
+        } else {
+          return h;
+        }
+      }),
+    );
   }
 
   add(holiday: Holiday): void {
-    this.#holidays = [...this.#holidays, { ...holiday, id: this.#holidayId++ }];
-    this.#holidays$.next(this.#holidays);
+    this.#holidays.update((holidays) => [...holidays, holiday]);
   }
 
   remove(id: number): void {
-    this.#holidays = this.#holidays.filter((holiday) => holiday.id !== id);
-    this.#holidays$.next(this.#holidays);
+    this.#holidays.update((holidays) =>
+      holidays.filter((holiday) => holiday.id !== id),
+    );
   }
 }
