@@ -25,13 +25,13 @@ public class HolidayController {
   }
 
   @GetMapping
-  @Cacheable(value = "holidays", key = "'all'")
+  @Cacheable(value = "holiday", key = "'all'")
   public List<HolidayResponse> index() {
     return this.repository.findAll().stream().map(holidayMapper::holidayToResponse).toList();
   }
 
   @GetMapping("{id}")
-  @Cacheable(value = "holidays", key = "#id")
+  @Cacheable(value = "holiday", key = "#id")
   public HolidayResponse find(@PathVariable("id") Long id) {
     return this.repository
         .find(id)
@@ -40,15 +40,15 @@ public class HolidayController {
   }
 
   @PostMapping
-  @CachePut(value = "holidays", key = "#holidayDto.id()")
-  @CacheEvict(value = "holidays", key = "'all'")
+  @CachePut(value = "holiday", key = "#holidayDto.id()")
+  @CacheEvict(value = "holiday", key = "'all'")
   public void add(@RequestBody HolidayDto holidayDto) {
     this.repository.add(holidayDto.name(), holidayDto.description());
   }
 
   @PutMapping
-  @CachePut(value = "holidays", key = "#holidayDto.id()")
-  @CacheEvict(value = "holidays", key = "'all'")
+  @CachePut(value = "holiday", key = "#holidayDto.id()")
+  @CacheEvict(value = "holiday", key = "'all'")
   public void update(@RequestBody HolidayDto holidayDto) {
     this.repository.update(holidayDto.id(), holidayDto.name(), holidayDto.description());
   }
@@ -56,8 +56,8 @@ public class HolidayController {
   @DeleteMapping("{id}")
   @Caching(
       evict = {
-        @CacheEvict(value = "holidays", key = "#id"),
-        @CacheEvict(value = "holidays", key = "'all'")
+        @CacheEvict(value = "holiday", key = "#id"),
+        @CacheEvict(value = "holiday", key = "'all'")
       })
   public void remove(@PathVariable("id") Long id) {
     this.repository.remove(id);
