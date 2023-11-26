@@ -1,23 +1,17 @@
-package com.softarc.eternal.web;
+package com.softarc.eternal.holiday.web;
 
-import com.softarc.eternal.data.HolidaysRepository;
-import com.softarc.eternal.domain.Holiday;
-import java.util.List;
+import com.softarc.eternal.holiday.data.HolidayRepository;
+import com.softarc.eternal.holiday.domain.Holiday;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/holidays")
+@RequestMapping("/api/holiday")
 @RestController
-public class HolidaysController {
+public class HolidayController {
 
-  private final HolidaysRepository repository;
+  private final HolidayRepository repository;
 
-  public HolidaysController(HolidaysRepository repository) {
+  public HolidayController(HolidayRepository repository) {
     this.repository = repository;
-  }
-
-  @GetMapping
-  public List<Holiday> index() {
-    return this.repository.findAll();
   }
 
   @GetMapping("{id}")
