@@ -1,0 +1,25 @@
+name: Build
+on: [push]
+jobs:
+#  build-angular:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: actions/setup-node@v3
+#        with:
+#          node-version: '18'
+#          cache: 'npm'
+#      - run: npm ci
+#      - run: npm run verify
+#      - run: cd github-tests && npm ci && npx playwright install && npx playwright test
+  build-spring:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: corretto
+          java-version: '21'
+      - name: Run check with Gradle Wrapper
+        run: ./gradlew check
+
