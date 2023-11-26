@@ -1,17 +1,16 @@
-package com.softarc.eternal.data;
+package com.softarc.eternal.holiday.data;
 
-import com.softarc.eternal.domain.Holiday;
+import com.softarc.eternal.holiday.domain.Holiday;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
-public class DefaultHolidaysRepository implements HolidaysRepository {
+public class DefaultHolidayRepository implements HolidayRepository {
 
   private final List<Holiday> holidays = new ArrayList<>();
   private Long currentId = 3L;
 
-  public DefaultHolidaysRepository() {
+  public DefaultHolidayRepository() {
     this.holidays.add(new Holiday(1L, "Canada", "Visit Rocky Mountains"));
     this.holidays.add(new Holiday(2L, "China", "To the Middle Kingdom"));
   }
@@ -30,7 +29,7 @@ public class DefaultHolidaysRepository implements HolidaysRepository {
   @Override
   public Optional<Holiday> find(Long id) {
     for (Holiday holiday : this.holidays) {
-      if (holiday.getId().equals(id)) {
+      if (holiday.id().equals(id)) {
         return Optional.of(holiday);
       }
     }
@@ -40,6 +39,6 @@ public class DefaultHolidaysRepository implements HolidaysRepository {
 
   @Override
   public void remove(Long id) {
-    this.holidays.removeIf(holiday -> holiday.getId().equals(id));
+    this.holidays.removeIf(holiday -> holiday.id().equals(id));
   }
 }

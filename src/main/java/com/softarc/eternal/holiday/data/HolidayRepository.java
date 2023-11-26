@@ -1,10 +1,10 @@
-package com.softarc.eternal.data;
+package com.softarc.eternal.holiday.data;
 
-import com.softarc.eternal.domain.Holiday;
+import com.softarc.eternal.holiday.domain.Holiday;
 import java.util.List;
 import java.util.Optional;
 
-public interface HolidaysRepository {
+public interface HolidayRepository {
   List<Holiday> findAll();
 
   void add(String name);

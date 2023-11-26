@@ -1,7 +1,7 @@
-package com.softarc.eternal.data;
+package com.softarc.eternal.holiday.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.softarc.eternal.domain.Holiday;
+import com.softarc.eternal.holiday.domain.Holiday;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 
 @Log
-public class FsHolidaysRepository implements HolidaysRepository {
+public class FsHolidayRepository implements HolidayRepository {
 
   private final ObjectMapper objectMapper;
   private final List<Holiday> holidays;
@@ -21,7 +21,7 @@ public class FsHolidaysRepository implements HolidaysRepository {
   private final File file;
 
   @SneakyThrows
-  public FsHolidaysRepository(ObjectMapper objectMapper, String filename) {
+  public FsHolidayRepository(ObjectMapper objectMapper, String filename) {
     this.objectMapper = objectMapper;
     file = Paths.get(filename).toFile();
 
@@ -40,7 +40,7 @@ public class FsHolidaysRepository implements HolidaysRepository {
 
   private Long getCurrentId() {
     return this.holidays.stream()
-      .map(Holiday::getId)
+      .map(Holiday::id)
       .max(Long::compareTo)
       .orElse(0L);
   }
@@ -67,13 +67,13 @@ public class FsHolidaysRepository implements HolidaysRepository {
   public void add(String name) {
     this.holidays.add(new Holiday(++this.currentId, name, "-"));
     this.persist();
-    FsHolidaysRepository.log.info(String.format("Holiday %s was added", name));
+    FsHolidayRepository.log.info(String.format("Holiday %s was added", name));
   }
 
   @Override
   public Optional<Holiday> find(Long id) {
     for (Holiday holiday : this.holidays) {
-      if (holiday.getId().equals(id)) {
+      if (holiday.id().equals(id)) {
         return Optional.of(holiday);
       }
     }
@@ -88,8 +88,8 @@ public class FsHolidaysRepository implements HolidaysRepository {
         holiday -> {
           this.holidays.remove(holiday);
           this.persist();
-          FsHolidaysRepository.log.info(
-            String.format("Holiday %s was removed", holiday.getName())
+          FsHolidayRepository.log.info(
+            String.format("Holiday %s was removed", holiday.name())
           );
         },
         () -> {
