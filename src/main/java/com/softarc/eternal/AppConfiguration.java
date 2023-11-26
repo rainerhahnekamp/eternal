@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softarc.eternal.holiday.data.DefaultHolidayRepository;
 import com.softarc.eternal.holiday.data.FsHolidayRepository;
 import com.softarc.eternal.holiday.data.HolidayRepository;
+import com.softarc.eternal.holiday.domain.Holiday;
+import java.util.Arrays;
+import java.util.Collections;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,7 +24,6 @@ public class AppConfiguration {
         appProperties.getPersistenceFile()
       );
     } else {
-      return new DefaultHolidaRepository();
       var holidays = Arrays.asList(
         new Holiday(
           1L,

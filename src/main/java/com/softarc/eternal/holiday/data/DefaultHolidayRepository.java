@@ -1,12 +1,12 @@
 package com.softarc.eternal.holiday.data;
 
-import com.softarc.eternal.domain.Guide;
-import com.softarc.eternal.domain.Holiday;
-import com.softarc.eternal.domain.HolidayTrip;
+import com.softarc.eternal.holiday.domain.Guide;
 import com.softarc.eternal.holiday.domain.Holiday;
+import com.softarc.eternal.holiday.domain.HolidayTrip;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class DefaultHolidayRepository implements HolidayRepository {
 
@@ -47,27 +47,44 @@ public class DefaultHolidayRepository implements HolidayRepository {
   @Override
   public void addTrip(Long holidayId, HolidayTrip holidayTrip) {
     var holiday = this.find(holidayId).orElseThrow();
-    holiday.getTrips().add(holidayTrip);
+    holiday.trips().add(holidayTrip);
   }
 
   @Override
   public void assignGuide(Long holidayTripId, Guide guide) {
-    var holidayTrip =
+    var trip =
       this.findTripId(holidayTripId)
         .orElseThrow(() ->
           new RuntimeException(
             String.format("Cannot find Trip %s", guide.toString())
           )
         );
+    var holiday = this.find(trip.holidayId()).orElseThrow();
 
     this.findAll()
       .stream()
-      .flatMap(holiday -> holiday.getTrips().stream())
-      .filter(filterOverlappingTrip(holidayTripId, guide, holidayTrip))
+      .flatMap(entry -> entry.trips().stream())
+      .filter(filterOverlappingTrip(holidayTripId, guide, trip))
       .findFirst()
-      .ifPresent(trip -> this.throwAlreadyAssignedException(trip, guide));
+      .ifPresent(entry -> this.throwAlreadyAssignedException(entry, guide));
 
-    holidayTrip.setGuideId(guide.getId());
+    var assignedTrip = new HolidayTrip(
+      trip.id(),
+      trip.fromDate(),
+      trip.toDate(),
+      trip.priceSingleRoom(),
+      trip.priceDoubleRoom(),
+      trip.currency(),
+      trip.holidayId(),
+      guide.id());
+
+    holiday.trips().replaceAll(
+      entry -> {
+        if (entry.id().equals(assignedTrip.id())) {
+          return assignedTrip;
+        }
+        return entry;
+      });
   }
 
   private Predicate<HolidayTrip> filterOverlappingTrip(
@@ -76,16 +93,16 @@ public class DefaultHolidayRepository implements HolidayRepository {
     HolidayTrip holidayTrip
   ) {
     return trip ->
-      trip.getGuideId() != null &&
-      !trip.getId().equals(holidayTripId) &&
-      trip.getGuideId().equals(guide.getId()) &&
+      trip.guideId() != null &&
+      !trip.id().equals(holidayTripId) &&
+      trip.guideId().equals(guide.id()) &&
       this.isTripOverlapping(holidayTrip, trip);
   }
 
   private Optional<HolidayTrip> findTripId(Long holidayTripId) {
     return this.holidays.stream()
-      .flatMap(holiday -> holiday.getTrips().stream())
-      .filter(holidayTrip -> holidayTrip.getId().equals(holidayTripId))
+      .flatMap(holiday -> holiday.trips().stream())
+      .filter(holidayTrip -> holidayTrip.id().equals(holidayTripId))
       .findFirst();
   }
 
@@ -93,16 +110,16 @@ public class DefaultHolidayRepository implements HolidayRepository {
     throw new RuntimeException(
       String.format(
         "Guide %d already assigned to trip %d",
-        guide.getId(),
-        trip.getId()
+        guide.id(),
+        trip.id()
       )
     );
   }
 
   private boolean isTripOverlapping(HolidayTrip trip1, HolidayTrip trip2) {
     return (
-      trip1.getFromDate().isBefore(trip2.getToDate()) &&
-      trip2.getFromDate().isBefore(trip1.getToDate())
+      trip1.fromDate().isBefore(trip2.toDate()) &&
+      trip2.fromDate().isBefore(trip1.toDate())
     );
   }
 }

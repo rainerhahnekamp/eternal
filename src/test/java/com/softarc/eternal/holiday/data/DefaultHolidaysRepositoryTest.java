@@ -1,11 +1,11 @@
-package com.softarc.eternal.data;
+package com.softarc.eternal.holiday.data;
 
 import static org.assertj.core.api.Assertions.*;
 
-import com.softarc.eternal.domain.GuideMother;
-import com.softarc.eternal.domain.Holiday;
-import com.softarc.eternal.domain.HolidayMother;
-import com.softarc.eternal.domain.HolidayTripMother;
+import com.softarc.eternal.holiday.domain.GuideMother;
+import com.softarc.eternal.holiday.domain.Holiday;
+import com.softarc.eternal.holiday.domain.HolidayMother;
+import com.softarc.eternal.holiday.domain.HolidayTripMother;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,12 +25,12 @@ record OverlappingParameter(
 
 class DefaultHolidaysRepositoryTest {
 
-  public DefaultHolidaysRepository setup() {
-    return new DefaultHolidaysRepository(Collections.emptyList());
+  public DefaultHolidayRepository setup() {
+    return new DefaultHolidayRepository(Collections.emptyList());
   }
 
-  public DefaultHolidaysRepository setup(Holiday... holidays) {
-    return new DefaultHolidaysRepository(Arrays.asList(holidays));
+  public DefaultHolidayRepository setup(Holiday... holidays) {
+    return new DefaultHolidayRepository(Arrays.asList(holidays));
   }
 
   @Test
@@ -55,7 +55,7 @@ class DefaultHolidaysRepositoryTest {
 
     assertThat(repository.findAll())
       .hasSize(1)
-      .extracting(Holiday::getName)
+      .extracting(Holiday::name)
       .allSatisfy(name -> assertThat(name).isEqualTo("Vienna"));
   }
 
@@ -66,9 +66,9 @@ class DefaultHolidaysRepositoryTest {
       .standard(holiday, LocalDate.of(2022, 11, 28), 7)
       .build();
     var repository = setup(holiday);
-    repository.addTrip(holiday.getId(), trip);
+    repository.addTrip(holiday.id(), trip);
 
-    assertThat(repository.find(holiday.getId()).get().getTrips())
+    assertThat(repository.find(holiday.id()).get().trips())
       .contains(trip)
       .hasSize(1);
   }
@@ -96,13 +96,13 @@ class DefaultHolidaysRepositoryTest {
     var deborah = GuideMother.deborah().build();
 
     var repository = setup(holiday);
-    repository.addTrip(holiday.getId(), trip1);
-    repository.addTrip(holiday.getId(), trip2);
+    repository.addTrip(holiday.id(), trip1);
+    repository.addTrip(holiday.id(), trip2);
 
-    repository.assignGuide(trip1.getId(), deborah);
+    repository.assignGuide(trip1.id(), deborah);
 
     ThrowableAssert.ThrowingCallable assignment = () ->
-      repository.assignGuide(trip2.getId(), deborah);
+      repository.assignGuide(trip2.id(), deborah);
     if (overlappingParameter.isOverlapping()) {
       assertThatThrownBy(assignment);
     } else {

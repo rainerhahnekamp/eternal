@@ -1,9 +1,9 @@
 package com.softarc.eternal.holiday.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.softarc.eternal.holiday.domain.Guide;
 import com.softarc.eternal.holiday.domain.Holiday;
-import com.softarc.eternal.domain.Guide;
-import com.softarc.eternal.domain.HolidayTrip;
+import com.softarc.eternal.holiday.domain.HolidayTrip;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;

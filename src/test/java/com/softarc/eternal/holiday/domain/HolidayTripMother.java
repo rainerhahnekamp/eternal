@@ -1,8 +1,7 @@
-package com.softarc.eternal.domain;
+package com.softarc.eternal.holiday.domain;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
@@ -22,6 +21,6 @@ public class HolidayTripMother {
       .id(++HolidayTripMother.id)
       .fromDate(fromDate)
       .toDate(toDate)
-      .holidayId(holiday.getId());
+      .holidayId(holiday.id());
   }
 }

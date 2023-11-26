@@ -1,6 +1,8 @@
 package com.softarc.eternal.holiday.data;
 
+import com.softarc.eternal.holiday.domain.Guide;
 import com.softarc.eternal.holiday.domain.Holiday;
+import com.softarc.eternal.holiday.domain.HolidayTrip;
 import java.util.List;
 import java.util.Optional;
 
