@@ -1,12 +1,9 @@
 package com.softarc.eternal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.softarc.eternal.data.DefaultHolidaysRepository;
-import com.softarc.eternal.data.FsHolidaysRepository;
-import com.softarc.eternal.data.HolidaysRepository;
-import com.softarc.eternal.domain.Holiday;
-import java.util.Arrays;
-import java.util.Collections;
+import com.softarc.eternal.holiday.data.DefaultHolidayRepository;
+import com.softarc.eternal.holiday.data.FsHolidayRepository;
+import com.softarc.eternal.holiday.data.HolidayRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,16 +11,17 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfiguration {
 
   @Bean
-  public HolidaysRepository getHolidaysRepository(
+  public HolidayRepository getHolidayRepository(
     ObjectMapper objectMapper,
     AppProperties appProperties
   ) {
     if ("file".equals(appProperties.getPersistenceType())) {
-      return new FsHolidaysRepository(
+      return new FsHolidayRepository(
         objectMapper,
         appProperties.getPersistenceFile()
       );
     } else {
+      return new DefaultHolidaRepository();
       var holidays = Arrays.asList(
         new Holiday(
           1L,
@@ -38,7 +36,7 @@ public class AppConfiguration {
           Collections.emptyList()
         )
       );
-      return new DefaultHolidaysRepository(holidays);
+      return new DefaultHolidayRepository(holidays);
     }
   }
 }
