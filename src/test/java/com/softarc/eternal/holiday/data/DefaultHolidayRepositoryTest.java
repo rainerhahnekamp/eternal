@@ -24,7 +24,7 @@ record OverlappingParameter(
   boolean isOverlapping
 ) {}
 
-class DefaultHolidaysRepositoryTest {
+class DefaultHolidayRepositoryTest {
 
   public DefaultHolidayRepository setup() {
     return new DefaultHolidayRepository(Collections.emptyList());
