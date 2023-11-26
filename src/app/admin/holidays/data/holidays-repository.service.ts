@@ -2,7 +2,6 @@ import { inject, Injectable, Signal, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Holiday } from '@app/admin/holidays/model';
 import { HttpClient } from '@angular/common/http';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class HolidaysRepository {
@@ -20,9 +19,11 @@ export class HolidaysRepository {
   }
 
   findById(id: number): Signal<Holiday | undefined> {
-    return toSignal(
-      this.#httpClient.get<Holiday | undefined>(`${this.#baseUrl}/${id}`),
-    );
+    const holiday = signal<Holiday | undefined>(undefined);
+    this.#httpClient
+      .get<Holiday | undefined>(`${this.#baseUrl}/${id}`)
+      .subscribe((value) => holiday.set(value));
+    return holiday;
   }
 
   async save(holiday: Holiday): Promise<void> {
