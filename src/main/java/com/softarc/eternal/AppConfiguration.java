@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softarc.eternal.holiday.data.DefaultHolidayRepository;
 import com.softarc.eternal.holiday.data.FsHolidayRepository;
 import com.softarc.eternal.holiday.data.HolidayRepository;
+import com.softarc.eternal.holiday.data.OverlappingCalculator;
 import com.softarc.eternal.holiday.domain.Holiday;
 import java.util.Arrays;
 import java.util.Collections;

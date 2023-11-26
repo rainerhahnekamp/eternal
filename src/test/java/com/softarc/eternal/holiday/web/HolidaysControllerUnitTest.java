@@ -1,11 +1,11 @@
-package com.softarc.eternal.web;
+package com.softarc.eternal.holiday.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.softarc.eternal.data.HolidaysRepository;
-import com.softarc.eternal.domain.HolidayMother;
+import com.softarc.eternal.holiday.data.HolidayRepository;
+import com.softarc.eternal.holiday.domain.HolidayMother;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class HolidaysControllerUnitTest {
 
   @Autowired
-  HolidaysController controller;
+  HolidayController controller;
 
   @MockBean
-  HolidaysRepository repository;
+  HolidayRepository repository;
 
   @Test
   public void testRepositoryIsCalled() {

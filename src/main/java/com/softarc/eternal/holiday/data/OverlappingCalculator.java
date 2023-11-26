@@ -1,6 +1,5 @@
-package com.softarc.eternal.data;
+package com.softarc.eternal.holiday.data;
 
-import com.softarc.eternal.domain.HolidayTrip;
 import java.time.Instant;
 import org.springframework.stereotype.Service;
 

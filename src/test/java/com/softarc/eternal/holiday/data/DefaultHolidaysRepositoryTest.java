@@ -15,7 +15,6 @@ import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,15 +23,15 @@ class DefaultHolidaysRepositoryTest {
   @Mock
   OverlappingCalculator mockedOverlappingCalculator;
 
-  public DefaultHolidaysRepository setup() {
-    return new DefaultHolidaysRepository(
+  public DefaultHolidayRepository setup() {
+    return new DefaultHolidayRepository(
       Collections.emptyList(),
       this.mockedOverlappingCalculator
     );
   }
 
-  public DefaultHolidaysRepository setup(Holiday... holidays) {
-    return new DefaultHolidaysRepository(
+  public DefaultHolidayRepository setup(Holiday... holidays) {
+    return new DefaultHolidayRepository(
       Arrays.asList(holidays),
       this.mockedOverlappingCalculator
     );
@@ -111,16 +110,16 @@ class DefaultHolidaysRepositoryTest {
       .thenReturn(true);
 
     // act
-    repository.addTrip(holiday.getId(), trip1);
-    repository.assignGuide(trip1.getId(), deborah);
-    repository.addTrip(holiday.getId(), trip2);
+    repository.addTrip(holiday.id(), trip1);
+    repository.assignGuide(trip1.id(), deborah);
+    repository.addTrip(holiday.id(), trip2);
 
     // assert
-    assertThatThrownBy(() -> repository.assignGuide(trip2.getId(), deborah))
+    assertThatThrownBy(() -> repository.assignGuide(trip2.id(), deborah))
       .hasMessageContaining(
         "Guide %d already assigned to trip %d",
-        deborah.getId(),
-        trip1.getId()
+        deborah.id(),
+        trip1.id()
       );
 
     verify(this.mockedOverlappingCalculator)

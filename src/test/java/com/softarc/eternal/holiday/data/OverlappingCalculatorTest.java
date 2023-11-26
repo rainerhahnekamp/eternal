@@ -1,4 +1,4 @@
-package com.softarc.eternal.data;
+package com.softarc.eternal.holiday.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

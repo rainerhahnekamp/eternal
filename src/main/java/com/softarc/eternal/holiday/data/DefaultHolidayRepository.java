@@ -101,7 +101,7 @@ public class DefaultHolidayRepository implements HolidayRepository {
       trip.guideId() != null &&
       !trip.id().equals(holidayTripId) &&
       trip.guideId().equals(guide.id()) &&
-      this.isTripOverlapping(holidayTrip, trip);
+      this.isTripOverlapping(trip, holidayTrip);
   }
 
   private Optional<HolidayTrip> findTripId(Long holidayTripId) {
@@ -123,10 +123,10 @@ public class DefaultHolidayRepository implements HolidayRepository {
 
   private boolean isTripOverlapping(HolidayTrip trip1, HolidayTrip trip2) {
     return this.overlappingCalculator.isOverlapping(
-        trip1.getFromDate(),
-        trip1.getToDate(),
-        trip2.getFromDate(),
-        trip2.getToDate()
+        trip1.fromDate(),
+        trip1.toDate(),
+        trip2.fromDate(),
+        trip2.toDate()
       );
   }
 }
