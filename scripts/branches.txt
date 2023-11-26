@@ -3,10 +3,8 @@ spring-01a-basics-starter
 spring-01a-basics-solution
 spring-01b-basics-starter
 spring-01b-basics-solution
-spring-02a-testing-starter
-spring-02a-testing-solution
-spring-02b-testing-starter
-spring-02b-testing-solution
+spring-02-testing-starter
+spring-02-testing-solution
 spring-03a-web-basics-starter
 spring-03a-web-basics-solution
 spring-03b-web-openapi-starter
