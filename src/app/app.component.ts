@@ -4,7 +4,7 @@ import { HeaderComponent } from './core/header/header.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { SidemenuComponent } from './core/sidemenu/sidemenu.component';
 import { RouterOutlet } from '@angular/router';
-import { LoaderComponent } from './core/loader/loader.component';
+import { LoaderComponent } from '@app/shared/ui-messaging';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,7 @@ import { LoaderComponent } from './core/loader/loader.component';
     SidemenuComponent,
     MatToolbarModule,
     MatSidenavModule,
-    RouterOutlet
-  ]
+    RouterOutlet,
+  ],
 })
 export class AppComponent {}
