@@ -1,4 +1,4 @@
-package com.softarc.eternal.web.exception;
+package com.softarc.eternal.common;
 
 public class IdNotFoundException extends RuntimeException {
 }

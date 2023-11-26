@@ -6,6 +6,7 @@ import com.softarc.eternal.holiday.data.FsHolidayRepository;
 import com.softarc.eternal.holiday.data.HolidayRepository;
 import com.softarc.eternal.holiday.data.OverlappingCalculator;
 import com.softarc.eternal.holiday.domain.Holiday;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +43,7 @@ public class AppConfiguration {
       } else {
         holidays = Collections.emptyList();
       }
-      return new DefaultHolidaysRepository(holidays, calculator);
+      return new DefaultHolidayRepository(holidays, calculator);
     }
   }
 }

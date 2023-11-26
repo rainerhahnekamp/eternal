@@ -6,11 +6,6 @@ import com.softarc.eternal.holiday.domain.HolidayTrip;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 public class DefaultHolidayRepository implements HolidayRepository {
@@ -40,9 +35,12 @@ public class DefaultHolidayRepository implements HolidayRepository {
 
   @Override
   public void update(Long id, String name, String description) {
-    var holiday = this.find(id).orElseThrow();
-    holiday.setName(name);
-    holiday.setDescription(description);
+    this.holidays.replaceAll(entry -> {
+      if (entry.id().equals(id)) {
+        return new Holiday(entry.id(), name, description, entry.trips());
+      }
+      return entry;
+    });
   }
 
   @Override

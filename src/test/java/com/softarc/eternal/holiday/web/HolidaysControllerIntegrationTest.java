@@ -1,10 +1,10 @@
-package com.softarc.eternal.web;
+package com.softarc.eternal.holiday.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.softarc.eternal.data.DefaultHolidaysRepository;
-import com.softarc.eternal.data.HolidaysRepository;
-import com.softarc.eternal.web.request.HolidayDto;
+import com.softarc.eternal.holiday.data.DefaultHolidayRepository;
+import com.softarc.eternal.holiday.data.HolidayRepository;
+import com.softarc.eternal.holiday.web.request.HolidayDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,14 +18,14 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 class HolidaysControllerIntegrationTest {
 
   @Autowired
-  HolidaysController controller;
+  HolidayController controller;
 
   @Autowired
-  HolidaysRepository repository;
+  HolidayRepository repository;
 
   @Test
   public void testInjectedDefaultRepository() {
-    assertThat(repository).isInstanceOf(DefaultHolidaysRepository.class);
+    assertThat(repository).isInstanceOf(DefaultHolidayRepository.class);
   }
 
   @Test
@@ -34,14 +34,14 @@ class HolidaysControllerIntegrationTest {
     var amsterdam = new HolidayDto(1L, "Amsterdam", "Netherlands");
     webTestClient
       .post()
-      .uri("/api/holidays")
+      .uri("/api/holiday")
       .bodyValue(amsterdam)
       .exchange()
       .expectStatus()
       .isOk();
     webTestClient
       .get()
-      .uri("/api/holidays")
+      .uri("/api/holiday")
       .exchange()
       .expectBody()
       .jsonPath("[0].name")

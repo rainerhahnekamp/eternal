@@ -6,6 +6,8 @@ import static org.mockito.Mockito.when;
 
 import com.softarc.eternal.holiday.data.HolidayRepository;
 import com.softarc.eternal.holiday.domain.HolidayMother;
+import com.softarc.eternal.holiday.web.request.HolidayDto;
+import com.softarc.eternal.holiday.web.response.HolidayResponse;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +38,9 @@ public class HolidaysControllerUnitTest {
       .isEqualTo(
         Collections.singletonList(
           new HolidayResponse(
-            holiday.getId(),
-            holiday.getName(),
-            holiday.getDescription()
+            holiday.id(),
+            holiday.name(),
+            holiday.description()
           )
         )
       );

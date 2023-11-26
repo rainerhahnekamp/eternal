@@ -1,6 +1,5 @@
-package com.softarc.eternal.web;
+package com.softarc.eternal.common;
 
-import com.softarc.eternal.web.exception.IdNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ControllerAdvice;
