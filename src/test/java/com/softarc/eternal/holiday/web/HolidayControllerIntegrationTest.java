@@ -15,7 +15,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @SpringBootTest()
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-class HolidaysControllerIntegrationTest {
+class HolidayControllerIntegrationTest {
 
   @Autowired
   HolidayController controller;
