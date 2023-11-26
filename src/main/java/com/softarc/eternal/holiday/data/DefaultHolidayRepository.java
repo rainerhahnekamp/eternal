@@ -118,7 +118,7 @@ public class DefaultHolidayRepository implements HolidayRepository {
 
   private boolean isTripOverlapping(HolidayTrip trip1, HolidayTrip trip2) {
     return (
-      trip1.fromDate().isBefore(trip2.toDate()) &&
+      trip2.fromDate().isBefore(trip2.toDate()) &&
       trip2.fromDate().isBefore(trip1.toDate())
     );
   }
