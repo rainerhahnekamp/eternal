@@ -16,7 +16,7 @@ public class CustomerConfiguration {
     return new DefaultCustomerRepository(customerProperties.getShowGdpr(), dummyService);
   }
 
-  @Bean @Profile("test")
+  @Bean @Profile({"test", "demo"})
   CustomerRepository getCustomerRepositoryForTest() {
     return new TestCustomerRepository();
   }

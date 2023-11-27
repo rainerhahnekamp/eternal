@@ -6,22 +6,19 @@ import com.softarc.eternal.holiday.data.FsHolidayRepository;
 import com.softarc.eternal.holiday.data.HolidayRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class AppConfiguration {
 
-  @Bean
-  public HolidayRepository getHolidayRepository(
-    ObjectMapper objectMapper,
-    AppProperties appProperties
-  ) {
-    if ("file".equals(appProperties.getPersistenceType())) {
-      return new FsHolidayRepository(
-        objectMapper,
-        appProperties.getPersistenceFile()
-      );
-    } else {
-      return new DefaultHolidayRepository();
-    }
+  @Bean @Profile("default")
+  public HolidayRepository getFsHolidayRepository(
+      ObjectMapper objectMapper, AppProperties appProperties) {
+    return new FsHolidayRepository(objectMapper, appProperties.getPersistenceFile());
+  }
+
+  @Bean @Profile({"demo", "test"})
+  public HolidayRepository getDefaultHolidayRepository() {
+    return new DefaultHolidayRepository();
   }
 }

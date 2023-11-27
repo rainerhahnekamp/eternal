@@ -9,4 +9,14 @@ public class TestCustomerRepository implements CustomerRepository {
   public List<Customer> findAll() {
     return Collections.emptyList();
   }
+
+  @Override
+  public void add(String name) {
+
+  }
+
+  @Override
+  public Long count() {
+    return null;
+  }
 }

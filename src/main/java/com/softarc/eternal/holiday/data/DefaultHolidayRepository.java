@@ -11,7 +11,7 @@ public class DefaultHolidayRepository implements HolidayRepository {
   private Long currentId = 3L;
 
   public DefaultHolidayRepository() {
-    this.holidays.add(new Holiday(1L, "Canada", "Visit Rocky Mountains"));
+    this.holidays.add(new Holiday(1L, "Kanada", "Visit Rocky Mountains"));
     this.holidays.add(new Holiday(2L, "China", "To the Middle Kingdom"));
   }
 

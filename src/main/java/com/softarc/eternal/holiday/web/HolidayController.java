@@ -20,24 +20,18 @@ public class HolidayController {
     return this.repository.findAll();
   }
 
-  @GetMapping()
-  public List<Holiday> findAll()
-  {
-    return this.repository.findAll();
-  }
-
   @GetMapping("{id}")
-  public Holiday find(@PathVariable("id") Long id) {
+  public Holiday find(@PathVariable() Long id) {
     return this.repository.find(id).orElseThrow();
   }
 
   @PostMapping("{name}")
-  public void add(@PathVariable("name") String name) {
+  public void add(@PathVariable() String name) {
     this.repository.add(name);
   }
 
   @DeleteMapping("{id}")
-  public void remove(@PathVariable("id") Long id) {
+  public void remove(@PathVariable() Long id) {
     this.repository.remove(id);
   }
 }
