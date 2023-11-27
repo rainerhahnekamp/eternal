@@ -63,10 +63,9 @@ public class HolidayController {
 
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @Operation(operationId = "add")
-  @CachePut(value = "holiday", key = "#holidayDto.id()")
   @CacheEvict(value = "holiday", key = "'all'")
   public HolidayResponse add(
-    @RequestPart HolidayDto holidayDto,
+    @RequestPart @Valid HolidayDto holidayDto,
     @RequestPart MultipartFile cover
   ) throws IOException {
     this.assertFileIsImage(cover);
@@ -88,7 +87,7 @@ public class HolidayController {
   @CachePut(value = "holiday", key = "#holidayDto.id()")
   @CacheEvict(value = "holiday", key = "'all'")
   public HolidayResponse update(
-    @RequestPart HolidayDto holidayDto,
+    @RequestPart @Valid HolidayDto holidayDto,
     @RequestPart MultipartFile cover
   ) throws IOException {
     this.assertFileIsImage(cover);
