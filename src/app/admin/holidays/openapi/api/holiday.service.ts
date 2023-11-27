@@ -98,10 +98,10 @@ export class HolidayService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public add(holidayDto: HolidayDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
-    public add(holidayDto: HolidayDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
-    public add(holidayDto: HolidayDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
-    public add(holidayDto: HolidayDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+    public add(holidayDto: HolidayDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HolidayResponse>;
+    public add(holidayDto: HolidayDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<HolidayResponse>>;
+    public add(holidayDto: HolidayDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<HolidayResponse>>;
+    public add(holidayDto: HolidayDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (holidayDto === null || holidayDto === undefined) {
             throw new Error('Required parameter holidayDto was null or undefined when calling add.');
         }
@@ -112,6 +112,7 @@ export class HolidayService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -146,7 +147,7 @@ export class HolidayService {
         }
 
         let localVarPath = `/api/holiday`;
-        return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<HolidayResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: holidayDto,
@@ -330,10 +331,10 @@ export class HolidayService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public save(holidayDto: HolidayDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
-    public save(holidayDto: HolidayDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
-    public save(holidayDto: HolidayDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
-    public save(holidayDto: HolidayDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+    public save(holidayDto: HolidayDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HolidayResponse>;
+    public save(holidayDto: HolidayDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<HolidayResponse>>;
+    public save(holidayDto: HolidayDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<HolidayResponse>>;
+    public save(holidayDto: HolidayDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (holidayDto === null || holidayDto === undefined) {
             throw new Error('Required parameter holidayDto was null or undefined when calling save.');
         }
@@ -344,6 +345,7 @@ export class HolidayService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -378,7 +380,7 @@ export class HolidayService {
         }
 
         let localVarPath = `/api/holiday`;
-        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<HolidayResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: holidayDto,
