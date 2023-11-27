@@ -26,6 +26,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter'
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
   implementation 'org.mapstruct:mapstruct:1.5.5.Final'
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
@@ -44,13 +45,13 @@ tasks.named('test') {
 
 openApiGenerate {
   generatorName.set('spring')
-  inputSpec.set("$rootDir/api/bookings.yml")
+  inputSpec.set("$rootDir/api/booking.yml")
   outputDir.set("$rootDir/generated")
   additionalProperties.set([
     interfaceOnly: true,
-    apiPackage: 'com.softarc.eternal.web.api',
+    apiPackage: 'com.softarc.eternal.booking.web.api',
     documentationProvider: 'none',
-    modelPackage: 'com.softarc.eternal.web.model',
+    modelPackage: 'com.softarc.eternal.booking.web.model',
     openApiNullable: false,
     useSpringBoot3: true,
     useBeanValidation: true,

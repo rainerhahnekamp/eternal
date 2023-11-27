@@ -9,7 +9,7 @@ paths:
   /api/booking:
     get:
       tags:
-        - Bookings
+        - Booking
       operationId: findAll
       responses:
         '200':
@@ -22,7 +22,7 @@ paths:
                   $ref: '#/components/schemas/Booking'
     put:
       tags:
-        - Bookings
+        - Booking
       operationId: save
       requestBody:
         content:
@@ -35,7 +35,7 @@ paths:
           description: OK
     post:
       tags:
-        - Bookings
+        - Booking
       operationId: add
       requestBody:
         content:
@@ -53,7 +53,7 @@ paths:
   /api/booking/{id}:
     get:
       tags:
-        - Bookings
+        - Booking
       operationId: findById
       parameters:
         - name: id
@@ -71,7 +71,7 @@ paths:
                 $ref: '#/components/schemas/Booking'
     delete:
       tags:
-        - Bookings
+        - Booking
       operationId: remove
       parameters:
         - name: id

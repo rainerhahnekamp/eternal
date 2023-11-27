@@ -1,4 +1,4 @@
-package com.softarc.eternal.web.model;
+package com.softarc.eternal.booking.web.model;
 
 import java.net.URI;
 import java.util.Objects;
@@ -18,7 +18,7 @@ import jakarta.annotation.Generated;
  * Booking
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-19T22:46:46.568931+02:00[Europe/Vienna]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-27T18:58:21.144945+01:00[Europe/Vienna]")
 public class Booking {
 
   private Long id;

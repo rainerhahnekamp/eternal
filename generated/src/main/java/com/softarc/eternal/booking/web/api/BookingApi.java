@@ -3,9 +3,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-package com.softarc.eternal.web.api;
+package com.softarc.eternal.booking.web.api;
 
-import com.softarc.eternal.web.model.Booking;
+import com.softarc.eternal.booking.web.model.Booking;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +21,9 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-19T22:46:46.568931+02:00[Europe/Vienna]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-27T18:58:21.144945+01:00[Europe/Vienna]")
 @Validated
-public interface BookingsApi {
+public interface BookingApi {
 
     default Optional<NativeWebRequest> getRequest() {
         return Optional.empty();

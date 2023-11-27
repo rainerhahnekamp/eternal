@@ -1,18 +1,16 @@
-package com.softarc.eternal.web;
+package com.softarc.eternal.booking.web;
 
-import com.softarc.eternal.web.api.BookingsApi;
-import com.softarc.eternal.web.model.Booking;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.NativeWebRequest;
 
+import com.softarc.eternal.booking.web.api.BookingApi;
+import com.softarc.eternal.booking.web.model.Booking;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class BookingsController implements BookingsApi {
+public class BookingController implements BookingApi {
   @Override
   public ResponseEntity<List<Booking>> findAll() {
     return ResponseEntity.ok(Collections.emptyList());

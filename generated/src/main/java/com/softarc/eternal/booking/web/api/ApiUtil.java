@@ -1,4 +1,4 @@
-package com.softarc.eternal.web.api;
+package com.softarc.eternal.booking.web.api;
 
 import org.springframework.web.context.request.NativeWebRequest;
 
