@@ -6,7 +6,6 @@ import com.softarc.eternal.holiday.domain.Holiday;
 import com.softarc.eternal.holiday.domain.HolidayTrip;
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,8 +44,10 @@ public class FsHolidayRepository implements HolidayRepository {
 
   private void init() {
     this.holidays.clear();
-    holidays.add(new Holiday(1L, "Canada", "Visit Rocky Mountains", new ArrayList<>()));
-    holidays.add(new Holiday(2L, "China", "To the Middle Kingdom", new ArrayList<>()));
+    holidays.add(
+        new Holiday(1L, "Canada", "Visit Rocky Mountains", Optional.empty(), new ArrayList<>()));
+    holidays.add(
+        new Holiday(2L, "China", "To the Middle Kingdom", Optional.empty(), new ArrayList<>()));
     this.currentId = this.getCurrentId();
     this.persist();
   }
@@ -62,8 +63,8 @@ public class FsHolidayRepository implements HolidayRepository {
   }
 
   @Override
-  public Holiday add(String name, String description) {
-    var holiday = new Holiday(++this.currentId, name, description, new ArrayList<>());
+  public Holiday add(String name, String description, Optional<String> optCover) {
+    var holiday = new Holiday(++this.currentId, name, description, optCover, new ArrayList<>());
     this.holidays.add(holiday);
     this.persist();
     FsHolidayRepository.log.info(String.format("Holiday %s was added", name));
@@ -71,11 +72,11 @@ public class FsHolidayRepository implements HolidayRepository {
   }
 
   @Override
-  public Holiday update(Long id, String name, String description) {
+  public Holiday update(Long id, String name, String description, Optional<String> optCover) {
     this.holidays.replaceAll(
         entry -> {
           if (entry.id().equals(id)) {
-            return new Holiday(entry.id(), name, description, entry.trips());
+            return new Holiday(entry.id(), name, description, optCover, entry.trips());
           }
           return entry;
         });
