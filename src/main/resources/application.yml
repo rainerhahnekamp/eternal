@@ -1,0 +1,6 @@
+app:
+  customer:
+    show-gdpr: true
+logging:
+  group:
+    com.softarc.eternal: warn
