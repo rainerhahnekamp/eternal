@@ -10,37 +10,37 @@ export class DiaryEffects {
   #actions$ = inject(Actions);
   #httpClient = inject(HttpClient);
 
-  load$ = createEffect(() =>
-    this.#actions$.pipe(
+  load$ = createEffect(() => {
+    return this.#actions$.pipe(
       ofType(diaryActions.load),
       switchMap(() => this.#httpClient.get<DiaryResponse>('/diary')),
-      map((diaryResponse) => diaryActions.loadSuccess({ diaryResponse }))
-    )
-  );
+      map((diaryResponse) => diaryActions.loadSuccess({ diaryResponse })),
+    );
+  });
 
-  add$ = createEffect(() =>
-    this.#actions$.pipe(
+  add$ = createEffect(() => {
+    return this.#actions$.pipe(
       ofType(diaryActions.add),
       switchMap(({ title, description }) =>
         this.#httpClient.post<DiaryWithEntries>('/diary', {
           title,
-          description
-        })
+          description,
+        }),
       ),
-      map((diaryWithEntries) => diaryActions.addSuccess({ diaryWithEntries }))
-    )
-  );
+      map((diaryWithEntries) => diaryActions.addSuccess({ diaryWithEntries })),
+    );
+  });
 
-  addEntry$ = createEffect(() =>
-    this.#actions$.pipe(
+  addEntry$ = createEffect(() => {
+    return this.#actions$.pipe(
       ofType(diaryActions.addEntry),
       switchMap(({ diaryId, content }) =>
         this.#httpClient.post('/diary', {
           diaryId,
-          content
-        })
+          content,
+        }),
       ),
-      map(() => diaryActions.addEntrySuccess())
-    )
-  );
+      map(() => diaryActions.addEntrySuccess()),
+    );
+  });
 }

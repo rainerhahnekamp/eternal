@@ -10,7 +10,7 @@ import { Holiday } from '@app/admin/holidays/model';
 import { NgIf } from '@angular/common';
 import { RouterLinkWithHref } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { FormErrorsComponent } from '@app/shared';
+import { FormErrorsComponent } from '@app/shared/form';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 

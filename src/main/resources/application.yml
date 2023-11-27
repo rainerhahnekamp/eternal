@@ -1,4 +1,4 @@
-app.holidays:
+app.holiday:
   persistence-type: file
   persistence-file: holidays.json
   pre-seed: true
