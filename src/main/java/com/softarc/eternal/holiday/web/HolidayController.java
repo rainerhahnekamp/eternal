@@ -47,7 +47,6 @@ public class HolidayController {
 
   @PostMapping
   @Operation(operationId = "add")
-  @CachePut(value = "holiday", key = "#holidayDto.id()")
   @CacheEvict(value = "holiday", key = "'all'")
   public HolidayResponse add(@RequestBody @Valid HolidayDto holidayDto) {
     var holiday = this.repository.add(holidayDto.name(), holidayDto.description());
