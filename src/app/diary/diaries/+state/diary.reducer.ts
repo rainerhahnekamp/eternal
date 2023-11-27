@@ -31,25 +31,28 @@ export interface DiaryState {
 const initialState: DiaryState = {
   diaries: [],
   diaryEntries: [],
-  loaded: false
+  loaded: false,
 };
 
 export const diaryReducer = createReducer<DiaryState>(
   initialState,
-  on(diaryActions.loadSuccess, (state, { diaryResponse }) => ({
-    ...state,
-    loaded: true,
-    diaries: diaryResponse.diaries.map((diary) => {
-      const { id, title, description } = diary;
-      return { id, title, description };
+  on(
+    diaryActions.loadSuccess,
+    (state, { diaryResponse }): DiaryState => ({
+      ...state,
+      loaded: true,
+      diaries: diaryResponse.diaries.map((diary) => {
+        const { id, title, description } = diary;
+        return { id, title, description };
+      }),
+      diaryEntries: diaryResponse.diaries.map((diary) => diary.entries).flat(),
     }),
-    diaryEntries: diaryResponse.diaries.map((diary) => diary.entries).flat()
-  })),
-  on(diaryActions.addSuccess, (state, action) => {
+  ),
+  on(diaryActions.addSuccess, (state, action): DiaryState => {
     const { id, title, description } = action.diaryWithEntries;
     return {
       ...state,
-      diaries: [...state.diaries, { id, title, description }]
+      diaries: [...state.diaries, { id, title, description }],
     };
-  })
+  }),
 );

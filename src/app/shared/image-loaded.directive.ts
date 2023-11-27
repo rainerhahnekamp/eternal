@@ -4,7 +4,7 @@ import { ImagesLoadedService } from './images-loaded.service';
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'img',
-  standalone: true
+  standalone: true,
 })
 export class ImageLoadedDirective {
   imagesLoadedService = inject(ImagesLoadedService);

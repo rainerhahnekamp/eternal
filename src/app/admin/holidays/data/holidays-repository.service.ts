@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom, map, Observable } from 'rxjs';
+import { inject, Injectable, Signal, signal } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { Holiday } from '@app/admin/holidays/model';
-import { HolidaysService } from '@app/admin/holidays/openapi';
+import { HolidayService } from '@app/admin/holidays/openapi';
 
 export type AddHoliday = {
   name: string;
@@ -12,22 +12,23 @@ export type EditHoliday = AddHoliday & { id: number };
 
 @Injectable({ providedIn: 'root' })
 export class HolidaysRepository {
-  #holidays$ = new BehaviorSubject<Holiday[]>([]);
-  #holidaysService = inject(HolidaysService);
+  #holidays = signal<Holiday[]>([]);
+  #holidayService = inject(HolidayService);
   #initialized = false;
+  #baseUrl = 'http://localhost:8080/api/holiday';
 
-  get holidays$(): Observable<Holiday[]> {
+  get holidays(): Signal<Holiday[]> {
     if (!this.#initialized) {
       this.#update();
       this.#initialized = true;
     }
-    return this.#holidays$.asObservable();
+    return this.#holidays.asReadonly();
   }
 
-  findById(id: number): Observable<Holiday | undefined> {
-    return this.holidays$.pipe(
-      map((holidays) => holidays.find((holiday) => holiday.id === id)),
-    );
+  findById(id: number): Signal<Holiday | undefined> {
+    const holiday = signal<Holiday | undefined>(undefined);
+    this.#holidayService.findById(id).subscribe((value) => holiday.set(value));
+    return holiday;
   }
 
   async save(holiday: EditHoliday) {
@@ -43,14 +44,14 @@ export class HolidaysRepository {
   }
 
   async remove(id: number): Promise<void> {
-    await firstValueFrom(this.#holidaysService.remove(id));
+    await firstValueFrom(this.#holidayService.remove(id));
     await this.#update();
   }
 
   async #update() {
     const holidays = await firstValueFrom(this.#holidaysService.findAll());
 
-    this.#holidays$.next(
+    this.#holidays$.set(
       holidays.map((holiday) => ({
         ...holiday,
         coverLink: `http://localhost:8080/api/holidays/${holiday.id}/cover`,

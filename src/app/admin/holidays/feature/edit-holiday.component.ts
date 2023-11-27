@@ -1,38 +1,51 @@
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  signal,
+  Signal,
+} from '@angular/core';
 import { HolidaysRepository } from '@app/admin/holidays/data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filterDefined } from '@app/shared/ngrx-utils';
 import { HolidayDetailComponent, HolidayForm } from '@app/admin/holidays/ui';
 import { LetDirective } from '@ngrx/component';
+import { Holiday } from '@app/admin/holidays/model';
+import { HolidayDetailComponent } from '@app/admin/holidays/ui';
 import { MessageService } from '@app/shared/ui-messaging';
-import { map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-holiday',
-  template:
-    '<app-holiday-detail *ngrxLet="holiday$ as holiday" [holiday]="holiday" (remove)="handleRemove()" (save)="handleSave($event)"></app-holiday-detail>',
+  template: `@if (holiday(); as value) {
+    <app-holiday-detail
+      [holiday]="value"
+      (remove)="handleRemove()"
+      (save)="handleSave($event)"
+    ></app-holiday-detail>
+    }`,
   standalone: true,
-  imports: [HolidayDetailComponent, LetDirective],
+  imports: [HolidayDetailComponent],
 })
-export class EditHolidayComponent {
-  #id = 0;
+export class EditHolidayComponent implements OnChanges {
+  @Input() id = 0;
+  ngOnChanges(): void {
+    if (!this.id) {
+      return;
+    }
+
+    this.holiday = this.#holidaysRepository.findById(Number(this.id));
+  }
   #holidaysRepository = inject(HolidaysRepository);
-  protected holiday$ = inject(ActivatedRoute).paramMap.pipe(
-    map((paramMap) => paramMap.get('id')),
-    filterDefined,
-    switchMap((value) => {
-      const id = Number(value);
-      this.#id = id;
-      return this.#holidaysRepository.findById(Number(id));
-    }),
-    filterDefined,
-  );
   #route = inject(ActivatedRoute);
   #router = inject(Router);
   #messageService = inject(MessageService);
+  protected holiday: Signal<Holiday | undefined> = signal<Holiday | undefined>(
+    undefined,
+  );
 
   handleRemove() {
-    this.#holidaysRepository.remove(this.#id);
+    this.#holidaysRepository.remove(this.id);
     this.#messageService.info('Holiday was removed');
     this.#router.navigate(['..'], { relativeTo: this.#route });
   }

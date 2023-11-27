@@ -1,11 +1,11 @@
 package com.softarc.eternal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.softarc.eternal.data.DefaultHolidaysRepository;
-import com.softarc.eternal.data.FsHolidaysRepository;
-import com.softarc.eternal.data.HolidaysRepository;
-import com.softarc.eternal.data.OverlappingCalculator;
-import com.softarc.eternal.domain.Holiday;
+import com.softarc.eternal.holiday.data.DefaultHolidayRepository;
+import com.softarc.eternal.holiday.data.FsHolidayRepository;
+import com.softarc.eternal.holiday.data.HolidayRepository;
+import com.softarc.eternal.holiday.data.OverlappingCalculator;
+import com.softarc.eternal.holiday.domain.Holiday;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,13 +20,13 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfiguration {
 
   @Bean
-  public HolidaysRepository getHolidaysRepository(
+  public HolidayRepository getHolidayRepository(
     ObjectMapper objectMapper,
     AppProperties appProperties,
     OverlappingCalculator calculator
   ) {
     if ("file".equals(appProperties.getPersistenceType())) {
-      return new FsHolidaysRepository(
+      return new FsHolidayRepository(
         objectMapper,
         appProperties.getPersistenceFile()
       );
@@ -47,7 +47,7 @@ public class AppConfiguration {
       } else {
         holidays = Collections.emptyList();
       }
-      return new DefaultHolidaysRepository(holidays, calculator);
+      return new DefaultHolidayRepository(holidays, calculator);
     }
   }
 }

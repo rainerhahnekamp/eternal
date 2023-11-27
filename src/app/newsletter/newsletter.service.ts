@@ -9,7 +9,7 @@ export class NewsletterService {
   send(email: string): Observable<boolean> {
     return this.httpClient.post<boolean>(
       'http://some.host.com/newsletter/subscribe',
-      { email }
+      { email },
     );
   }
 }

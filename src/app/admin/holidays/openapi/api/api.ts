@@ -1,5 +1,5 @@
-export * from './bookingsController.service';
-import { BookingsControllerService } from './bookingsController.service';
-export * from './holidays.service';
-import { HolidaysService } from './holidays.service';
-export const APIS = [BookingsControllerService, HolidaysService];
+export * from './bookingController.service';
+import { BookingControllerService } from './bookingController.service';
+export * from './holiday.service';
+import { HolidayService } from './holiday.service';
+export const APIS = [BookingControllerService, HolidayService];

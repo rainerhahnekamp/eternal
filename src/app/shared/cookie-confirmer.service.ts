@@ -9,9 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
   template: ` <div>
     <h3>Do you allow us to store cookies?</h3>
     <div class="mat-dialog-actions">
-      <button data-testid="cookie-confirm" mat-button mat-dialog-close="">Ok</button>
+      <button data-testid="cookie-confirm" mat-button mat-dialog-close="">
+        Ok
+      </button>
     </div>
-  </div>`
+  </div>`,
 })
 export class CookieConfirmerDialogComponent {}
 
