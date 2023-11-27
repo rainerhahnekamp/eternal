@@ -44,8 +44,8 @@ public class DefaultHolidayRepository implements HolidayRepository {
   @Override
   public Holiday update(Long id, String name, String description, Optional<String> optCover) {
     this.holidays.replaceAll(entry -> {
-      if (entry.id().equals(id)) {
-        return new Holiday(entry.id(), name, description, optCover, entry.trips());
+      if (entry.getId().equals(id)) {
+        return new Holiday(entry.getId(), name, description, optCover, entry.getTrips());
       }
       return entry;
     });
@@ -56,7 +56,7 @@ public class DefaultHolidayRepository implements HolidayRepository {
   @Override
   public Optional<Holiday> find(Long id) {
     for (Holiday holiday : this.holidays) {
-      if (holiday.id().equals(id)) {
+      if (holiday.getId().equals(id)) {
         return Optional.of(holiday);
       }
     }
@@ -66,13 +66,13 @@ public class DefaultHolidayRepository implements HolidayRepository {
 
   @Override
   public void remove(Long id) {
-    this.holidays.removeIf(holiday -> holiday.id().equals(id));
+    this.holidays.removeIf(holiday -> holiday.getId().equals(id));
   }
 
   @Override
   public void addTrip(Long holidayId, HolidayTrip holidayTrip) {
     var holiday = this.find(holidayId).orElseThrow();
-    holiday.trips().add(holidayTrip);
+    holiday.getTrips().add(holidayTrip);
   }
 
   @Override
@@ -84,28 +84,28 @@ public class DefaultHolidayRepository implements HolidayRepository {
             String.format("Cannot find Trip %s", guide.toString())
           )
         );
-    var holiday = this.find(trip.holidayId()).orElseThrow();
+    var holiday = this.find(trip.getHolidayId()).orElseThrow();
 
     this.findAll()
       .stream()
-      .flatMap(entry -> entry.trips().stream())
+      .flatMap(entry -> entry.getTrips().stream())
       .filter(filterOverlappingTrip(holidayTripId, guide, trip))
       .findFirst()
       .ifPresent(entry -> this.throwAlreadyAssignedException(entry, guide));
 
     var assignedTrip = new HolidayTrip(
-      trip.id(),
-      trip.fromDate(),
-      trip.toDate(),
-      trip.priceSingleRoom(),
-      trip.priceDoubleRoom(),
-      trip.currency(),
-      trip.holidayId(),
-      guide.id());
+      trip.getId(),
+      trip.getFromDate(),
+      trip.getToDate(),
+      trip.getPriceSingleRoom(),
+      trip.getPriceDoubleRoom(),
+      trip.getCurrency(),
+      trip.getHolidayId(),
+      guide.getId());
 
-    holiday.trips().replaceAll(
+    holiday.getTrips().replaceAll(
       entry -> {
-        if (entry.id().equals(assignedTrip.id())) {
+        if (entry.getId().equals(assignedTrip.getId())) {
           return assignedTrip;
         }
         return entry;
@@ -118,16 +118,16 @@ public class DefaultHolidayRepository implements HolidayRepository {
     HolidayTrip holidayTrip
   ) {
     return trip ->
-      trip.guideId() != null &&
-      !trip.id().equals(holidayTripId) &&
-      trip.guideId().equals(guide.id()) &&
+      trip.getGuideId() != null &&
+      !trip.getId().equals(holidayTripId) &&
+      trip.getGuideId().equals(guide.getId()) &&
       this.isTripOverlapping(trip, holidayTrip);
   }
 
   private Optional<HolidayTrip> findTripId(Long holidayTripId) {
     return this.holidays.stream()
-      .flatMap(holiday -> holiday.trips().stream())
-      .filter(holidayTrip -> holidayTrip.id().equals(holidayTripId))
+      .flatMap(holiday -> holiday.getTrips().stream())
+      .filter(holidayTrip -> holidayTrip.getId().equals(holidayTripId))
       .findFirst();
   }
 
@@ -135,18 +135,18 @@ public class DefaultHolidayRepository implements HolidayRepository {
     throw new RuntimeException(
       String.format(
         "Guide %d already assigned to trip %d",
-        guide.id(),
-        trip.id()
+        guide.getId(),
+        trip.getId()
       )
     );
   }
 
   private boolean isTripOverlapping(HolidayTrip trip1, HolidayTrip trip2) {
     return this.overlappingCalculator.isOverlapping(
-        trip1.fromDate(),
-        trip1.toDate(),
-        trip2.fromDate(),
-        trip2.toDate()
+        trip1.getFromDate(),
+        trip1.getToDate(),
+        trip2.getFromDate(),
+        trip2.getToDate()
       );
   }
 }

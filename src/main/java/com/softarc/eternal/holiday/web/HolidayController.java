@@ -123,7 +123,7 @@ public class HolidayController {
   )
   public ResponseEntity<Resource> viewCover(@PathVariable("id") Long id) {
     var holiday = this.repository.find(id).orElseThrow();
-    var cover = holiday.coverPath().orElseThrow();
+    var cover = holiday.getCoverPath().orElseThrow();
     var file = Path.of("", "filestore", cover);
     FileSystemResource resource = new FileSystemResource(file);
     return new ResponseEntity<>(resource, new HttpHeaders(), HttpStatus.OK);

@@ -60,7 +60,7 @@ class DefaultHolidayRepositoryTest {
 
     assertThat(repository.findAll())
       .hasSize(1)
-      .extracting(Holiday::name)
+      .extracting(Holiday::getName)
       .allSatisfy(name -> assertThat(name).isEqualTo("Vienna", "Urlaub in Wien")
       );
   }
@@ -72,9 +72,9 @@ class DefaultHolidayRepositoryTest {
       .standard(holiday, LocalDate.of(2022, 11, 28), 7)
       .build();
     var repository = setup(holiday);
-    repository.addTrip(holiday.id(), trip);
+    repository.addTrip(holiday.getId(), trip);
 
-    assertThat(repository.find(holiday.id()).get().trips())
+    assertThat(repository.find(holiday.getId()).get().getTrips())
       .contains(trip)
       .hasSize(1);
   }
@@ -112,16 +112,16 @@ class DefaultHolidayRepositoryTest {
       .thenReturn(true);
 
     // act
-    repository.addTrip(holiday.id(), trip1);
-    repository.assignGuide(trip1.id(), deborah);
-    repository.addTrip(holiday.id(), trip2);
+    repository.addTrip(holiday.getId(), trip1);
+    repository.assignGuide(trip1.getId(), deborah);
+    repository.addTrip(holiday.getId(), trip2);
 
     // assert
-    assertThatThrownBy(() -> repository.assignGuide(trip2.id(), deborah))
+    assertThatThrownBy(() -> repository.assignGuide(trip2.getId(), deborah))
       .hasMessageContaining(
         "Guide %d already assigned to trip %d",
-        deborah.id(),
-        trip1.id()
+        deborah.getId(),
+        trip1.getId()
       );
 
     verify(this.mockedOverlappingCalculator)

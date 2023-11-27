@@ -73,9 +73,9 @@ public class HolidayControllerUnitTest {
       .isEqualTo(
         Collections.singletonList(
           new HolidayResponse(
-            holiday.id(),
-            holiday.name(),
-            holiday.description(),
+            holiday.getId(),
+            holiday.getName(),
+            holiday.getDescription(),
             false
           )
         )

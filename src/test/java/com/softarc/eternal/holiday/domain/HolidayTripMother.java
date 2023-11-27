@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import net.bytebuddy.asm.Advice;
 
 public class HolidayTripMother {
 
@@ -26,6 +25,6 @@ public class HolidayTripMother {
       .id(++HolidayTripMother.id)
       .fromDate(fromDate)
       .toDate(toDate)
-      .holidayId(holiday.id());
+      .holidayId(holiday.getId());
   }
 }

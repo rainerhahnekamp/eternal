@@ -39,7 +39,7 @@ public class FsHolidayRepository implements HolidayRepository {
   }
 
   private Long getCurrentId() {
-    return this.holidays.stream().map(Holiday::id).max(Long::compareTo).orElse(0L);
+    return this.holidays.stream().map(Holiday::getId).max(Long::compareTo).orElse(0L);
   }
 
   private void init() {
@@ -75,8 +75,8 @@ public class FsHolidayRepository implements HolidayRepository {
   public Holiday update(Long id, String name, String description, Optional<String> optCover) {
     this.holidays.replaceAll(
         entry -> {
-          if (entry.id().equals(id)) {
-            return new Holiday(entry.id(), name, description, optCover, entry.trips());
+          if (entry.getId().equals(id)) {
+            return new Holiday(entry.getId(), name, description, optCover, entry.getTrips());
           }
           return entry;
         });
@@ -88,7 +88,7 @@ public class FsHolidayRepository implements HolidayRepository {
   @Override
   public Optional<Holiday> find(Long id) {
     for (Holiday holiday : this.holidays) {
-      if (holiday.id().equals(id)) {
+      if (holiday.getId().equals(id)) {
         return Optional.of(holiday);
       }
     }
@@ -103,7 +103,7 @@ public class FsHolidayRepository implements HolidayRepository {
             holiday -> {
               this.holidays.remove(holiday);
               this.persist();
-              FsHolidayRepository.log.info(String.format("Holiday %s was removed", holiday.name()));
+              FsHolidayRepository.log.info(String.format("Holiday %s was removed", holiday.getName()));
             },
             () -> {
               throw new RuntimeException(String.format("could not find Holiday with id %d", id));
