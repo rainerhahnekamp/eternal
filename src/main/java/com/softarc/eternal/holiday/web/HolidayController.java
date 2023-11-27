@@ -57,7 +57,7 @@ public class HolidayController {
   @Operation(operationId = "save")
   @CachePut(value = "holiday", key = "#holidayDto.id()")
   @CacheEvict(value = "holiday", key = "'all'")
-  public HolidayResponse update(@RequestBody HolidayDto holidayDto) {
+  public HolidayResponse update(@RequestBody @Valid HolidayDto holidayDto) {
     var holiday = this.repository.update(holidayDto.id(), holidayDto.name(), holidayDto.description());
     return this.holidayMapper.holidayToResponse(holiday);
   }
