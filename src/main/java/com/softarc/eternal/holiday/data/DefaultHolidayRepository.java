@@ -11,8 +11,8 @@ import java.util.function.Predicate;
 public class DefaultHolidayRepository implements HolidayRepository {
 
   private final List<Holiday> holidays = new ArrayList<>();
-  private final OverlappingCalculator overlappingCalculator;
   private Long currentId = 3L;
+  private final OverlappingCalculator overlappingCalculator;
 
   public DefaultHolidayRepository(
     List<Holiday> holidays,
@@ -28,24 +28,17 @@ public class DefaultHolidayRepository implements HolidayRepository {
   }
 
   @Override
-  public Holiday add(String name, String description, Optional<String> optCover) {
-    var holiday = new Holiday(
-      this.currentId++,
-      name,
-      description,
-      optCover,
-      new ArrayList<>()
-    );
+  public Holiday add(String name, String description) {
+    var holiday = new Holiday(this.currentId++, name, description, new ArrayList<>());
     this.holidays.add(holiday);
-
     return holiday;
   }
 
   @Override
-  public Holiday update(Long id, String name, String description, Optional<String> optCover) {
+  public Holiday update(Long id, String name, String description) {
     this.holidays.replaceAll(entry -> {
       if (entry.id().equals(id)) {
-        return new Holiday(entry.id(), name, description, optCover, entry.trips());
+        return new Holiday(entry.id(), name, description, entry.trips());
       }
       return entry;
     });
