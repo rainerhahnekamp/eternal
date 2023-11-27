@@ -5,6 +5,7 @@ import com.softarc.eternal.holiday.data.HolidayRepository;
 import com.softarc.eternal.holiday.web.mapping.HolidayMapper;
 import com.softarc.eternal.holiday.web.request.HolidayDto;
 import com.softarc.eternal.holiday.web.response.HolidayResponse;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -40,9 +41,8 @@ public class HolidayController {
   }
 
   @PostMapping
-  @CachePut(value = "holiday", key = "#holidayDto.id()")
   @CacheEvict(value = "holiday", key = "'all'")
-  public HolidayResponse add(@RequestBody HolidayDto holidayDto) {
+  public HolidayResponse add(@RequestBody @Valid HolidayDto holidayDto) {
     var holiday = this.repository.add(holidayDto.name(), holidayDto.description());
     return this.holidayMapper.holidayToResponse(holiday);
   }
@@ -50,7 +50,7 @@ public class HolidayController {
   @PutMapping
   @CachePut(value = "holiday", key = "#holidayDto.id()")
   @CacheEvict(value = "holiday", key = "'all'")
-  public HolidayResponse update(@RequestBody HolidayDto holidayDto) {
+  public HolidayResponse update(@RequestBody @Valid HolidayDto holidayDto) {
     var holiday = this.repository.update(holidayDto.id(), holidayDto.name(), holidayDto.description());
     return this.holidayMapper.holidayToResponse(holiday);
   }
