@@ -1,40 +1,51 @@
-import { computed, Injectable, Signal, signal } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { Holiday } from '@app/admin/holidays/model';
-import { dummyHolidays } from '@app/admin/holidays/data/dummy-holidays';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class HolidaysRepository {
-  #holidays = signal<Holiday[]>(dummyHolidays);
+  #holidays = signal<Holiday[]>([]);
+  #httpClient = inject(HttpClient);
+  #initialized = false;
+  #baseUrl = 'http://localhost:8080/api/holiday';
 
   get holidays(): Signal<Holiday[]> {
+    if (!this.#initialized) {
+      this.#update();
+      this.#initialized = true;
+    }
     return this.#holidays.asReadonly();
   }
 
   findById(id: number): Signal<Holiday | undefined> {
-    return computed(() =>
-      this.#holidays().find((holiday) => holiday.id === id),
-    );
+    const holiday = signal<Holiday | undefined>(undefined);
+    this.#httpClient
+      .get<Holiday | undefined>(`${this.#baseUrl}/${id}`)
+      .subscribe((value) => holiday.set(value));
+    return holiday;
   }
 
-  save(holiday: Holiday): void {
-    this.#holidays.update((holidays) =>
-      holidays.map((h) => {
-        if (h.id === holiday.id) {
-          return holiday;
-        } else {
-          return h;
-        }
-      }),
-    );
+  async save(holiday: Holiday): Promise<void> {
+    throw new Error(`Cannot save ${holiday.name}`);
   }
 
-  add(holiday: Holiday): void {
-    this.#holidays.update((holidays) => [...holidays, holiday]);
+  async add(holiday: Holiday): Promise<void> {
+    await firstValueFrom(
+      this.#httpClient.post<void>(`${this.#baseUrl}/${holiday.name}`, {}),
+    );
+    await this.#update();
   }
 
-  remove(id: number): void {
-    this.#holidays.update((holidays) =>
-      holidays.filter((holiday) => holiday.id !== id),
+  async remove(id: number): Promise<void> {
+    await firstValueFrom(this.#httpClient.delete(`${this.#baseUrl}/${id}`));
+    await this.#update();
+  }
+
+  async #update() {
+    const holidays = await firstValueFrom(
+      this.#httpClient.get<Holiday[]>(this.#baseUrl),
     );
+    this.#holidays.set(holidays);
   }
 }
