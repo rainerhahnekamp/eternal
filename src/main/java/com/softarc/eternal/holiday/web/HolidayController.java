@@ -2,6 +2,7 @@ package com.softarc.eternal.holiday.web;
 
 import com.softarc.eternal.holiday.data.HolidayRepository;
 import com.softarc.eternal.holiday.domain.Holiday;
+import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/holiday")
@@ -12,6 +13,12 @@ public class HolidayController {
 
   public HolidayController(HolidayRepository repository) {
     this.repository = repository;
+  }
+
+  @GetMapping()
+  public List<Holiday> findAll()
+  {
+    return this.repository.findAll();
   }
 
   @GetMapping("{id}")
