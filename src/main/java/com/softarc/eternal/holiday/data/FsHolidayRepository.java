@@ -1,16 +1,11 @@
 package com.softarc.eternal.holiday.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.softarc.eternal.domain.Guide;
-import com.softarc.eternal.domain.Holiday;
-import com.softarc.eternal.domain.HolidayTrip;
-import lombok.SneakyThrows;
-import lombok.extern.java.Log;
-
+import com.softarc.eternal.holiday.domain.Guide;
+import com.softarc.eternal.holiday.domain.Holiday;
+import com.softarc.eternal.holiday.domain.HolidayTrip;
 import java.io.File;
 import java.nio.file.Paths;
-import lombok.SneakyThrows;
-import lombok.extern.java.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,23 +45,9 @@ public class FsHolidayRepository implements HolidayRepository {
   private void init() {
     this.holidays.clear();
     holidays.add(
-      new Holiday(
-        1L,
-        "Canada",
-        "Visit Rocky Mountains",
-        Optional.empty(),
-        new ArrayList<>()
-      )
-    );
+        new Holiday(1L, "Canada", "Visit Rocky Mountains", Optional.empty(), new ArrayList<>()));
     holidays.add(
-      new Holiday(
-        2L,
-        "China",
-        "To the Middle Kingdom",
-        Optional.empty(),
-        new ArrayList<>()
-      )
-    );
+        new Holiday(2L, "China", "To the Middle Kingdom", Optional.empty(), new ArrayList<>()));
     this.currentId = this.getCurrentId();
     this.persist();
   }
@@ -82,32 +63,26 @@ public class FsHolidayRepository implements HolidayRepository {
   }
 
   @Override
-  public void add(String name, String description, Optional<String> optCover) {
-    this.holidays.add(
-        new Holiday(
-          ++this.currentId,
-          name,
-          description,
-          optCover,
-          new ArrayList<>()
-        )
-      );
+  public Holiday add(String name, String description, Optional<String> optCover) {
+    var holiday = new Holiday(++this.currentId, name, description, optCover, new ArrayList<>());
+    this.holidays.add(holiday);
     this.persist();
     FsHolidayRepository.log.info(String.format("Holiday %s was added", name));
+    return holiday;
   }
 
   @Override
-  public void update(
-    Long id,
-    String name,
-    String description,
-    Optional<String> optCover
-  ) {
-    var holiday = this.find(id).orElseThrow();
-    holiday.setName(name);
-    holiday.setDescription(description);
-    holiday.setCoverPath(optCover);
+  public Holiday update(Long id, String name, String description, Optional<String> optCover) {
+    this.holidays.replaceAll(
+        entry -> {
+          if (entry.id().equals(id)) {
+            return new Holiday(entry.id(), name, description, optCover, entry.trips());
+          }
+          return entry;
+        });
     this.persist();
+
+    return this.find(id).orElseThrow();
   }
 
   @Override

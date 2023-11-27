@@ -27,19 +27,24 @@ export class HolidaysRepository {
 
   findById(id: number): Signal<Holiday | undefined> {
     const holiday = signal<Holiday | undefined>(undefined);
-    this.#holidayService.findById(id).subscribe((value) => holiday.set(value));
+    this.#holidayService.findById(id).subscribe((value) =>
+      holiday.set({
+        ...value,
+        coverLink: `http://localhost:8080/api/holiday/${value.id}/cover`,
+      }),
+    );
     return holiday;
   }
 
   async save(holiday: EditHoliday) {
     const { cover, ...holidayDto } = holiday;
-    await firstValueFrom(this.#holidaysService.save(holidayDto, cover));
+    await firstValueFrom(this.#holidayService.save(holidayDto, cover));
     this.#update();
   }
 
   async add(holiday: AddHoliday): Promise<void> {
     const { cover, ...holidayDto } = holiday;
-    await firstValueFrom(this.#holidaysService.add(holidayDto, cover));
+    await firstValueFrom(this.#holidayService.add(holidayDto, cover));
     this.#update();
   }
 
@@ -49,13 +54,15 @@ export class HolidaysRepository {
   }
 
   async #update() {
-    const holidays = await firstValueFrom(this.#holidaysService.findAll());
+    const holidays = await firstValueFrom(this.#holidayService.findAll());
 
-    this.#holidays$.set(
-      holidays.map((holiday) => ({
-        ...holiday,
-        coverLink: `http://localhost:8080/api/holidays/${holiday.id}/cover`,
-      }))
+    this.#holidays.set(
+      holidays.map(
+        (holiday): Holiday => ({
+          ...holiday,
+          coverLink: `http://localhost:8080/api/holiday/${holiday.id}/cover`,
+        }),
+      ),
     );
   }
 }

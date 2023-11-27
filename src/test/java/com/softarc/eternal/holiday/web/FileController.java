@@ -1,4 +1,4 @@
-package com.softarc.eternal.web;
+package com.softarc.eternal.holiday.web;
 
 import java.nio.file.Path;
 import org.springframework.web.bind.annotation.GetMapping;

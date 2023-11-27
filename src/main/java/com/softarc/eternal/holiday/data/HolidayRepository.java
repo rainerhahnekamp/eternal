@@ -9,9 +9,9 @@ import java.util.Optional;
 public interface HolidayRepository {
   List<Holiday> findAll();
 
-  void add(String name, String description, Optional<String> optCover);
+  Holiday add(String name, String description, Optional<String> optCover);
 
-  void update(
+  Holiday update(
     Long id,
     String name,
     String description,

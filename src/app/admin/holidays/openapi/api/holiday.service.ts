@@ -32,7 +32,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class HolidaysService {
+export class HolidayService {
 
     protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -112,9 +112,9 @@ export class HolidaysService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public add(holidayDto: HolidayDto, cover: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<boolean>;
-    public add(holidayDto: HolidayDto, cover: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<boolean>>;
-    public add(holidayDto: HolidayDto, cover: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<boolean>>;
+    public add(holidayDto: HolidayDto, cover: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HolidayResponse>;
+    public add(holidayDto: HolidayDto, cover: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<HolidayResponse>>;
+    public add(holidayDto: HolidayDto, cover: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<HolidayResponse>>;
     public add(holidayDto: HolidayDto, cover: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (holidayDto === null || holidayDto === undefined) {
             throw new Error('Required parameter holidayDto was null or undefined when calling add.');
@@ -179,8 +179,8 @@ export class HolidaysService {
             }
         }
 
-        let localVarPath = `/api/holidays`;
-        return this.httpClient.request<boolean>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/holiday`;
+        return this.httpClient.request<HolidayResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
@@ -233,7 +233,7 @@ export class HolidaysService {
             }
         }
 
-        let localVarPath = `/api/holidays`;
+        let localVarPath = `/api/holiday`;
         return this.httpClient.request<Array<HolidayResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -290,7 +290,7 @@ export class HolidaysService {
             }
         }
 
-        let localVarPath = `/api/holidays/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/holiday/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<HolidayResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -346,7 +346,7 @@ export class HolidaysService {
             }
         }
 
-        let localVarPath = `/api/holidays/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/holiday/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -365,10 +365,10 @@ export class HolidaysService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public save(holidayDto: HolidayDto, cover: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
-    public save(holidayDto: HolidayDto, cover: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
-    public save(holidayDto: HolidayDto, cover: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
-    public save(holidayDto: HolidayDto, cover: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+    public save(holidayDto: HolidayDto, cover: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HolidayResponse>;
+    public save(holidayDto: HolidayDto, cover: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<HolidayResponse>>;
+    public save(holidayDto: HolidayDto, cover: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<HolidayResponse>>;
+    public save(holidayDto: HolidayDto, cover: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (holidayDto === null || holidayDto === undefined) {
             throw new Error('Required parameter holidayDto was null or undefined when calling save.');
         }
@@ -382,6 +382,7 @@ export class HolidaysService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -431,8 +432,8 @@ export class HolidaysService {
             }
         }
 
-        let localVarPath = `/api/holidays`;
-        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/holiday`;
+        return this.httpClient.request<HolidayResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
@@ -478,7 +479,7 @@ export class HolidaysService {
         }
 
 
-        let localVarPath = `/api/holidays/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/cover`;
+        let localVarPath = `/api/holiday/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/cover`;
         return this.httpClient.request('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

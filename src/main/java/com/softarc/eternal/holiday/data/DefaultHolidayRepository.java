@@ -28,7 +28,7 @@ public class DefaultHolidayRepository implements HolidayRepository {
   }
 
   @Override
-  public void add(String name, String description, Optional<String> optCover) {
+  public Holiday add(String name, String description, Optional<String> optCover) {
     var holiday = new Holiday(
       this.currentId++,
       name,
@@ -37,16 +37,20 @@ public class DefaultHolidayRepository implements HolidayRepository {
       new ArrayList<>()
     );
     this.holidays.add(holiday);
+
+    return holiday;
   }
 
   @Override
-  public void update(Long id, String name, String description) {
+  public Holiday update(Long id, String name, String description, Optional<String> optCover) {
     this.holidays.replaceAll(entry -> {
       if (entry.id().equals(id)) {
-        return new Holiday(entry.id(), name, description, entry.trips());
+        return new Holiday(entry.id(), name, description, optCover, entry.trips());
       }
       return entry;
     });
+
+    return this.find(id).orElseThrow();
   }
 
   @Override

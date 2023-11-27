@@ -8,11 +8,8 @@ import {
 } from '@angular/core';
 import { HolidaysRepository } from '@app/admin/holidays/data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filterDefined } from '@app/shared/ngrx-utils';
-import { HolidayDetailComponent, HolidayForm } from '@app/admin/holidays/ui';
-import { LetDirective } from '@ngrx/component';
 import { Holiday } from '@app/admin/holidays/model';
-import { HolidayDetailComponent } from '@app/admin/holidays/ui';
+import { HolidayDetailComponent, HolidayForm } from '@app/admin/holidays/ui';
 import { MessageService } from '@app/shared/ui-messaging';
 
 @Component({
@@ -51,7 +48,7 @@ export class EditHolidayComponent implements OnChanges {
   }
 
   handleSave(holiday: HolidayForm) {
-    this.#holidaysRepository.save({ ...holiday, id: this.#id });
+    this.#holidaysRepository.save({ ...holiday, id: this.id });
     this.#messageService.info('Holiday was saved');
     this.#router.navigate(['..'], { relativeTo: this.#route });
   }

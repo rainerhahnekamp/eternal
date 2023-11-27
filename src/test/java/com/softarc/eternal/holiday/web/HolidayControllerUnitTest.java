@@ -4,10 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
+import com.softarc.eternal.common.ImageValidator;
 import com.softarc.eternal.holiday.data.HolidayRepository;
 import com.softarc.eternal.holiday.domain.HolidayMother;
 import com.softarc.eternal.holiday.web.request.HolidayDto;
 import com.softarc.eternal.holiday.web.response.HolidayResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;

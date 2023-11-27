@@ -1,4 +1,4 @@
-package com.softarc.eternal.multimedia;
+package com.softarc.eternal.common;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
