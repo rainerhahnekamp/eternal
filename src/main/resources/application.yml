@@ -4,3 +4,6 @@ app:
 logging:
   group:
     com.softarc.eternal: warn
+app.holiday:
+  persistence-type: file
+  persistence-file: holidays.json

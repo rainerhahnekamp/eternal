@@ -24,12 +24,14 @@ repositories {
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter'
   implementation 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.apache.commons:commons-lang3'
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
+  annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+  implementation 'org.apache.commons:commons-lang3'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.named('test') {
-  useJUnitPlatform()
+    useJUnitPlatform()
 }

@@ -15,6 +15,11 @@ public class HolidayController {
     this.repository = repository;
   }
 
+  @GetMapping
+  public List<Holiday> index() {
+    return this.repository.findAll();
+  }
+
   @GetMapping()
   public List<Holiday> findAll()
   {
