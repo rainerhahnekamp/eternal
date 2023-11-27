@@ -62,14 +62,16 @@ public class FsHolidayRepository implements HolidayRepository {
   }
 
   @Override
-  public void add(String name, String description) {
-    this.holidays.add(new Holiday(++this.currentId, name, description, new ArrayList<>()));
+  public Holiday add(String name, String description) {
+    var holiday = new Holiday(++this.currentId, name, description, new ArrayList<>());
+    this.holidays.add(holiday);
     this.persist();
     FsHolidayRepository.log.info(String.format("Holiday %s was added", name));
+    return holiday;
   }
 
   @Override
-  public void update(Long id, String name, String description) {
+  public Holiday update(Long id, String name, String description) {
     this.holidays.replaceAll(
         entry -> {
           if (entry.id().equals(id)) {
@@ -78,6 +80,8 @@ public class FsHolidayRepository implements HolidayRepository {
           return entry;
         });
     this.persist();
+
+    return this.find(id).orElseThrow();
   }
 
   @Override

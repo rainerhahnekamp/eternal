@@ -49,16 +49,18 @@ public class HolidayController {
   @Operation(operationId = "add")
   @CachePut(value = "holiday", key = "#holidayDto.id()")
   @CacheEvict(value = "holiday", key = "'all'")
-  public void add(@RequestBody @Valid HolidayDto holidayDto) {
-    this.repository.add(holidayDto.name(), holidayDto.description());
+  public HolidayResponse add(@RequestBody @Valid HolidayDto holidayDto) {
+    var holiday = this.repository.add(holidayDto.name(), holidayDto.description());
+    return this.holidayMapper.holidayToResponse(holiday);
   }
 
   @PutMapping
   @Operation(operationId = "save")
   @CachePut(value = "holiday", key = "#holidayDto.id()")
   @CacheEvict(value = "holiday", key = "'all'")
-  public void update(@RequestBody HolidayDto holidayDto) {
-    this.repository.update(holidayDto.id(), holidayDto.name(), holidayDto.description());
+  public HolidayResponse update(@RequestBody HolidayDto holidayDto) {
+    var holiday = this.repository.update(holidayDto.id(), holidayDto.name(), holidayDto.description());
+    return this.holidayMapper.holidayToResponse(holiday);
   }
 
   @DeleteMapping("{id}")
