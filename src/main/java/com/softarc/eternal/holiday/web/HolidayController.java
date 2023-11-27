@@ -8,6 +8,7 @@ import com.softarc.eternal.holiday.web.request.HolidayDto;
 import com.softarc.eternal.holiday.web.response.HolidayResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
