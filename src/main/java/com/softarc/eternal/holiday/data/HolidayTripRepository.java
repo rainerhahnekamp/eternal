@@ -1,6 +1,6 @@
-package com.softarc.eternal.data;
+package com.softarc.eternal.holiday.data;
 
-import com.softarc.eternal.domain.HolidayTrip;
+import com.softarc.eternal.holiday.domain.HolidayTrip;
 import org.springframework.data.repository.CrudRepository;
 
 public interface HolidayTripRepository

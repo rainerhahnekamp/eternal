@@ -1,4 +1,4 @@
-package com.softarc.eternal.data;
+package com.softarc.eternal.holiday.data;
 
 public interface HolidayTeaser {
   public Long getId();

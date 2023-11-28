@@ -1,7 +1,6 @@
-package com.softarc.eternal.web.request;
+package com.softarc.eternal.holiday.web.request;
 
 import jakarta.validation.constraints.NotNull;
-
 import java.time.Instant;
 
 public record HolidayTripDto(

@@ -4,14 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-import com.softarc.eternal.data.HolidaysRepository;
-import com.softarc.eternal.domain.HolidayMother;
-import com.softarc.eternal.multimedia.ImageValidator;
-import com.softarc.eternal.web.request.HolidayDto;
-import com.softarc.eternal.web.response.HolidayResponse;
 import com.softarc.eternal.common.ImageValidator;
 import com.softarc.eternal.holiday.data.HolidayRepository;
-import com.softarc.eternal.holiday.domain.Holiday;
 import com.softarc.eternal.holiday.domain.HolidayMother;
 import com.softarc.eternal.holiday.web.request.HolidayDto;
 import com.softarc.eternal.holiday.web.response.HolidayResponse;

@@ -1,8 +1,8 @@
-package com.softarc.eternal.data;
+package com.softarc.eternal.holiday.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.softarc.eternal.domain.*;
+import com.softarc.eternal.holiday.domain.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

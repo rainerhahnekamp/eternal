@@ -1,4 +1,4 @@
-package com.softarc.eternal.web.response;
+package com.softarc.eternal.holiday.web.response;
 
 import jakarta.validation.constraints.NotNull;
 import java.time.Instant;

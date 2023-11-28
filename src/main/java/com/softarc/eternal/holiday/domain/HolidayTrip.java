@@ -1,10 +1,9 @@
 package com.softarc.eternal.holiday.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.Instant;
+import lombok.*;
 
 @Getter
 @Setter

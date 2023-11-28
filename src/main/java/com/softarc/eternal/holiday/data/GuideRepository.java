@@ -1,6 +1,6 @@
-package com.softarc.eternal.data;
+package com.softarc.eternal.holiday.data;
 
-import com.softarc.eternal.domain.Guide;
+import com.softarc.eternal.holiday.domain.Guide;
 import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 

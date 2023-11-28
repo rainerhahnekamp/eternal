@@ -1,6 +1,6 @@
-package com.softarc.eternal.data;
+package com.softarc.eternal.holiday.data;
 
-import com.softarc.eternal.domain.Holiday;
+import com.softarc.eternal.holiday.domain.Holiday;
 import org.springframework.data.jpa.domain.Specification;
 
 public class HolidaySpecs {

@@ -1,17 +1,15 @@
-package com.softarc.eternal.web;
+package com.softarc.eternal.holiday.web;
 
-import com.softarc.eternal.data.HolidaySpecs;
-import com.softarc.eternal.data.HolidayTeaser;
-import com.softarc.eternal.data.HolidayWithGuide;
-import com.softarc.eternal.data.HolidaysRepository;
-import com.softarc.eternal.domain.Holiday;
-import com.softarc.eternal.domain.HolidayTrip;
-import com.softarc.eternal.web.response.HolidayDbResponse;
+import com.softarc.eternal.holiday.data.HolidaySpecs;
+import com.softarc.eternal.holiday.data.HolidayTeaser;
+import com.softarc.eternal.holiday.data.HolidayWithGuide;
+import com.softarc.eternal.holiday.data.HolidaysRepository;
+import com.softarc.eternal.holiday.domain.Holiday;
+import com.softarc.eternal.holiday.domain.HolidayTrip;
+import com.softarc.eternal.holiday.web.response.HolidayDbResponse;
 import jakarta.transaction.Transactional;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.extern.java.Log;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;

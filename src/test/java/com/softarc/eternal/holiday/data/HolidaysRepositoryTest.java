@@ -1,13 +1,10 @@
-package com.softarc.eternal.data;
+package com.softarc.eternal.holiday.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import com.softarc.eternal.domain.HolidayMother;
-import jakarta.transaction.Transactional;
+import com.softarc.eternal.holiday.domain.HolidayMother;
 import jakarta.validation.ConstraintViolationException;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
