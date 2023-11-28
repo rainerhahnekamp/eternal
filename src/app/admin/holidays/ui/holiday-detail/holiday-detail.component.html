@@ -1,4 +1,5 @@
-<form (ngSubmit)="submit()" *ngIf="holiday" class="w-96" #ngForm="ngForm">
+@if (holiday) {
+<form (ngSubmit)="submit()" class="w-96" #ngForm="ngForm">
   <mat-form-field>
     <mat-label>Name</mat-label>
     <input
@@ -57,3 +58,4 @@
     <button color="primary" mat-raised-button type="submit">Save</button>
   </div>
 </form>
+}

@@ -1,10 +1,9 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
-api/bookingsController.service.ts
-api/holidays.service.ts
+api/bookingController.service.ts
+api/holiday.service.ts
 configuration.ts
 encoder.ts
 git_push.sh

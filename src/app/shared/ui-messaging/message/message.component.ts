@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'eternal-message',
+  selector: 'app-message',
   templateUrl: './message.component.html',
   styles: [
     `
@@ -45,7 +45,7 @@ export class MessageComponent {
       this.messages.push(message);
       window.setTimeout(
         () => (this.messages = this.messages.filter((m) => m !== message)),
-        3000
+        3000,
       );
     });
   }

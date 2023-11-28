@@ -3,23 +3,25 @@
   <a color="primary" mat-raised-button routerLink="./add">Add Holiday</a>
 </p>
 
-<ng-container *ngIf="viewModel">
-  <div *ngIf="dataSource.data.length > 0" class="my-4 max-w-screen-lg">
-    <mat-table [dataSource]="dataSource">
-      <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef> Id</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{ element.id }} </mat-cell>
-      </ng-container>
+@if (viewModel) { @if (dataSource.data.length > 0) {
+<div class="my-4 max-w-screen-lg">
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> Id</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.id }} </mat-cell>
+    </ng-container>
 
-      <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{ element.name }} </mat-cell>
-      </ng-container>
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.name }} </mat-cell>
+    </ng-container>
 
-      <ng-container matColumnDef="description">
-        <mat-header-cell *matHeaderCellDef> Description</mat-header-cell>
-        <mat-cell *matCellDef="let element"><p class="line-clamp-5">{{ element.description }}</p></mat-cell>
-      </ng-container>
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> Description</mat-header-cell>
+      <mat-cell *matCellDef="let element"
+        ><p class="line-clamp-5">{{ element.description }}</p></mat-cell
+      >
+    </ng-container>
 
       <ng-container matColumnDef="hasCover">
         <mat-header-cell *matHeaderCellDef> Cover</mat-header-cell>
@@ -34,25 +36,25 @@
         <mat-header-cell *matHeaderCellDef> </mat-header-cell>
         <mat-cell *matCellDef="let element"
           ><div class="px-4">
-            <a [routerLink]="['.', element.id]">
+            <a [routerLink]="['.', element.id]" aria-label="Edit">
               <mat-icon>edit</mat-icon>
             </a>
           </div>
         </mat-cell>
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row
-        *matRowDef="let row; columns: displayedColumns"
-        data-testid="row-holiday"
-      ></mat-row>
-    </mat-table>
-    <mat-paginator
-      (page)="switchPage.emit($event.pageIndex)"
-      [length]="viewModel.length"
-      [pageIndex]="viewModel.pageIndex"
-      pageSize="100"
-      showFirstLastButtons="true"
-    ></mat-paginator>
-  </div>
-</ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      data-testid="row-holiday"
+    ></mat-row>
+  </mat-table>
+  <mat-paginator
+    (page)="switchPage.emit($event.pageIndex)"
+    [length]="viewModel.length"
+    [pageIndex]="viewModel.pageIndex"
+    pageSize="100"
+    showFirstLastButtons="true"
+  ></mat-paginator>
+</div>
+} }
