@@ -9,7 +9,7 @@ import {
 import { HolidaysRepository } from '@app/admin/holidays/data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Holiday } from '@app/admin/holidays/model';
-import { HolidayDetailComponent } from '@app/admin/holidays/ui';
+import { HolidayDetailComponent, HolidayForm } from '@app/admin/holidays/ui';
 import { MessageService } from '@app/shared/ui-messaging';
 
 @Component({
@@ -47,7 +47,7 @@ export class EditHolidayComponent implements OnChanges {
     this.#router.navigate(['..'], { relativeTo: this.#route });
   }
 
-  handleSave(holiday: Holiday) {
+  handleSave(holiday: HolidayForm) {
     this.#holidaysRepository.save({ ...holiday, id: this.id });
     this.#messageService.info('Holiday was saved');
     this.#router.navigate(['..'], { relativeTo: this.#route });

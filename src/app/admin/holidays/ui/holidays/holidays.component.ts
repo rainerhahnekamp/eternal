@@ -58,7 +58,7 @@ export class HolidaysComponent implements OnChanges {
   @Output() setUnselected = new EventEmitter<number>();
   @Output() switchPage = new EventEmitter<number>();
 
-  displayedColumns = ['id', 'name', 'description', 'action'];
+  displayedColumns = ['id', 'name', 'description', 'hasCover', 'action'];
   dataSource = new MatTableDataSource<Holiday>([]);
 
   ngOnChanges(): void {

@@ -1,0 +1,15 @@
+.gitignore
+README.md
+api.module.ts
+api/api.ts
+api/bookingController.service.ts
+api/holiday.service.ts
+configuration.ts
+encoder.ts
+git_push.sh
+index.ts
+model/booking.ts
+model/holidayResponse.ts
+model/models.ts
+param.ts
+variables.ts

@@ -9,7 +9,8 @@
     "test": "ng test",
     "test:ci": "ng test --source-map=false --browsers=ChromeHeadless --watch=false",
     "lint": "ng lint",
-    "verify": "npm run test:ci && npm run lint"
+    "verify": "npm run test:ci && npm run lint",
+    "openapi": "openapi-generator-cli generate -i http://localhost:8080/v3/api-docs -g typescript-angular -o src/app/admin/holidays/openapi --type-mappings=DateTime=number"
   },
   "private": true,
   "dependencies": {
@@ -49,6 +50,7 @@
     "@angular/compiler-cli": "^17.0.2",
     "@commitlint/cli": "^18.4.0",
     "@commitlint/config-conventional": "^18.4.0",
+    "@openapitools/openapi-generator-cli": "^2.7.0",
     "@softarc/eslint-plugin-sheriff": "^0.14.2",
     "@softarc/sheriff-core": "^0.14.2",
     "@testing-library/angular": "^14.4.1",

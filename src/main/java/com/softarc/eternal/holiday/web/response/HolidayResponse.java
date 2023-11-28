@@ -6,5 +6,6 @@ import jakarta.validation.constraints.NotNull;
 public record HolidayResponse(
   @NotNull Long id,
   @NotBlank String name,
-  @NotBlank String description
+  @NotBlank String description,
+  @NotNull Boolean hasCover
 ) {}

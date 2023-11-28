@@ -2,6 +2,7 @@ plugins {
   id 'org.springframework.boot' version '3.2.0'
   id 'io.spring.dependency-management' version '1.1.4'
   id 'java'
+  id 'org.openapi.generator' version '6.6.0'
 }
 
 group = 'com.softarc'
@@ -25,19 +26,19 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter'
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
-  implementation 'org.apache.commons:commons-lang3'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
   implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
-
+  implementation 'org.apache.tika:tika-core:2.6.0'
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
   annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
   annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
+
 
 tasks.withType(JavaCompile).each {
   it.options.compilerArgs.add('--enable-preview')
@@ -46,6 +47,24 @@ tasks.withType(JavaCompile).each {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+openApiGenerate {
+  generatorName.set('spring')
+  inputSpec.set("$rootDir/api/booking.yml")
+  outputDir.set("$rootDir/generated")
+  additionalProperties.set([
+    interfaceOnly: true,
+    apiPackage: 'com.softarc.eternal.booking.web.api',
+    documentationProvider: 'none',
+    modelPackage: 'com.softarc.eternal.booking.web.model',
+    openApiNullable: false,
+    useSpringBoot3: true,
+    useBeanValidation: true,
+    useTags: true
+  ])
+}
+
+sourceSets.main.java.srcDirs += 'generated/src/main/java'
 
 test {
   jvmArgs(['--enable-preview'])

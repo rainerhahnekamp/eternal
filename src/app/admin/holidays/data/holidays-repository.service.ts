@@ -1,12 +1,19 @@
 import { inject, Injectable, Signal, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Holiday } from '@app/admin/holidays/model';
-import { HttpClient } from '@angular/common/http';
+import { HolidayService } from '@app/admin/holidays/openapi';
+
+export type AddHoliday = {
+  name: string;
+  description: string;
+  cover: File;
+};
+export type EditHoliday = AddHoliday & { id: number };
 
 @Injectable({ providedIn: 'root' })
 export class HolidaysRepository {
   #holidays = signal<Holiday[]>([]);
-  #httpClient = inject(HttpClient);
+  #holidayService = inject(HolidayService);
   #initialized = false;
   #baseUrl = 'http://localhost:8080/api/holiday';
 
@@ -20,35 +27,42 @@ export class HolidaysRepository {
 
   findById(id: number): Signal<Holiday | undefined> {
     const holiday = signal<Holiday | undefined>(undefined);
-    this.#httpClient
-      .get<Holiday | undefined>(`${this.#baseUrl}/${id}`)
-      .subscribe((value) => holiday.set(value));
+    this.#holidayService.findById(id).subscribe((value) =>
+      holiday.set({
+        ...value,
+        coverLink: `http://localhost:8080/api/holiday/${value.id}/cover`,
+      }),
+    );
     return holiday;
   }
 
-  async save(holiday: Holiday) {
-    await firstValueFrom(
-      this.#httpClient.put<void>(this.#baseUrl, holiday),
-    );
-    await this.#update();
+  async save(holiday: EditHoliday) {
+    const { cover, ...holidayDto } = holiday;
+    await firstValueFrom(this.#holidayService.save(holidayDto, cover));
+    this.#update();
   }
 
-  async add(holiday: Holiday): Promise<void> {
-    await firstValueFrom(
-      this.#httpClient.post<void>(this.#baseUrl, holiday),
-    );
-    await this.#update();
+  async add(holiday: AddHoliday): Promise<void> {
+    const { cover, ...holidayDto } = holiday;
+    await firstValueFrom(this.#holidayService.add(holidayDto, cover));
+    this.#update();
   }
 
   async remove(id: number): Promise<void> {
-    await firstValueFrom(this.#httpClient.delete(`${this.#baseUrl}/${id}`));
+    await firstValueFrom(this.#holidayService.remove(id));
     await this.#update();
   }
 
   async #update() {
-    const holidays = await firstValueFrom(
-      this.#httpClient.get<Holiday[]>(this.#baseUrl),
+    const holidays = await firstValueFrom(this.#holidayService.findAll());
+
+    this.#holidays.set(
+      holidays.map(
+        (holiday): Holiday => ({
+          ...holiday,
+          coverLink: `http://localhost:8080/api/holiday/${holiday.id}/cover`,
+        }),
+      ),
     );
-    this.#holidays.set(holidays);
   }
 }

@@ -23,16 +23,25 @@
       >
     </ng-container>
 
-    <ng-container matColumnDef="action">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <div class="px-4">
-          <a [routerLink]="['.', element.id]" aria-label="Edit">
-            <mat-icon>edit</mat-icon>
-          </a>
+      <ng-container matColumnDef="hasCover">
+        <mat-header-cell *matHeaderCellDef> Cover</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+        <div *ngIf="element.hasCover">
+          <img [src]="element.coverLink">
         </div>
-      </mat-cell>
-    </ng-container>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+        <mat-cell *matCellDef="let element"
+          ><div class="px-4">
+            <a [routerLink]="['.', element.id]" aria-label="Edit">
+              <mat-icon>edit</mat-icon>
+            </a>
+          </div>
+        </mat-cell>
+      </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row

@@ -12,13 +12,14 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class DefaultHolidaysRepositoryTest {
+class DefaultHolidayRepositoryTest {
 
   @Mock
   OverlappingCalculator mockedOverlappingCalculator;
@@ -55,12 +56,13 @@ class DefaultHolidaysRepositoryTest {
   public void testAddingHoliday() {
     var holiday = HolidayMother.vienna().build();
     var repository = setup();
-    repository.add("Vienna", "Urlaub in Wien");
+    repository.add("Vienna", "Urlaub in Wien", Optional.empty());
 
     assertThat(repository.findAll())
       .hasSize(1)
       .extracting(Holiday::name)
-      .allSatisfy(name -> assertThat(name).isEqualTo("Vienna", "Urlaub in Wien"));
+      .allSatisfy(name -> assertThat(name).isEqualTo("Vienna", "Urlaub in Wien")
+      );
   }
 
   @Test
@@ -82,12 +84,12 @@ class DefaultHolidaysRepositoryTest {
     // arrange
     var holiday = HolidayMother.vienna().build();
     var start1 = LocalDate
-      .of(2022, 1, 1)
+      .parse("2022-01-01")
       .atStartOfDay(ZoneOffset.UTC)
       .toInstant();
     var end1 = start1.plus(7, ChronoUnit.DAYS);
     var start2 = LocalDate
-      .of(2022, 1, 5)
+      .parse("2022-01-05")
       .atStartOfDay(ZoneOffset.UTC)
       .toInstant();
     var end2 = start2.plus(7, ChronoUnit.DAYS);
