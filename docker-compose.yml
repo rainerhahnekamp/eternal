@@ -4,7 +4,7 @@ services:
   db:
     image: mysql:8.0.30
     ports:
-      - 3306:3306
+      - '3306'
     environment:
       - MYSQL_ROOT_PASSWORD=eternal
       - MYSQL_DATABASE=eternal
@@ -22,6 +22,8 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    labels:
+      org.springframework.boot.ignore: true
 
 
 volumes:

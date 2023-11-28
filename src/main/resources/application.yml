@@ -2,10 +2,10 @@ springdoc:
   default-produces-media-type: application/json
 
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/eternal
-    username: eternal
-    password: eternal123
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/eternal
+#    username: eternal
+#    password: eternal123
   jpa:
     show-sql: true
   mvc:

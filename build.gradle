@@ -30,7 +30,7 @@ dependencies {
   implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
   implementation 'org.mapstruct:mapstruct:1.5.5.Final'
   implementation 'com.h2database:h2'
-  implementation 'mysql:mysql-connector-java:8.0.32'
+  implementation 'mysql:mysql-connector-java:8.0.33'
   implementation 'org.apache.tika:tika-core:2.6.0'
   implementation 'org.flywaydb:flyway-core'
   implementation 'org.flywaydb:flyway-mysql'
@@ -46,6 +46,7 @@ dependencies {
   testImplementation 'org.testcontainers:mysql'
   testImplementation 'org.testcontainers:junit-jupiter'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
+  developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 }
 
 
