@@ -1,0 +1,104 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /api/booking:
+    get:
+      tags:
+        - Booking
+      operationId: findAll
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+    put:
+      tags:
+        - Booking
+      operationId: save
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+        required: true
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Booking
+      operationId: add
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
+  /api/booking/{id}:
+    get:
+      tags:
+        - Booking
+      operationId: findById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+    delete:
+      tags:
+        - Booking
+      operationId: remove
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Booking:
+      required:
+        - holidayTripId
+        - bookingDate
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        holidayTripId:
+          type: integer
+          format: int64
+        bookingDate:
+          type: string
+          format: date
+        comment:
+          type: string

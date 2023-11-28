@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Holiday } from '@app/admin/holidays/model';
@@ -46,7 +52,7 @@ export interface HolidaysViewModel {
     `,
   ],
 })
-export class HolidaysComponent {
+export class HolidaysComponent implements OnChanges {
   @Input() viewModel: HolidaysViewModel | undefined;
   @Output() setSelected = new EventEmitter<number>();
   @Output() setUnselected = new EventEmitter<number>();
