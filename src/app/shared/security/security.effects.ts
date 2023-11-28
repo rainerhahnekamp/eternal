@@ -1,32 +1,32 @@
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { delay, map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { securityActions } from './security.actions';
 import { ANONYMOUS_USER } from './security.reducer';
-import { AuthService } from '@auth0/auth0-angular';
 import { isPlatformServer } from '@angular/common';
-import { of } from 'rxjs';
+import { distinctUntilChanged, of } from 'rxjs';
+import { KeycloakService } from 'keycloak-angular';
 
 @Injectable()
 export class SecurityEffects {
   #actions$ = inject(Actions);
-  #authService = inject(AuthService);
+  #keycloakService = inject(KeycloakService);
   #isServer = isPlatformServer(inject(PLATFORM_ID));
 
   user$ = createEffect(() => {
     if (this.#isServer) {
       return of(securityActions.loaded({ user: ANONYMOUS_USER }));
     }
-
-    return this.#authService.user$.pipe(
-      delay(1000),
-      map((user) =>
+    return this.#keycloakService.keycloakEvents$.pipe(
+      map(() => this.#keycloakService.isLoggedIn()),
+      distinctUntilChanged(),
+      map((isLoggedIn) =>
         securityActions.loaded({
-          user: user
+          user: isLoggedIn
             ? {
-                id: user.email || '',
-                email: user.email || '',
-                name: user.name || '',
+                id: '1',
+                email: 'hi',
+                name: '',
                 anonymous: false,
               }
             : ANONYMOUS_USER,
@@ -38,8 +38,9 @@ export class SecurityEffects {
   signInUser$ = createEffect(
     () => {
       return this.#actions$.pipe(
+        tap(console.log),
         ofType(securityActions.signIn),
-        tap(() => this.#authService.loginWithRedirect()),
+        tap(() => this.#keycloakService.login()),
       );
     },
     { dispatch: false },
@@ -49,7 +50,7 @@ export class SecurityEffects {
     () => {
       return this.#actions$.pipe(
         ofType(securityActions.signOut),
-        tap(() => this.#authService.logout()),
+        tap(() => this.#keycloakService.logout()),
       );
     },
     { dispatch: false },
