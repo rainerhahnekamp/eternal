@@ -24,14 +24,29 @@ repositories {
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter'
   implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-validation'
+  implementation 'org.apache.commons:commons-lang3'
+  implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-  implementation 'org.apache.commons:commons-lang3'
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+  annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
+
+tasks.withType(JavaCompile).each {
+  it.options.compilerArgs.add('--enable-preview')
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+test {
+  jvmArgs(['--enable-preview'])
 }

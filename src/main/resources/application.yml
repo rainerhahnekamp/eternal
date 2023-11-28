@@ -7,3 +7,7 @@ logging:
 app.holiday:
   persistence-type: file
   persistence-file: holidays.json
+spring:
+  mvc:
+    problemdetails:
+      enabled: true

@@ -1,35 +1,56 @@
 package com.softarc.eternal.customer.web;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-import com.softarc.eternal.customer.data.CustomerMother;
-import com.softarc.eternal.customer.domain.CustomerRepository;
-import java.util.Collections;
+import com.softarc.eternal.customer.web.request.AddCustomerRequest;
+import com.softarc.eternal.customer.web.response.CustomerDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest
-@ActiveProfiles("test")
+@AutoConfigureMockMvc
 public class CustomerIntegrationTest {
-  @Autowired CustomerController controller;
-
-  @MockBean CustomerRepository customerRepository;
+  @Autowired WebTestClient webTestClient;
 
   @Test
-  public void testInit() {}
+  public void testAddCustomer() {
+    var request = new AddCustomerRequest("Konrad", "Schmidt");
+
+    var response =
+        webTestClient
+            .post()
+            .uri("/api/customer")
+            .bodyValue(request)
+            .exchange()
+            .expectStatus()
+            .isOk()
+            .expectBody(CustomerDto.class)
+            .returnResult();
+
+    var id = response.getResponseBody().id();
+
+    webTestClient
+        .get()
+        .uri(STR."/api/customer/\{id}")
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("firstName")
+        .isEqualTo("Konrad");
+  }
 
   @Test
-  public void testFindAll() throws InterruptedException {
-    var konrad = CustomerMother.konrad().build();
-    Thread.sleep(1);
-    var expectedKonrad = CustomerMother.konrad().build();
-    when(customerRepository.findAll()).thenReturn(Collections.singletonList(konrad));
-    assertThat(controller.findAll())
-        .usingRecursiveFieldByFieldElementComparatorIgnoringFields("createdAt", "id")
-        .containsOnly(expectedKonrad);
+  public void testInvalidAddCustomer() {
+    var request = new AddCustomerRequest("", "Schmidt");
+
+    webTestClient
+        .post()
+        .uri("/api/customer")
+        .bodyValue(request)
+        .exchange()
+        .expectStatus()
+        .isBadRequest();
   }
 }
