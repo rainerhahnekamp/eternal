@@ -16,7 +16,7 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { provideSecurity } from 'src/app/shared/security';
+import { provideSecurity, securityInterceptor } from 'src/app/shared/security';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { deAT } from 'date-fns/locale';
@@ -41,6 +41,7 @@ export const appConfig: ApplicationConfig = {
         baseUrlInterceptor,
         loadingInterceptor,
         errorInterceptor,
+        securityInterceptor,
       ]),
       withFetch(),
     ),

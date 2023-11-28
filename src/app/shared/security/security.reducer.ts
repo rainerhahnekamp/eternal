@@ -6,6 +6,7 @@ export interface User {
   email: string;
   name: string;
   anonymous: boolean;
+  bearer: string;
 }
 
 export const ANONYMOUS_USER: User = {
@@ -13,6 +14,7 @@ export const ANONYMOUS_USER: User = {
   email: 'nomail',
   name: 'no user',
   anonymous: true,
+  bearer: '',
 };
 
 export interface SecurityState {
@@ -31,18 +33,10 @@ export const securityFeature = createFeature({
     initialState,
     on(
       securityActions.loaded,
-      securityActions.signInSuccess,
       (state, { user }): SecurityState => ({
         ...state,
         user,
         loaded: true,
-      }),
-    ),
-    on(
-      securityActions.signInSuccess,
-      (state, { user }): SecurityState => ({
-        ...state,
-        user,
       }),
     ),
   ),
