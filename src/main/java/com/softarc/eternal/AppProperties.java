@@ -11,4 +11,5 @@ public class AppProperties {
 
   private String persistenceType;
   private String persistenceFile;
+  private boolean preSeed;
 }

@@ -55,12 +55,12 @@ class DefaultHolidaysRepositoryTest {
   public void testAddingHoliday() {
     var holiday = HolidayMother.vienna().build();
     var repository = setup();
-    repository.add("Vienna");
+    repository.add("Vienna", "Urlaub in Wien");
 
     assertThat(repository.findAll())
       .hasSize(1)
       .extracting(Holiday::name)
-      .allSatisfy(name -> assertThat(name).isEqualTo("Vienna"));
+      .allSatisfy(name -> assertThat(name).isEqualTo("Vienna", "Urlaub in Wien"));
   }
 
   @Test

@@ -26,13 +26,16 @@ export class HolidaysRepository {
     return holiday;
   }
 
-  async save(holiday: Holiday): Promise<void> {
-    throw new Error(`Cannot save ${holiday.name}`);
+  async save(holiday: Holiday) {
+    await firstValueFrom(
+      this.#httpClient.put<void>(this.#baseUrl, holiday),
+    );
+    await this.#update();
   }
 
   async add(holiday: Holiday): Promise<void> {
     await firstValueFrom(
-      this.#httpClient.post<void>(`${this.#baseUrl}/${holiday.name}`, {}),
+      this.#httpClient.post<void>(this.#baseUrl, holiday),
     );
     await this.#update();
   }

@@ -9,7 +9,9 @@ import java.util.Optional;
 public interface HolidayRepository {
   List<Holiday> findAll();
 
-  void add(String name);
+  Holiday add(String name, String description);
+
+  Holiday update(Long id, String name, String description);
 
   Optional<Holiday> find(Long id);
 

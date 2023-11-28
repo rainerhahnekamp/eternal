@@ -7,6 +7,8 @@ logging:
 app.holiday:
   persistence-type: file
   persistence-file: holidays.json
+  pre-seed: true
+
 spring:
   mvc:
     problemdetails:
