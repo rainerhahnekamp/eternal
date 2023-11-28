@@ -1,7 +1,9 @@
 package com.softarc.eternal.holiday.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.softarc.eternal.holiday.domain.Guide;
 import com.softarc.eternal.holiday.domain.Holiday;
+import com.softarc.eternal.holiday.domain.HolidayTrip;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -47,8 +49,12 @@ public class FsHolidayRepository implements HolidayRepository {
 
   private void init() {
     this.holidays.clear();
-    holidays.add(new Holiday(1L, "Canada", "Visit Rocky Mountains"));
-    holidays.add(new Holiday(2L, "China", "To the Middle Kingdom"));
+    holidays.add(
+      new Holiday(1L, "Canada", "Visit Rocky Mountains", new ArrayList<>())
+    );
+    holidays.add(
+      new Holiday(2L, "China", "To the Middle Kingdom", new ArrayList<>())
+    );
     this.currentId = this.getCurrentId();
     this.persist();
   }
@@ -65,7 +71,9 @@ public class FsHolidayRepository implements HolidayRepository {
 
   @Override
   public void add(String name) {
-    this.holidays.add(new Holiday(++this.currentId, name, "-"));
+    this.holidays.add(
+        new Holiday(++this.currentId, name, "-", new ArrayList<>())
+      );
     this.persist();
     FsHolidayRepository.log.info(String.format("Holiday %s was added", name));
   }
@@ -99,4 +107,12 @@ public class FsHolidayRepository implements HolidayRepository {
         }
       );
   }
+
+  @Override
+  public void addTrip(Long holidayId, HolidayTrip holidayTrip) {
+    throw new RuntimeException("not implemented yet");
+  }
+
+  @Override
+  public void assignGuide(Long id, Guide deborah) {}
 }
