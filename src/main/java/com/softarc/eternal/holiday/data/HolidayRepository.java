@@ -1,28 +1,9 @@
 package com.softarc.eternal.holiday.data;
 
-import com.softarc.eternal.holiday.domain.Guide;
 import com.softarc.eternal.holiday.domain.Holiday;
-import com.softarc.eternal.holiday.domain.HolidayTrip;
 import java.util.List;
-import java.util.Optional;
+import org.springframework.data.repository.CrudRepository;
 
-public interface HolidayRepository {
+public interface HolidayRepository extends CrudRepository<Holiday, Long> {
   List<Holiday> findAll();
-
-  Holiday add(String name, String description, Optional<String> optCover);
-
-  Holiday update(
-    Long id,
-    String name,
-    String description,
-    Optional<String> optCover
-  );
-
-  Optional<Holiday> find(Long id);
-
-  void remove(Long id);
-
-  void addTrip(Long holidayId, HolidayTrip holidayTrip);
-
-  void assignGuide(Long id, Guide deborah);
 }

@@ -1,7 +1,6 @@
 package com.softarc.eternal.holiday.domain;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class HolidayMother {
 
@@ -11,7 +10,7 @@ public class HolidayMother {
     return Holiday.builder()
         .id(++HolidayMother.id)
         .name("Vienna")
-        .coverPath(Optional.empty())
+        .coverPath(null)
         .description("This is a default description")
         .trips(new ArrayList<>());
   }

@@ -8,6 +8,6 @@ import org.mapstruct.MappingConstants;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface HolidayMapper {
-  @Mapping(target = "hasCover", expression = "java(holiday.coverPath().isPresent())")
+  @Mapping(target = "hasCover", expression = "java(holiday.getCoverPath() != null)")
   HolidayResponse holidayToResponse(Holiday holiday);
 }
