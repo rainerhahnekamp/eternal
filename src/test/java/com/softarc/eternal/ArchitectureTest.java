@@ -18,22 +18,22 @@ public class ArchitectureTest {
   @ArchTest
   public static final ArchRule noDependencyFromWebToDb = noClasses()
     .that()
-    .resideInAPackage("com.softarc.eternal.holiday.web")
+    .resideInAPackage("com.softarc.eternal..web")
     .should()
     .dependOnClassesThat()
-    .resideInAPackage("com.softarc.eternal.holiday.db");
+    .resideInAPackage("com.softarc.eternal..db");
 
   @ArchTest
   public static final ArchRule controllerNamesInWeb = classes()
     .that()
-    .resideInAPackage("com.softarc.eternal.holiday.web")
+    .resideInAPackage("com.softarc.eternal..web")
     .should()
     .haveSimpleNameEndingWith("Controller");
 
   @ArchTest
   public static final ArchRule onlyRestControllers = classes()
     .that()
-    .resideInAPackage("com.softarc.eternal.holiday.web")
+    .resideInAPackage("com.softarc.eternal..web")
     .should()
     .beAnnotatedWith(RestController.class);
 }
