@@ -9,6 +9,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public abstract class CustomerMapper {
   @Mapping(target = "firstName", source = "firstname")
+  @Mapping(target = "country", source = "country.name")
   public abstract CustomerDto toCustomerDto(Customer customer);
 
 

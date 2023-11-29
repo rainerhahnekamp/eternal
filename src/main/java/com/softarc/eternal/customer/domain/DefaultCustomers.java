@@ -35,7 +35,7 @@ public class DefaultCustomers implements Customers {
   public Customer add(@Valid AddCustomer addCustomer) {
     var customer =
         new Customer(
-            ++this.currentId, addCustomer.firstname(), addCustomer.name(), true, Instant.now());
+            ++this.currentId, addCustomer.firstname(), addCustomer.name(), true, Instant.now(), null);
     this.customers.add(customer);
     return customer;
   }

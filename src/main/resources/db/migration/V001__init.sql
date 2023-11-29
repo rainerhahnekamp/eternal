@@ -3,5 +3,5 @@ create table customer (
   firstname nvarchar(50),
   name nvarchar(50),
   has_gdpr tinyint,
-  created datetime
+  created_at datetime
 )

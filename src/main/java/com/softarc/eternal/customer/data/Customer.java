@@ -1,10 +1,7 @@
 package com.softarc.eternal.customer.data;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import java.time.Instant;
 import lombok.*;
 
@@ -21,6 +18,9 @@ public class Customer {
   private String name;
   private Boolean hasGdpr;
   private Instant createdAt;
+
+  @ManyToOne()
+  private Country country;
 
   String getFullname() {
 //    return STR."\{this.name}, \{this.firstname}";

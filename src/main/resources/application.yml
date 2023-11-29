@@ -19,10 +19,10 @@ spring:
   mvc:
     problemdetails:
       enabled: true
-  datasource:
-    url: jdbc:mysql://localhost:3306/eternal
-    username: eternal
-    password: eternal123
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/eternal
+#    username: eternal
+#    password: eternal123
 
 
   jpa:
