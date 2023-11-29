@@ -9,13 +9,13 @@ import java.util.List;
 import lombok.extern.java.Log;
 
 @Log
-public class DefaultCustomerRepository implements CustomerRepository {
+public class DefaultCustomers implements Customers {
   private DummyService dummyService;
   private Boolean showGdpr;
   private List<Customer> customers = new ArrayList<Customer>();
   private Long currentId = 0L;
 
-  public DefaultCustomerRepository(Boolean showGdpr, DummyService dummyService) {
+  public DefaultCustomers(Boolean showGdpr, DummyService dummyService) {
     this.showGdpr = showGdpr;
     this.dummyService = dummyService;
 
@@ -28,7 +28,7 @@ public class DefaultCustomerRepository implements CustomerRepository {
   @Override
   public List<Customer> findAll() {
     log.info("Returning Customers");
-    return customers.stream().filter(customer -> !this.showGdpr || customer.hasGdpr()).toList();
+    return customers.stream().filter(customer -> !this.showGdpr || customer.getHasGdpr()).toList();
   }
 
   @Override
@@ -43,7 +43,7 @@ public class DefaultCustomerRepository implements CustomerRepository {
   @Override
   public Customer findById(Long id) {
     for (Customer customer : this.customers) {
-      if (customer.id().equals(id)) {
+      if (customer.getId().equals(id)) {
         return customer;
       }
     }

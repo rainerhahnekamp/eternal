@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import com.softarc.eternal.customer.data.CustomerMother;
-import com.softarc.eternal.customer.domain.CustomerRepository;
+import com.softarc.eternal.customer.domain.Customers;
 import com.softarc.eternal.customer.domain.dto.AddCustomer;
 import com.softarc.eternal.customer.web.mapping.CustomerMapper;
 import com.softarc.eternal.customer.web.request.AddCustomerRequest;
@@ -18,7 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerControllerTest {
-  @Mock CustomerRepository repository;
+  @Mock
+  Customers repository;
   @Mock
   CustomerMapper customerMapper;
 
@@ -31,7 +32,7 @@ class CustomerControllerTest {
 
     when(repository.findAll()).thenReturn(Arrays.asList(vanessa, denise));
     when(repository.count()).thenReturn(1L);
-    var controller = new CustomerController(repository, customerMapper);
+    var controller = new CustomerController(repository, customerMapper, customerRepository);
     var customers = controller.findAll();
 
     assertThat(customers).containsExactly(vanessa, denise);
@@ -41,14 +42,14 @@ class CustomerControllerTest {
   @Test
   public void testIndexReturnsCustomersSecond() {
 
-    var controller = new CustomerController(repository, customerMapper);
+    var controller = new CustomerController(repository, customerMapper, customerRepository);
     var count = repository.count();
     assertThat(count).isEqualTo(0L);
   }
 
   @Test
   public void testControllerCallsRepository() {
-    var controller = new CustomerController(repository, customerMapper);
+    var controller = new CustomerController(repository, customerMapper, customerRepository);
     controller.add(new AddCustomerRequest("Konrad", "Schmidt"));
 
     verify(repository).add(captor.capture());
