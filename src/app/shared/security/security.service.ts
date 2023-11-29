@@ -17,6 +17,8 @@ export class SecurityService {
     .select(fromSecurity.selectLoadedUser)
     .pipe(this.#verifyUser);
 
+  readonly signedIn$ = this.store.select(fromSecurity.selectSignedIn);
+
   signIn() {
     this.keycloakService.login();
   }
