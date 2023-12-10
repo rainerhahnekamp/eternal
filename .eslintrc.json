@@ -1,9 +1,13 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
   "overrides": [
     {
-      "files": ["*.ts"],
+      "files": [
+        "*.ts"
+      ],
       "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
@@ -31,7 +35,9 @@
       }
     },
     {
-      "files": ["*.html"],
+      "files": [
+        "*.html"
+      ],
       "extends": [
         "plugin:@angular-eslint/template/recommended",
         "plugin:@angular-eslint/template/accessibility",
@@ -40,12 +46,23 @@
       "rules": {}
     },
     {
-      "files": ["*.ts"],
-      "extends": ["plugin:@ngrx/strict"]
+      "files": [
+        "*.ts"
+      ],
+      "extends": [
+        "plugin:@ngrx/strict"
+      ]
     },
     {
-      "files": ["*.ts"],
-      "extends": ["plugin:@softarc/sheriff/default"]
+      "files": [
+        "*.ts"
+      ],
+      "extends": [
+        "plugin:@softarc/sheriff/default"
+      ]
     }
+  ],
+  "extends": [
+    "plugin:storybook/recommended"
   ]
 }
