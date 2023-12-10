@@ -1,10 +1,10 @@
 import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { NewsletterComponent } from './newsletter/newsletter.component';
-import { SecurityService } from '@app/security';
+import { SecurityService } from 'src/app/shared/security';
 import { inject } from '@angular/core';
 import { filter } from 'rxjs/operators';
-import { Configuration } from '@app/shared';
+import { Configuration } from '@app/shared/config';
 
 export const appRoutes: Routes = [
   {
@@ -14,35 +14,43 @@ export const appRoutes: Routes = [
         const config = inject(Configuration);
 
         if (queryParamMap.has('mock-customers')) {
-          config.updateFeatures({ mockCustomers: queryParamMap.get('mock-customers') == '1' });
+          config.updateFeatures({
+            mockCustomers: queryParamMap.get('mock-customers') == '1',
+          });
         }
         if (queryParamMap.has('mock-holidays')) {
-          config.updateFeatures({ mockHolidays: queryParamMap.get('mock-holidays') == '1' });
+          config.updateFeatures({
+            mockHolidays: queryParamMap.get('mock-holidays') == '1',
+          });
         }
       },
       () => {
         return inject(SecurityService).loaded$.pipe(filter(Boolean));
-      }
+      },
     ],
     children: [
       {
         path: '',
-        component: HomeComponent
+        component: HomeComponent,
       },
       { path: 'home', redirectTo: '' },
-      { path: 'newsletter', component: NewsletterComponent },
-      {
-        path: 'customer',
-        loadChildren: () => import('./customer/customer.routes')
-      },
       {
         path: 'holidays',
-        loadChildren: () => import('./holidays/holidays.routes')
+        loadChildren: () => import('@app/holidays/feature'),
       },
       {
+        path: 'customer',
+        loadChildren: () => import('@app/customers/feature'),
+      },
+      {
+        path: 'bookings',
+        loadChildren: () => import('@app/bookings'),
+      },
+      { path: 'newsletter', component: NewsletterComponent },
+      {
         path: 'diary',
-        loadChildren: () => import('./diary/diary.routes.module')
-      }
-    ]
-  }
+        loadChildren: () => import('@app/diary'),
+      },
+    ],
+  },
 ];
