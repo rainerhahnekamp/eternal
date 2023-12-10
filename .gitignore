@@ -19,6 +19,7 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
+*iml
 
 # Visual Studio Code
 .vscode/*
@@ -36,6 +37,7 @@ yarn-error.log
 /libpeerconnection.log
 testem.log
 /typings
+.nx
 
 # System files
 .DS_Store
@@ -44,6 +46,9 @@ Thumbs.db
 # Playwright
 /test-results
 session.json
-/test-results/
-/playwright-report/
+/playwright-report
 /playwright/.cache/
+
+# Spring
+.gradle
+/test-results/

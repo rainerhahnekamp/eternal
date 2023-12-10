@@ -28,8 +28,12 @@ export function createHoliday(holiday: Partial<Holiday> = {}): Holiday {
       minCount: 5,
       maxCount: 12,
       soldOut: false,
-      onSale: false
+      onSale: false,
     },
-    ...holiday
+    ...holiday,
   };
+}
+
+export function createHolidays(...holidays: Partial<Holiday>[]) {
+  return holidays.map(createHoliday);
 }
