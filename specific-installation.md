@@ -48,6 +48,22 @@ Remove the folder **src/stories**.
 
 Make sure to add the property `staticDirs` to **.storybook/main.ts**.
 
+Also add a **.storybook/preview-head.html**:
+
+```html
+
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+
+```
+
 ## Setup Jest
 
 Install Jest via
@@ -69,18 +85,7 @@ In **angular.json**, remove all properties from `projects.eternal.architect.test
 Create **jest.config.js** with following contents:
 
 ```js
-// all properties are inherited from the Angular's jest builder
-
-/** @type {import('jest').Config} */
-const config = {
-  verbose: true,
-  testMatch: ["<rootDir>/src/app/**/*.spec.ts"],
-  moduleNameMapper: {
-    "@app/(.*)$": "<rootDir>/src/app/$1",
-  },
-};
-
-module.exports = config;
+export default {};
 ```
 
 ## Testing Utils
