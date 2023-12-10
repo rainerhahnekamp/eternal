@@ -82,7 +82,6 @@ export default meta;
 type Story = StoryObj<SliderComponent>;
 
 export const DefaultLook: Story = {
-  name: 'Default Look',
   render: () => ({
     props: {
       images: [
