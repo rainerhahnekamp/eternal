@@ -1,8 +1,7 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { AddressLookuper } from '../address-lookuper.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -26,7 +25,7 @@ import { assertDefined } from '@app/shared/util';
 })
 export class RequestInfoComponent implements OnInit {
   #formBuilder = inject(NonNullableFormBuilder);
-  #lookuper = inject(AddressLookuper);
+  #lookuper = { lookup: (query: string) => of(Boolean(query)) };
 
   formGroup = this.#formBuilder.group({
     address: [''],

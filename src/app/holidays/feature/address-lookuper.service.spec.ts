@@ -13,7 +13,7 @@ describe('Address Lookuper', () => {
   it('should count the queries', () => {
     const lookuper = new AddressLookuper(() => []);
     expect(lookuper.counter).toBe(0);
-    lookuper.lookup('Domgasse');
+    lookuper.lookup('Domgasse 5');
     expect(lookuper.counter).toBe(1);
   });
 });
