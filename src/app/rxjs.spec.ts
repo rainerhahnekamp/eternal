@@ -25,7 +25,7 @@ describe('RxJs', () => {
         y: 20,
         z: 50,
       });
-    })
+    }),
   );
 
   test(
@@ -40,7 +40,7 @@ describe('RxJs', () => {
         y: 20,
         z: 50,
       });
-    })
+    }),
   );
 
   test(
@@ -51,7 +51,7 @@ describe('RxJs', () => {
 
       const dest = combineLatest([s1, s2]).pipe(map(([a, b]) => a + b));
       m.expect(dest).toBeObservable('-a', { a: 3 });
-    })
+    }),
   );
 
   test(
@@ -70,7 +70,7 @@ describe('RxJs', () => {
         map(([, street, streetNumber]) => ({
           street,
           streetNumber,
-        }))
+        })),
       );
       m.expect(destination).toBeObservable('d 5ms h', {
         d: { street: 'Domgasse', streetNumber: '5' },
@@ -78,7 +78,7 @@ describe('RxJs', () => {
       });
       m.flush();
       expect(searchCounter).toBe(2);
-    })
+    }),
   );
 
   test(
@@ -97,7 +97,7 @@ describe('RxJs', () => {
         observable.pipe(filter((data) => !!data));
       const destination = source.pipe(filterTruthy);
       m.expect(destination).toBeObservable('-----f', { f: 1 });
-    })
+    }),
   );
 
   test(
@@ -107,7 +107,7 @@ describe('RxJs', () => {
       const destination$ = source$.pipe(first());
 
       m.expect(destination$).toBeObservable('#', undefined, new EmptyError());
-    })
+    }),
   );
 
   test('asynchronicity', (done) => {
@@ -136,11 +136,11 @@ describe('RxJs', () => {
         d: 'Domgasse 5',
       });
       const dest: Observable<boolean> = source.pipe(
-        switchMap((query) => m.cold('---b', { b: query === 'Domgasse 5' }))
+        switchMap((query) => m.cold('---b', { b: query === 'Domgasse 5' })),
       );
 
       m.expect(dest).toBeObservable('----t', { t: true });
-    })
+    }),
   );
 
   test(
@@ -151,11 +151,11 @@ describe('RxJs', () => {
         d: 'Domgasse 5',
       });
       const dest: Observable<boolean> = source.pipe(
-        mergeMap((query) => m.cold('---b', { b: query === 'Domgasse 5' }))
+        mergeMap((query) => m.cold('---b', { b: query === 'Domgasse 5' })),
       );
 
       m.expect(dest).toBeObservable('---ft', { f: false, t: true });
-    })
+    }),
   );
 
   test(
@@ -166,11 +166,11 @@ describe('RxJs', () => {
         d: 'Domgasse 5',
       });
       const dest: Observable<boolean> = source.pipe(
-        concatMap((query) => m.cold('---b|', { b: query === 'Domgasse 5' }))
+        concatMap((query) => m.cold('---b|', { b: query === 'Domgasse 5' })),
       );
 
       m.expect(dest).toBeObservable('---f---t', { f: false, t: true });
-    })
+    }),
   );
 
   test(
@@ -181,10 +181,10 @@ describe('RxJs', () => {
         d: 'Domgasse 5',
       });
       const dest: Observable<boolean> = source.pipe(
-        exhaustMap((query) => m.cold('---b', { b: query === 'Domgasse 5' }))
+        exhaustMap((query) => m.cold('---b', { b: query === 'Domgasse 5' })),
       );
 
       m.expect(dest).toBeObservable('---f', { f: false, t: true });
-    })
+    }),
   );
 });
