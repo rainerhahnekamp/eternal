@@ -11,7 +11,5 @@ testing-playwright-04-unit-tests-rxjs-starter
 testing-playwright-04-unit-tests-rxjs-solution
 testing-playwright-05-component-integration-tests-starter
 testing-playwright-05-component-integration-tests-solution
-testing-playwright-06-component-integration-tests-tl-starter
-testing-playwright-06-component-integration-tests-tl-solution
-testing-playwright-07-visual-regression-starter
-testing-playwright-07-visual-regression-solution
+testing-playwright-06-visual-regression-starter
+testing-playwright-06-visual-regression-solution
