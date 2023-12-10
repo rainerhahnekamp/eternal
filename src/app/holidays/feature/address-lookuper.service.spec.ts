@@ -9,7 +9,7 @@ import {
   scheduled,
 } from 'rxjs';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { assertType } from './assert-type';
+import { assertType } from '@app/shared/testing';
 import { createMock } from '@testing-library/angular/jest-utils';
 
 describe('Address Lookuper', () => {
@@ -52,7 +52,7 @@ describe('Address Lookuper', () => {
       'https://nominatim.openstreetmap.org/search.php',
       {
         params: new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'),
-      }
+      },
     );
   });
 
@@ -61,7 +61,7 @@ describe('Address Lookuper', () => {
       get(url: string, options: { params: HttpParams }) {
         expect(url).toBe('https://nominatim.openstreetmap.org/search.php');
         expect(options.params).toEqual(
-          new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5')
+          new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'),
         );
 
         return scheduled([['']], asyncScheduler);
@@ -85,7 +85,7 @@ describe('Address Lookuper', () => {
       'https://nominatim.openstreetmap.org/search.php',
       {
         params: new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'),
-      }
+      },
     );
   });
 
@@ -100,7 +100,7 @@ describe('Address Lookuper', () => {
     const [url, { params }] = httpClient.get.mock.calls[0];
     expect(url).toBe('https://nominatim.openstreetmap.org/search.php');
     expect(params).toEqual(
-      new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5')
+      new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'),
     );
   });
 
