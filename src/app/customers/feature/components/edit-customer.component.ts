@@ -59,7 +59,6 @@ export class EditCustomerComponent {
   }
 
   submit(customer: Customer) {
-    console.log('hi');
     this.store.dispatch(
       customersActions.update({
         customer: { ...customer, id: this.customerId },
