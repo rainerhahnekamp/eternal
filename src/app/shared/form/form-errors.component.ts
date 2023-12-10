@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 import { JsonPipe, NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 
@@ -12,5 +12,5 @@ import { MatInputModule } from '@angular/material/input';
   imports: [NgIf, JsonPipe, MatInputModule],
 })
 export class FormErrorsComponent {
-  @Input() control: FormControl | undefined;
+  @Input() control: AbstractControl | undefined;
 }

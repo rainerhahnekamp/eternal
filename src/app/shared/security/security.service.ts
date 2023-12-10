@@ -4,11 +4,12 @@ import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { User } from './security.reducer';
 import { fromSecurity } from './security.selectors';
-import { securityActions } from './security.actions';
+import { KeycloakService } from './keycloak-service';
 
 @Injectable({ providedIn: 'root' })
 export class SecurityService {
   private store = inject(Store);
+  private keycloakService = inject(KeycloakService);
 
   readonly loaded$ = this.store.select(fromSecurity.selectLoaded);
 
@@ -19,11 +20,11 @@ export class SecurityService {
   readonly signedIn$ = this.store.select(fromSecurity.selectSignedIn);
 
   signIn() {
-    this.store.dispatch(securityActions.signIn());
+    this.keycloakService.login();
   }
 
   signOut() {
-    this.store.dispatch(securityActions.signOut());
+    this.keycloakService.logout();
   }
 
   #verifyUser(user$: Observable<undefined | User>) {

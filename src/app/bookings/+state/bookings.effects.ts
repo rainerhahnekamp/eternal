@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs';
 import { bookingsActions } from './bookings.actions';
 import { Booking } from './bookings.reducer';
+import { MessageService } from '@app/shared/ui-messaging';
 
 const bookings: Map<number, Booking[]> = new Map<number, Booking[]>();
 bookings.set(1, [
@@ -39,6 +40,7 @@ bookings.set(3, [
 export class BookingsEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
+  #uiMessage = inject(MessageService);
 
   load$ = createEffect(() => {
     return this.#actions$.pipe(

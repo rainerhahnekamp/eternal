@@ -1,57 +1,41 @@
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { delay, map, tap } from 'rxjs/operators';
+import { createEffect } from '@ngrx/effects';
+import { concatMap, filter, map } from 'rxjs/operators';
 import { securityActions } from './security.actions';
-import { ANONYMOUS_USER } from './security.reducer';
-import { AuthService } from '@auth0/auth0-angular';
 import { isPlatformServer } from '@angular/common';
 import { of } from 'rxjs';
+import { ANONYMOUS_USER } from '@app/shared/security/security.reducer';
+import { KeycloakService } from './keycloak-service';
 
 @Injectable()
 export class SecurityEffects {
-  #actions$ = inject(Actions);
-  #authService = inject(AuthService);
+  #keycloakService = inject(KeycloakService);
   #isServer = isPlatformServer(inject(PLATFORM_ID));
 
-  user$ = createEffect(() => {
+  init$ = createEffect(() => {
     if (this.#isServer) {
       return of(securityActions.loaded({ user: ANONYMOUS_USER }));
     }
 
-    return this.#authService.user$.pipe(
-      delay(1000),
-      map((user) =>
-        securityActions.loaded({
-          user: user
-            ? {
-                id: user.email || '',
-                email: user.email || '',
-                name: user.name || '',
-                anonymous: false,
-              }
-            : ANONYMOUS_USER,
-        }),
-      ),
+    return of(this.#isServer).pipe(
+      filter(() => !this.#isServer),
+      concatMap(() => this.#keycloakService.init()),
+      map((isLoggedIn) => {
+        if (isLoggedIn && this.#keycloakService.profile) {
+          const { sub, email, given_name, family_name, token } =
+            this.#keycloakService.profile;
+          return {
+            id: sub,
+            email,
+            name: `${given_name} ${family_name}`,
+            anonymous: false,
+            bearer: token,
+          };
+        } else {
+          return ANONYMOUS_USER;
+        }
+      }),
+      map((user) => securityActions.loaded({ user })),
     );
   });
-
-  signInUser$ = createEffect(
-    () => {
-      return this.#actions$.pipe(
-        ofType(securityActions.signIn),
-        tap(() => this.#authService.loginWithRedirect()),
-      );
-    },
-    { dispatch: false },
-  );
-
-  signOutUser$ = createEffect(
-    () => {
-      return this.#actions$.pipe(
-        ofType(securityActions.signOut),
-        tap(() => this.#authService.logout()),
-      );
-    },
-    { dispatch: false },
-  );
 }

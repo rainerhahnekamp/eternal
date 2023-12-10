@@ -43,7 +43,7 @@ export class MessageComponent {
   constructor(messageStore: MessageStore) {
     messageStore.messages$.subscribe((message) => {
       this.messages.push(message);
-      window.setTimeout(
+      setTimeout(
         () => (this.messages = this.messages.filter((m) => m !== message)),
         3000,
       );
