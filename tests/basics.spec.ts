@@ -92,9 +92,9 @@ test.describe('Basics', () => {
     await page.getByTestId('btn-customers').click();
 
     await page
-      .locator(
-        "[data-testid=row-customer] p:text('Hugo Brandt') >> .. >> mat-icon",
-      )
+      .getByTestId('row-customer')
+      .filter({ hasText: 'Hugo Brandt' })
+      .getByTestId('btn-edit')
       .click();
     await page.getByTestId('sel-country').click();
     await page.locator('data-testid=opt-country >> text=Austria').click();
