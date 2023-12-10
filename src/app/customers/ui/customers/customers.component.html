@@ -11,7 +11,7 @@
       <mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
-          <mat-cell *matCellDef="let element"
+          <mat-cell *matCellDef="let element" data-testid="name"
             >{{ element | customer }}
           </mat-cell>
         </ng-container>
@@ -31,7 +31,7 @@
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> </mat-header-cell>
           <mat-cell *matCellDef="let element"
-            ><a [routerLink]="['.', element.id]">
+            ><a [routerLink]="['.', element.id]" title="edit">
               <mat-icon>edit</mat-icon>
             </a>
             <mat-slide-toggle
