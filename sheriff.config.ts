@@ -26,6 +26,7 @@ export const sheriffConfig: SheriffConfig = {
       'shared:config',
       'shared:form',
       'shared:master-data',
+      'shared:testing',
       'shared:ui-messaging',
       'shared:util',
     ],
