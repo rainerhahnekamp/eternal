@@ -8,10 +8,9 @@ Each workshop has its main branch but all derive from the main branch.
 
 ## Branches:
 
-- [Modern Spring Backends](https://www.angulararchitects.io/en/training/modern-spring-backends-for-angular/): main-spring
-
-- [Professional Angular Testing (Cypress)](https://www.angulararchitects.io/en/training/professional-angular-testing/): main-testing-cypress
-- [Professional Angular Testing (Playwright)](https://www.angulararchitects.io/en/training/professional-angular-testing-playwright-edition/): main-testing-playwright
-- [E2E Testing with Cypress](https://www.angulararchitects.io/en/training/cypress-workshop/): main-cypress
-- [E2E Testing with Playwright](https://www.angulararchitects.io/en/training/playwright-workshop/): playwright-main
-- NgRx Advanced
+- [Modern Spring Backends](https://www.angulararchitects.io/en/training/modern-spring-backends-for-angular/): main-spring ![build-status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg?branch=main-spring)
+- [Professional Angular Testing (Cypress)](https://www.angulararchitects.io/en/training/professional-angular-testing/): main-testing-cypress ![build-status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg?branch=main-testing-cypress)
+- [Professional Angular Testing (Playwright)](https://www.angulararchitects.io/en/training/professional-angular-testing-playwright-edition/): main-testing-playwright ![build-status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg?branch=main-testing-playwright)
+- [E2E Testing with Cypress](https://www.angulararchitects.io/en/training/cypress-workshop/): main-cypress ![build-status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg?branch=main-cypress)
+- [E2E Testing with Playwright](https://www.angulararchitects.io/en/training/playwright-workshop/): main-playwright ![build-status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg?branch=main-playwright)
+- [NgRx Advanced](https://www.angulararchitects.io/en/training/professional-ngrx-advanced-state-management-best-practices/): main-ngrx ![build-status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg?branch=main-ngrx)
