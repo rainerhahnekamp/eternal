@@ -16,7 +16,7 @@ Add following scripts to the **package.json**:
 
 ```json5
 {
-  e2e: "playwright test",
+  "e2e": "playwright test",
   "e2e:dev": "playwright test --ui",
 }
 ```
@@ -36,16 +36,6 @@ test("has title", async ({ page }) => {
 });
 ```
 
-## Cypress
-
-```bash
-npx ng add @cypress/schematic
-```
-
-Remove the `e2e` property from **cypress.config.json**. In the Playwright version, Cypress only provides component testing.
-
-In **cypress/tsconfig.json**, make sure it only matches against `*.cy.ts` files.
-
 ## Storybook
 
 Install Storybook via
@@ -57,6 +47,22 @@ npx sb init
 Remove the folder **src/stories**.
 
 Make sure to add the property `staticDirs` to **.storybook/main.ts**.
+
+Also add a **.storybook/preview-head.html**:
+
+```html
+
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+
+```
 
 ## Setup Jest
 
@@ -79,18 +85,7 @@ In **angular.json**, remove all properties from `projects.eternal.architect.test
 Create **jest.config.js** with following contents:
 
 ```js
-// all properties are inherited from the Angular's jest builder
-
-/** @type {import('jest').Config} */
-const config = {
-  verbose: true,
-  testMatch: ["<rootDir>/src/app/**/*.spec.ts"],
-  moduleNameMapper: {
-    "@app/(.*)$": "<rootDir>/src/app/$1",
-  },
-};
-
-module.exports = config;
+export default {};
 ```
 
 ## Testing Utils
