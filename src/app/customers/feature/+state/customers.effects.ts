@@ -42,7 +42,7 @@ export class CustomersEffects {
         ),
       ),
 
-      tap(() => this.#router.navigateByUrl('/customers')),
+      tap(() => this.#router.navigateByUrl('/customer')),
       map(() => customersActions.load({ page: 1 })),
     );
   });
@@ -55,6 +55,7 @@ export class CustomersEffects {
           .put<Customer[]>(this.#baseUrl, customer)
           .pipe(tap(() => this.#uiMessage.info('Customer has been updated'))),
       ),
+      tap(() => this.#router.navigateByUrl('/customer')),
       map(() => customersActions.load({ page: 1 })),
     );
   });
@@ -65,7 +66,7 @@ export class CustomersEffects {
       concatMap(({ customer }) =>
         this.#http.delete<Customer[]>(`${this.#baseUrl}/${customer.id}`),
       ),
-      tap(() => this.#router.navigateByUrl('/customers')),
+      tap(() => this.#router.navigateByUrl('/customer')),
       map(() => customersActions.load({ page: 1 })),
     );
   });

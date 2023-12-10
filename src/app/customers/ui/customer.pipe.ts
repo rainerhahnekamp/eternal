@@ -10,6 +10,6 @@ export class CustomerPipe implements PipeTransform {
     if (!customer.name && !customer.firstname) {
       return '-';
     }
-    return `${customer.name}, ${customer.firstname}`;
+    return `${customer.firstname} ${customer.name}`;
   }
 }

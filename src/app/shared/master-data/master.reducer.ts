@@ -10,6 +10,7 @@ export const countries = [
   ['DK', 'Denmark'],
   ['ES', 'Spain'],
   ['FR', 'France'],
+  ['GR', 'Greece'],
   ['HU', 'Hungary'],
   ['IN', 'India'],
   ['IT', 'Italy'],
