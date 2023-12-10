@@ -1,6 +1,10 @@
 <h2>Customers</h2>
 <p class="my-2">
-  <a [routerLink]="['.', 'new']" color="primary" mat-raised-button
+  <a
+    [routerLink]="['.', 'new']"
+    color="primary"
+    data-testid="btn-customers-add"
+    mat-raised-button
     >Add Customer</a
   >
 </p>
@@ -11,7 +15,10 @@
       <mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
-          <mat-cell *matCellDef="let element" data-testid="name"
+          <mat-cell
+            *matCellDef="let element"
+            data-testid="name"
+            [id]="'customer-' + element.id"
             >{{ element | customer }}
           </mat-cell>
         </ng-container>
@@ -31,7 +38,11 @@
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> </mat-header-cell>
           <mat-cell *matCellDef="let element"
-            ><a [routerLink]="['.', element.id]" title="edit">
+            ><a
+              [routerLink]="['.', element.id]"
+              title="Edit Customer"
+              data-testid="btn-edit"
+            >
               <mat-icon>edit</mat-icon>
             </a>
             <mat-slide-toggle
@@ -47,6 +58,7 @@
         <mat-row
           *matRowDef="let row; columns: displayedColumns"
           data-testid="row-customer"
+          [attr.aria-labelledby]="'customer-' + row.id"
         ></mat-row>
       </mat-table>
       <mat-paginator
