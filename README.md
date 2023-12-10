@@ -12,7 +12,7 @@ For more information about the agenda visit: [Workshop Agenda](https://www.angul
 
 - Main: ![build-status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg?branch=main-testing-playwright) 
 - E2E Basics I: ![build-status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg?branch=testing-playwright-01-e2e-basics-solution)
-- ESE Advanced I: ![build-status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg?branch=testing-playwright-02a-e2e-advanced-i-solution)
+  - ESE Advanced I: ![build-status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg?branch=testing-playwright-02a-e2e-advanced-i-solution)
 - ESE Advanced II: ![build-status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg?branch=testing-playwright-02b-e2e-advanced-ii-solution)
 - Unit Tests: ![build-status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg?branch=testing-playwright-03-unit-tests-async-mock-solution)
 - RxJs: ![build-status](https://github.com/rainerhahnekamp/eternal/actions/workflows/build.yml/badge.svg?branch=testing-playwright-04-unit-tests-rxjs-solution)
