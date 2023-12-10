@@ -1,17 +1,20 @@
 import { holidaysActions } from './holidays.actions';
 import { HolidaysEffects } from './holidays.effects';
-import { marbles } from 'rxjs-marbles';
+import { marbles } from 'rxjs-marbles/jest';
 import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Actions } from '@ngrx/effects';
-import { Configuration } from '@app/shared';
-import { Holiday } from '@app/holidays/model';
+import { Configuration } from '@app/shared/config';
+import { createHolidays } from '@app/holidays/model';
 
 it(
-  'should test find$',
+  'should test load$',
   marbles((m) => {
     const httpClient = {
-      get: () => m.cold('---a', { a: [{ id: 1, imageUrl: '/pyramids.jpg' }] }),
+      get: () =>
+        m.cold('---a', {
+          a: createHolidays({ id: 1, imageUrl: '/pyramids.jpg' }),
+        }),
     };
     const actions$ = m.cold('a', { a: holidaysActions.load() });
 
@@ -28,14 +31,12 @@ it(
     }).inject(HolidaysEffects);
 
     m.expect(effect.load$).toBeObservable('3ms a', {
-      a: holidaysActions.loadSuccess({
-        holidays: [
-          {
-            id: 1,
-            imageUrl: 'http://api.eternal-holidays.net/pyramids.jpg',
-          } as unknown as Holiday,
-        ],
+      a: holidaysActions.loaded({
+        holidays: createHolidays({
+          id: 1,
+          imageUrl: 'http://api.eternal-holidays.net/pyramids.jpg',
+        }),
       }),
     });
-  })
+  }),
 );
