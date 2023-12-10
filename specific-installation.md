@@ -16,7 +16,7 @@ Add following scripts to the **package.json**:
 
 ```json5
 {
-  e2e: "playwright test",
+  "e2e": "playwright test",
   "e2e:dev": "playwright test --ui",
 }
 ```
@@ -35,16 +35,6 @@ test("has title", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Welcome to Eternal" })).toBeVisible();
 });
 ```
-
-## Cypress
-
-```bash
-npx ng add @cypress/schematic
-```
-
-Remove the `e2e` property from **cypress.config.json**. In the Playwright version, Cypress only provides component testing.
-
-In **cypress/tsconfig.json**, make sure it only matches against `*.cy.ts` files.
 
 ## Storybook
 
