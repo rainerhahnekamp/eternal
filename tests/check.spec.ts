@@ -1,15 +1,18 @@
-import { expect, test } from '@playwright/test';
+import { expect, test as base } from '@playwright/test';
+import {
+  sidemenuFixture,
+  SidemenuFixtures,
+} from './fixtures/sidemenu.fixtures';
+
+const test = base.extend<SidemenuFixtures>({ sidemenuFixture });
 
 test.describe('init', () => {
-  test.only('request brochure', async ({ page }) => {
+  test.only('request brochure', async ({ page, sidemenu }) => {
     await page.goto('');
-    await page.getByRole('link', { name: 'Holidays', exact: true }).click();
-    await expect(
-      page.locator('app-holiday-card').filter({ hasText: 'Vienna' }),
-    ).toBeVisible();
+    await sidemenu.open('Holidays');
     await page
-      .locator('app-holiday-card')
-      .filter({ hasText: 'Vienna' })
+      .locator('app-holiday-card', { hasText: 'Vienna' })
+      .or(page.locator('app-holiday-card', { hasText: 'Wien' }))
       .getByTestId('btn-brochure')
       .click();
 
