@@ -1,4 +1,5 @@
-import { fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
+import { render, screen } from '@testing-library/angular';
 import {
   HttpTestingController,
   provideHttpClientTesting,
@@ -11,12 +12,10 @@ import { HolidaysEffects } from '../+state/holidays.effects';
 import { Configuration } from '@app/shared/config';
 import { createHolidays } from '@app/holidays/model';
 import { provideHttpClient } from '@angular/common/http';
-import { By } from '@angular/platform-browser';
 
 describe('Holidays Component', () => {
-  const setup = () =>
-    TestBed.configureTestingModule({
-      imports: [HolidaysComponent],
+  const setup = async () =>
+    render(HolidaysComponent, {
       providers: [
         provideStore(),
         provideState(holidaysFeature),
@@ -30,20 +29,21 @@ describe('Holidays Component', () => {
           },
         },
       ],
-    }).createComponent(HolidaysComponent);
+      excludeComponentDeclaration: true,
+    });
 
-  it('should instantiate', waitForAsync(() => {
-    const fixture = setup();
-    expect(fixture.componentInstance).toBeInstanceOf(HolidaysComponent);
+  it('should instantiate', fakeAsync(async () => {
+    await setup();
+    await screen.findByText('Choose among our Holidays');
   }));
 
-  it('should show holiday cards', fakeAsync(() => {
-    const fixture = setup();
+  it('should show holiday cards', fakeAsync(async () => {
+    await setup();
     const controller = TestBed.inject(HttpTestingController);
     const holidays = createHolidays({ title: 'Vienna' }, { title: 'London' });
     controller.expectOne((req) => !!req.url.match(/holiday/)).flush(holidays);
 
-    const cards = fixture.debugElement.queryAll(By.css('app-holiday-card'));
-    expect(cards.length).toBe(2);
+    await screen.findByText('Vienna');
+    await screen.findByText('London');
   }));
 });
