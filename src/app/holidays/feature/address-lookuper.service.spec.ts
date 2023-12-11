@@ -1,5 +1,4 @@
 import { AddressLookuper } from './address-lookuper.service';
-import { expect } from '@jest/globals';
 
 describe('Address Lookuper', () => {
   it('should pass addresses in the constructor', () => {

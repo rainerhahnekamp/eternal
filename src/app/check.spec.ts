@@ -1,4 +1,3 @@
-import { expect } from '@jest/globals';
 import { TestBed } from '@angular/core/testing';
 import { NewsletterComponent } from '@app/newsletter/newsletter.component';
 
