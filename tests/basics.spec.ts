@@ -10,7 +10,6 @@ const test = base.extend<CustomersFixtures & ShellFixtures>({
   ...shellFixtures,
 });
 test.describe('Basics', () => {
-  test.beforeEach(async () => {});
   test.beforeEach(async ({ page }) => {
     await page.goto('');
   });
@@ -23,6 +22,24 @@ test.describe('Basics', () => {
     await expect(page.getByTestId('txt-greeting-1')).toContainText(
       'imaginary travel agency',
     );
+  });
+
+  test('add Nicholas Dimou as new customer', async ({ sidemenuPage }) => {
+    await sidemenuPage
+      .select('Customers')
+      .then((customersPage) => customersPage.add())
+      .then((customerPage) =>
+        customerPage.fillIn({
+          firstname: 'Nicholas',
+          lastname: 'Dimou',
+          country: 'Greece',
+          birthday: new Date(1978, 3, 1),
+        }),
+      )
+      .then((customerPage) => customerPage.submit())
+      .then((customersPage) =>
+        expect(customersPage.rowByName('Nicholas Dimou')).toBeVisible(),
+      );
   });
 
   test.describe('Customers', () => {

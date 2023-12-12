@@ -1,4 +1,5 @@
 import { Page } from '@playwright/test';
+import { CustomersPage } from './customers-page';
 
 interface CustomerData {
   firstname?: string;
@@ -34,13 +35,16 @@ export class CustomerPage {
         .getByRole('option', { name: customerData.country })
         .click();
     }
+
+    return this;
   }
 
   async remove() {
     await this.page.getByRole('button', { name: 'Delete' }).click();
   }
 
-  async submit() {
+  async submit(): Promise<CustomersPage> {
     await this.page.getByRole('button', { name: 'Save' }).click();
+    return new CustomersPage(this.page);
   }
 }
