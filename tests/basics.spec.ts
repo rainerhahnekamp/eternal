@@ -23,6 +23,7 @@ test.describe('Basics', () => {
       'imaginary travel agency',
     );
   });
+
   test.describe('Customers', () => {
     test.beforeEach(async ({ sidemenuPage }) => {
       await sidemenuPage.select('Customers');
@@ -44,22 +45,17 @@ test.describe('Basics', () => {
     });
 
     test('add Nicholas Dimou as new customer', async ({
-      page,
       customersPage,
       customerPage,
     }) => {
-      page.on('request', (request) => console.log(request.url()));
       await customersPage.add();
-
-      await test.step('add customer', async () => {
-        await customerPage.fillIn({
-          firstname: 'Nicholas',
-          lastname: 'Dimou',
-          country: 'Greece',
-          birthday: new Date(1978, 3, 1),
-        });
-        await customerPage.submit();
+      await customerPage.fillIn({
+        firstname: 'Nicholas',
+        lastname: 'Dimou',
+        country: 'Greece',
+        birthday: new Date(1978, 3, 1),
       });
+      await customerPage.submit();
 
       await expect(customersPage.rowByName('Nicholas Dimou')).toBeVisible();
     });

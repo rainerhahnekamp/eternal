@@ -3,7 +3,7 @@ import { CustomerPage } from './customer-page';
 
 export class CustomersPage {
   constructor(private page: Page) {}
-
+  readonly addButton = this.page.getByRole('link', { name: 'Add Customer' });
   rowsLocator = this.page.getByTestId('row-customer');
 
   rowByName(name: string) {
@@ -12,7 +12,7 @@ export class CustomersPage {
 
   async add(): Promise<CustomerPage> {
     const customerPage = new CustomerPage(this.page);
-    await this.page.getByRole('link', { name: 'Add Customer' }).click();
+    await this.addButton.click();
     return customerPage;
   }
 
