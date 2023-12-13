@@ -6,6 +6,8 @@ import {
 } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Configuration } from '@app/shared/config';
+import { ChatService } from '@app/chat/chat.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-home',
@@ -34,9 +36,31 @@ import { Configuration } from '@app/shared/config';
           >Mock Holidays
         </mat-slide-toggle>
       </p>
-    </form> `,
+    </form>
+    <div class="w-72">
+      <button class="my-4" mat-raised-button (click)="enableWebsocket()">
+        Enable Chat
+      </button>
+
+      @switch (chatService.status()) {
+        @case ('failed') {
+          <p
+            class="border border-red-400 rounded bg-red-100 px-4 py-3 text-red-700"
+          >
+            Could not establish connection
+          </p>
+        }
+        @case ('connected') {
+          <p
+            class="border border-green-400 rounded bg-green-100 px-4 py-3 text-green-700"
+          >
+            Connection established
+          </p>
+        }
+      }
+    </div>`,
   standalone: true,
-  imports: [ReactiveFormsModule, MatSlideToggleModule],
+  imports: [ReactiveFormsModule, MatSlideToggleModule, MatButtonModule],
 })
 export class HomeComponent implements OnInit {
   config = inject(Configuration);
@@ -44,6 +68,7 @@ export class HomeComponent implements OnInit {
     mockCustomers: [true],
     mockHolidays: [true],
   });
+  chatService = inject(ChatService);
 
   mockCustomers = new FormControl(true, {
     nonNullable: true,
@@ -61,5 +86,9 @@ export class HomeComponent implements OnInit {
     this.formGroup.valueChanges.subscribe(() =>
       this.config.updateFeatures(this.formGroup.getRawValue()),
     );
+  }
+
+  enableWebsocket() {
+    this.chatService.connect();
   }
 }

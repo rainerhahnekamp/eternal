@@ -5,6 +5,7 @@ import { SecurityService } from 'src/app/shared/security';
 import { inject } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { Configuration } from '@app/shared/config';
+import { ChatComponent } from '@app/chat/chat.component';
 
 export const appRoutes: Routes = [
   {
@@ -51,6 +52,7 @@ export const appRoutes: Routes = [
         path: 'diary',
         loadChildren: () => import('@app/diary'),
       },
+      { path: 'chat', component: ChatComponent },
     ],
   },
 ];
