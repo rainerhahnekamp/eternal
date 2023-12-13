@@ -7,6 +7,7 @@ import {
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Configuration } from '@app/shared/config';
 import { ChatService } from '@app/chat/chat.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-home',
@@ -41,21 +42,25 @@ import { ChatService } from '@app/chat/chat.service';
         Enable Chat
       </button>
 
-      <p
-        class="border border-red-400 rounded bg-red-100 px-4 py-3 text-red-700"
-        *ngIf="chatService.status() === 'failed'"
-      >
-        Could not establish connection
-      </p>
-      <p
-        class="border border-green-400 rounded bg-green-100 px-4 py-3 text-green-700"
-        *ngIf="chatService.status() === 'connected'"
-      >
-        Connection established
-      </p>
+      @switch (chatService.status()) {
+        @case ('failed') {
+          <p
+            class="border border-red-400 rounded bg-red-100 px-4 py-3 text-red-700"
+          >
+            Could not establish connection
+          </p>
+        }
+        @case ('connected') {
+          <p
+            class="border border-green-400 rounded bg-green-100 px-4 py-3 text-green-700"
+          >
+            Connection established
+          </p>
+        }
+      }
     </div>`,
   standalone: true,
-  imports: [ReactiveFormsModule, MatSlideToggleModule],
+  imports: [ReactiveFormsModule, MatSlideToggleModule, MatButtonModule],
 })
 export class HomeComponent implements OnInit {
   config = inject(Configuration);

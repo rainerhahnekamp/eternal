@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { ApplicationRef, inject, Injectable, signal } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { getWsConnect } from './web-socket-client';
@@ -12,9 +12,10 @@ export class ChatService {
   status = this.#status.asReadonly();
   #messages = signal<Message[]>([]);
   messages = this.#messages.asReadonly();
+  appRef = inject(ApplicationRef);
 
   connect() {
-    getWsConnect()
+    getWsConnect(() => this.appRef.tick())
       .pipe(
         catchError((err) => {
           console.error(err);

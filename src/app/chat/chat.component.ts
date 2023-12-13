@@ -8,7 +8,7 @@ import { ChatService } from './chat.service';
   selector: 'app-chat',
   template: ` <mat-list>
     <div mat-subheader>Messages</div>
-    @for (message of messages; track message.id) {
+    @for (message of messages(); track message.sent) {
       <mat-list-item>
         <mat-icon matListItemIcon>chat</mat-icon>
         <div matListItemTitle>{{ message.text }}</div>
