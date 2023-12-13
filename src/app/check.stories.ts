@@ -26,6 +26,8 @@ import { MatIconModule } from '@angular/material/icon';
       <div>
         <img [src]="value.url" alt="{{ value.name }}" />
       </div>
+    } @else {
+      <p>No Images are available</p>
     }`,
   styles: [
     `
@@ -88,6 +90,14 @@ export const DefaultLook: Story = {
         { url: 'vienna.jpg', name: 'Vienna' },
         { url: 'london.jpg', name: 'London' },
       ],
+    },
+  }),
+};
+
+export const NoImages: Story = {
+  render: () => ({
+    props: {
+      images: [],
     },
   }),
 };

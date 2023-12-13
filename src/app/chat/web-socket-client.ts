@@ -6,13 +6,13 @@ type Data = { message?: string; status?: string };
 declare global {
   interface Window {
     mockedClient?: (data: Data) => void;
-    Cypress: unknown;
+    playwright: unknown;
   }
 }
 
 export const getWsConnect = (triggerCd: () => void): Observable<Data> => {
-  if (window.Cypress) {
-    console.info('WebSocket is controlled by Cypress');
+  if (window.playwright) {
+    console.info('WebSocket is controlled by Playwright');
     return new Observable<Data>((subscriber) => {
       window.mockedClient = (data: Data) => {
         subscriber.next(data);

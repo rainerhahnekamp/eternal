@@ -59,8 +59,8 @@ describe('Address Lookuper', () => {
   it(
     'should test with RxJs marbles',
     marbles((m) => {
-      spy.mockReturnValue(m.cold('750ms r', { r: ['Domgasse 5'] }));
-      m.expect(lookuper.lookup('Domgasse 5')).toBeObservable('750ms b', {
+      spy.mockReturnValue(m.cold('750ms (r|)', { r: ['Domgasse 5'] }));
+      m.expect(lookuper.lookup('Domgasse 5')).toBeObservable('750ms (b|)', {
         b: true,
       });
     }),

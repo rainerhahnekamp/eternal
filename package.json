@@ -14,7 +14,8 @@
     "e2e": "playwright test",
     "e2e:dev": "playwright test --ui",
     "storybook": "ng run eternal:storybook",
-    "build-storybook": "ng run eternal:build-storybook"
+    "build-storybook": "ng run eternal:build-storybook",
+    "websocket:start": "node ./ws-app/app.mjs"
   },
   "private": true,
   "dependencies": {

@@ -1,0 +1,20 @@
+import { expect, test } from '@playwright/test';
+
+test('Web Socket', async ({ page }) => {
+  await page.goto('');
+  await page.evaluate(() => (window.playwright = true));
+  page.on('websocket', (ws) => {
+    ws.on('framereceived', (event) =>
+      console.log(`Websocket received: ${event.payload}`),
+    );
+  });
+  await page.getByRole('button', { name: 'Enable Chat' }).click();
+  await page.evaluate(() =>
+    window.mockedClient({ message: 'Hello from Playwright' }),
+  );
+  await page.getByRole('link', { name: 'Chat' }).click();
+
+  await expect(page.getByTestId('chat-message')).toContainText(
+    'Hello from Playwright',
+  );
+});

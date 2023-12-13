@@ -11,7 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-home',
-  template: `<h2 data-testid="greeting">Welcome to Eternal</h2>
+  template: `<div data-testid="home">
+    <h2 data-testid="greeting">Welcome to Eternal</h2>
     <p data-testid="txt-greeting-1">
       Eternal is an imaginary travel agency and is used as training application
       for Angular developers.
@@ -58,7 +59,8 @@ import { MatButtonModule } from '@angular/material/button';
           </p>
         }
       }
-    </div>`,
+    </div>
+  </div>`,
   standalone: true,
   imports: [ReactiveFormsModule, MatSlideToggleModule, MatButtonModule],
 })

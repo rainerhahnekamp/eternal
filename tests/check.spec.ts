@@ -12,7 +12,7 @@ const test = base.extend<SidemenuFixtures & HolidaysFixtures>({
 });
 
 test.describe('init', () => {
-  test.only('request brochure', async ({ page, sidemenu, holidays }) => {
+  test('request brochure', async ({ page, sidemenu, holidays }) => {
     await page.goto('');
     page.route('https://api.eternal-holidays.net/holiday', (route) =>
       route.fulfill({
@@ -26,5 +26,12 @@ test.describe('init', () => {
     await page.getByTestId('address').fill('Domgasse 5');
     await page.getByTestId('btn-search').click();
     await expect(page.getByTestId('lookup-result')).toHaveText('Brochure sent');
+  });
+
+  test('hover', async ({ page }) => {
+    await page.goto('');
+    await page.getByTestId('btn-holidays').hover();
+
+    await expect(page.getByTestId('home')).toHaveScreenshot('sidemenu.png');
   });
 });
