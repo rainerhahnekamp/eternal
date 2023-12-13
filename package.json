@@ -9,7 +9,8 @@
     "test": "ng test",
     "test:ci": "ng test --source-map=false --browsers=ChromeHeadless --watch=false",
     "lint": "ng lint",
-    "verify": "npm run test:ci && npm run lint"
+    "verify": "npm run test:ci && npm run lint",
+    "websocket:start": "node ./ws-app/app.mjs"
   },
   "private": true,
   "dependencies": {

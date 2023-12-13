@@ -27,5 +27,18 @@
         >
       </li>
     }
+
+    @if (chatService.status() === "connected") {
+      <li>
+        <a
+          data-testid="btn-chat"
+          mat-raised-button
+          routerLink="/chat"
+          [matBadge]="chatService.messages().length"
+          [matBadgeHidden]="chatService.messages().length === 0"
+          >Chat</a
+        >
+      </li>
+    }
   </ul>
 }
