@@ -45,7 +45,7 @@ export const appConfig: ApplicationConfig = {
       ]),
       withFetch(),
     ),
-    provideStoreDevtools(),
+    provideStoreDevtools({connectInZone: true}),
     ...provideSecurity,
     ...sharedMasterDataProvider,
     ...sharedUiMessagingProvider,
