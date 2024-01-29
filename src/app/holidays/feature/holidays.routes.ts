@@ -5,10 +5,12 @@ import { HolidaysEffects } from './+state/holidays.effects';
 import { holidaysFeature } from './+state/holidays.reducer';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { RequestInfoComponent } from './request-info/request-info.component';
+import { apiCheckGuard } from './api-check.guard';
 
 export const holidaysRoutes: Routes = [
   {
     path: '',
+    canActivate: [apiCheckGuard],
     providers: [
       provideState(holidaysFeature),
       provideEffects([HolidaysEffects]),

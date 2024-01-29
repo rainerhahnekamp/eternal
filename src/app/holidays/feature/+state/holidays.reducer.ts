@@ -5,14 +5,18 @@ import { Holiday } from '@app/holidays/model';
 export interface HolidaysState {
   holidays: Holiday[];
   favouriteIds: number[];
+  selectedId: number | undefined;
 }
 
-const initialState: HolidaysState = { holidays: [], favouriteIds: [] };
+const initialState: HolidaysState = { holidays: [], favouriteIds: [], selectedId: undefined };
 
 export const holidaysFeature = createFeature({
   name: 'holidays',
   reducer: createReducer<HolidaysState>(
     initialState,
+    on(holidaysActions.select, (state, {id}) => ({
+      ...state, selectedId: id
+    })),
     on(
       holidaysActions.loaded,
       (state, { holidays }): HolidaysState => ({

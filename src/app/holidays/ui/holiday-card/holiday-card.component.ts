@@ -24,6 +24,7 @@ import { Holiday } from '@app/holidays/model';
 })
 export class HolidayCardComponent {
   @Input() holiday: (Holiday & { isFavourite: boolean }) | undefined;
+  @Input() requestBrochure = true;
   @Output() addFavourite = new EventEmitter<number>();
   @Output() removeFavourite = new EventEmitter<number>();
 }

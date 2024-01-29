@@ -1,17 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType, OnInitEffects } from '@ngrx/effects';
 import { concatMap, map, switchMap } from 'rxjs/operators';
 import { holidaysActions } from './holidays.actions';
 import { Configuration } from '@app/shared/config';
 import { Holiday } from '@app/holidays/model';
+import { Action } from '@ngrx/store';
 
 @Injectable()
-export class HolidaysEffects {
+export class HolidaysEffects implements OnInitEffects {
   #actions$ = inject(Actions);
   #httpClient = inject(HttpClient);
   #config = inject(Configuration);
   #baseUrl = '/holiday';
+
+  ngrxOnInitEffects(): Action {
+    return holidaysActions.load();
+  }
 
   load$ = createEffect(() => {
     return this.#actions$.pipe(

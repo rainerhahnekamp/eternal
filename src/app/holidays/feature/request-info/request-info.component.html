@@ -1,29 +1,40 @@
-<h2>{{ title }}</h2>
+<h2>Get your brochure and enjoy your holiday</h2>
 <p>
   Please fill in your address and below and we will send you a brochure with
   more information.
 </p>
-<form (ngSubmit)="search()" [formGroup]="formGroup">
-  <p>
-    <mat-form-field>
-      <mat-label>Address</mat-label>
-      <input data-testid="address" formControlName="address" matInput />
-      <mat-icon matSuffix>location_on</mat-icon>
-      <mat-hint>Please enter your address</mat-hint>
-    </mat-form-field>
-  </p>
-  <button mat-raised-button type="Button">Cancel</button>
-  <button
-    color="primary"
-    data-testid="btn-search"
-    mat-raised-button
-    type="submit"
-  >
-    Send
-  </button>
-</form>
-@if (lookupResult$ | async; as lookupResult) {
-  <p data-testid="lookup-result" aria-live="assertive" role="status">
-    {{ lookupResult }}
-  </p>
-}
+<div class="flex items-center gap-x-16">
+  <div>
+    <form (ngSubmit)="search()" [formGroup]="formGroup">
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <input data-testid="inp-address" formControlName="address" matInput />
+        <mat-icon matSuffix>location_on</mat-icon>
+        <mat-hint>Please enter your address</mat-hint>
+      </mat-form-field>
+      <div class="flex justify-evenly my-4">
+        <button mat-raised-button type="Button">Cancel</button>
+        <button
+          color="primary"
+          data-testid="btn-search"
+          mat-raised-button
+          type="submit"
+          [disabled]="formGroup.invalid"
+        >
+          Send
+        </button>
+      </div>
+    </form>
+    <p
+      data-testid="txt-message"
+      class="text-center h-6"
+      aria-live="assertive"
+      role="status"
+    >
+      @if (lookupResult()) {
+        {{ lookupResult() }}
+      }
+    </p>
+  </div>
+  <app-request-info-holiday-card />
+</div>

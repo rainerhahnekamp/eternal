@@ -11,7 +11,14 @@ const selectHolidaysWithFavourite = createSelector(
     })),
 );
 
+const selectSelected = createSelector(
+  holidaysFeature.selectSelectedId,
+  selectHolidaysWithFavourite,
+  (id, holidays) => holidays.find((holiday) => holiday.id === id),
+);
+
 export const fromHolidays = {
   get: holidaysFeature.selectHolidays,
   selectHolidaysWithFavourite,
+  selectSelected
 };

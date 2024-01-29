@@ -9,8 +9,8 @@
     >
       <mat-card-header>
         <mat-card-title [id]="'holiday-card-' + holiday.id">
-          {{ holiday.title }}</mat-card-title
-        >
+          {{ holiday.title }}
+        </mat-card-title>
         <mat-card-subtitle>{{ holiday.teaser }}</mat-card-subtitle>
       </mat-card-header>
 
@@ -49,13 +49,15 @@
             >favorite_outlined
           </mat-icon>
         }
-        <a
-          [routerLink]="['./request-info', holiday.id]"
-          data-testid="btn-brochure"
-          mat-raised-button
-        >
-          Get a Brochure
-        </a>
+        @if (requestBrochure) {
+          <a
+            [routerLink]="['./request-info', holiday.id]"
+            data-testid="btn-brochure"
+            mat-raised-button
+          >
+            Get a Brochure
+          </a>
+        }
       </mat-card-actions>
     </mat-card>
   }
