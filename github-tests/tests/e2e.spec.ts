@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 test.describe('Eternal', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('');
+    await page.getByText('Application is ready').waitFor();
   });
   test('Home', async ({ page }) => {
     await expect(page.getByText('Welcome to Eternal')).toBeVisible();
