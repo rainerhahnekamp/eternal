@@ -33,7 +33,6 @@ export class RequestInfoComponent {
   lookupResult = signal('');
 
   constructor() {
-    console.log('component ready');
     effect(() => {
       const address = this.address();
       if (!address) {
@@ -44,7 +43,6 @@ export class RequestInfoComponent {
   }
 
   async search() {
-    console.log('received input');
     const found = await lastValueFrom(
       this.#lookuper.lookup(this.formGroup.getRawValue().address),
     );
