@@ -19,7 +19,7 @@ export const holidaysRoutes: Routes = [
         component: HolidaysComponent,
       },
       {
-        path: 'request-info',
+        path: 'request-info/:holidayId',
         component: RequestInfoComponent,
       },
     ],

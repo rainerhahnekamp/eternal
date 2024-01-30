@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { lastValueFrom } from 'rxjs';
 import { AddressLookuper } from '../address-lookuper.service';
@@ -27,7 +27,12 @@ export class RequestInfoComponent {
     address: [''],
   });
   title = 'Request More Information';
+  address = input('');
   lookupResult = signal('');
+
+  constructor() {
+    // effect(() => this.formGroup.setValue({ address: this.address() }));
+  }
 
   async search() {
     const found = await lastValueFrom(
