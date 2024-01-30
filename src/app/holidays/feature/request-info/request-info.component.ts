@@ -2,22 +2,16 @@ import { Component, effect, inject, input, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { lastValueFrom } from 'rxjs';
 import { AddressLookuper } from '../address-lookuper.service';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
+import { MatFormField } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-request-info',
   templateUrl: './request-info.component.html',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatButtonModule,
-  ],
+  imports: [ReactiveFormsModule, MatFormField, MatIcon, MatInput, MatButton],
 })
 export class RequestInfoComponent {
   #formBuilder = inject(NonNullableFormBuilder);
@@ -31,7 +25,14 @@ export class RequestInfoComponent {
   lookupResult = signal('');
 
   constructor() {
-    effect(() => this.formGroup.setValue({ address: this.address() ?? '' }));
+    console.log('component ready');
+    effect(() => {
+      const address = this.address();
+      if (!address) {
+        return;
+      }
+      this.formGroup.patchValue({ address });
+    });
   }
 
   async search() {
