@@ -42,5 +42,6 @@ export default defineConfig({
     cwd: '..',
     command: 'npm run start',
     url: 'http://localhost:4200',
+    reuseExistingServer: true,
   },
 });

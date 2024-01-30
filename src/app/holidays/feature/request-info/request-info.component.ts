@@ -1,14 +1,11 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { lastValueFrom } from 'rxjs';
 import { AddressLookuper } from '../address-lookuper.service';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { assertDefined } from '@app/shared/util';
+import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-request-info',
@@ -16,15 +13,15 @@ import { assertDefined } from '@app/shared/util';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatButtonModule,
-    AsyncPipe,
-    NgIf,
+    MatFormField,
+    MatIcon,
+    MatLabel,
+    MatInput,
+    MatButton,
+    MatHint,
   ],
 })
-export class RequestInfoComponent implements OnInit {
+export class RequestInfoComponent {
   #formBuilder = inject(NonNullableFormBuilder);
   #lookuper = inject(AddressLookuper);
 
@@ -32,25 +29,23 @@ export class RequestInfoComponent implements OnInit {
     address: [''],
   });
   title = 'Request More Information';
-  @Input() address = '';
-  submitter$ = new Subject<void>();
-  lookupResult$: Observable<string> | undefined;
+  address = input('');
+  lookupResult = signal('');
 
-  ngOnInit(): void {
-    if (this.address) {
-      this.formGroup.setValue({ address: this.address });
-    }
-
-    this.lookupResult$ = this.submitter$.pipe(
-      switchMap(() => {
-        assertDefined(this.formGroup.value.address);
-        return this.#lookuper.lookup(this.formGroup.value.address);
-      }),
-      map((found) => (found ? 'Brochure sent' : 'Address not found')),
-    );
+  constructor() {
+    effect(() => {
+      const address = this.address();
+      if (!address) {
+        return;
+      }
+      this.formGroup.patchValue({ address });
+    });
   }
 
-  search(): void {
-    this.submitter$.next();
+  async search() {
+    const found = await lastValueFrom(
+      this.#lookuper.lookup(this.formGroup.getRawValue().address),
+    );
+    this.lookupResult.set(found ? 'Brochure sent' : 'Address not found');
   }
 }

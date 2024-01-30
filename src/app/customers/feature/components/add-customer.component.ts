@@ -1,4 +1,3 @@
-import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CustomerComponent } from '@app/customers/ui';
@@ -15,7 +14,7 @@ import { customersActions } from '@app/customers/feature/+state/customers.action
     [showDeleteButton]="false"
   ></app-customer>`,
   standalone: true,
-  imports: [CustomerComponent, NgIf, AsyncPipe],
+  imports: [CustomerComponent],
 })
 export class AddCustomerComponent {
   #store = inject(Store);

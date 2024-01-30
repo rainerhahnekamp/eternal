@@ -1,11 +1,10 @@
 import {
   Component,
+  effect,
   EventEmitter,
   inject,
-  Input,
-  OnChanges,
+  input,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import {
   NonNullableFormBuilder,
@@ -39,12 +38,18 @@ import { MatSelectModule } from '@angular/material/select';
     MatSelectModule,
   ],
 })
-export class CustomerComponent implements OnChanges {
-  @Input() customer: Customer | undefined;
-  @Input() countries: Options = [];
-  @Input() showDeleteButton = true;
+export class CustomerComponent {
+  customer = input.required<Customer>();
+  countries = input.required<Options>();
+  showDeleteButton = input.required<boolean>();
   @Output() save = new EventEmitter<Customer>();
   @Output() remove = new EventEmitter<Customer>();
+
+  constructor() {
+    effect(() => {
+      this.formGroup.setValue(this.customer());
+    });
+  }
 
   formGroup = inject(NonNullableFormBuilder).group({
     id: [0],
@@ -61,13 +66,7 @@ export class CustomerComponent implements OnChanges {
 
   handleRemove() {
     if (this.customer && confirm(`Really delete ${this.customer}?`)) {
-      this.remove.emit(this.customer);
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if ('customer' in changes && this.customer) {
-      this.formGroup.setValue(this.customer);
+      this.remove.emit(this.customer());
     }
   }
 }
