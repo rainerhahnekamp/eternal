@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -8,6 +8,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Configuration } from '@app/shared/config';
 import { ChatService } from '@app/chat/chat.service';
 import { MatButtonModule } from '@angular/material/button';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -21,21 +22,17 @@ import { MatButtonModule } from '@angular/material/button';
       book a real holiday 😉.
     </p>
     <h3 class="mt-8 text-l font-bold">Settings</h3>
-    <form [formGroup]="formGroup">
-      <p>
-        <mat-slide-toggle
-          formControlName="mockCustomers"
-          data-testid="tgl-mock-customers"
-          >Mock Customers
-        </mat-slide-toggle>
-      </p>
-      <p>
-        <mat-slide-toggle
-          formControlName="mockHolidays"
-          data-testid="tgl-mock-holidays"
-          >Mock Holidays
-        </mat-slide-toggle>
-      </p>
+    <form [formGroup]="formGroup" class="flex flex-col gap-y-5">
+      <mat-slide-toggle
+        formControlName="mockCustomers"
+        data-testid="tgl-mock-customers"
+        >Mock Customers
+      </mat-slide-toggle>
+      <mat-slide-toggle
+        formControlName="mockHolidays"
+        data-testid="tgl-mock-holidays"
+        >Mock Holidays
+      </mat-slide-toggle>
     </form>
     <div class="w-72">
       <button class="my-4" mat-raised-button (click)="enableWebsocket()">
@@ -58,11 +55,17 @@ import { MatButtonModule } from '@angular/material/button';
           </p>
         }
       }
-    </div>`,
+    </div>
+    @if (isBrowser) {
+      <div class="text-right text-xs" data-testid="hydrated">
+        Application is ready
+      </div>
+    } `,
   standalone: true,
   imports: [ReactiveFormsModule, MatSlideToggleModule, MatButtonModule],
 })
 export class HomeComponent implements OnInit {
+  isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   config = inject(Configuration);
   formGroup = inject(NonNullableFormBuilder).group({
     mockCustomers: [true],
