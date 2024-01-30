@@ -2,7 +2,7 @@ import { Component, effect, inject, input, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { lastValueFrom } from 'rxjs';
 import { AddressLookuper } from '../address-lookuper.service';
-import { MatFormField } from '@angular/material/form-field';
+import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
@@ -11,7 +11,15 @@ import { MatButton } from '@angular/material/button';
   selector: 'app-request-info',
   templateUrl: './request-info.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormField, MatIcon, MatInput, MatButton],
+  imports: [
+    ReactiveFormsModule,
+    MatFormField,
+    MatIcon,
+    MatLabel,
+    MatInput,
+    MatButton,
+    MatHint,
+  ],
 })
 export class RequestInfoComponent {
   #formBuilder = inject(NonNullableFormBuilder);
