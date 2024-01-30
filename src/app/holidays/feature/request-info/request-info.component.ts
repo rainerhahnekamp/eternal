@@ -35,6 +35,7 @@ export class RequestInfoComponent {
   }
 
   async search() {
+    console.log('received input');
     const found = await lastValueFrom(
       this.#lookuper.lookup(this.formGroup.getRawValue().address),
     );
