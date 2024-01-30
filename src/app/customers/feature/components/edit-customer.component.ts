@@ -1,16 +1,19 @@
-import { Component, Signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  numberAttribute,
+} from '@angular/core';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { customersActions } from '../+state/customers.actions';
 import { fromCustomers } from '../+state/customers.selectors';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { CustomerComponent } from '@app/customers/ui';
 import { Customer } from '@app/customers/model';
-import { Options } from '@app/shared/form';
 import { selectCountries } from '@app/shared/master-data';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-edit-customer',
@@ -19,6 +22,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
       <app-customer
         [customer]="value.customer"
         [countries]="value.countries"
+        [showDeleteButton]="true"
         (save)="this.submit($event)"
         (remove)="this.remove($event)"
       ></app-customer>
@@ -28,40 +32,28 @@ import { toSignal } from '@angular/core/rxjs-interop';
   imports: [CustomerComponent, NgIf, AsyncPipe],
 })
 export class EditCustomerComponent {
-  data: Signal<{ customer: Customer; countries: Options } | undefined>;
-  customerId = 0;
+  store = inject(Store);
+  id = input.required({ transform: numberAttribute });
+  customer = computed(() =>
+    this.store.selectSignal(fromCustomers.selectById(this.id()))(),
+  );
+  countries = this.store.selectSignal(selectCountries);
 
-  constructor(
-    private store: Store,
-    private route: ActivatedRoute,
-  ) {
-    const countries$: Observable<Options> = this.store.select(selectCountries);
-    const customer$ = this.store
-      .select(
-        fromCustomers.selectById(
-          Number(this.route.snapshot.paramMap.get('id') || ''),
-        ),
-      )
-      .pipe(
-        this.#verifyCustomer,
-        map((customer) => {
-          this.customerId = customer.id;
-          return { ...customer };
-        }),
-      );
+  data = computed(() => {
+    const customer = this.customer();
+    const countries = this.countries();
 
-    this.data = toSignal(
-      combineLatest({
-        countries: countries$,
-        customer: customer$,
-      }).pipe(map(({ countries, customer }) => ({ countries, customer }))),
-    );
-  }
+    if (!customer) {
+      return;
+    }
+
+    return { customer, countries };
+  });
 
   submit(customer: Customer) {
     this.store.dispatch(
       customersActions.update({
-        customer: { ...customer, id: this.customerId },
+        customer: { ...customer, id: this.id() },
       }),
     );
   }
@@ -69,7 +61,7 @@ export class EditCustomerComponent {
   remove(customer: Customer) {
     this.store.dispatch(
       customersActions.remove({
-        customer: { ...customer, id: this.customerId },
+        customer: { ...customer, id: this.id() },
       }),
     );
   }

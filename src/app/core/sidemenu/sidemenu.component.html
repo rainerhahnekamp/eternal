@@ -1,4 +1,4 @@
-@if (securityService.loaded$ | async) {
+@if (securityStore.loaded()) {
   <ul>
     <li>
       <a data-testid="btn-holidays" mat-raised-button routerLink="/holidays"
@@ -20,7 +20,7 @@
         >Newsletter</a
       >
     </li>
-    @if (securityService.signedIn$ | async) {
+    @if (securityStore.signedIn()) {
       <li>
         <a data-testid="btn-diary" mat-raised-button routerLink="/diary"
           >Diary</a

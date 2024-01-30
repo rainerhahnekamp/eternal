@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-} from '@angular/core';
+import { Component, effect, EventEmitter, input, Output } from '@angular/core';
 import {
   MatSlideToggleChange,
   MatSlideToggleModule,
@@ -43,8 +37,8 @@ export interface CustomersViewModel {
     DatePipe,
   ],
 })
-export class CustomersComponent implements OnChanges {
-  @Input() viewModel: CustomersViewModel | undefined;
+export class CustomersComponent {
+  viewModel = input.required<CustomersViewModel>();
   @Output() setSelected = new EventEmitter<number>();
   @Output() setUnselected = new EventEmitter<number>();
   @Output() switchPage = new EventEmitter<number>();
@@ -52,10 +46,8 @@ export class CustomersComponent implements OnChanges {
   displayedColumns = ['name', 'country', 'birthdate', 'action'];
   dataSource = new MatTableDataSource<CustomerWithSelected>([]);
 
-  ngOnChanges(): void {
-    if (this.viewModel) {
-      this.dataSource.data = this.viewModel.customers;
-    }
+  constructor() {
+    effect(() => (this.dataSource.data = this.viewModel().customers));
   }
 
   toggleSelection(toggleChange: MatSlideToggleChange, id: number) {

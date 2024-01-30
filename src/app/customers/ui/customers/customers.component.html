@@ -9,7 +9,7 @@
   >
 </p>
 
-@if (viewModel) {
+@if (viewModel()) {
   @if (dataSource.data.length > 0) {
     <div class="my-4 max-w-screen-sm">
       <mat-table [dataSource]="dataSource">
@@ -64,8 +64,8 @@
       <mat-paginator
         pageSize="10"
         showFirstLastButtons="true"
-        [pageIndex]="viewModel.pageIndex"
-        [length]="viewModel.length"
+        [pageIndex]="viewModel().pageIndex"
+        [length]="viewModel().length"
         (page)="switchPage.emit($event.pageIndex)"
       ></mat-paginator>
     </div>
