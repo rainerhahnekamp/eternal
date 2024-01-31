@@ -13,7 +13,6 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 import { RouterLinkWithHref } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -30,7 +29,6 @@ import { MatSelectModule } from '@angular/material/select';
     ReactiveFormsModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatNativeDateModule,
     RouterLinkWithHref,
     NgIf,
     MatInputModule,
