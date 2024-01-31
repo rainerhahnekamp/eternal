@@ -1,4 +1,4 @@
-playwright-main
+main-playwright
 pw-01-starter
 pw-01-solution
 pw-02-starter

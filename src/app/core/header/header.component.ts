@@ -1,25 +1,24 @@
-import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { SecurityService } from '@app/security';
+import { SecurityStore } from 'src/app/shared/security';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   standalone: true,
-  imports: [RouterLink, MatButtonModule, AsyncPipe, NgIf]
+  imports: [RouterLink, MatButtonModule],
 })
 export class HeaderComponent {
-  #securityService = inject(SecurityService);
-  user$ = this.#securityService.loadedUser$;
+  #securityStore = inject(SecurityStore);
+  user = this.#securityStore.loadedUser;
 
   signOut() {
-    this.#securityService.signOut();
+    this.#securityStore.signOut();
   }
 
   signIn() {
-    this.#securityService.signIn();
+    this.#securityStore.signIn();
   }
 }
