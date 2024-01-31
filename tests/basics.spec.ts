@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 test.describe('Basics', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('');
+    await page.getByText('Application is ready').waitFor();
   });
 
   test('header is Unforgettable Holidays', async ({ page }) => {
@@ -21,9 +22,7 @@ test.describe('Basics', () => {
     await expect(locator).toHaveCount(10);
   });
 
-  test('3rd customer is Brandt, Hugo; 10th is Janáček, Jan', async ({
-    page,
-  }) => {
+  test('3rd customer is Hugo Brandt; 10th is Jan Janáček', async ({ page }) => {
     await page.getByTestId('btn-customers').click();
     const nameLocator = page.getByTestId('row-customer').getByTestId('name');
 
