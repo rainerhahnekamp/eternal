@@ -7,12 +7,6 @@ import { CustomersContainerComponent } from './components/customers-container.co
 import { EditCustomerComponent } from './components/edit-customer.component';
 import { dataGuard } from './services/data.guard';
 import { CustomersRootComponent } from './components/customers-root/customers-root.component';
-import {
-  provideHttpClient,
-  withInterceptors,
-  withRequestsMadeViaParent,
-} from '@angular/common/http';
-import { customersInterceptor } from '@app/customers/feature/customers.interceptor';
 
 export default [
   {
@@ -22,10 +16,10 @@ export default [
     providers: [
       provideState(customersFeature),
       provideEffects([CustomersEffects]),
-      provideHttpClient(
-        withRequestsMadeViaParent(),
-        withInterceptors([customersInterceptor]),
-      ),
+      // provideHttpClient(
+      //   withRequestsMadeViaParent(),
+      //   withInterceptors([customersInterceptor]),
+      // ),
     ],
     children: [
       {
