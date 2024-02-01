@@ -1,14 +1,6 @@
-import { expect, test as base } from '@playwright/test';
-import {
-  CustomersFixtures,
-  customersFixtures,
-} from './fixtures/customer.fixtures';
-import { shellFixtures, ShellFixtures } from './fixtures/shell.fixtures';
+import { expect } from '@playwright/test';
+import { test } from './fixtures/test';
 
-const test = base.extend<CustomersFixtures & ShellFixtures>({
-  ...customersFixtures,
-  ...shellFixtures,
-});
 test.describe('Basics', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('');
@@ -34,7 +26,7 @@ test.describe('Basics', () => {
       await expect(customersPage.rowsLocator).toHaveCount(10);
     });
 
-    test('3rd customer is Brandt, Hugo; 10th is Janáček, Jan', async ({
+    test('3rd customer is Hugo Brand; 10th is Jan Janáček', async ({
       customersPage,
     }) => {
       await expect(
