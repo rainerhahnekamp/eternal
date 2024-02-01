@@ -58,6 +58,18 @@ export default defineConfig({
       dependencies: ['setup'],
     },
 
+    {
+      name: 'latin-america',
+      use: {
+        ...devices['Pixel 7'],
+        locale: 'es-mx',
+        timezoneId: 'America/Mexico_City',
+        geolocation: { longitude: -88.56877, latitude: 20.68298 },
+        permissions: ['geolocation'],
+      },
+      testMatch: '*.la-spec.ts',
+    },
+
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
