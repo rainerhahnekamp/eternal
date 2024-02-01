@@ -1,14 +1,5 @@
-import { expect, test as base } from '@playwright/test';
-import { ShellFixtures, shellFixtures } from './fixtures/shell.fixtures';
-import {
-  CustomersFixtures,
-  customersFixtures,
-} from './fixtures/customer.fixtures';
-
-const test = base.extend<ShellFixtures & CustomersFixtures>({
-  ...shellFixtures,
-  ...customersFixtures,
-});
+import { test } from './fixtures/test';
+import { expect } from './matchers/expect';
 
 test.describe('network', () => {
   test('should mock customers request with Isabell Sykora', async ({
@@ -17,6 +8,8 @@ test.describe('network', () => {
     sidemenuPage,
   }) => {
     await page.goto('');
+    await page.getByText('Application is ready').waitFor();
+
     await page.getByRole('switch', { name: 'Mock Customers' }).click();
     page.route(
       'https://api.eternal-holidays.net/customers?page=0&pageSize=10',

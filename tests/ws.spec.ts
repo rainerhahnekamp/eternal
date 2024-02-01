@@ -10,9 +10,12 @@ test('Web Socket', async ({ page }) => {
     );
   });
   await page.getByRole('button', { name: 'Enable Chat' }).click();
-  await page.evaluate(() =>
-    window.mockedClient({ message: 'Hello from Playwright' }),
-  );
+  await page.evaluate(() => {
+    const mockedClient = window.mockedClient;
+    if (mockedClient) {
+      mockedClient({ message: 'Hello from Playwright' });
+    }
+  });
   await page.getByRole('link', { name: 'Chat' }).click();
 
   await expect(page.getByTestId('chat-message')).toContainText(
