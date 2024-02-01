@@ -63,7 +63,12 @@ export class CustomerComponent {
   }
 
   handleRemove() {
-    if (this.customer && confirm(`Really delete ${this.customer}?`)) {
+    if (
+      this.customer &&
+      confirm(
+        `Really delete ${this.customer().firstname} ${this.customer().name}?`,
+      )
+    ) {
       this.remove.emit(this.customer());
     }
   }

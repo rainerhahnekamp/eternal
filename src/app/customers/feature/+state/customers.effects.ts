@@ -20,7 +20,7 @@ export class CustomersEffects {
   load$ = createEffect(() => {
     return this.#actions$.pipe(
       ofType(customersActions.load),
-      switchMap(({ page }) =>
+      switchMap(({ page, callback }) =>
         this.#http
           .get<{ content: Customer[]; total: number }>(this.#baseUrl, {
             params: new HttpParams().set(
@@ -32,6 +32,7 @@ export class CustomersEffects {
             map(({ content, total }) =>
               customersActions.loaded({ customers: content, total, page }),
             ),
+            tap(() => (callback ? callback() : {})),
           ),
       ),
     );
@@ -71,8 +72,12 @@ export class CustomersEffects {
       concatMap(({ customer }) =>
         this.#http.delete<Customer[]>(`${this.#baseUrl}/${customer.id}`),
       ),
-      tap(() => this.#router.navigateByUrl('/customer')),
-      map(() => customersActions.load({ page: 1 })),
+      map(() =>
+        customersActions.load({
+          page: 1,
+          callback: () => this.#router.navigateByUrl('/customer'),
+        }),
+      ),
     );
   });
 }
