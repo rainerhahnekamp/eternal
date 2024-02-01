@@ -9,10 +9,12 @@ import { Configuration } from '@app/shared/config';
 import { ChatService } from '@app/chat/chat.service';
 import { MatButtonModule } from '@angular/material/button';
 import { isPlatformBrowser } from '@angular/common';
+import { SpecialGreetingComponent } from '@app/core/special-greeting.component';
 
 @Component({
   selector: 'app-home',
   template: `<h2 data-testid="greeting">Welcome to Eternal</h2>
+    <app-special-greeting />
     <p data-testid="txt-greeting-1">
       Eternal is an imaginary travel agency and is used as training application
       for Angular developers.
@@ -67,7 +69,12 @@ import { isPlatformBrowser } from '@angular/common';
       </div>
     } `,
   standalone: true,
-  imports: [ReactiveFormsModule, MatSlideToggleModule, MatButtonModule],
+  imports: [
+    ReactiveFormsModule,
+    MatSlideToggleModule,
+    MatButtonModule,
+    SpecialGreetingComponent,
+  ],
 })
 export class HomeComponent implements OnInit {
   isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
