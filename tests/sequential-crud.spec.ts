@@ -12,6 +12,7 @@ test.describe('Sequential CRUD', () => {
     await page.goto('');
     await page.getByText('Application is ready').waitFor();
     await page.getByRole('switch', { name: 'Mock Customers' }).click();
+    await page.getByRole('switch', { name: 'Paged Customers' }).click();
     await sidemenuPage.select('Customers');
   });
 
