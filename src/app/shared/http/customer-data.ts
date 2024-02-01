@@ -1,3 +1,4 @@
+// eslint-disable-next-line @softarc/sheriff/dependency-rule
 import { Customer } from '@app/customers/model';
 
 export const customers: Customer[] = [

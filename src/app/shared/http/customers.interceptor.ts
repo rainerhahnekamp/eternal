@@ -7,15 +7,20 @@ import {
 import { inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay, map, tap } from 'rxjs/operators';
-import { customers as originalCustomers } from './services/data';
+import { customers as originalCustomers } from './customer-data';
 import { Configuration } from '@app/shared/config';
-import { Customer } from '../model';
+// eslint-disable-next-line @softarc/sheriff/dependency-rule
+import { Customer } from '@app/customers/model';
 
 let customers: Customer[] = originalCustomers.sort(sortCustomers);
 const pageSize = 10;
 
 export const customersInterceptor: HttpInterceptorFn = (req, handle) => {
   const configuration = inject(Configuration);
+
+  if (!req.url.startsWith('/customer')) {
+    return handle(req);
+  }
 
   if (!configuration.mockCustomers) {
     return handle(req);
