@@ -6,8 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "playwright test",
     "test:ci": "ng test --source-map=false --browsers=ChromeHeadless --watch=false",
+    "test:dev": "playwright test --ui",
+    "test:debug": "playwright test --project=chromium --debug",
     "lint": "ng lint",
     "verify": "npm run test:ci && npm run lint",
     "websocket:start": "node ./ws-app/app.mjs"
