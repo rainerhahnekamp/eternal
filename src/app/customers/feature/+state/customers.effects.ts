@@ -6,6 +6,7 @@ import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { customersActions } from './customers.actions';
 import { MessageService } from '@app/shared/ui-messaging';
 import { Customer } from '@app/customers/model';
+import { Configuration } from '@app/shared/config';
 
 @Injectable()
 export class CustomersEffects {
@@ -13,6 +14,7 @@ export class CustomersEffects {
   #http = inject(HttpClient);
   #router = inject(Router);
   #uiMessage = inject(MessageService);
+  #config = inject(Configuration);
   #baseUrl = '/customers';
 
   load$ = createEffect(() => {
@@ -21,7 +23,10 @@ export class CustomersEffects {
       switchMap(({ page }) =>
         this.#http
           .get<{ content: Customer[]; total: number }>(this.#baseUrl, {
-            params: new HttpParams().set('page', page),
+            params: new HttpParams().set(
+              'page',
+              this.#config.pagedCustomers ? page : 0,
+            ),
           })
           .pipe(
             map(({ content, total }) =>

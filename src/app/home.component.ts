@@ -33,6 +33,11 @@ import { isPlatformBrowser } from '@angular/common';
         data-testid="tgl-mock-holidays"
         >Mock Holidays
       </mat-slide-toggle>
+      <mat-slide-toggle
+        formControlName="pagedCustomers"
+        data-testid="tgl-paged-customers"
+        >Paged Customers
+      </mat-slide-toggle>
     </form>
     <div class="w-72">
       <button class="my-4" mat-raised-button (click)="enableWebsocket()">
@@ -70,6 +75,7 @@ export class HomeComponent implements OnInit {
   formGroup = inject(NonNullableFormBuilder).group({
     mockCustomers: [true],
     mockHolidays: [true],
+    pagedCustomers: [true],
   });
   chatService = inject(ChatService);
 
@@ -85,6 +91,7 @@ export class HomeComponent implements OnInit {
     this.formGroup.setValue({
       mockCustomers: this.config.mockCustomers,
       mockHolidays: this.config.mockHolidays,
+      pagedCustomers: this.config.pagedCustomers,
     });
     this.formGroup.valueChanges.subscribe(() =>
       this.config.updateFeatures(this.formGroup.getRawValue()),
