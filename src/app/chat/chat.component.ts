@@ -9,7 +9,7 @@ import { ChatService } from './chat.service';
   template: ` <mat-list>
     <div mat-subheader>Messages</div>
     @for (message of messages(); track message.sent) {
-      <mat-list-item>
+      <mat-list-item data-testid="chat-message">
         <mat-icon matListItemIcon>chat</mat-icon>
         <div matListItemTitle>{{ message.text }}</div>
         <div matListItemLine>{{ message.sent | date }}</div>
