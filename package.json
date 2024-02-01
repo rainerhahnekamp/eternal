@@ -50,6 +50,7 @@
     "@angular/compiler-cli": "^17.1.1",
     "@commitlint/cli": "^18.4.0",
     "@commitlint/config-conventional": "^18.4.0",
+    "@playwright/test": "^1.41.1",
     "@softarc/eslint-plugin-sheriff": "^0.14.3",
     "@softarc/sheriff-core": "^0.14.3",
     "@testing-library/angular": "^15.2.0",
