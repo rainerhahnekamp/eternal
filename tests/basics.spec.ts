@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { test } from './fixtures/test';
 
 test.describe('Basics', () => {
   test.beforeEach(async ({ page }) => {
@@ -25,7 +26,7 @@ test.describe('Basics', () => {
   test('3rd customer should be Hugo Brandt, 10th should be Jan Janáček', async ({
     page,
   }) => {
-    await page.getByTestId('btn-customers').click();
+    await page.getByRole('link', { name: 'Customers', exact: true }).click();
     await expect(
       page
         .getByTestId('row-customer')
@@ -39,7 +40,7 @@ test.describe('Basics', () => {
     ).toHaveText('Jan Janáček');
   });
 
-  test('add a new customer', async ({ page }) => {
+  test('add a new customer', async ({ page, sidemenuPage }) => {
     await page.getByRole('link', { name: 'Customers', exact: true }).click();
     await page.getByRole('link', { name: 'Add Customer' }).click();
 
