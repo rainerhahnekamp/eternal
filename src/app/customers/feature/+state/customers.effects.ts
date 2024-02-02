@@ -6,6 +6,7 @@ import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { customersActions } from './customers.actions';
 import { MessageService } from '@app/shared/ui-messaging';
 import { Customer } from '@app/customers/model';
+import { Configuration } from '@app/shared/config';
 
 @Injectable()
 export class CustomersEffects {
@@ -13,20 +14,25 @@ export class CustomersEffects {
   #http = inject(HttpClient);
   #router = inject(Router);
   #uiMessage = inject(MessageService);
+  #config = inject(Configuration);
   #baseUrl = '/customers';
 
   load$ = createEffect(() => {
     return this.#actions$.pipe(
       ofType(customersActions.load),
-      switchMap(({ page }) =>
+      switchMap(({ page, callback }) =>
         this.#http
           .get<{ content: Customer[]; total: number }>(this.#baseUrl, {
-            params: new HttpParams().set('page', page),
+            params: new HttpParams().set(
+              'page',
+              this.#config.pagedCustomers ? page : 0,
+            ),
           })
           .pipe(
             map(({ content, total }) =>
               customersActions.loaded({ customers: content, total, page }),
             ),
+            tap(() => (callback ? callback() : {})),
           ),
       ),
     );
@@ -66,8 +72,12 @@ export class CustomersEffects {
       concatMap(({ customer }) =>
         this.#http.delete<Customer[]>(`${this.#baseUrl}/${customer.id}`),
       ),
-      tap(() => this.#router.navigateByUrl('/customer')),
-      map(() => customersActions.load({ page: 1 })),
+      map(() =>
+        customersActions.load({
+          page: 1,
+          callback: () => this.#router.navigateByUrl('/customer'),
+        }),
+      ),
     );
   });
 }

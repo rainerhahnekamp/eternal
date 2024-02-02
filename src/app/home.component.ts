@@ -9,10 +9,12 @@ import { Configuration } from '@app/shared/config';
 import { ChatService } from '@app/chat/chat.service';
 import { MatButtonModule } from '@angular/material/button';
 import { isPlatformBrowser } from '@angular/common';
+import { SpecialGreetingComponent } from '@app/core/special-greeting.component';
 
 @Component({
   selector: 'app-home',
   template: `<h2 data-testid="greeting">Welcome to Eternal</h2>
+    <app-special-greeting />
     <p data-testid="txt-greeting-1">
       Eternal is an imaginary travel agency and is used as training application
       for Angular developers.
@@ -32,6 +34,11 @@ import { isPlatformBrowser } from '@angular/common';
         formControlName="mockHolidays"
         data-testid="tgl-mock-holidays"
         >Mock Holidays
+      </mat-slide-toggle>
+      <mat-slide-toggle
+        formControlName="pagedCustomers"
+        data-testid="tgl-paged-customers"
+        >Paged Customers
       </mat-slide-toggle>
     </form>
     <div class="w-72">
@@ -62,7 +69,12 @@ import { isPlatformBrowser } from '@angular/common';
       </div>
     } `,
   standalone: true,
-  imports: [ReactiveFormsModule, MatSlideToggleModule, MatButtonModule],
+  imports: [
+    ReactiveFormsModule,
+    MatSlideToggleModule,
+    MatButtonModule,
+    SpecialGreetingComponent,
+  ],
 })
 export class HomeComponent implements OnInit {
   isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
@@ -70,6 +82,7 @@ export class HomeComponent implements OnInit {
   formGroup = inject(NonNullableFormBuilder).group({
     mockCustomers: [true],
     mockHolidays: [true],
+    pagedCustomers: [true],
   });
   chatService = inject(ChatService);
 
@@ -85,6 +98,7 @@ export class HomeComponent implements OnInit {
     this.formGroup.setValue({
       mockCustomers: this.config.mockCustomers,
       mockHolidays: this.config.mockHolidays,
+      pagedCustomers: this.config.pagedCustomers,
     });
     this.formGroup.valueChanges.subscribe(() =>
       this.config.updateFeatures(this.formGroup.getRawValue()),

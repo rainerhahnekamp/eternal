@@ -26,7 +26,11 @@ import {
   loadingInterceptor,
   sharedUiMessagingProvider,
 } from '@app/shared/ui-messaging';
-import { baseUrlInterceptor, errorInterceptor } from '@app/shared/http';
+import {
+  baseUrlInterceptor,
+  customersInterceptor,
+  errorInterceptor,
+} from '@app/shared/http';
 import { Configuration } from '@app/shared/config';
 import { sharedMasterDataProvider } from '@app/shared/master-data';
 
@@ -38,6 +42,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withComponentInputBinding()),
     provideHttpClient(
       withInterceptors([
+        customersInterceptor,
         baseUrlInterceptor,
         loadingInterceptor,
         errorInterceptor,
