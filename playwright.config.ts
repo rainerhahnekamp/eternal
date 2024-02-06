@@ -26,6 +26,8 @@ export default defineConfig({
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    actionTimeout: 4000,
+
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'http://localhost:4200',
     screenshot: 'only-on-failure',
@@ -48,6 +50,18 @@ export default defineConfig({
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
+    },
+
+    {
+      name: 'Mexican Smartphone',
+      use: {
+        ...devices['Pixel 7'],
+        locale: 'es-mx',
+        timezoneId: 'America/Mexico_City',
+        permissions: ['geolocation'],
+        geolocation: { longitude: -88.56877, latitude: 20.68298 },
+      },
+      testMatch: 'test.mexican-spec.ts',
     },
 
     /* Test against mobile viewports. */

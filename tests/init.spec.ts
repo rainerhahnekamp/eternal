@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { test } from './fixtures/test';
 
 test.describe('init', () => {
   test.beforeEach(async ({ page }) => {
@@ -6,10 +7,18 @@ test.describe('init', () => {
     await page.getByText('Application is ready').waitFor();
   });
 
-  test('test', async ({ page }) => {
+  test('test', async ({ page, holidaysPage }) => {
+    // const jpgRequest = page.waitForRequest((request) =>
+    //   request.url().endsWith('jpg'),
+    // );
+
+    holidaysPage.mockHolidays([{ title: 'Paris' }, { title: 'Berlin' }], true);
+
     await page.getByRole('link', { name: 'Holidays', exact: true }).click();
+    // await jpgRequest;
+
     await page
-      .getByLabel('Vienna')
+      .getByLabel('Paris')
       .getByRole('link', { name: 'Get a Brochure' })
       .click();
     await page.getByLabel('Address').fill('Domgasse 5');

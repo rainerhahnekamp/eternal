@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+import { expect } from './matchers/expect';
 import { test } from './fixtures/test';
 
 test.describe('Basics', () => {
@@ -7,6 +7,7 @@ test.describe('Basics', () => {
     await expect(page.getByTestId('hydrated')).toHaveText(
       'Application is ready',
     );
+    await expect(page.getByTestId('hydrated')).toHaveText('Hydration ended');
   });
 
   test('header is Unforgettable Holidays', async ({ page }) => {
@@ -41,17 +42,21 @@ test.describe('Basics', () => {
   });
 
   test('add a new customer', async ({ page, sidemenuPage }) => {
-    await page.getByRole('link', { name: 'Customers', exact: true }).click();
-    await page.getByRole('link', { name: 'Add Customer' }).click();
+    await test.step('Select Customer', async () => {
+      await page.getByRole('link', { name: 'Customers', exact: true }).click();
+      await page.getByRole('link', { name: 'Add Customer' }).click();
+    });
 
-    await page.getByLabel('Firstname').fill('Nicholas');
-    await page.getByLabel('Name', { exact: true }).fill('Dimou');
-    await page.getByLabel('Country').click();
-    await page.getByRole('option', { name: 'Greece' }).click();
+    await test.step('Set Customer Data', async () => {
+      await page.getByLabel('Firstname').fill('Nicholas');
+      await page.getByLabel('Name', { exact: true }).fill('Dimou');
+      await page.getByLabel('Country').click();
+      await page.getByRole('option', { name: 'Greece' }).click();
 
-    await page.getByLabel('Birthdate').fill('1.2.1978');
+      await page.getByLabel('Birthdate').fill('1.2.1978');
 
-    await page.getByRole('button', { name: 'Save' }).click();
+      await page.getByRole('button', { name: 'Save' }).click();
+    });
 
     await expect(
       page.getByTestId('row-customer').filter({ hasText: 'Nicholas Dimou' }),
