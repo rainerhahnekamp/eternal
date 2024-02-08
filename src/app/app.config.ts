@@ -33,6 +33,7 @@ import {
 } from '@app/shared/http';
 import { Configuration } from '@app/shared/config';
 import { sharedMasterDataProvider } from '@app/shared/master-data';
+import { holidaysInterceptor } from '@app/shared/http/holidays.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -43,6 +44,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([
         customersInterceptor,
+        holidaysInterceptor,
         baseUrlInterceptor,
         loadingInterceptor,
         errorInterceptor,
@@ -66,11 +68,8 @@ export const appConfig: ApplicationConfig = {
     { provide: ErrorHandler, useClass: ErrorHandlerService },
     {
       provide: Configuration,
-      useValue: new Configuration(
-        'https://api.eternal-holidays.net',
-        true,
-        false,
-      ),
+      useFactory: () =>
+        new Configuration('https://api.eternal-holidays.net', true, false),
     },
   ],
 };

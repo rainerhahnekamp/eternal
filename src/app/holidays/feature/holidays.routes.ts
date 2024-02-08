@@ -5,6 +5,7 @@ import { HolidaysEffects } from './+state/holidays.effects';
 import { holidaysFeature } from './+state/holidays.reducer';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { RequestInfoComponent } from './request-info/request-info.component';
+import { QuizComponent } from './quiz/quiz.component';
 
 export const holidaysRoutes: Routes = [
   {
@@ -21,6 +22,10 @@ export const holidaysRoutes: Routes = [
       {
         path: 'request-info/:holidayId',
         component: RequestInfoComponent,
+      },
+      {
+        path: 'quiz/:id',
+        component: QuizComponent,
       },
     ],
   },

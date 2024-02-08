@@ -20,7 +20,9 @@ export class HolidaysEffects {
       map((holidays) =>
         holidays.map((holiday) => ({
           ...holiday,
-          imageUrl: `${this.#config.baseUrl}${holiday.imageUrl}`,
+          imageUrl: holiday.imageUrl.startsWith('/assets')
+            ? holiday.imageUrl
+            : `${this.#config.baseUrl}${holiday.imageUrl}`,
         })),
       ),
       map((holidays) => holidaysActions.loaded({ holidays })),

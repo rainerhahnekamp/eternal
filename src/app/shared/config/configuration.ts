@@ -1,3 +1,6 @@
+import { inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+
 export type ConfigurationFeatures = {
   mockHolidays: boolean;
   mockCustomers: boolean;
@@ -11,6 +14,7 @@ export class Configuration {
   #pagedCustomers: boolean;
 
   #storageKey = 'eternal-configuration';
+  isServer = isPlatformServer(inject(PLATFORM_ID));
 
   constructor(
     baseUrl: string,
@@ -24,6 +28,7 @@ export class Configuration {
     this.#mockCustomers = values.mockCustomers;
     this.#mockHolidays = values.mockHolidays;
     this.#pagedCustomers = values.pagedCustomers;
+    this.loadFromLocalStorage();
   }
 
   get baseUrl() {
@@ -60,5 +65,23 @@ export class Configuration {
       this.#storageKey,
       JSON.stringify(configurationFeatures),
     );
+  }
+
+  loadFromLocalStorage() {
+    if (this.isServer) {
+      return;
+    }
+
+    const storageData = localStorage.getItem(this.#storageKey);
+    if (!storageData) {
+      return;
+    }
+
+    const configuration = JSON.parse(storageData);
+    const { mockCustomers, mockHolidays, pagedCustomers } = configuration;
+
+    this.#mockCustomers = mockCustomers;
+    this.#mockHolidays = mockHolidays;
+    this.#pagedCustomers = pagedCustomers;
   }
 }

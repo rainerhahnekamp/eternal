@@ -40,6 +40,9 @@
           >favorite
         </mat-icon>
       }
+      @if (holiday().hasQuiz) {
+        <a [routerLink]="['./quiz', holiday().id]"><mat-icon>quiz</mat-icon></a>
+      }
       @if (!holiday().isFavourite) {
         <mat-icon
           appBlinker

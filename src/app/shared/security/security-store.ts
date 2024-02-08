@@ -1,4 +1,4 @@
-import { computed, inject, PLATFORM_ID } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { KeycloakService } from './keycloak-service';
 import {
   patchState,
@@ -8,7 +8,6 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { isPlatformServer } from '@angular/common';
 import { ANONYMOUS_USER, SecurityState } from '@app/shared/security/models';
 
 const initialState: SecurityState = {
@@ -36,7 +35,7 @@ export const SecurityStore = signalStore(
   })),
   withHooks((store) => {
     const keycloakService = inject(KeycloakService);
-    const isServer = isPlatformServer(inject(PLATFORM_ID));
+    const isServer = true; //isPlatformServer(inject(PLATFORM_ID));
 
     return {
       async onInit() {
