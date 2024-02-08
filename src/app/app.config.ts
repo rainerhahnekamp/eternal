@@ -69,7 +69,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: Configuration,
       useFactory: () =>
-        new Configuration('https://api.eternal-holidays.net', true, false),
+        new Configuration('https://api.eternal-holidays.net', true, true),
     },
   ],
 };
