@@ -32,7 +32,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-quiz',
   template: ` <h2>{{ title() }}</h2>
-    <p>Time Left: {{ timeLeft() }} seconds</p>
+    @if (timeLeft() > 0) {
+      <p>Time Left: {{ timeLeft() }} seconds</p>
+    } @else if (timeLeft() < 0) {
+      <p>Time is up!</p>
+    }
     <p>Status:</p>
     <p>
       <span class="text-green-500 pr-4">Correct: {{ status().correct }}</span
@@ -101,9 +105,10 @@ export class QuizComponent {
   quiz = signal<Quiz>({ title: '', questions: [], timeInSeconds: 60 });
   questions = computed(() => this.quiz().questions);
   title = computed(() => this.quiz().title);
+  timeInSeconds = computed(() => this.quiz().timeInSeconds);
+
   timeStarted = signal(new Date());
   timeLeft = signal(0);
-  timeInSeconds = computed(() => this.quiz().timeInSeconds);
 
   status = computed(() => {
     const status: Record<AnswerStatus, number> = {
