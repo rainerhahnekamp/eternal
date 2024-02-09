@@ -23,6 +23,7 @@ export const QuizStore = signalStore(
     timeStarted: new Date(),
     timeLeft: 0,
   }),
+
   withMethods((store) => {
     const quizService = inject(QuizService);
     return {
