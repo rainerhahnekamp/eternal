@@ -68,12 +68,10 @@ export class QuizService {
     return Promise.resolve({
       title: 'Indian Quiz',
       timeInSeconds: 60,
-      questions: shuffleArray(
-        questions.map((question) => ({
-          ...question,
-          choices: shuffleArray(question.choices),
-        })),
-      ),
+      questions: questions.map((question) => ({
+        ...question,
+        choices: shuffleArray(question.choices),
+      })),
     });
   }
 }

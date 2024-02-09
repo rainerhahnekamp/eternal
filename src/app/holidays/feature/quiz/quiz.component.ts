@@ -5,13 +5,14 @@ import {
   inject,
   input,
   numberAttribute,
+  PLATFORM_ID,
   signal,
   untracked,
 } from '@angular/core';
 import { AnswerStatus, Quiz } from '@app/holidays/feature/quiz/model';
 import { MatButton } from '@angular/material/button';
 import { QuizService } from '@app/holidays/feature/quiz/quiz.service';
-import { NgClass } from '@angular/common';
+import { isPlatformServer, JsonPipe, NgClass } from '@angular/common';
 import {
   MatCard,
   MatCardActions,
@@ -19,6 +20,8 @@ import {
   MatCardHeader,
 } from '@angular/material/card';
 import { assertDefined } from '@app/shared/util';
+import { interval } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * Clock
@@ -29,7 +32,7 @@ import { assertDefined } from '@app/shared/util';
 @Component({
   selector: 'app-quiz',
   template: ` <h2>{{ title() }}</h2>
-    <p>Time: {{ timeInSeconds() }} seconds</p>
+    <p>Time Left: {{ timeLeft() }} seconds</p>
     <p>Status:</p>
     <p>
       <span class="text-green-500 pr-4">Correct: {{ status().correct }}</span
@@ -87,15 +90,19 @@ import { assertDefined } from '@app/shared/util';
     MatCardHeader,
     MatCardActions,
     MatCardContent,
+    JsonPipe,
   ],
 })
 export class QuizComponent {
+  isServer = isPlatformServer(inject(PLATFORM_ID));
   quizService = inject(QuizService);
   id = input.required({ transform: numberAttribute });
 
   quiz = signal<Quiz>({ title: '', questions: [], timeInSeconds: 0 });
   questions = computed(() => this.quiz().questions);
   title = computed(() => this.quiz().title);
+  timeStarted = signal(new Date());
+  timeLeft = signal(0);
   timeInSeconds = computed(() => this.quiz().timeInSeconds);
 
   status = computed(() => {
@@ -118,6 +125,20 @@ export class QuizComponent {
 
       untracked(() => this.quiz.set(quiz));
     });
+
+    if (this.isServer) {
+      return;
+    }
+    interval(1000)
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        this.timeLeft.set(
+          this.timeInSeconds() -
+            Math.floor(
+              new Date().getTime() - this.timeStarted().getTime() / 1000,
+            ),
+        );
+      });
   }
 
   answer(questionId: number, choiceId: number) {
