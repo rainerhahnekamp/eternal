@@ -27,20 +27,11 @@ export const createQuestion = (
     id: currentId++,
     question,
     answer: 1,
-    choices: shuffleArray([
+    choices: [
       { id: 1, text: solution },
       ...choices.map((choice, ix) => ({ id: ix + 2, text: choice })),
-    ]),
+    ],
     explanation,
     status: 'unanswered',
   };
 };
-
-function shuffleArray<T>(array: T[]) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-
-  return array;
-}
