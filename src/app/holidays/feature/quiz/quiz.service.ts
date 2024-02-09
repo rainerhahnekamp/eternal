@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Question, createQuestion } from '@app/holidays/feature/quiz/model';
+import {
+  Question,
+  createQuestion,
+  Quiz,
+} from '@app/holidays/feature/quiz/model';
 
 /**
  * Questions from:
@@ -60,7 +64,11 @@ const questions: Question[] = [
 
 @Injectable({ providedIn: 'root' })
 export class QuizService {
-  findQuestions(id: number): Promise<Question[]> {
-    return Promise.resolve(questions);
+  findById(id: number): Promise<Quiz> {
+    return Promise.resolve({
+      title: 'Indian Quiz',
+      timeInSeconds: 60,
+      questions,
+    });
   }
 }

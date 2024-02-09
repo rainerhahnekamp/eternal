@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   effect,
   inject,
   input,
@@ -7,7 +8,7 @@ import {
   signal,
   untracked,
 } from '@angular/core';
-import { Question } from '@app/holidays/feature/quiz/model';
+import { AnswerStatus, Quiz } from '@app/holidays/feature/quiz/model';
 import { MatButton } from '@angular/material/button';
 import { QuizService } from '@app/holidays/feature/quiz/quiz.service';
 import { NgClass } from '@angular/common';
@@ -27,47 +28,52 @@ import { assertDefined } from '@app/shared/util';
 
 @Component({
   selector: 'app-quiz',
-  template: `@for (question of questions(); track question) {
-    <mat-card class="max-w-lg my-4">
-      <mat-card-header>{{ question.question }}</mat-card-header>
-      <mat-card-content>
-        <div
-          class="grid gap-4 w-full my-4"
-          [ngClass]="
-            question.choices.length === 3 ? 'grid-cols-3' : 'grid-cols-2'
-          "
-        >
-          @for (choice of question.choices; track choice) {
-            <button mat-raised-button (click)="answer(question.id, choice.id)">
-              {{ choice.text }}
-            </button>
-          }
-        </div>
-
-        @if (question.status !== 'unanswered') {
+  template: ` <h2>{{ title() }}</h2>
+    <p>Time: {{ timeInSeconds() }} seconds</p>
+    @for (question of questions(); track question) {
+      <mat-card class="max-w-lg my-4">
+        <mat-card-header>{{ question.question }}</mat-card-header>
+        <mat-card-content>
           <div
-            class="my-2 border-2 p-1"
+            class="grid gap-4 w-full my-4"
             [ngClass]="
-              question.status === 'correct'
-                ? 'border-green-500'
-                : 'border-red-500'
+              question.choices.length === 3 ? 'grid-cols-3' : 'grid-cols-2'
             "
           >
-            @switch (question.status) {
-              @case ('correct') {
-                <p class="text-green-500 font-bold">Right Answer</p>
-              }
-              @case ('incorrect') {
-                <p class="text-red-500 font-bold">Wrong Answer</p>
-              }
+            @for (choice of question.choices; track choice) {
+              <button
+                mat-raised-button
+                (click)="answer(question.id, choice.id)"
+              >
+                {{ choice.text }}
+              </button>
             }
-
-            <p class="italic">{{ question.explanation }}</p>
           </div>
-        }
-      </mat-card-content>
-    </mat-card>
-  }`,
+
+          @if (question.status !== 'unanswered') {
+            <div
+              class="my-2 border-2 p-1"
+              [ngClass]="
+                question.status === 'correct'
+                  ? 'border-green-500'
+                  : 'border-red-500'
+              "
+            >
+              @switch (question.status) {
+                @case ('correct') {
+                  <p class="text-green-500 font-bold">Right Answer</p>
+                }
+                @case ('incorrect') {
+                  <p class="text-red-500 font-bold">Wrong Answer</p>
+                }
+              }
+
+              <p class="italic">{{ question.explanation }}</p>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    }`,
   standalone: true,
   imports: [
     MatButton,
@@ -81,19 +87,17 @@ import { assertDefined } from '@app/shared/util';
 export class QuizComponent {
   quizService = inject(QuizService);
   id = input.required({ transform: numberAttribute });
-  questions = signal<
-    (Question & { status: 'correct' | 'incorrect' | 'unanswered' })[]
-  >([]);
+
+  quiz = signal<Quiz>({ title: '', questions: [], timeInSeconds: 0 });
+  questions = computed(() => this.quiz().questions);
+  title = computed(() => this.quiz().title);
+  timeInSeconds = computed(() => this.quiz().timeInSeconds);
 
   constructor() {
     effect(async () => {
-      const questions = await this.quizService.findQuestions(this.id());
+      const quiz = await this.quizService.findById(this.id());
 
-      untracked(() =>
-        this.questions.set(
-          questions.map((question) => ({ ...question, status: 'unanswered' })),
-        ),
-      );
+      untracked(() => this.quiz.set(quiz));
     });
   }
 
@@ -103,17 +107,21 @@ export class QuizComponent {
     );
     assertDefined(question);
 
-    this.questions.update((questions) =>
-      questions.map((question) => {
+    this.quiz.update((quiz) => {
+      const questions = this.quiz().questions.map((question) => {
         if (question.id === questionId) {
+          const status: AnswerStatus =
+            question.answer === choiceId ? 'correct' : 'incorrect';
           return {
             ...question,
-            status: question.answer === choiceId ? 'correct' : 'incorrect',
+            status,
           };
         } else {
           return question;
         }
-      }),
-    );
+      });
+
+      return { ...quiz, questions };
+    });
   }
 }
