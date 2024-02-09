@@ -30,6 +30,11 @@ import { assertDefined } from '@app/shared/util';
   selector: 'app-quiz',
   template: ` <h2>{{ title() }}</h2>
     <p>Time: {{ timeInSeconds() }} seconds</p>
+    <p>Status:</p>
+    <p>
+      <span class="text-green-500 pr-4">Correct: {{ status().correct }}</span
+      ><span class="text-red-500">Incorrect: {{ status().incorrect }}</span>
+    </p>
     @for (question of questions(); track question) {
       <mat-card class="max-w-lg my-4">
         <mat-card-header>{{ question.question }}</mat-card-header>
@@ -92,6 +97,20 @@ export class QuizComponent {
   questions = computed(() => this.quiz().questions);
   title = computed(() => this.quiz().title);
   timeInSeconds = computed(() => this.quiz().timeInSeconds);
+
+  status = computed(() => {
+    const status: Record<AnswerStatus, number> = {
+      unanswered: 0,
+      correct: 0,
+      incorrect: 0,
+    };
+
+    for (const question of this.questions()) {
+      status[question.status]++;
+    }
+
+    return status;
+  });
 
   constructor() {
     effect(async () => {
