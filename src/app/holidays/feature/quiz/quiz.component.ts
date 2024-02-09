@@ -98,7 +98,7 @@ export class QuizComponent {
   quizService = inject(QuizService);
   id = input.required({ transform: numberAttribute });
 
-  quiz = signal<Quiz>({ title: '', questions: [], timeInSeconds: 0 });
+  quiz = signal<Quiz>({ title: '', questions: [], timeInSeconds: 60 });
   questions = computed(() => this.quiz().questions);
   title = computed(() => this.quiz().title);
   timeStarted = signal(new Date());
@@ -135,7 +135,7 @@ export class QuizComponent {
         this.timeLeft.set(
           this.timeInSeconds() -
             Math.floor(
-              new Date().getTime() - this.timeStarted().getTime() / 1000,
+              (new Date().getTime() - this.timeStarted().getTime()) / 1000,
             ),
         );
       });
