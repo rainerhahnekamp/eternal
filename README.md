@@ -4,4 +4,4 @@ This is the repository for the Signal Store talk at Ng-India 2024.
 
 Feel free to clone it and integrate the Signal Store into the quiz feature.
 
-[Slides](Ng-India 2024 - NgRx Signal Store.pdf)
+[Ng-India 2024 - NgRx Signal Store.pdf](Slides)
