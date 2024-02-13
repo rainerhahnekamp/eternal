@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HeaderComponent } from './core/header/header.component';
 import { MatSidenavModule } from '@angular/material/sidenav';

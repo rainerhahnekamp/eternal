@@ -2,7 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { SecurityService } from 'src/app/shared/security';
+import { SecurityStore } from 'src/app/shared/security';
 
 @Component({
   selector: 'app-sidemenu',
@@ -12,5 +12,5 @@ import { SecurityService } from 'src/app/shared/security';
   imports: [AsyncPipe, NgIf, MatButtonModule, RouterLink],
 })
 export class SidemenuComponent {
-  securityService = inject(SecurityService);
+  securityStore = inject(SecurityStore);
 }

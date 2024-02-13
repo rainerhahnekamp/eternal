@@ -17,9 +17,9 @@ export class KeycloakService {
   get keycloak() {
     if (!this._keycloak) {
       this._keycloak = new Keycloak({
-        url: 'https://auth.eternal-holidays.net:8443/',
+        url: 'http://localhost:8081',
         realm: 'eternal',
-        clientId: 'account',
+        clientId: 'eternal',
       });
     }
     return this._keycloak;
@@ -28,8 +28,10 @@ export class KeycloakService {
   async init() {
     const authenticated = await this.keycloak.init({
       onLoad: 'check-sso',
+      checkLoginIframe: false,
       silentCheckSsoRedirectUri:
-        window.location.origin + '/assets/silent-check-sso.html',
+        'http://localhost:4200/assets/silent-check-sso.html',
+      redirectUri: 'http://localhost:4200/',
     });
 
     if (!authenticated) {
@@ -47,6 +49,6 @@ export class KeycloakService {
   }
 
   logout() {
-    return this.keycloak.logout({ redirectUri: window.location.origin });
+    return this.keycloak.logout({ redirectUri: 'http://localhost:4200/' });
   }
 }

@@ -14,44 +14,27 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
-@AllArgsConstructor
 public class KeycloakJwtAuthenticationConverter
-  implements Converter<Jwt, AbstractAuthenticationToken> {
-
-  private List<String> clientIds;
-
+    implements Converter<Jwt, AbstractAuthenticationToken> {
   @Override
   public AbstractAuthenticationToken convert(Jwt source) {
     return new JwtAuthenticationToken(
-      source,
-      Stream
-        .concat(
-          new JwtGrantedAuthoritiesConverter().convert(source).stream(),
-          extractResourceRoles(source).stream()
-        )
-        .collect(toSet())
-    );
+        source,
+        Stream.concat(
+                new JwtGrantedAuthoritiesConverter().convert(source).stream(),
+                extractResourceRoles(source).stream())
+            .collect(toSet()));
   }
 
   private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
     var resourceAccess = new HashMap<>(jwt.getClaim("resource_access"));
-    var resourceRoles = new ArrayList<>();
 
-    clientIds
-      .stream()
-      .forEach(id -> {
-        if (resourceAccess.containsKey(id)) {
-          var resource = (Map<String, List<String>>) resourceAccess.get(id);
-          resource
-            .get("roles")
-            .forEach(role -> resourceRoles.add(id + "_" + role));
-        }
-      });
-    return resourceRoles.isEmpty()
-      ? emptySet()
-      : resourceRoles
-      .stream()
-      .map(r -> new SimpleGrantedAuthority("ROLE_" + r))
-      .collect(toSet());
+    var eternal = (Map<String, List<String>>) resourceAccess.get("eternal");
+
+    var roles = (ArrayList<String>) eternal.get("roles");
+
+    return roles.stream()
+        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.replace("-", "_")))
+        .collect(toSet());
   }
 }

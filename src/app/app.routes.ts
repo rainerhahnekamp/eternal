@@ -1,10 +1,10 @@
 import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
-import { NewsletterComponent } from './newsletter/newsletter.component';
-import { SecurityService } from 'src/app/shared/security';
+import { SecurityStore } from 'src/app/shared/security';
 import { inject } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { Configuration } from '@app/shared/config';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 export const appRoutes: Routes = [
   {
@@ -24,9 +24,7 @@ export const appRoutes: Routes = [
           });
         }
       },
-      () => {
-        return inject(SecurityService).loaded$.pipe(filter(Boolean));
-      },
+      () => toObservable(inject(SecurityStore).loaded).pipe(filter(Boolean)),
     ],
     children: [
       {
@@ -34,23 +32,6 @@ export const appRoutes: Routes = [
         component: HomeComponent,
       },
       { path: 'home', redirectTo: '' },
-      {
-        path: 'holidays',
-        loadChildren: () => import('@app/holidays/feature'),
-      },
-      {
-        path: 'customer',
-        loadChildren: () => import('@app/customers/feature'),
-      },
-      {
-        path: 'bookings',
-        loadChildren: () => import('@app/bookings'),
-      },
-      { path: 'newsletter', component: NewsletterComponent },
-      {
-        path: 'diary',
-        loadChildren: () => import('@app/diary'),
-      },
       {
         path: 'admin/holidays',
         loadChildren: () => import('./admin/holidays/feature'),

@@ -4,9 +4,9 @@ import { HolidaysComponent } from '@app/admin/holidays/ui';
 
 @Component({
   selector: 'app-holidays-container',
-  template: `@if(viewModel(); as viewModel) {
+  template: `@if (viewModel(); as viewModel) {
     <app-holidays [viewModel]="viewModel" />
-    }`,
+  }`,
   standalone: true,
   imports: [HolidaysComponent],
 })

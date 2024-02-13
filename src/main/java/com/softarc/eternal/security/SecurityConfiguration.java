@@ -35,7 +35,7 @@ public class SecurityConfiguration {
             .oauth2ResourceServer()
             .jwt()
             .jwtAuthenticationConverter(
-              new KeycloakJwtAuthenticationConverter(List.of("account"))
+              new KeycloakJwtAuthenticationConverter()
             );
         } catch (Exception e) {
           throw new RuntimeException(e);

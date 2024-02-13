@@ -18,4 +18,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: 'https://auth.eternal-holidays.net:8443/realms/eternal'
+          issuer-uri: 'http://localhost:8081/realms/eternal'
