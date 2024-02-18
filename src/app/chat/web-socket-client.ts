@@ -6,13 +6,13 @@ type Data = { message?: string; status?: string };
 declare global {
   interface Window {
     mockedClient?: (data: Data) => void;
-    Cypress: unknown;
+    e2e: unknown;
   }
 }
 
 export const getWsConnect = (triggerCd: () => void): Observable<Data> => {
-  if (window.Cypress) {
-    console.info('WebSocket is controlled by Cypress');
+  if (window.e2e) {
+    console.info('WebSocket is controlled by the E2E Framework');
     return new Observable<Data>((subscriber) => {
       window.mockedClient = (data: Data) => {
         subscriber.next(data);
