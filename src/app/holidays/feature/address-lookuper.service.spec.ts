@@ -1,62 +1,116 @@
 import { AddressLookuper } from './address-lookuper.service';
 import { expect } from '@jest/globals';
-import { asyncScheduler, lastValueFrom, Observable, of, scheduled } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import {
+  asyncScheduler,
+  firstValueFrom,
+  Observable,
+  of,
+  scheduled,
+} from 'rxjs';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { assertType } from '@app/shared/testing';
 import { createMock } from '@testing-library/angular/jest-utils';
-import * as http from 'http';
 
 describe('Address Lookuper', () => {
-  for (const { query, isValid } of [
-    { query: 'Domgasse 5, 1010 Wien', isValid: true },
-    { query: 'Domgasse 15, 1010 Wien', isValid: false },
+  const setup = (httpClient: HttpClient): AddressLookuper =>
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: HttpClient,
+          useValue: httpClient,
+        },
+      ],
+    }).inject(AddressLookuper);
+
+  for (const { query, expected, response } of [
+    { query: 'Domgasse 5', response: ['Domgasse 5'], expected: true },
+    { query: 'Domgasse 15', response: [], expected: false },
   ]) {
-    it(`should return ${isValid} for ${query}`, waitForAsync(async () => {
-      const addresses = ['Domgasse 5, 1010 Wien'];
-      const httpClientStub = createMock(HttpClient);
-      httpClientStub.get.mockReturnValue(
-        scheduled([addresses], asyncScheduler).pipe(delay(0)),
-      );
-      TestBed.configureTestingModule({
-        providers: [{ provide: HttpClient, useValue: httpClientStub }],
+    it(`should return ${expected} for ${query}`, fakeAsync(() => {
+      const httpClient = assertType<HttpClient>({
+        get: () => scheduled([response], asyncScheduler),
+      });
+      const lookuper = setup(httpClient);
+
+      lookuper.lookup(query).subscribe((isValid) => {
+        expect(isValid).toBe(expected);
       });
 
-      const lookuper = TestBed.inject(AddressLookuper);
-
-      const result = await lastValueFrom(lookuper.lookup(query));
-      expect(result).toBe(isValid);
+      tick();
     }));
   }
 
-  it(`should use the HttpClient as a mock`, waitForAsync(() => {
-    // ng-mocks
-    // **testing-library
-    // jasmine|jest-auto-spies
-    // ts-mockito
+  it('should call nominatim with right parameters', () => {
+    const httpClient = { get: jest.fn() };
+    httpClient.get.mockReturnValue(of([]));
 
-    const httpClientMock = createMock(HttpClient);
-    httpClientMock.get.mockReturnValue(of([]));
-
-    TestBed.configureTestingModule({
-      providers: [{ provide: HttpClient, useValue: httpClientMock }],
-    });
-    const lookuper = TestBed.inject(AddressLookuper);
-
+    const lookuper = setup(assertType<HttpClient>(httpClient));
     lookuper.lookup('Domgasse 5');
 
-    const [url, options] = httpClientMock.get.mock.calls[0];
+    expect(httpClient.get).toHaveBeenCalledWith(
+      'https://nominatim.openstreetmap.org/search.php',
+      {
+        params: new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'),
+      },
+    );
+  });
 
+  it(`should have an assertive stub`, async () => {
+    const httpClientStub = assertType<HttpClient>({
+      get(url: string, options: { params: HttpParams }) {
+        expect(url).toBe('https://nominatim.openstreetmap.org/search.php');
+        expect(options.params).toEqual(
+          new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'),
+        );
+
+        return scheduled([['']], asyncScheduler);
+      },
+    });
+
+    const lookuper = setup(httpClientStub);
+    const result = await firstValueFrom(lookuper.lookup('Domgasse 5'));
+
+    expect(result).toBe(true);
+  });
+
+  it('should test http with createMock', () => {
+    const httpClient = createMock(HttpClient);
+    httpClient.get.mockReturnValue(of([]));
+
+    const lookuper = setup(httpClient);
+    lookuper.lookup('Domgasse 5');
+
+    expect(httpClient.get).toHaveBeenCalledWith(
+      'https://nominatim.openstreetmap.org/search.php',
+      {
+        params: new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'),
+      },
+    );
+  });
+
+  it('should call nominatim with right parameters, (mock property version)', () => {
+    const httpClient = {
+      get: jest.fn<Observable<undefined[]>, [string, { params: HttpParams }]>(),
+    };
+    httpClient.get.mockReturnValue(of([]));
+    const lookuper = setup(assertType<HttpClient>(httpClient));
+    lookuper.lookup('Domgasse 5');
+
+    const [url, { params }] = httpClient.get.mock.calls[0];
     expect(url).toBe('https://nominatim.openstreetmap.org/search.php');
-    expect(options.params).toEqual(
+    expect(params).toEqual(
       new HttpParams().set('format', 'jsonv2').set('q', 'Domgasse 5'),
     );
-  }));
+  });
 
-  // it('should count the queries', () => {
-  //   const lookuper = new AddressLookuper(() => []);
-  //   expect(lookuper.counter).toBe(0);
-  //   lookuper.lookup('Domgasse 5');
-  //   expect(lookuper.counter).toBe(1);
-  // });
+  it('should count the queries', () => {
+    const httpClient = createMock(HttpClient);
+    httpClient.get.mockReturnValue(of([]));
+
+    const lookuper = setup(httpClient);
+    expect(lookuper.counter).toBe(0);
+    lookuper.lookup('Domgasse 5');
+    expect(lookuper.counter).toBe(1);
+  });
 });

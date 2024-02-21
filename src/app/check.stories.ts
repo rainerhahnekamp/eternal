@@ -32,6 +32,9 @@ import { MatIconModule } from '@angular/material/icon';
       img {
         max-width: 1024px;
       }
+      button {
+        margin: 0 2px;
+      }
     `,
   ],
   standalone: true,
