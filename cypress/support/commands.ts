@@ -2,10 +2,10 @@
 declare namespace Cypress {
   interface Chainable<Subject> {
     findByRole(role: string, textMatch: string | RegExp): Chainable<JQuery>;
-    testid(selector: string): Chainable<JQuery<HTMLElement>>;
+    testid(selector: string): Chainable<JQuery>;
   }
 }
 
-Cypress.Commands.add('testid', (selector: string) =>
+Cypress.Commands.add('testid', (selector) =>
   cy.get(`[data-testid=${selector}]`),
 );
