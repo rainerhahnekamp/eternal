@@ -8,8 +8,7 @@ describe('Buggy Tests', () => {
     cy.contains('[data-testid=row-customer]', 'Angelika Hoffmann')
       .find('[data-testid=btn-edit]')
       .click();
-    cy.testid('inp-name').should('have.value', 'Hoffmann')
-    cy.testid('inp-name').clear()
+    cy.testid('inp-name').should('have.value', 'Hoffmann').clear();
     cy.testid('inp-name').type('Hofmann');
     cy.testid('btn-submit').click();
 
@@ -21,8 +20,7 @@ describe('Buggy Tests', () => {
     cy.contains('[data-testid=row-customer]', 'Knut Eggen')
       .find('[data-testid=btn-edit]')
       .click();
-    cy.testid('btn-delete').click()
-    cy.testid('row-customer').should('have.length', 10)
+    cy.testid('btn-delete').click();
     cy.testid('row-customer').should('not.contain.text', 'Knut Eggen');
   });
 

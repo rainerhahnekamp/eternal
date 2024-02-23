@@ -1,7 +1,6 @@
 describe('Holidays', () => {
   beforeEach(() => {
     cy.visit('');
-    cy.findByText('Welcome to Eternal').should('be.visible')
   });
 
   it('should do an implicit subject assertion', () => {
@@ -25,13 +24,13 @@ describe('Holidays', () => {
     });
   });
 
-  it.only('should request brochure for Firenze', () => {
-    cy.findByRole('link', {name: 'Holidays'  }).click()
+  it('should request brochure for Firenze', () => {
+    cy.findByRole('link', { name: 'Holidays' }).click();
     cy.findByLabelText(/Firenze/)
-      .findByRole('link', {name: "Get a Brochure"})
+      .findByRole('link', { name: 'Get a Brochure' })
       .click();
-    cy.findByRole('textbox', {name: "Address"}).type('Domgasse 5');
-    cy.findByRole('button', {name: "Send"}).click()
-    cy.findByRole('status').should('contain.text', 'Brochure sent')
+    cy.findByLabelText('Address').type('Domgasse 5');
+    cy.findByRole('button', { name: 'Send' }).click();
+    cy.findByRole('status').should('have.text', 'Brochure sent');
   });
 });

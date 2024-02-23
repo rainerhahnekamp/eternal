@@ -5,6 +5,7 @@ import { SecurityService } from '@app/security';
 import { inject } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { Configuration } from '@app/shared';
+import { ChatComponent } from '@app/chat/chat.component';
 
 export const appRoutes: Routes = [
   {
@@ -14,35 +15,41 @@ export const appRoutes: Routes = [
         const config = inject(Configuration);
 
         if (queryParamMap.has('mock-customers')) {
-          config.updateFeatures({ mockCustomers: queryParamMap.get('mock-customers') == '1' });
+          config.updateFeatures({
+            mockCustomers: queryParamMap.get('mock-customers') == '1',
+          });
         }
         if (queryParamMap.has('mock-holidays')) {
-          config.updateFeatures({ mockHolidays: queryParamMap.get('mock-holidays') == '1' });
+          config.updateFeatures({
+            mockHolidays: queryParamMap.get('mock-holidays') == '1',
+          });
         }
       },
       () => {
         return inject(SecurityService).loaded$.pipe(filter(Boolean));
-      }
+      },
     ],
     children: [
       {
         path: '',
-        component: HomeComponent
+        component: HomeComponent,
       },
       { path: 'home', redirectTo: '' },
       { path: 'newsletter', component: NewsletterComponent },
       {
         path: 'customer',
-        loadChildren: () => import('./customer/customer.routes')
+        loadChildren: () => import('./customer/customer.routes'),
       },
       {
         path: 'holidays',
-        loadChildren: () => import('./holidays/holidays.routes')
+        loadChildren: () => import('./holidays/holidays.routes'),
       },
+
+      { path: 'chat', component: ChatComponent },
       {
         path: 'diary',
-        loadChildren: () => import('./diary/diary.routes.module')
-      }
-    ]
-  }
+        loadChildren: () => import('./diary/diary.routes.module'),
+      },
+    ],
+  },
 ];

@@ -6,8 +6,8 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { first, of } from 'rxjs';
-import { concatMap, delay, filter, tap } from 'rxjs/operators';
+import { first } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { customerActions } from '../+state/customer.actions';
 import { fromCustomer } from '../+state/customer.selectors';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
@@ -46,7 +46,6 @@ export class CustomerComponent implements OnInit {
     country: ['', [Validators.required]],
     birthdate: ['', [Validators.required]],
   });
-  formIsReady = false;
   countries = countries;
   #store = inject(Store);
   #route = inject(ActivatedRoute);
@@ -58,19 +57,10 @@ export class CustomerComponent implements OnInit {
         .select(
           fromCustomer.selectById(Number(this.#route.snapshot.params['id'])),
         )
-        .pipe(
-          filter(Boolean),
-          first(),
-          concatMap((customer) =>
-            of(customer).pipe(delay(customer.name === 'Hoffmann' ? 1000 : 0)),
-          ),
-          tap(() => (this.formIsReady = true)),
-        )
+        .pipe(filter(Boolean), first())
         .subscribe((customer) => {
           this.formGroup.setValue(customer);
         });
-    } else {
-      this.formIsReady = true;
     }
   }
 
