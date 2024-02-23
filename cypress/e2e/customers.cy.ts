@@ -55,7 +55,7 @@ describe('Customers', () => {
         'GET',
         'https://api.eternal-holidays.net/customers?page=0&pageSize=10',
       ).as('customersRequest');
-      cy.findByRole('link', { name: 'Customers' }).click();
+      cy.openSidemenu('Customers')
       cy.wait('@customersRequest').its('response.statusCode').should('eq', 200);
     });
 

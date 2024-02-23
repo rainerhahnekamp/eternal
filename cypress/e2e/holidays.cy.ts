@@ -25,7 +25,7 @@ describe('Holidays', () => {
   });
 
   it('should request brochure for Firenze', () => {
-    cy.findByRole('link', { name: 'Holidays' }).click();
+    cy.openSidemenu('Holidays')
     cy.findByLabelText(/Firenze/)
       .findByRole('link', { name: 'Get a Brochure' })
       .click();

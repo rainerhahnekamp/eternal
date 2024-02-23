@@ -1,6 +1,12 @@
 import { createHoliday } from '@app/holidays/model';
 
 describe('init', () => {
+  it.only('open customers', () => {
+    cy.visit('');
+    cy.testid('btn-customers').click()
+
+  })
+
   it('should rename Latita to Laetita', () => {
     cy.visit('');
 
@@ -40,7 +46,7 @@ describe('init', () => {
     cy.checkA11y();
   });
 
-  it.only('should count the holiday cards', () => {
+  it('should count the holiday cards', () => {
     cy.visit('');
 
     cy.request('GET', 'https://api.eternal-holidays.net/holiday').then(
