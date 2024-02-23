@@ -1,6 +1,7 @@
 describe('Holidays', () => {
   beforeEach(() => {
     cy.visit('');
+    cy.findByText('Welcome to Eternal').should('be.visible')
   });
 
   it('should do an implicit subject assertion', () => {
@@ -24,13 +25,13 @@ describe('Holidays', () => {
     });
   });
 
-  it('should request brochure for Firenze', () => {
-    cy.testid('btn-holidays').click();
-    cy.contains('[data-testid=holiday-card]', 'Firenze')
-      .find('[data-testid=btn-brochure]')
+  it.only('should request brochure for Firenze', () => {
+    cy.findByRole('link', {name: 'Holidays'  }).click()
+    cy.findByLabelText(/Firenze/)
+      .findByRole('link', {name: "Get a Brochure"})
       .click();
-    cy.testid('ri-address').type('Domgasse 5');
-    cy.testid('ri-search').click();
-    cy.testid('ri-message').should('contain.text', 'Brochure sent');
+    cy.findByRole('textbox', {name: "Address"}).type('Domgasse 5');
+    cy.findByRole('button', {name: "Send"}).click()
+    cy.findByRole('status').should('contain.text', 'Brochure sent')
   });
 });

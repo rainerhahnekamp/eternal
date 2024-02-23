@@ -1,3 +1,5 @@
+import { createHoliday } from '@app/holidays/model';
+
 describe('init', () => {
   it('should rename Latita to Laetita', () => {
     cy.visit('');
@@ -25,12 +27,29 @@ describe('init', () => {
     cy.testid('btn-click').should('contain.text', 'Unklick mich');
   });
 
-  it.only('should fail', () => {
-    cy.visit('')
-    cy
-    .get('button[role=switch]')
-      .first()
-      .click();
+  it('should fail', () => {
+    cy.visit('');
+    cy.get('button[role=switch]').first().click();
+  });
 
-  })
+  it('should do an a11y check', () => {
+    cy.visit('');
+    cy.findByText('Welcome to Eternal').should('be.visible');
+
+    cy.injectAxe();
+    cy.checkA11y();
+  });
+
+  it.only('should count the holiday cards', () => {
+    cy.visit('');
+
+    cy.request('GET', 'https://api.eternal-holidays.net/holiday').then(
+      (response) => {
+        const holidaysCount = response.body.length;
+
+        cy.findByRole('link', { name: 'Holidays' }).click();
+        cy.get('app-holiday-card').should('have.length', holidaysCount);
+      },
+    );
+  });
 });
