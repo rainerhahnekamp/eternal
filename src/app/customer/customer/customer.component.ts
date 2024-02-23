@@ -1,9 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { first } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { first, of } from 'rxjs';
+import { concatMap, delay, filter, tap } from 'rxjs/operators';
 import { customerActions } from '../+state/customer.actions';
 import { fromCustomer } from '../+state/customer.selectors';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
@@ -31,8 +35,8 @@ import { countries } from '../countries';
     FormErrorsComponent,
     MatInputModule,
     MatSelectModule,
-    NgForOf
-  ]
+    NgForOf,
+  ],
 })
 export class CustomerComponent implements OnInit {
   formGroup = inject(NonNullableFormBuilder).group({
@@ -40,8 +44,9 @@ export class CustomerComponent implements OnInit {
     firstname: ['', [Validators.required]],
     name: ['', [Validators.required]],
     country: ['', [Validators.required]],
-    birthdate: ['', [Validators.required]]
+    birthdate: ['', [Validators.required]],
   });
+  formIsReady = false;
   countries = countries;
   #store = inject(Store);
   #route = inject(ActivatedRoute);
@@ -50,11 +55,22 @@ export class CustomerComponent implements OnInit {
     this.#store.dispatch(customerActions.load());
     if (this.#route.snapshot.data['mode'] === 'edit') {
       this.#store
-        .select(fromCustomer.selectById(Number(this.#route.snapshot.params['id'])))
-        .pipe(filter(Boolean), first())
+        .select(
+          fromCustomer.selectById(Number(this.#route.snapshot.params['id'])),
+        )
+        .pipe(
+          filter(Boolean),
+          first(),
+          concatMap((customer) =>
+            of(customer).pipe(delay(customer.name === 'Hoffmann' ? 1000 : 0)),
+          ),
+          tap(() => (this.formIsReady = true)),
+        )
         .subscribe((customer) => {
           this.formGroup.setValue(customer);
         });
+    } else {
+      this.formIsReady = true;
     }
   }
 
@@ -71,7 +87,9 @@ export class CustomerComponent implements OnInit {
 
   remove() {
     if (confirm(`Really delete?`)) {
-      this.#store.dispatch(customerActions.remove({ id: this.formGroup.getRawValue().id }));
+      this.#store.dispatch(
+        customerActions.remove({ id: this.formGroup.getRawValue().id }),
+      );
     }
   }
 }

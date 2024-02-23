@@ -1,6 +1,6 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { delay, tap } from 'rxjs/operators';
 import { LoadingService } from '@app/shared';
 
 export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
@@ -9,10 +9,11 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   loadingService.loading();
 
   return next(req).pipe(
+    delay(500),
     tap((event) => {
       if (event instanceof HttpResponse) {
         loadingService.loaded();
       }
-    })
+    }),
   );
 };
