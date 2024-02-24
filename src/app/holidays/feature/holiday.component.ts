@@ -1,4 +1,4 @@
-import { Component, effect, input } from '@angular/core';
+import { Component, input, model } from '@angular/core';
 import { Holiday } from '@app/holidays/model';
 import { MatButton } from '@angular/material/button';
 
@@ -8,17 +8,18 @@ import { MatButton } from '@angular/material/button';
     <p data-testid="txt-body">
       Are you interested in visiting {{ holiday().title }}?
     </p>
-    <button mat-raised-button>Yes</button>`,
+    <p> Rate your Holiday </p>
+    <button mat-raised-button data-testid="btn-up" (click)="rating.set('👍')"
+      >👍</button
+    >
+    <button mat-raised-button data-testid="btn-down" (click)="rating.set('👎')"
+      >👎</button
+    >`,
   standalone: true,
   imports: [MatButton],
 })
 export class HolidayComponent {
   username = input('');
   holiday = input.required<Holiday>();
-
-  constructor() {
-    effect(() => {
-      console.log(this.holiday().title);
-    });
-  }
+  rating = model.required<'👍' | '👎'>();
 }
