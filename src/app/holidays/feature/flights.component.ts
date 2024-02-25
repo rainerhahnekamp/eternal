@@ -43,8 +43,7 @@ import { Flight } from './flight';
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row
           *matRowDef="let row; columns: displayedColumns"
-          data-testid="row-customer"
-          [attr.aria-labelledby]="'customer-' + row.id"
+          data-testid="row-flight"
         ></mat-row>
 
         <div *matNoDataRow class="p-4">No Flights found.</div>
