@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
-export class CdTrackerService {
+export class CdTracker {
   components: Record<string, number> = {};
 
   tick(componentName: string) {
