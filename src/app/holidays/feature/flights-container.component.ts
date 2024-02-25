@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  PLATFORM_ID,
-  signal,
-} from '@angular/core';
+import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
 import { DatePipe, isPlatformServer } from '@angular/common';
 import { interval } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -18,7 +12,7 @@ import { FlightsComponent } from '@app/holidays/feature/flights.component';
 
 @Component({
   selector: 'app-flights-container',
-  template: ` <div>
+  template: ` <div data-cd-tracker="FlightsContainer">
     <form (ngSubmit)="search()">
       <mat-form-field>
         <mat-label>From</mat-label>
