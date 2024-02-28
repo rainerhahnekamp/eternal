@@ -2,6 +2,7 @@ export type AnswerStatus = 'unanswered' | 'correct' | 'incorrect';
 
 export type Question = {
   id: number;
+  holidayId: number;
   question: string;
   answer: number;
   choices: { id: number; text: string }[];
@@ -22,9 +23,11 @@ export const createQuestion = (
   solution: string,
   choices: string[],
   explanation: string,
+  holidayId: number,
 ): Question => {
   return {
     id: currentId++,
+    holidayId,
     question,
     answer: 1,
     choices: [

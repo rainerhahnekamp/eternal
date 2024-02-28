@@ -7,6 +7,22 @@ import { of } from 'rxjs';
 
 export const holidays: Holiday[] = [
   createHoliday({
+    id: 1,
+    title: 'Norway',
+    teaser: 'Raw Nature in the North',
+    description:
+      'Norway, a Nordic country known for its stunning fjords, vibrant cultural heritage, and high standard of living, is characterized by a harmonious blend of natural beauty and progressive societal values.',
+    imageUrl: '/assets/norway.jpg',
+    typeId: 1,
+    durationInDays: 14,
+    minCount: 8,
+    maxCount: 24,
+    onSale: false,
+    soldOut: false,
+    hasQuiz: true,
+  }),
+  createHoliday({
+    id: 2,
     title: 'India',
     teaser:
       'Diverse landscapes, rich culture, vibrant traditions enchant visitors.',
