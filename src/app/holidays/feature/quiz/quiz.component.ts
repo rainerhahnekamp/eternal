@@ -31,7 +31,8 @@ import { QuizStatusComponent } from '@app/holidays/feature/quiz/quiz-status.comp
   selector: 'app-quiz',
   template: ` <h2>{{ title() }}</h2>
     <p class="border-4 p-4">Last Rendering {{ now() | date: 'HH:mm:ss' }}</p>
-    <app-quiz-status [status]="status()" />
+    <app-quiz-status [status]="status()" [timeStarted]="timeStarted()" />
+    <button mat-raised-button (click)="reset()">Reset</button>
     @for (question of questions(); track question) {
       <mat-card class="max-w-lg my-4">
         <mat-card-header>{{ question.question }}</mat-card-header>
@@ -92,6 +93,7 @@ import { QuizStatusComponent } from '@app/holidays/feature/quiz/quiz-status.comp
 export class QuizComponent {
   quizService = inject(QuizService);
   id = input.required({ transform: numberAttribute });
+  timeStarted = signal(new Date());
 
   quiz = signal<Quiz>({ title: '', questions: [], timeInSeconds: 180 });
   questions = computed(() => this.quiz().questions);
@@ -113,10 +115,20 @@ export class QuizComponent {
 
   constructor() {
     effect(async () => {
-      const quiz = await this.quizService.findById(this.id());
-
-      untracked(() => this.quiz.set(quiz));
+      const id = this.id();
+      untracked(() => this.loadQuiz(id));
     });
+  }
+
+  protected reset() {
+    const id = this.id();
+    this.loadQuiz(id);
+  }
+
+  private async loadQuiz(id: number) {
+    const quiz = await this.quizService.findById(id);
+    this.quiz.set(quiz);
+    this.timeStarted.set(new Date());
   }
 
   answer(questionId: number, choiceId: number) {

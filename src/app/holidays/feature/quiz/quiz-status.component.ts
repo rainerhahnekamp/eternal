@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { AnswerStatus } from '@app/holidays/feature/quiz/model';
 import { interval } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -18,10 +18,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: true,
 })
 export class QuizStatusComponent {
+  @Input() timeStarted = new Date();
   status = input.required<Record<AnswerStatus, number>>();
 
   timeLeft = 180;
-  timeStarted = new Date();
 
   constructor() {
     interval(1000)
