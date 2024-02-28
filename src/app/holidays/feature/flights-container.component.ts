@@ -65,10 +65,6 @@ export class FlightsContainerComponent {
   lastUpdated = signal(new Date().toLocaleTimeString());
 
   constructor() {
-    if (isPlatformServer(inject(PLATFORM_ID))) {
-      return;
-    }
-
     interval(1000)
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.lastUpdated.set(new Date().toLocaleTimeString()));

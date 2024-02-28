@@ -20,6 +20,11 @@
         >Newsletter</a
       >
     </li>
+    <li>
+      <a data-testid="btn-flights" mat-raised-button routerLink="/flights"
+        >Flight Search</a
+      >
+    </li>
     @if (securityService.signedIn$ | async) {
       <li>
         <a data-testid="btn-diary" mat-raised-button routerLink="/diary"

@@ -1,4 +1,11 @@
-import { Component, input, model } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  input,
+  model,
+  Output,
+} from '@angular/core';
 import { Holiday } from '@app/holidays/model';
 import { MatButton } from '@angular/material/button';
 
@@ -21,5 +28,6 @@ import { MatButton } from '@angular/material/button';
 export class HolidayComponent {
   username = input('');
   holiday = input.required<Holiday>();
+
   rating = model.required<'👍' | '👎'>();
 }

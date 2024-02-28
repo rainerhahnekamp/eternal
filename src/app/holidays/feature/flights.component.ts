@@ -2,61 +2,47 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  Input,
   input,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { Flight } from './flight';
 
 @Component({
   selector: 'app-flights',
   template: `
     <div class="my-4 max-w-screen-sm" data-cd-tracker="FlightsComponent">
-      <mat-table [dataSource]="dataSource()">
-        <ng-container matColumnDef="id">
-          <mat-header-cell *matHeaderCellDef> ID</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{ element.id }}</mat-cell>
-        </ng-container>
+      <table>
+        <thead>
+          <tr>ID</tr>
+          <tr>From</tr>
+          <tr>To</tr>
+          <tr>Date</tr>
+          <tr>Delayed</tr>
+        </thead>
+      </table>
 
-        <ng-container matColumnDef="from">
-          <mat-header-cell *matHeaderCellDef> From</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{ element.from }}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="to">
-          <mat-header-cell *matHeaderCellDef> To</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{ element.to }}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="date">
-          <mat-header-cell *matHeaderCellDef> Date</mat-header-cell>
-          <mat-cell *matCellDef="let element"
-            >{{ element.date | date: 'dd.MM.YYYY' }}
-          </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="delayed">
-          <mat-header-cell *matHeaderCellDef> Delayed</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{ element.delayed }}</mat-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          data-testid="row-flight"
-        ></mat-row>
-
-        <div *matNoDataRow class="p-4">No Flights found.</div>
-      </mat-table>
+      @if (flights.length) {
+        @for (flight of flights; track flight) {
+          <tr data-testid="row-flight">
+            <td>{{ flight.id }}</td>
+            <td>{{ flight.from }}</td>
+            <td>{{ flight.to }}</td>
+            <td>{{ flight.date }}</td>
+            <td>{{ flight.delayed }}</td>
+          </tr>
+        }
+      } @else {
+        <p>There are no flights for your search available.</p>
+      }
     </div>
   `,
   standalone: true,
-  imports: [DatePipe, MatTableModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FlightsComponent {
-  flights = input.required<Flight[]>();
-
-  displayedColumns = ['id', 'from', 'to', 'date', 'delayed'];
-  dataSource = computed(() => new MatTableDataSource<Flight>(this.flights()));
+  @Input() flights: Flight[] = [];
 }
