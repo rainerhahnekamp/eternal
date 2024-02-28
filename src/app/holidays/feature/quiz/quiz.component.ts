@@ -5,14 +5,13 @@ import {
   inject,
   input,
   numberAttribute,
-  PLATFORM_ID,
   signal,
   untracked,
 } from '@angular/core';
 import { AnswerStatus, Quiz } from '@app/holidays/feature/quiz/model';
 import { MatButton } from '@angular/material/button';
 import { QuizService } from '@app/holidays/feature/quiz/quiz.service';
-import { isPlatformServer, JsonPipe, NgClass } from '@angular/common';
+import { DatePipe, JsonPipe, NgClass } from '@angular/common';
 import {
   MatCard,
   MatCardActions,
@@ -20,8 +19,7 @@ import {
   MatCardHeader,
 } from '@angular/material/card';
 import { assertDefined } from '@app/shared/util';
-import { interval } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { QuizStatusComponent } from '@app/holidays/feature/quiz/quiz-status.component';
 
 /**
  * Clock
@@ -32,16 +30,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-quiz',
   template: ` <h2>{{ title() }}</h2>
-    <!--    @if (timeLeft() > 0) {-->
-    <!--      <p>Time Left: {{ timeLeft() }} seconds</p>-->
-    <!--    } @else if (timeLeft() < 0) {-->
-    <!--      <p>Time is up!</p>-->
-    <!--    }-->
-    <p>Status:</p>
-    <p>
-      <span class="text-green-500 pr-4">Correct: {{ status().correct }}</span
-      ><span class="text-red-500">Incorrect: {{ status().incorrect }}</span>
-    </p>
+    <p class="border-4 p-4">Last Rendering {{ now() | date: 'HH:mm:ss' }}</p>
+    <app-quiz-status [status]="status()" />
     @for (question of questions(); track question) {
       <mat-card class="max-w-lg my-4">
         <mat-card-header>{{ question.question }}</mat-card-header>
@@ -95,20 +85,17 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatCardActions,
     MatCardContent,
     JsonPipe,
+    QuizStatusComponent,
+    DatePipe,
   ],
 })
 export class QuizComponent {
-  isServer = isPlatformServer(inject(PLATFORM_ID));
   quizService = inject(QuizService);
   id = input.required({ transform: numberAttribute });
 
   quiz = signal<Quiz>({ title: '', questions: [], timeInSeconds: 180 });
   questions = computed(() => this.quiz().questions);
   title = computed(() => this.quiz().title);
-  timeInSeconds = computed(() => this.quiz().timeInSeconds);
-
-  timeStarted = signal(new Date());
-  timeLeft = signal(0);
 
   status = computed(() => {
     const status: Record<AnswerStatus, number> = {
@@ -130,21 +117,6 @@ export class QuizComponent {
 
       untracked(() => this.quiz.set(quiz));
     });
-
-    if (this.isServer) {
-      this.timeLeft.set(this.timeInSeconds());
-      return;
-    }
-    interval(1000)
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        this.timeLeft.set(
-          this.timeInSeconds() -
-            Math.floor(
-              (new Date().getTime() - this.timeStarted().getTime()) / 1000,
-            ),
-        );
-      });
   }
 
   answer(questionId: number, choiceId: number) {
@@ -169,5 +141,9 @@ export class QuizComponent {
 
       return { ...quiz, questions };
     });
+  }
+
+  now() {
+    return new Date();
   }
 }
