@@ -1,13 +1,13 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { AnswerStatus } from '@app/holidays/feature/quiz/model';
 import { interval } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-quiz-status',
-  template: ` @if (timeLeft() > 0) {
-      <p>Time Left: {{ timeLeft() }} seconds</p>
-    } @else if (timeLeft() < 0) {
+  template: ` @if (timeLeft > 0) {
+      <p>Time Left: {{ timeLeft }} seconds</p>
+    } @else if (timeLeft < 0) {
       <p>Time is up!</p>
     }
     <p>Status:</p>
@@ -20,19 +20,18 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class QuizStatusComponent {
   status = input.required<Record<AnswerStatus, number>>();
 
-  timeLeft = signal(180);
-  timeStarted = signal(new Date());
+  timeLeft = 180;
+  timeStarted = new Date();
 
   constructor() {
     interval(1000)
       .pipe(takeUntilDestroyed())
       .subscribe(() => {
-        this.timeLeft.set(
+        this.timeLeft =
           180 -
-            Math.floor(
-              (new Date().getTime() - this.timeStarted().getTime()) / 1000,
-            ),
-        );
+          Math.floor(
+            (new Date().getTime() - this.timeStarted.getTime()) / 1000,
+          );
       });
   }
 }
