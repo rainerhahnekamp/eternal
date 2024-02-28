@@ -31,7 +31,7 @@ import { QuizStatusComponent } from '@app/holidays/feature/quiz/quiz-status.comp
   selector: 'app-quiz',
   template: ` <h2>{{ title() }}</h2>
     <p class="border-4 p-4">Last Rendering {{ now() | date: 'HH:mm:ss' }}</p>
-    <app-quiz-status [status]="status()" [timeStarted]="timeStarted()" />
+    <app-quiz-status [status]="status" [timeStarted]="timeStarted()" />
     <button mat-raised-button (click)="reset()">Reset</button>
     @for (question of questions(); track question) {
       <mat-card class="max-w-lg my-4">
@@ -99,19 +99,11 @@ export class QuizComponent {
   questions = computed(() => this.quiz().questions);
   title = computed(() => this.quiz().title);
 
-  status = computed(() => {
-    const status: Record<AnswerStatus, number> = {
-      unanswered: 0,
-      correct: 0,
-      incorrect: 0,
-    };
-
-    for (const question of this.questions()) {
-      status[question.status]++;
-    }
-
-    return status;
-  });
+  status: Record<AnswerStatus, number> = {
+    unanswered: 0,
+    correct: 0,
+    incorrect: 0,
+  };
 
   constructor() {
     effect(async () => {
@@ -153,6 +145,15 @@ export class QuizComponent {
 
       return { ...quiz, questions };
     });
+
+    this.updateStatus();
+  }
+
+  private updateStatus() {
+    this.status = { unanswered: 0, correct: 0, incorrect: 0 };
+    for (const question of this.questions()) {
+      this.status[question.status]++;
+    }
   }
 
   now() {
