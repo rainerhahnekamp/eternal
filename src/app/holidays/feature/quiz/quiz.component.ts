@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -89,6 +90,7 @@ import { QuizStatusComponent } from '@app/holidays/feature/quiz/quiz-status.comp
     QuizStatusComponent,
     DatePipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizComponent {
   quizService = inject(QuizService);
