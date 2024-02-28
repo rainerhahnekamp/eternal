@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -78,6 +79,7 @@ import { QuizStatusComponent } from '@app/holidays/feature/quiz/quiz-status.comp
       </mat-card>
     }`,
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatButton,
     NgClass,

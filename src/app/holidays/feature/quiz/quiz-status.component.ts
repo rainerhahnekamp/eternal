@@ -1,13 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { AnswerStatus } from '@app/holidays/feature/quiz/model';
-import { interval } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { interval, map } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-quiz-status',
-  template: ` @if (timeLeft > 0) {
-      <p>Time Left: {{ timeLeft }} seconds</p>
-    } @else if (timeLeft < 0) {
+  template: ` @if (timeLeft() > 0) {
+      <p>Time Left: {{ timeLeft() }} seconds</p>
+    } @else if (timeLeft() < 0) {
       <p>Time is up!</p>
     }
     <p>Status:</p>
@@ -16,6 +17,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       ><span class="text-red-500">Incorrect: {{ status.incorrect }}</span>
     </p>`,
   standalone: true,
+  imports: [AsyncPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizStatusComponent {
   @Input() timeStarted = new Date();
@@ -25,17 +28,17 @@ export class QuizStatusComponent {
     incorrect: 0,
   };
 
-  timeLeft = 180;
-
-  constructor() {
-    interval(1000)
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        this.timeLeft =
+  timeLeft = toSignal(
+    interval(1000).pipe(
+      map(() => {
+        return (
           180 -
-          Math.floor(
-            (new Date().getTime() - this.timeStarted.getTime()) / 1000,
-          );
-      });
-  }
+          Math.floor((new Date().getTime() - this.timeStarted.getTime()) / 1000)
+        );
+      }),
+    ),
+    { initialValue: 180 },
+  );
+
+  constructor() {}
 }
