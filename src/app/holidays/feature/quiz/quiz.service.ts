@@ -10,7 +10,7 @@ export class QuizService {
   findById(id: number): Promise<Quiz> {
     return Promise.resolve({
       title: 'Quiz',
-      timeInSeconds: 60,
+      timeInSeconds: 180,
       questions: questions
         .filter((question) => question.holidayId === id)
         .map((question) => ({
