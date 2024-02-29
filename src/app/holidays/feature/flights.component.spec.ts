@@ -1,8 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { FlightsContainerComponent } from '@app/holidays/feature/flights-container.component';
 import { createFlight, Flight } from '@app/holidays/feature/flight';
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FlightsComponent } from '@app/holidays/feature/flights.component';
 import { By } from '@angular/platform-browser';
 
@@ -25,7 +24,7 @@ fdescribe('Flights', () => {
     return { fixture };
   };
 
-  it('should show flights and update them', () => {
+  it('should update flights on immutable changes', () => {
     const { fixture } = setup();
     let rows = fixture.debugElement.queryAll(
       By.css('[data-testid=row-flight]'),
