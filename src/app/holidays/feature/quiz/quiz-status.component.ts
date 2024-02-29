@@ -5,11 +5,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-quiz-status',
-  template: ` @if (timeLeft > 0) {
-      <p>Time Left: {{ timeLeft }} seconds</p>
-    } @else if (timeLeft < 0) {
-      <p>Time is up!</p>
-    }
+  template: ` <!-- @if (timeLeft > 0) {-->
+    <!--      <p>Time Left: {{ timeLeft }} seconds</p>-->
+    <!--    } @else if (timeLeft < 0) {-->
+    <!--      <p>Time is up!</p>-->
+    <!--    }-->
     <p>Status:</p>
     <p>
       <span class="text-green-500 pr-4">Correct: {{ status.correct }}</span
