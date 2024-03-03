@@ -1,7 +1,10 @@
-import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
-import { DatePipe, isPlatformServer } from '@angular/common';
-import { interval } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -9,6 +12,8 @@ import { MatInput } from '@angular/material/input';
 import { Flight } from '@app/holidays/feature/flight';
 import { MatButton } from '@angular/material/button';
 import { FlightsComponent } from '@app/holidays/feature/flights.component';
+import { FlightSearch } from '@app/holidays/feature/flight-search.service';
+import { CdTrackerDirective } from '@app/holidays/feature/cd-tracker.directive';
 
 @Component({
   selector: 'app-flights-container',
@@ -36,12 +41,17 @@ import { FlightsComponent } from '@app/holidays/feature/flights.component';
         <mat-icon matSuffix>location_on</mat-icon>
         <mat-hint>Destination</mat-hint>
       </mat-form-field>
-      <button class="ml-4" mat-raised-button type="submit" color="primary"
-        >Search</button
+      <button
+        class="ml-4"
+        mat-raised-button
+        type="submit"
+        color="primary"
+        data-testid="btn-search"
       >
+        Search
+      </button>
     </form>
 
-    <div> Current Time: {{ lastUpdated() }} </div>
     <app-flights [flights]="flights()" />
   </div>`,
   standalone: true,
@@ -56,28 +66,16 @@ import { FlightsComponent } from '@app/holidays/feature/flights.component';
     MatButton,
     DatePipe,
     FlightsComponent,
+    CdTrackerDirective,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FlightsContainerComponent {
   flights = signal<Flight[]>([]);
-
+  flightSearch = inject(FlightSearch);
   searchParams = { from: signal('Berlin'), to: signal('London') };
-  lastUpdated = signal(new Date().toLocaleTimeString());
-
-  constructor() {
-    interval(1000)
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => this.lastUpdated.set(new Date().toLocaleTimeString()));
-  }
 
   async search() {
-    const from = this.searchParams.from();
-    const to = this.searchParams.to();
-    const response = await fetch(
-      'https://demo.angulararchitects.io/api/flight?' +
-        new URLSearchParams({ from, to }),
-    );
-
-    this.flights.set(await response.json());
+    this.flights.set(await this.flightSearch.search());
   }
 }

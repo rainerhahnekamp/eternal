@@ -1,4 +1,10 @@
-import { Directive, input, ViewContainerRef } from '@angular/core';
+import {
+  Directive,
+  effect,
+  input,
+  untracked,
+  ViewContainerRef,
+} from '@angular/core';
 import { CdTrackerComponent } from '@app/holidays/feature/cd-tracker.component';
 
 export type Valid = 'red' | 'color';
@@ -9,10 +15,16 @@ export type Valid = 'red' | 'color';
   standalone: true,
 })
 export class CdTrackerDirective {
-  dataCdTracker = input.required<Valid>({ alias: 'data-cd-tracker' });
+  dataCdTracker = input.required<string>({ alias: 'data-cd-tracker' });
 
   constructor(viewContainerRef: ViewContainerRef) {
-    const tracker = viewContainerRef.createComponent(CdTrackerComponent);
-    tracker.setInput('componentName', this.dataCdTracker);
+    effect(() => {
+      const trackerId = this.dataCdTracker();
+
+      untracked(() => {
+        const tracker = viewContainerRef.createComponent(CdTrackerComponent);
+        tracker.setInput('componentName', trackerId);
+      });
+    });
   }
 }

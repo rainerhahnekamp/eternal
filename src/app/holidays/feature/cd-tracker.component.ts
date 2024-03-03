@@ -11,6 +11,6 @@ export class CdTrackerComponent {
   componentName = input.required<string>();
 
   trackCd() {
-    this.cdTracker.tick(this.componentName());
+    this.cdTracker.track(this.componentName());
   }
 }
