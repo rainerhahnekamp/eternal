@@ -8,68 +8,7 @@ import {
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-  amount: number;
-};
-
-@Injectable({ providedIn: 'root' })
-export class SyncService {
-  sync(products: Product[]) {
-    console.log(products);
-  }
-}
-
-@Injectable({ providedIn: 'root' })
-export class BasketService {
-  products = signal([
-    {
-      id: 1,
-      name: 'Coffee',
-      price: 3,
-      amount: 1,
-    },
-    { id: 2, name: 'Schnitzel', price: 15, amount: 1 },
-  ]);
-
-  syncService = inject(SyncService);
-
-  constructor() {
-    effect(() => this.syncService.sync(this.products()));
-  }
-
-  totalPrice = computed(() =>
-    this.products().reduce(
-      (total, product) => total + product.price * product.amount,
-      0,
-    ),
-  );
-
-  decrease(id: number) {
-    this.#change(id, (product) =>
-      product.amount > 0 ? { ...product, amount: product.amount - 1 } : product,
-    );
-  }
-
-  increase(id: number) {
-    this.#change(id, (product) => ({ ...product, amount: product.amount + 1 }));
-  }
-
-  #change(id: number, callback: (product: Product) => Product) {
-    this.products.update((products) =>
-      products.map((product) => {
-        if (product.id === id && product.amount > 0) {
-          return callback(product);
-        } else {
-          return product;
-        }
-      }),
-    );
-  }
-}
+import { BasketService } from '@app/basket/basket.service';
 
 @Component({
   selector: 'app-basket',
@@ -109,7 +48,7 @@ export class BasketService {
   standalone: true,
   imports: [MatButton, MatIcon],
 })
-export class BasketComponent {
+export default class BasketComponent {
   basketService = inject(BasketService);
 
   products = this.basketService.products;

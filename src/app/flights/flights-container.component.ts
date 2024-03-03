@@ -9,11 +9,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
-import { Flight } from '@app/holidays/feature/flight';
 import { MatButton } from '@angular/material/button';
-import { FlightsComponent } from '@app/holidays/feature/flights.component';
-import { FlightSearch } from '@app/holidays/feature/flight-search.service';
 import { CdTrackerDirective } from '@app/holidays/feature/cd-tracker.directive';
+import { FlightsComponent } from './flights.component';
+import { Flight } from '@app/flights/flight';
+import { FlightSearch } from '@app/flights/flight-search.service';
 
 @Component({
   selector: 'app-flights-container',
@@ -70,7 +70,7 @@ import { CdTrackerDirective } from '@app/holidays/feature/cd-tracker.directive';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FlightsContainerComponent {
+export default class FlightsContainerComponent {
   flights = signal<Flight[]>([]);
   flightSearch = inject(FlightSearch);
   searchParams = { from: signal('Berlin'), to: signal('London') };

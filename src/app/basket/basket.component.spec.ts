@@ -1,10 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  BasketComponent,
-  BasketService,
-  SyncService,
-} from '@app/holidays/feature/basket.component';
 import { By } from '@angular/platform-browser';
+import BasketComponent from '@app/basket/basket.component';
+import { SyncService } from '@app/basket/sync.service';
+import { BasketService } from '@app/basket/basket.service';
 
 describe('BasketComponent', () => {
   it('should increase the quantity of the product', () => {

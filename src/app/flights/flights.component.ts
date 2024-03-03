@@ -7,7 +7,6 @@ import {
 import { Flight } from './flight';
 import { interval } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DatePipe } from '@angular/common';
 import { CdTrackerDirective } from '@app/holidays/feature/cd-tracker.directive';
 
 @Component({

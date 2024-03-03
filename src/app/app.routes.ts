@@ -6,7 +6,6 @@ import { inject } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { Configuration } from '@app/shared/config';
 import { ChatComponent } from '@app/chat/chat.component';
-import { FlightsContainerComponent } from '@app/holidays/feature/flights-container.component';
 
 export const appRoutes: Routes = [
   {
@@ -41,10 +40,17 @@ export const appRoutes: Routes = [
         loadChildren: () => import('@app/holidays/feature'),
       },
       {
+        path: 'basket',
+        loadComponent: () => import('@app/basket/basket.component'),
+      },
+      {
+        path: 'flights',
+        loadComponent: () => import('@app/flights/flights-container.component'),
+      },
+      {
         path: 'customer',
         loadChildren: () => import('@app/customers/feature'),
       },
-      { path: 'flights', component: FlightsContainerComponent },
       {
         path: 'bookings',
         loadChildren: () => import('@app/bookings'),

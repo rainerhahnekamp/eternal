@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { createFlight, Flight } from '@app/holidays/feature/flight';
 import { add } from 'date-fns';
+import { createFlight, Flight } from './flight';
 
 const flights = [
   createFlight({ date: new Date().toISOString() }),

@@ -6,8 +6,13 @@
       >
     </li>
     <li>
-      <a data-testid="btn-customers" mat-raised-button routerLink="/customer"
-        >Customers</a
+      <a data-testid="btn-basket" mat-raised-button routerLink="/basket"
+        >Basket</a
+      >
+    </li>
+    <li>
+      <a data-testid="btn-flights" mat-raised-button routerLink="/flights"
+        >Flight Search</a
       >
     </li>
     <li>
@@ -18,11 +23,6 @@
     <li>
       <a data-testid="btn-newsletter" mat-raised-button routerLink="/newsletter"
         >Newsletter</a
-      >
-    </li>
-    <li>
-      <a data-testid="btn-flights" mat-raised-button routerLink="/flights"
-        >Flight Search</a
       >
     </li>
     @if (securityService.signedIn$ | async) {

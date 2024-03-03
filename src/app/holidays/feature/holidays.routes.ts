@@ -6,8 +6,6 @@ import { holidaysFeature } from './+state/holidays.reducer';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { RequestInfoComponent } from './request-info/request-info.component';
 import { apiCheckGuard } from './api-check.guard';
-import { BasketComponent } from '@app/holidays/feature/basket.component';
-import { FlightsContainerComponent } from '@app/holidays/feature/flights-container.component';
 
 export const holidaysRoutes: Routes = [
   {
@@ -25,14 +23,6 @@ export const holidaysRoutes: Routes = [
       {
         path: 'request-info/:holidayId',
         component: RequestInfoComponent,
-      },
-      {
-        path: 'basket',
-        component: BasketComponent,
-      },
-      {
-        path: 'flight-search',
-        component: FlightsContainerComponent,
       },
     ],
   },
