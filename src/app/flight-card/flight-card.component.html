@@ -1,0 +1,38 @@
+@if (flight(); as item) {
+  <mat-card>
+    <mat-card-content>
+      <div [ngClass]="{ selected: selected }" class="card">
+        <div class="card-header">
+          <h2 class="title"> {{ item.from }} - {{ item.to }} </h2>
+        </div>
+
+        <div class="card-body">
+          <p>Flight-No.: #{{ item.id }}</p>
+          <p>Date: {{ item.date | date: "dd.MM.yyyy HH:mm" }}</p>
+
+          <ng-content select=".middle"></ng-content>
+
+          <p>
+            @if (selected()) {
+              <button (click)="deselect()" class="btn btn-default">
+                Remove
+              </button>
+            } @else {
+              <button (click)="select()" class="btn btn-default">
+                Select
+              </button>
+            }
+
+            <button
+              [routerLink]="['../flight-edit', item.id, { showDetails: false }]"
+              class="btn btn-default"
+            >
+              Edit
+            </button>
+          </p>
+          <ng-content select=".bottom"></ng-content>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+}

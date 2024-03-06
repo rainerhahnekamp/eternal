@@ -13,9 +13,7 @@ export class SecurityEffects {
   #isServer = isPlatformServer(inject(PLATFORM_ID));
 
   init$ = createEffect(() => {
-    if (this.#isServer) {
-      return of(securityActions.loaded({ user: ANONYMOUS_USER }));
-    }
+    return of(securityActions.loaded({ user: ANONYMOUS_USER }));
 
     return of(this.#isServer).pipe(
       filter(() => !this.#isServer),

@@ -1,0 +1,51 @@
+<div class="header">
+  <h2 class="title">Flight Search</h2>
+</div>
+
+<form>
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label>Address</mat-label>
+      <input [ngModel]="flightStore.searchParams.from()" matInput name="from" />
+      <mat-icon matSuffix>location_on</mat-icon>
+      <mat-hint>Please enter your address</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label>Address</mat-label>
+      <input [ngModel]="flightStore.searchParams.to()" matInput name="to" />
+      <mat-icon matSuffix>location_on</mat-icon>
+      <mat-hint>Please enter your address</mat-hint>
+    </mat-form-field>
+  </div>
+  <p>Search: {{ flightStore.prettySearch() }}</p>
+
+  <div class="form-group">
+    <button
+      mat-raised-button
+      (click)="flightStore.delay()"
+      class="btn btn-default"
+      >Delay</button
+    >
+  </div>
+</form>
+
+<div class="flex gap-x-4 my-4">
+  @for (flight of flights(); track flight.id) {
+    <app-flight-card
+      [flight]="flight"
+      [selected]="basket[flight.id]"
+      (selectedChange)="basket[flight.id] = $event"
+    >
+      <p class="middle"><i>Delays are possible!</i></p>
+      <p class="bottom"><small>Statement without guarantee!</small></p>
+    </app-flight-card>
+  }
+</div>
+
+<p>&nbsp;</p>
+
+<div>
+  <pre>{{ basket | json }}</pre>
+</div>

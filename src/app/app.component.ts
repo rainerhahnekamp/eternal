@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HeaderComponent } from './core/header/header.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { SidemenuComponent } from './core/sidemenu/sidemenu.component';
 import { RouterOutlet } from '@angular/router';
 import { LoaderComponent, MessageComponent } from '@app/shared/ui-messaging';
+import { FlightStore } from '@app/flight-search/flight-store';
 
 @Component({
   selector: 'app-root',
@@ -22,4 +23,6 @@ import { LoaderComponent, MessageComponent } from '@app/shared/ui-messaging';
     MessageComponent,
   ],
 })
-export class AppComponent {}
+export class AppComponent {
+  flightStore = inject(FlightStore);
+}

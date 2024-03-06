@@ -29,6 +29,7 @@ import {
 import { baseUrlInterceptor, errorInterceptor } from '@app/shared/http';
 import { Configuration } from '@app/shared/config';
 import { sharedMasterDataProvider } from '@app/shared/master-data';
+import { FlightStore } from '@app/flight-search/flight-store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -45,7 +46,7 @@ export const appConfig: ApplicationConfig = {
       ]),
       withFetch(),
     ),
-    provideStoreDevtools({connectInZone: true}),
+    provideStoreDevtools({ connectInZone: true }),
     ...provideSecurity,
     ...sharedMasterDataProvider,
     ...sharedUiMessagingProvider,

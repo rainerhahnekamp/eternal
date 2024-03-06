@@ -6,6 +6,7 @@ import { inject } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { Configuration } from '@app/shared/config';
 import { ChatComponent } from '@app/chat/chat.component';
+import { FlightSearchComponent } from '@app/flight-search/flight-search.component';
 
 export const appRoutes: Routes = [
   {
@@ -43,6 +44,7 @@ export const appRoutes: Routes = [
         path: 'basket',
         loadComponent: () => import('@app/basket/basket.component'),
       },
+      { path: 'flight-search', component: FlightSearchComponent },
       {
         path: 'flights',
         loadComponent: () => import('@app/flights/flights-container.component'),

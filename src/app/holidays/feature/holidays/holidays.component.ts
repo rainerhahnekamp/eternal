@@ -13,7 +13,7 @@ import { MatButton } from '@angular/material/button';
   imports: [AsyncPipe, HolidayCardComponent, NgForOf, MatButton],
   template: `<h2>Choose among our Holidays</h2>
 
-    @defer (on interaction; on timer(1s); prefetch on viewport) {
+    @defer (on interaction) {
       <div class="flex flex-wrap justify-evenly">
         @for (holiday of holidays(); track byId($index, holiday)) {
           <app-holiday-card
