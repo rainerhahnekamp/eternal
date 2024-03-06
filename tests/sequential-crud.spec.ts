@@ -1,14 +1,5 @@
-import { expect, test as base } from '@playwright/test';
-import { shellFixtures, ShellFixtures } from './fixtures/shell.fixtures';
-import {
-  customersFixtures,
-  CustomersFixtures,
-} from './fixtures/customer.fixtures';
-
-const test = base.extend<ShellFixtures & CustomersFixtures>({
-  ...shellFixtures,
-  ...customersFixtures,
-});
+import { test } from './fixtures/test';
+import { expect } from './matchers/expect';
 
 test.describe('Sequential CRUD', () => {
   test.describe.configure({ mode: 'serial' });
@@ -19,7 +10,9 @@ test.describe('Sequential CRUD', () => {
 
   test.beforeEach(async ({ page, sidemenuPage }) => {
     await page.goto('');
+    await page.getByText('Application is ready').waitFor();
     await page.getByRole('switch', { name: 'Mock Customers' }).click();
+    await page.getByRole('switch', { name: 'Paged Customers' }).click();
     await sidemenuPage.select('Customers');
   });
 

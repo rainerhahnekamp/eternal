@@ -44,12 +44,33 @@
       "rules": {}
     },
     {
+      "files": ["*.ts"],
+      "extends": ["plugin:@ngrx/strict"]
+    },
+    {
+      "files": ["*.ts"],
+      "extends": ["plugin:@softarc/sheriff/default"]
+    }, {
       "files": [
+        "*.json",
+        "*.html",
         "*.ts"
       ],
       "extends": [
-        "plugin:@ngrx/strict"
-      ]
+        "plugin:prettier/recommended"
+      ],
+      "rules": {}
+    }, {
+      "files": ["*.ts"],
+      "plugins": ["unused-imports"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "warn",
+          { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+        ]
+      }
     }
   ],
   "extends": [
