@@ -12,7 +12,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
-  fullyParallel: false,
+  fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -30,7 +30,7 @@ export default defineConfig({
     baseURL: 'http://localhost:4200',
     screenshot: 'only-on-failure',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
   },
 
   /* Configure projects for major browsers */
@@ -56,6 +56,18 @@ export default defineConfig({
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
       dependencies: ['setup'],
+    },
+
+    {
+      name: 'latin-america',
+      use: {
+        ...devices['Pixel 7'],
+        locale: 'es-mx',
+        timezoneId: 'America/Mexico_City',
+        geolocation: { longitude: -88.56877, latitude: 20.68298 },
+        permissions: ['geolocation'],
+      },
+      testMatch: '*.la-spec.ts',
     },
 
     /* Test against mobile viewports. */

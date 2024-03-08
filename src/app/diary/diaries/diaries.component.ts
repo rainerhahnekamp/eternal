@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-diaries',
   templateUrl: './diaries.component.html',
   styleUrls: ['./diaries.component.scss'],
-  standalone: true
+  standalone: true,
 })
 export class DiariesComponent {}
