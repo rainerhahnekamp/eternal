@@ -10,11 +10,7 @@ import { appRoutes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
-import {
-  provideHttpClient,
-  withFetch,
-  withInterceptors,
-} from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { securityInterceptor } from 'src/app/shared/security';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
@@ -26,11 +22,7 @@ import {
   loadingInterceptor,
   sharedUiMessagingProvider,
 } from '@app/shared/ui-messaging';
-import {
-  baseUrlInterceptor,
-  customersInterceptor,
-  errorInterceptor,
-} from '@app/shared/http';
+import { baseUrlInterceptor, errorInterceptor } from '@app/shared/http';
 import { Configuration } from '@app/shared/config';
 import { sharedMasterDataProvider } from '@app/shared/master-data';
 
@@ -42,13 +34,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withComponentInputBinding()),
     provideHttpClient(
       withInterceptors([
-        customersInterceptor,
         baseUrlInterceptor,
         loadingInterceptor,
         errorInterceptor,
         securityInterceptor,
       ]),
-      withFetch(),
     ),
     provideStoreDevtools({ connectInZone: true }),
     ...sharedMasterDataProvider,

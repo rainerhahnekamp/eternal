@@ -1,19 +1,17 @@
 import {
   Component,
   computed,
+  effect,
   inject,
   input,
   numberAttribute,
 } from '@angular/core';
-import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { customersActions } from '../+state/customers.actions';
-import { fromCustomers } from '../+state/customers.selectors';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { CustomerComponent } from '@app/customers/ui';
 import { Customer } from '@app/customers/model';
 import { selectCountries } from '@app/shared/master-data';
 import { Store } from '@ngrx/store';
+import { CustomersStore } from '@app/customers/data';
 
 @Component({
   selector: 'app-edit-customer',
@@ -33,14 +31,13 @@ import { Store } from '@ngrx/store';
 })
 export class EditCustomerComponent {
   store = inject(Store);
+  #customersFacade = inject(CustomersStore);
+
   id = input.required({ transform: numberAttribute });
-  customer = computed(() =>
-    this.store.selectSignal(fromCustomers.selectById(this.id()))(),
-  );
   countries = this.store.selectSignal(selectCountries);
 
   data = computed(() => {
-    const customer = this.customer();
+    const customer = this.#customersFacade.selectedCustomer();
     const countries = this.countries();
 
     if (!customer) {
@@ -50,29 +47,19 @@ export class EditCustomerComponent {
     return { customer, countries };
   });
 
+  constructor() {
+    effect(() => {
+      const id = this.id();
+
+      this.#customersFacade.select(id);
+    });
+  }
+
   submit(customer: Customer) {
-    this.store.dispatch(
-      customersActions.update({
-        customer: { ...customer, id: this.id() },
-      }),
-    );
+    this.#customersFacade.update({ ...customer, id: this.id() });
   }
 
   remove(customer: Customer) {
-    this.store.dispatch(
-      customersActions.remove({
-        customer: { ...customer, id: this.id() },
-      }),
-    );
-  }
-
-  #verifyCustomer(customer$: Observable<undefined | Customer>) {
-    function customerGuard(
-      customer: undefined | Customer,
-    ): customer is Customer {
-      return customer !== undefined;
-    }
-
-    return customer$.pipe(filter(customerGuard));
+    this.#customersFacade.remove(this.id());
   }
 }

@@ -1,8 +1,6 @@
-import { Component, inject, Signal } from '@angular/core';
-import { createSelector, Store } from '@ngrx/store';
-import { customersActions } from '../+state/customers.actions';
-import { fromCustomers } from '../+state/customers.selectors';
-import { CustomersComponent, CustomersViewModel } from '@app/customers/ui';
+import { Component, inject } from '@angular/core';
+import { CustomersComponent } from '@app/customers/ui';
+import { CustomersStore } from '@app/customers/data';
 
 @Component({
   selector: 'app-customers-container',
@@ -16,21 +14,15 @@ import { CustomersComponent, CustomersViewModel } from '@app/customers/ui';
   imports: [CustomersComponent],
 })
 export class CustomersContainerComponent {
-  #store = inject(Store);
-  viewModel: Signal<CustomersViewModel> = this.#store.selectSignal(
-    createSelector(fromCustomers.selectPagedCustomers, (pagedCustomers) => ({
-      customers: pagedCustomers.customers,
-      pageIndex: pagedCustomers.page - 1,
-      length: pagedCustomers.total,
-    })),
-  );
+  #customersStore = inject(CustomersStore);
+  protected viewModel = this.#customersStore.pagedCustomers;
 
   setSelected(id: number) {
-    this.#store.dispatch(customersActions.select({ id }));
+    this.#customersStore.select(id);
   }
 
   setUnselected() {
-    this.#store.dispatch(customersActions.unselect());
+    this.#customersStore.unselect();
   }
 
   switchPage(page: number) {

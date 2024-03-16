@@ -38,7 +38,7 @@ export const appRoutes: Routes = [
       { path: 'home', redirectTo: '' },
       {
         path: 'holidays',
-        loadChildren: () => import('@app/holidays/feature'),
+        loadChildren: () => import('@app/holidays/api'),
       },
       {
         path: 'customer',
