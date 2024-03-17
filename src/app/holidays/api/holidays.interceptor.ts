@@ -187,7 +187,7 @@ export const holidaysInterceptor: HttpInterceptorFn = (req, next) => {
   const config = inject(Configuration);
 
   if (!config.mockHolidays || !req.url.startsWith('/holiday')) {
-    next(req);
+    return next(req);
   }
 
   return of(new HttpResponse({ body: holidays }));

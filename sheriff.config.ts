@@ -10,8 +10,8 @@ export const sheriffConfig: SheriffConfig = {
       bookings: ['domain:bookings', 'type:feature'],
       diary: ['domain:diary', 'type:feature'],
       'shared/<shared>': 'shared:<shared>',
+      '<domain>/api': ['domain:<domain>:api', 'type:api'],
       '<domain>/feat-<name>': ['domain:<domain>', 'type:feature'],
-      '<domain>/<api>': ['domain:<domain>:api', 'type:api'],
       '<domain>/<type>': ['domain:<domain>', 'type:<type>'],
     },
   },
@@ -24,14 +24,11 @@ export const sheriffConfig: SheriffConfig = {
       'shared:ui-messaging',
       ({ to }) => to.startsWith('domain'),
     ],
-    'domain:*': sameTag,
-    'type:api': [
-      'type:feature',
-      'type:model',
-      'type:ui',
-      'type:data',
-      'shared:config',
+    'domain:*': [
+      sameTag, // domain:bookings -> domain:bookings
+      ({ from, to }) => from.startsWith(to), // domain:bookings:api -> domain:bookings
     ],
+    'type:api': [({ to }) => to.startsWith('type'), 'shared:config'],
     'type:feature': [
       ...['type:api', 'type:data', 'type:ui', 'type:model'],
       'shared:config',

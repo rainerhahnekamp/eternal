@@ -27,7 +27,7 @@ const selectPagedCustomers = createSelector(
       selected: customer.id === selectedId,
     })),
     pageIndex: page - 1,
-    length,
+    length: total,
   }),
 );
 

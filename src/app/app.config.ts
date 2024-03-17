@@ -7,7 +7,6 @@ import {
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { appRoutes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -25,11 +24,19 @@ import {
 import { baseUrlInterceptor, errorInterceptor } from '@app/shared/http';
 import { Configuration } from '@app/shared/config';
 import { sharedMasterDataProvider } from '@app/shared/master-data';
+import { IMAGE_CONFIG } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
-    provideClientHydration(),
+    // provideClientHydration(),
+    {
+      provide: IMAGE_CONFIG,
+      useValue: {
+        disableImageSizeWarning: true,
+        disableImageLazyLoadWarning: true,
+      },
+    },
     provideStore(),
     provideRouter(appRoutes, withComponentInputBinding()),
     provideHttpClient(

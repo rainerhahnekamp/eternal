@@ -22,7 +22,7 @@ import { CustomersStore } from '@app/customers/data';
         [countries]="value.countries"
         [showDeleteButton]="true"
         (save)="this.submit($event)"
-        (remove)="this.remove($event)"
+        (remove)="this.remove()"
       ></app-customer>
     }
   `,
@@ -59,7 +59,7 @@ export class EditCustomerComponent {
     this.#customersFacade.update({ ...customer, id: this.id() });
   }
 
-  remove(customer: Customer) {
+  remove() {
     this.#customersFacade.remove(this.id());
   }
 }
