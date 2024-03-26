@@ -42,11 +42,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withComponentInputBinding()),
     provideHttpClient(
       withInterceptors([
-        customersInterceptor,
         baseUrlInterceptor,
         loadingInterceptor,
         errorInterceptor,
         securityInterceptor,
+        customersInterceptor,
       ]),
       withFetch(),
     ),

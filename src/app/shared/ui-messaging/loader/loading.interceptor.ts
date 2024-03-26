@@ -7,6 +7,7 @@ import { LoadingService } from '@app/shared/ui-messaging/loader/loading.service'
 
 export const loadingInterceptor: HttpInterceptorFn = (req, handle) => {
   const loadingService = inject(LoadingService);
+  console.log('loading...');
   if (req.context.get(SILENT_LOAD_CONTEXT)) {
     return handle(req);
   }

@@ -9,6 +9,7 @@ import { LoadingService } from '@app/shared/ui-messaging/loader/loading.service'
     [ngStyle]="{
       visibility: (loadingService.loading$ | async) ? 'visible' : 'hidden'
     }"
+    data-testid="loading-indicator"
     mode="indeterminate"
   ></mat-progress-bar>`,
   standalone: true,

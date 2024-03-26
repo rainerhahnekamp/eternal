@@ -54,6 +54,7 @@ function get(
     }).pipe(logRequest('GET', url));
   } else {
     return pagedCustomers(Number(options.params.get('page'))).pipe(
+      delay(1000),
       logRequest('GET', url),
     );
   }

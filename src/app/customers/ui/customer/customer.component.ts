@@ -45,7 +45,15 @@ export class CustomerComponent {
 
   constructor() {
     effect(() => {
-      this.formGroup.setValue(this.customer());
+      const customer = this.customer();
+
+      if (customer.name === 'Hoffmann') {
+        window.setTimeout(() => {
+          this.formGroup.patchValue(customer);
+        }, 1000);
+      } else {
+        this.formGroup.setValue(customer);
+      }
     });
   }
 
