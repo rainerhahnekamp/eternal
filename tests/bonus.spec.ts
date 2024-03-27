@@ -26,13 +26,14 @@ test.describe('bonus tests', () => {
       ).toBeVisible();
     });
 
-    test.fixme('should use a synchronous assertion', async ({ page }) => {
+    test('should use a synchronous assertion', async ({ page }) => {
       await page.getByTestId('btn-customers').click();
       await expect(page.getByTestId('row-customer')).toHaveCount(10);
       const name = await page
         .getByTestId('row-customer')
         .getByTestId('name')
-        .first();
+        .first()
+        .textContent();
 
       expect(name).toBe('Latitia');
       // await page.getByTestId('row-customer').last().waitFor();

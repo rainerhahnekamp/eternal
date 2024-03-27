@@ -1,4 +1,5 @@
-import { expect, test } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { test } from './fixtures/test';
 
 test.describe('Basics', () => {
   test.beforeEach(async ({ page }) => {
@@ -16,8 +17,8 @@ test.describe('Basics', () => {
     );
   });
 
-  test('customers list shows 10 rows', async ({ page }) => {
-    await page.getByTestId('btn-customers').click();
+  test('customers list shows 10 rows', async ({ page, shellPageObject }) => {
+    await shellPageObject.openCustomers();
     const locator = page.getByTestId('row-customer');
     await expect(locator).toHaveCount(10);
   });
