@@ -1,4 +1,5 @@
 import { Page } from '@playwright/test';
+import { CustomerPage } from './customer-page';
 
 export class CustomersPage {
   constructor(private page: Page) {}
@@ -13,10 +14,12 @@ export class CustomersPage {
     await this.page.getByRole('link', { name: 'Add Customer' }).click();
   }
 
-  async edit(name: string): Promise<void> {
+  async edit(name: string): Promise<CustomerPage> {
     await this.page
       .getByLabel(name)
       .getByRole('link', { name: 'Edit' })
       .click();
+
+    return new CustomerPage(this.page);
   }
 }

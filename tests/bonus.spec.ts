@@ -67,24 +67,29 @@ test.describe('bonus tests', () => {
     });
 
     test('verify image loading', async ({ page }, testInfo) => {
-      await page.getByRole('link', { name: 'Holidays', exact: true }).click();
+      await test.step('go to holidays', async () => {
+        await page.getByRole('link', { name: 'Holidays', exact: true }).click();
+        await expect(page.getByTestId('holiday-card').first()).toBeVisible();
+      });
 
-      await expect(page.getByTestId('holiday-card').first()).toBeVisible();
-      const holidayCardCount = await page.getByTestId('holiday-card').count();
+      await test.step('load images', async () => {
+        const holidayCardCount = await page.getByTestId('holiday-card').count();
+        for (let i = 0; i < holidayCardCount; i++) {
+          await expect(
+            page.getByTestId('holiday-card').locator('img').nth(i),
+          ).toHaveJSProperty('complete', true);
+          await expect(
+            page.getByTestId('holiday-card').locator('img').nth(i),
+          ).not.toHaveJSProperty('naturalWidth', 0);
+        }
+      });
 
-      for (let i = 0; i < holidayCardCount; i++) {
-        await expect(
-          page.getByTestId('holiday-card').locator('img').nth(i),
-        ).toHaveJSProperty('complete', true);
-        await expect(
-          page.getByTestId('holiday-card').locator('img').nth(i),
-        ).not.toHaveJSProperty('naturalWidth', 0);
-      }
-
-      const screenshot = await page.screenshot({ fullPage: true });
-      await testInfo.attach('screenshot', {
-        body: screenshot,
-        contentType: 'image/png',
+      await test.step('attach screenshot', async () => {
+        const screenshot = await page.screenshot({ fullPage: true });
+        await testInfo.attach('screenshot', {
+          body: screenshot,
+          contentType: 'image/png',
+        });
       });
     });
   });

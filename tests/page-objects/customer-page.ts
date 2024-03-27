@@ -5,7 +5,16 @@ interface CustomerData {
   lastname?: string;
   birthday?: Date;
   country?: string;
+  address: string;
+  zusatz: string;
 }
+
+type CustomerDataWithoutAddress = {
+  firstname?: string;
+  lastname?: string;
+  birthday?: Date;
+  country?: string;
+};
 
 export class CustomerPage {
   constructor(private page: Page) {}
@@ -42,5 +51,16 @@ export class CustomerPage {
 
   async submit() {
     await this.page.getByRole('button', { name: 'Save' }).click();
+    this.add({
+      firstname: 'asdf',
+      lastname: '',
+      birthday: new Date(),
+      country: 'at',
+      address: '',
+    });
   }
+
+  async add(
+    customerData: Required<CustomerData | CustomerDataWithoutAddress>,
+  ) {}
 }

@@ -1,23 +1,25 @@
-import { test, expect } from '@playwright/test';
-import { getByRole } from '@testing-library/angular';
-import exp from 'constants';
+import { expect } from './matchers/expect';
+import { test } from './fixtures/test';
+import { CustomerPage } from './page-objects/customer-page';
 
 test.describe('Init', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('');
-    // await page.getByText('Application is ready');
+    await expect(page.getByText('Application is ready')).toBeVisible();
   });
-  test('test', async ({ page }) => {
-    await page.getByRole('link', { name: 'Customers', exact: true }).click();
-    const links = await page.getByRole('link').count();
-    // await page
-    //   .getByLabel('Vienna')
-    //   .getByRole('link', { name: 'Brochure' })
-    //   .click();
-    // await page.getByRole('textbox', { name: 'Address' });
-    // await page.getByRole('link').waitFor();
-    // await page.locator('[data-testid=address]');
-    //   await expect(page.locator('#holiday-card-1')).toContainText('Wien');
+  test('test', async ({ page, sidemenuPage }) => {
+    await sidemenuPage.select('Customers');
+    await expect
+      .configure({ soft: true })(page.getByText('Latitia'))
+      .toBeVisible();
+  });
+
+  test('holidays request', async ({ page, sidemenuPage }) => {
+    const request = page.waitForResponse((response) =>
+      response.url().startsWith('https://api.eternal'),
+    );
+    await sidemenuPage.select('Holidays');
+    await request;
   });
 
   test('browser check', async ({ page }) => {
