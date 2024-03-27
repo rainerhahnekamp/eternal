@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { first } from 'rxjs';
 
 test.describe('bonus tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -8,9 +7,7 @@ test.describe('bonus tests', () => {
   });
 
   test.describe('failing tests', () => {
-    test('should rename Renate Hoffmann to Renate Hoffmann', async ({
-      page,
-    }) => {
+    test('should rename Renate Hoffmann to Renate Hofman', async ({ page }) => {
       await page.getByTestId('btn-customers').click();
       await page
         .getByTestId('row-customer')
@@ -18,7 +15,9 @@ test.describe('bonus tests', () => {
         .getByTestId('btn-edit')
         .click();
 
-      await page.getByTestId('inp-name').clear();
+      // await expect(page.getByRole('button', { name: 'Save' })).toBeEnabled();
+      await expect(page.getByTestId('inp-name')).toHaveValue('Hoffmann');
+
       await page.getByTestId('inp-name').fill('Hofman');
       await page.getByRole('button', { name: 'Save' }).click();
 
@@ -27,10 +26,18 @@ test.describe('bonus tests', () => {
       ).toBeVisible();
     });
 
-    test('should use a synchronous assertion', async ({ page }) => {
+    test.fixme('should use a synchronous assertion', async ({ page }) => {
       await page.getByTestId('btn-customers').click();
-      const customersCount = await page.getByTestId('row-customer').count();
-      expect(customersCount).toHaveLength(10);
+      await expect(page.getByTestId('row-customer')).toHaveCount(10);
+      const name = await page
+        .getByTestId('row-customer')
+        .getByTestId('name')
+        .first();
+
+      expect(name).toBe('Latitia');
+      // await page.getByTestId('row-customer').last().waitFor();
+      // const customersCount = await page.getByTestId('row-customer').count();
+      // expect(customersCount).toBe(10);
     });
   });
 
@@ -44,6 +51,8 @@ test.describe('bonus tests', () => {
         .click();
       page.on('dialog', (page) => page.accept());
       await page.getByTestId('btn-delete').click();
+      await expect(page.getByTestId('row-customer').first()).toBeVisible();
+
       await expect(
         page.getByTestId('row-customer').filter({ hasText: 'Knut Eggen' }),
       ).not.toBeVisible();
@@ -51,11 +60,26 @@ test.describe('bonus tests', () => {
 
     test('loading indicator', async ({ page }) => {
       await page.getByTestId('btn-customers').click();
+      await expect(page.getByTestId('loading-indicator')).toBeVisible();
+      await expect(page.getByTestId('row-customer').first()).toBeVisible();
       await expect(page.getByTestId('loading-indicator')).not.toBeVisible();
     });
 
     test('verify image loading', async ({ page }, testInfo) => {
       await page.getByRole('link', { name: 'Holidays', exact: true }).click();
+
+      await expect(page.getByTestId('holiday-card').first()).toBeVisible();
+      const holidayCardCount = await page.getByTestId('holiday-card').count();
+
+      for (let i = 0; i < holidayCardCount; i++) {
+        await expect(
+          page.getByTestId('holiday-card').locator('img').nth(i),
+        ).toHaveJSProperty('complete', true);
+        await expect(
+          page.getByTestId('holiday-card').locator('img').nth(i),
+        ).not.toHaveJSProperty('naturalWidth', 0);
+      }
+
       const screenshot = await page.screenshot({ fullPage: true });
       await testInfo.attach('screenshot', {
         body: screenshot,
@@ -70,9 +94,8 @@ test.describe('bonus tests', () => {
       await page
         .getByTestId('holiday-card')
         .filter({ hasText: 'Wien' })
-        .or(page.getByTestId('holiday-card').filter({ hasText: 'London' }))
+        .or(page.getByTestId('holiday-card').filter({ hasText: 'Vienna' }))
         .getByRole('link')
-        .first()
         .click();
     });
   });

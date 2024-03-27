@@ -78,8 +78,8 @@ test.describe('Basics', () => {
     await page.getByTestId('btn-delete').click();
 
     const locator = page.getByTestId('row-customer');
-    await expect(locator).toHaveCount(10);
 
+    await expect(locator).toHaveCount(10); // Vorbedingung
     await expect(
       page.getByTestId('row-customer').filter({ hasText: 'Knut Eggen' }),
     ).not.toBeVisible();
