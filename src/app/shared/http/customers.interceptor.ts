@@ -17,8 +17,7 @@ const pageSize = 10;
 
 export const customersInterceptor: HttpInterceptorFn = (req, handle) => {
   const configuration = inject(Configuration);
-
-  if (!req.url.startsWith('/customer')) {
+  if (!req.url.startsWith(`${configuration.baseUrl}/customer`)) {
     return handle(req);
   }
 

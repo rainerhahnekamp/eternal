@@ -19,4 +19,8 @@ test.describe('Init', () => {
     // await page.locator('[data-testid=address]');
     //   await expect(page.locator('#holiday-card-1')).toContainText('Wien');
   });
+
+  test('browser check', async ({ page }) => {
+    await page.goto('https://www.whatismybrowser.com/');
+  });
 });
