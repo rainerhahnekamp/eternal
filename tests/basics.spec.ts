@@ -17,114 +17,74 @@ test.describe('Basics', () => {
     );
   });
 
-  test('customers list shows 10 rows', async ({ page, shellPageObject }) => {
-    await shellPageObject.openCustomers();
-    const locator = page.getByTestId('row-customer');
-    await expect(locator).toHaveCount(10);
-  });
-
-  test('3rd customer is Hugo Brandt; 10th is Jan Janáček', async ({ page }) => {
-    await page.getByTestId('btn-customers').click();
-    const nameLocator = page.getByTestId('row-customer').getByTestId('name');
-
-    await expect(nameLocator.nth(2)).toHaveText('Hugo Brandt');
-    await expect(nameLocator.nth(9)).toHaveText('Jan Janáček');
-  });
-
-  test('add Nicholas Dimou as new customer', async ({ page }) => {
-    await page.getByTestId('btn-customers').click();
-    await page.getByTestId('btn-customers-add').click();
-    await page.getByTestId('inp-firstname').fill('Nicholas');
-    await page.getByTestId('inp-name').fill('Dimou');
-    await page.getByTestId('sel-country').click();
-    await page.getByText('Greece').click();
-    await page.getByTestId('inp-birthdate').fill('1.2.1978');
-    await page.getByTestId('btn-submit').click();
-
-    await expect(
-      page.getByTestId('row-customer').filter({ hasText: 'Nicholas Dimou' }),
-    ).toBeVisible();
-  });
-
-  test('rename Latitia to Laetitia', async ({ page }) => {
-    await page.getByTestId('btn-customers').click();
-
-    await page
-      .getByTestId('row-customer')
-      .filter({ hasText: 'Latitia' })
-      .getByTestId('btn-edit')
-      .click();
-    await page.getByTestId('inp-firstname').fill('Laetitia');
-    await page.getByTestId('inp-name').fill('Bellitissa-Wagner');
-    await page.getByTestId('sel-country').click();
-    await page.getByText('Austria').click();
-    await page.getByTestId('btn-submit').click();
-
-    await expect(
-      page.getByTestId('row-customer').filter({
-        hasText: 'Bellitissa-Wagner',
-      }),
-    ).toBeVisible();
-  });
-
-  test('delete Knut Eggen', async ({ page }) => {
-    await page.getByTestId('btn-customers').click();
-
-    await page
-      .getByTestId('row-customer')
-      .filter({ hasText: 'Knut Eggen' })
-      .getByTestId('btn-edit')
-      .click();
-    page.on('dialog', (dialog) => dialog.accept());
-    await page.getByTestId('btn-delete').click();
-
-    const locator = page.getByTestId('row-customer');
-
-    await expect(locator).toHaveCount(10); // Vorbedingung
-    await expect(
-      page.getByTestId('row-customer').filter({ hasText: 'Knut Eggen' }),
-    ).not.toBeVisible();
-  });
-
-  test('select the same country again', async ({ page }) => {
-    await page.getByTestId('btn-customers').click();
-
-    await page
-      .getByTestId('row-customer')
-      .filter({ hasText: 'Hugo Brand' })
-      .getByTestId('btn-edit')
-      .click();
-    await page.getByTestId('sel-country').click();
-    await page.getByTestId('opt-country').getByText('Austria').click();
-
-    await page.getByTestId('btn-submit').click();
-  });
-
-  test.describe('user-facing selectors', () => {
-    test('should request brochure for Firenze', async ({ page }) => {
-      await page.getByRole('link', { name: 'Holidays', exact: true }).click();
-      await page
-        .getByLabel(/Firenze/i)
-        .getByRole('link', { name: 'Get a Brochure' })
-        .click();
-      await page.getByLabel('Address').fill('Domgasse 5');
-      await page.getByRole('button', { name: 'Send' }).click();
-      await expect(page.getByRole('status')).toHaveText('Brochure sent');
+  test.describe('Customers', () => {
+    test.beforeEach(async ({ sidemenuPage }) => {
+      await sidemenuPage.select('Customers');
     });
 
-    test('should rename Latitia to Laetitia', async ({ page }) => {
-      await page.getByRole('link', { name: 'Customers', exact: true }).click();
-      await page
-        .getByLabel(/Latitia/i)
-        .getByRole('link', { name: 'Edit Customer' })
-        .click();
-      await expect(page.getByLabel('Firstname')).toHaveValue('Latitia');
-      await page.getByLabel('Firstname').fill('Laetitia');
-      await page.getByRole('button', { name: 'Save' }).click();
+    test('customers list shows 10 rows', async ({ customersPage }) => {
+      await expect(customersPage.rowsLocator).toHaveCount(10);
+    });
+
+    test('3rd customer is Hugo Brand; 10th is Jan Janáček', async ({
+      customersPage,
+    }) => {
       await expect(
-        page.getByRole('link', { name: 'Edit Customer' }),
-      ).toHaveCount(10);
-      await expect(page.getByLabel(/Latitia/)).toHaveCount(0);
+        customersPage.rowsLocator.getByTestId('name').nth(2),
+      ).toHaveText('Hugo Brandt');
+      await expect(
+        customersPage.rowsLocator.getByTestId('name').nth(9),
+      ).toHaveText('Jan Janáček');
+    });
+
+    test('add Nicholas Dimou as new customer', async ({
+      customersPage,
+      customerPage,
+    }) => {
+      await customersPage.add();
+      await customerPage.fillIn({
+        firstname: 'Nicholas',
+        lastname: 'Dimou',
+        country: 'Greece',
+        birthday: new Date(1978, 3, 1),
+      });
+      await customerPage.submit();
+
+      await expect(customersPage.rowByName('Nicholas Dimou')).toBeVisible();
+    });
+
+    test('rename Latitia to Laetitia', async ({
+      customersPage,
+      customerPage,
+    }) => {
+      await customersPage.edit('Latitia');
+      await customerPage.fillIn({
+        firstname: 'Laetitia',
+        lastname: 'Bellitissa-Wagner',
+        country: 'Austria',
+      });
+      await customerPage.submit();
+
+      await expect(customersPage.rowByName('Bellitissa-Wagner')).toBeVisible();
+    });
+
+    test('delete Knut Eggen', async ({ page, customersPage, customerPage }) => {
+      await customersPage.edit('Knut Eggen');
+
+      page.on('dialog', (dialog) => dialog.accept());
+      await customerPage.remove();
+
+      await expect(customersPage.rowsLocator).toHaveCount(10);
+      await expect(customersPage.rowByName('Knut Eggen')).not.toBeVisible();
+    });
+
+    test('select the same country again', async ({
+      customerPage,
+      customersPage,
+    }) => {
+      await customersPage.edit('Hugo Brandt');
+      await customerPage.fillIn({ country: 'Austria' });
+      await customerPage.submit();
     });
   });
 });
