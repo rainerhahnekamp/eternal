@@ -38,3 +38,5 @@ export const questionsNorway: Question[] = [
     'Galdhøpiggen is the tallest mountain in Norway with a height of 2469 meters (8100 ft) above sea level.',
   ),
 ];
+
+// create questions for Poland in the same as for Norway

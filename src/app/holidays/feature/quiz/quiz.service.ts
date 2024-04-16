@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Quiz } from '@app/holidays/feature/quiz/model';
 import { questionsIndia } from '@app/holidays/feature/quiz/data/questions-india';
 import { questionsNorway } from '@app/holidays/feature/quiz/data/questions-norway';
+import { questionsPoland } from '@app/holidays/feature/quiz/data/questions-poland';
 
-const questions = [...questionsIndia, ...questionsNorway];
+const questions = [...questionsIndia, ...questionsNorway, ...questionsPoland];
 
 @Injectable({ providedIn: 'root' })
 export class QuizService {

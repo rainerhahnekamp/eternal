@@ -7,6 +7,21 @@ import { of } from 'rxjs';
 
 export const holidays: Holiday[] = [
   createHoliday({
+    id: 15,
+    title: 'Poland',
+    teaser: 'A country in Central Europe',
+    description:
+      'Poland is a country located in Central Europe. It is known for its rich history, diverse culture, and beautiful landscapes.',
+    imageUrl: '/assets/poland.jpg',
+    typeId: 1,
+    durationInDays: 14,
+    minCount: 8,
+    maxCount: 24,
+    onSale: false,
+    soldOut: false,
+    hasQuiz: true,
+  }),
+  createHoliday({
     id: 1,
     title: 'Norway',
     teaser: 'Raw Nature in the North',
