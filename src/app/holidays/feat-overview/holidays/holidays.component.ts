@@ -1,8 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { AsyncPipe, NgForOf } from '@angular/common';
 import { HolidayCardComponent } from '@app/holidays/ui';
-import { fromHolidays, holidaysActions } from '@app/holidays/data';
+import { HolidayStore } from '@app/holidays/data';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -64,20 +63,20 @@ import { MatButton } from '@angular/material/button';
   ],
 })
 export class HolidaysComponent implements OnInit {
-  #store = inject(Store);
-  holidays = this.#store.selectSignal(fromHolidays.selectHolidaysWithFavourite);
+  #holidaysStore = inject(HolidayStore);
+  holidays = this.#holidaysStore.holidaysWithFavourite;
   protected search = '';
   protected type = 'all';
 
   ngOnInit(): void {
-    this.#store.dispatch(holidaysActions.load());
+    this.#holidaysStore.load();
   }
 
   addFavourite(id: number) {
-    this.#store.dispatch(holidaysActions.addFavourite({ id }));
+    this.#holidaysStore.addFavourite(id);
   }
 
   removeFavourite(id: number) {
-    this.#store.dispatch(holidaysActions.removeFavourite({ id }));
+    this.#holidaysStore.removeFavourite(id);
   }
 }
