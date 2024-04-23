@@ -35,19 +35,5 @@ const hiddenVienna = createHoliday({
 export class HolidaysComponent {
   #imagesLoadedService = inject(ImagesLoadedService);
 
-  holidays$ = toObservable(inject(HolidaysRepository).holidays).pipe(
-    concatMap((holidays) =>
-      holidays.length
-        ? concat(
-            of(holidays),
-            this.#imagesLoadedService.loaded$.pipe(
-              filter(Boolean),
-              map(() => [...holidays, hiddenVienna]),
-              delay(1000),
-              first(),
-            ),
-          )
-        : of(holidays),
-    ),
-  );
+  holidays$ = toObservable(inject(HolidaysRepository).holidays);
 }

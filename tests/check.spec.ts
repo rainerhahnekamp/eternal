@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 test('has title', async ({ page }) => {
-  await page.goto('');
+  await page.goto('/holidays');
   await expect(
-    page.getByRole('heading', { name: 'Welcome to Eternal' }),
-  ).toBeVisible();
+    page.getByTestId('holiday-card').filter({ hasText: 'Copenhagen' }),
+  ).toHaveScreenshot('copenhagen.png', );
 });

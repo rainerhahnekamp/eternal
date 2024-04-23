@@ -33,6 +33,7 @@
     "@ngrx/store": "^16.2.0",
     "@ngrx/store-devtools": "^16.2.0",
     "date-fns": "^2.30.0",
+    "ng-mocks": "^14.12.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"

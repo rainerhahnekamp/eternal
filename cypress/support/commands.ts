@@ -5,12 +5,17 @@
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace Cypress {
   interface Chainable<Subject> {
+    openMenu(item: 'Customers' | 'Holidays'): void;
     testid(selector: string): Chainable<JQuery<HTMLElement>>;
     findByRole(role: string, textMatch: string | RegExp): Chainable<JQuery>;
     holidayCards(): Chainable<JQuery<HTMLElement>>;
     login(username?: string, password?: string): void;
   }
 }
+
+Cypress.Commands.add('openMenu', (item: 'Customers' | 'Holidays') => {
+  cy.findByRole('link', {name: item}).click()
+})
 
 Cypress.Commands.add('testid', (selector: string) =>
   cy.get(`[data-testid=${selector}]`),
