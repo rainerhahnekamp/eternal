@@ -25,9 +25,7 @@ test.describe('Basics', () => {
     page,
   }) => {
     await page.getByTestId('btn-customers').click();
-    const nameLocator = page.locator(
-      'data-testid=row-customer >> data-testid=name',
-    );
+    const nameLocator = page.getByTestId('row-customer').getByTestId('name');
 
     await expect(nameLocator.nth(2)).toHaveText('Hugo Brandt');
     await expect(nameLocator.nth(9)).toHaveText('Jan Janáček');
@@ -44,9 +42,7 @@ test.describe('Basics', () => {
     await page.getByTestId('btn-submit').click();
 
     await expect(
-      page.locator('data-testid=row-customer', {
-        hasText: 'Nicholas Dimou',
-      }),
+      page.getByTestId('row-customer').filter({ hasText: 'Nicholas Dimou' }),
     ).toBeVisible();
   });
 
@@ -111,7 +107,7 @@ test.describe('Basics', () => {
         .click();
       await page.getByLabel('Address').fill('Domgasse 5');
       await page.getByRole('button', { name: 'Send' }).click();
-      await page.getByRole('status');
+      await expect(page.getByRole('status')).toHaveText('Brochure sent');
     });
 
     test('should rename Latitia to Laetitia', async ({ page }) => {
