@@ -33,19 +33,16 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'setup',
+      name: 'chrome',
       use: { ...devices['Desktop Chrome'] },
-      testMatch: '*.auth-spec.ts',
-    },
-    {
-      name: 'john-list',
-      use: { ...devices['Desktop Chrome'], storageState: 'john-list.json' },
-      dependencies: ['setup'],
-      testMatch: 'john-list/*.spec.ts',
     },
     {
       name: 'Safari Webkit',
       use: { ...devices['Desktop Safari'] },
+    },
+    {
+      name: 'Firefox',
+      use: { ...devices['Desktop Firefox'] },
     },
 
     /* Test against mobile viewports. */

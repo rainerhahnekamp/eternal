@@ -46,7 +46,7 @@ export const appRoutes: Routes = [
         path: 'bookings',
         loadChildren: () => import('@app/bookings'),
       },
-      { path: 'newsletter', component: NewsletterComponent },
+      { path: 'newsletter/:email', component: NewsletterComponent },
       {
         path: 'diary',
         loadChildren: () => import('@app/diary'),
