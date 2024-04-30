@@ -43,6 +43,10 @@ export default defineConfig({
       dependencies: ['setup'],
       testMatch: 'john-list/*.spec.ts',
     },
+    {
+      name: 'Safari Webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
 
     /* Test against mobile viewports. */
     // {
