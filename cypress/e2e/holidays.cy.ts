@@ -19,6 +19,7 @@ describe('Holidays', () => {
       .and('have.css', 'color', 'rgb(0, 0, 0)');
   });
 
+
   it('should verify the holidays link with explicit assertions', () => {
     cy.testid('btn-holidays').should(($button) => {
       expect($button).to.have.text('Holidays');
