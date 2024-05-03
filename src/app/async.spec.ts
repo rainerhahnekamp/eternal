@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { fakeAsync, flush, tick, waitForAsync } from '@angular/core/testing';
-import { asyncScheduler, of, scheduled } from 'rxjs';
+import { asyncScheduler, lastValueFrom, of, scheduled } from "rxjs";
 
 class Incrementer {
   #a = 1;
@@ -100,5 +100,12 @@ describe('Asynchronität', () => {
     let a = 1;
     scheduled([1], asyncScheduler).subscribe((n) => (a += n));
     tick()
+    expect(a).toBe(2)
+  }));
+
+  it('should use an Observable with waitForAsync', waitForAsync(async () => {
+    let a = 1;
+    a += await lastValueFrom(scheduled([1], asyncScheduler))
+    expect(a).toBe(2)
   }));
 });

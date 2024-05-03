@@ -2,17 +2,18 @@ import {
   HttpErrorResponse,
   HttpEvent,
   HttpHandler,
-  HttpInterceptor,
+  HttpInterceptor, HttpInterceptorFn,
   HttpParams,
   HttpRequest,
   HttpResponse
-} from '@angular/common/http';
+} from "@angular/common/http";
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay, map, tap } from 'rxjs/operators';
 import { Customer } from './customer';
 import { customers as originalCustomers } from './data';
 import { Configuration } from '@app/shared';
+
 
 @Injectable()
 export class CustomersInterceptor implements HttpInterceptor {
