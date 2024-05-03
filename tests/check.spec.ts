@@ -1,8 +1,11 @@
+
+
+
 import { expect, test } from '@playwright/test';
 
-test('has title', async ({ page }) => {
-  await page.goto('');
+test('make visual regression', async ({ page }) => {
+  await page.goto('http://localhost:4200/holidays');
   await expect(
-    page.getByRole('heading', { name: 'Welcome to Eternal' }),
-  ).toBeVisible();
+    page.getByTestId('holiday-card').filter({hasText: 'Wien'})
+  ).toHaveScreenshot('wien.png');
 });
