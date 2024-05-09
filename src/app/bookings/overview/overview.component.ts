@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { Booking } from '../+state/bookings.reducer';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
@@ -15,7 +15,9 @@ export interface ViewModel {
   imports: [MatTableModule, CommonModule],
 })
 export class OverviewComponent {
-  @Input() viewModel: ViewModel | undefined;
-  displayedColumns = ['holidayId', 'date', 'status', 'comment'];
-  dataSource = new MatTableDataSource<Booking>([]);
+  readonly viewModel = input.required<ViewModel>();
+  protected displayedColumns = ['holidayId', 'date', 'status', 'comment'];
+  protected dataSource = computed(
+    () => new MatTableDataSource<Booking>(this.viewModel().bookings),
+  );
 }
