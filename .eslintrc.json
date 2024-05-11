@@ -68,7 +68,7 @@
       }
     },
     {
-      "files": ["*.ts"],
+      "files": ["*.tsx"],
       "plugins": ["custom"],
       "rules": {
         "custom/on-push": "error",

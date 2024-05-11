@@ -5,6 +5,7 @@ const api = (from: string, to: string) => ({
 });
 
 export const sheriffConfig: SheriffConfig = {
+  autoTagging: false,
   tagging: {
     'src/app': {
       bookings: ['domain:bookings', 'type:feature'],
