@@ -1,4 +1,9 @@
-import { Component, computed, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { Booking } from '../+state/bookings.reducer';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
@@ -13,6 +18,7 @@ export interface ViewModel {
   templateUrl: './overview.component.html',
   standalone: true,
   imports: [MatTableModule, CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewComponent {
   readonly viewModel = input.required<ViewModel>();

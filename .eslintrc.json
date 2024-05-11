@@ -44,17 +44,13 @@
     {
       "files": ["*.ts"],
       "extends": ["plugin:@softarc/sheriff/default"]
-    }, {
-      "files": [
-        "*.json",
-        "*.html",
-        "*.ts"
-      ],
-      "extends": [
-        "plugin:prettier/recommended"
-      ],
+    },
+    {
+      "files": ["*.json", "*.html", "*.ts"],
+      "extends": ["plugin:prettier/recommended"],
       "rules": {}
-    }, {
+    },
+    {
       "files": ["*.ts"],
       "plugins": ["unused-imports"],
       "rules": {
@@ -62,8 +58,21 @@
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [
           "warn",
-          { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+          {
+            "vars": "all",
+            "varsIgnorePattern": "^_",
+            "args": "after-used",
+            "argsIgnorePattern": "^_"
+          }
         ]
+      }
+    },
+    {
+      "files": ["*.ts"],
+      "plugins": ["custom"],
+      "rules": {
+        "custom/on-push": "error",
+        "custom/signal-api": "error"
       }
     }
   ]
