@@ -1,4 +1,10 @@
-import { Component, inject, input, numberAttribute } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  numberAttribute,
+} from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { JsonPipe, NgClass } from '@angular/common';
 import {
@@ -8,29 +14,15 @@ import {
   MatCardHeader,
 } from '@angular/material/card';
 import { QuizStore } from './quiz-store';
-
-/**
- * Clock
- * Current as computed
- * Amount of answered/unanswered
- */
+import { QuizStatusComponent } from '@app/holidays/feat-quiz/quiz-status.componen';
 
 @Component({
   selector: 'app-quiz',
   template: ` <h2>{{ quizStore.title() }}</h2>
-    @if (quizStore.timeLeft() > 0) {
-      <p>Time Left: {{ quizStore.timeLeft() }} seconds</p>
-    } @else if (quizStore.timeLeft() < 0) {
-      <p>Time is up!</p>
-    }
-    <p>Status:</p>
-    <p>
-      <span class="text-green-500 pr-4"
-        >Correct: {{ quizStore.status().correct }}</span
-      ><span class="text-red-500"
-        >Incorrect: {{ quizStore.status().incorrect }}</span
-      >
-    </p>
+    <app-quiz-status
+      [timeLeft]="quizStore.timeLeft()"
+      [status]="quizStore.status()"
+    />
     @for (question of quizStore.questions(); track question) {
       <mat-card class="max-w-lg my-4">
         <mat-card-header>{{ question.question }}</mat-card-header>
@@ -83,9 +75,11 @@ import { QuizStore } from './quiz-store';
     MatCardHeader,
     MatCardActions,
     MatCardContent,
+    QuizStatusComponent,
     JsonPipe,
   ],
   providers: [QuizStore],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizComponent {
   quizStore = inject(QuizStore);
