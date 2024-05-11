@@ -5,7 +5,8 @@ import { AddressLookuper } from './address-lookuper.service';
 import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
+import { MatAnchor, MatButton } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-request-info',
@@ -19,6 +20,8 @@ import { MatButton } from '@angular/material/button';
     MatInput,
     MatButton,
     MatHint,
+    RouterLink,
+    MatAnchor,
   ],
 })
 export class RequestInfoComponent {

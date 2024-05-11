@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-quiz-status',
@@ -13,6 +13,7 @@ import { Component, input } from '@angular/core';
       ><span class="text-red-500">Incorrect: {{ status().incorrect }}</span>
     </p>`,
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizStatusComponent {
   timeLeft = input.required<number>();
