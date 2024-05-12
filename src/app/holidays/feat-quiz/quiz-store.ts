@@ -14,8 +14,10 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { interval, pipe, switchMap } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { isPlatformServer } from '@angular/common';
+import { withDevtools } from '@angular-architects/ngrx-toolkit';
 
 export const QuizStore = signalStore(
+  withDevtools('quiz'),
   withState({
     title: '',
     questions: [] as Question[],

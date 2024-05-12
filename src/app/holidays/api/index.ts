@@ -16,7 +16,6 @@ export default [
     providers: [
       provideHttpClient(
         withRequestsMadeViaParent(),
-        withInterceptors([holidaysInterceptor]),
       ),
     ],
     children: [

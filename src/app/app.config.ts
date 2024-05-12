@@ -30,6 +30,7 @@ import { Configuration } from '@app/shared/config';
 import { sharedMasterDataProvider } from '@app/shared/master-data';
 import { IMAGE_CONFIG } from '@angular/common';
 import { provideClientHydration } from '@angular/platform-browser';
+import { holidaysInterceptor } from '@app/holidays/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -51,6 +52,7 @@ export const appConfig: ApplicationConfig = {
         loadingInterceptor,
         errorInterceptor,
         securityInterceptor,
+        holidaysInterceptor,
       ]),
     ),
     provideStoreDevtools({ connectInZone: true }),
