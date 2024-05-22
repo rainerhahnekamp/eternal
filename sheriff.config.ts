@@ -5,6 +5,7 @@ const api = (from: string, to: string) => ({
 });
 
 export const sheriffConfig: SheriffConfig = {
+  entryFile: 'src/main.ts',
   tagging: {
     'src/app': {
       bookings: ['domain:bookings', 'type:feature'],
