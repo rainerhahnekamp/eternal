@@ -4,11 +4,7 @@ import { EditCustomerComponent } from './components/edit-customer.component';
 import { dataGuard } from './services/data.guard';
 import { CustomersRootComponent } from './components/customers-root/customers-root.component';
 import { customersInterceptor, provideCustomer } from '@app/customers/data';
-import {
-  provideHttpClient,
-  withInterceptors,
-  withRequestsMadeViaParent,
-} from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withRequestsMadeViaParent } from '@angular/common/http';
 
 export default [
   {
