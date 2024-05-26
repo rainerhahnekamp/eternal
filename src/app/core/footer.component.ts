@@ -5,8 +5,8 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { HeartbeatService } from '@app/heartbeat.service';
 import { MatIcon } from '@angular/material/icon';
+import { HeartbeatService } from '@app/heartbeat.service';
 
 @Component({
   selector: 'app-footer',

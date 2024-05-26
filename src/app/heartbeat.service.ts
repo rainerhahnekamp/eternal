@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { inject, Injectable, NgZone, PLATFORM_ID, signal } from '@angular/core';
 import {
   catchError,
   combineLatest,
@@ -16,10 +16,11 @@ import { isPlatformServer } from '@angular/common';
 
 @Injectable({ providedIn: 'root' })
 export class HeartbeatService {
-  #isServer = isPlatformServer(inject(PLATFORM_ID));
-  #httpClient = inject(HttpClient);
+  readonly #isServer = isPlatformServer(inject(PLATFORM_ID));
+  readonly #httpClient = inject(HttpClient);
+  readonly #ngZone = inject(NgZone);
 
-  #apiReachable$ = interval(5000).pipe(
+  readonly #apiReachable$ = interval(5000).pipe(
     startWith(0),
     switchMap(() =>
       window.navigator.onLine
@@ -32,17 +33,20 @@ export class HeartbeatService {
         : of(false),
     ),
   );
-  #networkStatusChange = this.#isServer
+
+  readonly #networkStatusChange = this.#isServer
     ? of()
     : fromEvent(window, 'online').pipe(startWith(window.navigator.onLine));
 
-  readonly status = this.#isServer
-    ? signal('connected')
-    : toSignal(
-        combineLatest([this.#apiReachable$, this.#networkStatusChange]).pipe(
-          map(([apiReachable]) =>
-            apiReachable && navigator.onLine ? 'connected' : 'disconnected',
+  readonly status = this.#ngZone.runOutsideAngular(() =>
+    this.#isServer
+      ? signal('connected')
+      : toSignal(
+          combineLatest([this.#apiReachable$, this.#networkStatusChange]).pipe(
+            map(([apiReachable]) =>
+              apiReachable && navigator.onLine ? 'connected' : 'disconnected',
+            ),
           ),
         ),
-      );
+  );
 }
