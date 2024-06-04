@@ -66,14 +66,6 @@
           }
         ]
       }
-    },
-    {
-      "files": ["*.ts"],
-      "plugins": ["custom"],
-      "rules": {
-        "custom/on-push": "error",
-        "custom/signal-api": "error"
-      }
     }
   ]
 }

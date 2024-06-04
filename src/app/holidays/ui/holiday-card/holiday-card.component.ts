@@ -23,7 +23,7 @@ import { Holiday } from '@app/holidays/model';
   ],
 })
 export class HolidayCardComponent {
-  holiday = input.required<Holiday & { isFavourite: boolean }>();
+  holiday = input.required<Holiday>();
   @Output() addFavourite = new EventEmitter<number>();
   @Output() removeFavourite = new EventEmitter<number>();
 }

@@ -1,18 +1,19 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { AsyncPipe, NgForOf } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 import { HolidayCardComponent } from '@app/holidays/ui';
-import { HolidayStore } from '@app/holidays/data';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { MatButton } from '@angular/material/button';
+import { Holiday } from '@app/holidays/model';
+import { HolidaysService } from '@app/holidays/data';
 
 @Component({
   selector: 'app-holidays',
   template: `<h2>Choose among our Holidays</h2>
-    <form>
+    <form (ngSubmit)="handleSubmit()">
       <div class="flex items-baseline">
         <mat-form-field>
           <mat-label>Search</mat-label>
@@ -35,24 +36,20 @@ import { MatButton } from '@angular/material/button';
           <mat-radio-button value="city">City</mat-radio-button>
           <mat-radio-button value="country">Country</mat-radio-button>
         </mat-radio-group>
-        <button color="primary" mat-raised-button>Search</button>
+        <button color="primary" mat-raised-button [disabled]="isLoading()">
+          Search
+        </button>
       </div>
     </form>
     <div class="flex flex-wrap justify-evenly">
       @for (holiday of holidays(); track holiday.id) {
-        <app-holiday-card
-          [holiday]="holiday"
-          (addFavourite)="addFavourite($event)"
-          (removeFavourite)="removeFavourite($event)"
-        >
-        </app-holiday-card>
+        <app-holiday-card [holiday]="holiday"> </app-holiday-card>
       }
     </div> `,
   standalone: true,
   imports: [
     AsyncPipe,
     HolidayCardComponent,
-    NgForOf,
     FormsModule,
     MatFormFieldModule,
     MatIconModule,
@@ -62,21 +59,18 @@ import { MatButton } from '@angular/material/button';
     MatButton,
   ],
 })
-export class HolidaysComponent implements OnInit {
-  #holidaysStore = inject(HolidayStore);
-  holidays = this.#holidaysStore.holidaysWithFavourite;
-  protected search = '';
-  protected type = 'all';
+export class HolidaysComponent {
+  #holidaysService = inject(HolidaysService);
 
-  ngOnInit(): void {
-    this.#holidaysStore.load();
-  }
+  protected readonly holidays = signal(new Array<Holiday>());
+  protected readonly search = signal('');
+  protected readonly type = signal('all');
+  protected readonly isLoading = signal(false);
 
-  addFavourite(id: number) {
-    this.#holidaysStore.addFavourite(id);
-  }
-
-  removeFavourite(id: number) {
-    this.#holidaysStore.removeFavourite(id);
+  protected async handleSubmit() {
+    this.isLoading.set(true);
+    this.holidays.set([]);
+    this.holidays.set(await this.#holidaysService.findByName(this.search()));
+    this.isLoading.set(false);
   }
 }
