@@ -5,40 +5,5 @@
         >Holidays</a
       >
     </li>
-    <li>
-      <a data-testid="btn-customers" mat-raised-button routerLink="/customer"
-        >Customers</a
-      >
-    </li>
-    <li>
-      <a data-testid="btn-bookings" mat-raised-button routerLink="/bookings"
-        >Bookings</a
-      >
-    </li>
-    <li>
-      <a data-testid="btn-newsletter" mat-raised-button routerLink="/newsletter"
-        >Newsletter</a
-      >
-    </li>
-    @if (securityStore.signedIn()) {
-      <li>
-        <a data-testid="btn-diary" mat-raised-button routerLink="/diary"
-          >Diary</a
-        >
-      </li>
-    }
-
-    @if (chatService.status() === "connected") {
-      <li>
-        <a
-          data-testid="btn-chat"
-          mat-raised-button
-          routerLink="/chat"
-          [matBadge]="chatService.messages().length"
-          [matBadgeHidden]="chatService.messages().length === 0"
-          >Chat</a
-        >
-      </li>
-    }
   </ul>
 }

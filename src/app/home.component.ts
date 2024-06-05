@@ -6,7 +6,6 @@ import {
 } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Configuration } from '@app/shared/config';
-import { ChatService } from '@app/chat/chat.service';
 import { MatButtonModule } from '@angular/material/button';
 import { SpecialGreetingComponent } from '@app/core/special-greeting.component';
 
@@ -39,29 +38,7 @@ import { SpecialGreetingComponent } from '@app/core/special-greeting.component';
         data-testid="tgl-paged-customers"
         >Paged Customers
       </mat-slide-toggle>
-    </form>
-    <div class="w-72">
-      <button class="my-4" mat-raised-button (click)="enableWebsocket()">
-        Enable Chat
-      </button>
-
-      @switch (chatService.status()) {
-        @case ('failed') {
-          <p
-            class="border border-red-400 rounded bg-red-100 px-4 py-3 text-red-700"
-          >
-            Could not establish connection
-          </p>
-        }
-        @case ('connected') {
-          <p
-            class="border border-green-400 rounded bg-green-100 px-4 py-3 text-green-700"
-          >
-            Connection established
-          </p>
-        }
-      }
-    </div> `,
+    </form>`,
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -77,7 +54,6 @@ export class HomeComponent implements OnInit {
     mockHolidays: [true],
     pagedCustomers: [true],
   });
-  chatService = inject(ChatService);
 
   mockCustomers = new FormControl(true, {
     nonNullable: true,
@@ -96,9 +72,5 @@ export class HomeComponent implements OnInit {
     this.formGroup.valueChanges.subscribe(() =>
       this.config.updateFeatures(this.formGroup.getRawValue()),
     );
-  }
-
-  enableWebsocket() {
-    this.chatService.connect();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { HolidayCardComponent } from '@app/holidays/ui';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +13,7 @@ import { HolidaysService } from '@app/holidays/data';
 @Component({
   selector: 'app-holidays',
   template: `<h2>Choose among our Holidays</h2>
+    <p>{{ prettySearch() }}</p>
     <form (ngSubmit)="handleSubmit()">
       <div class="flex items-baseline">
         <mat-form-field>
@@ -66,6 +67,14 @@ export class HolidaysComponent {
   protected readonly search = signal('');
   protected readonly type = signal('all');
   protected readonly isLoading = signal(false);
+
+  prettySearch = computed(() => {
+    const prettySearch = `Query ${this.search()} returned ${this.holidays().length} hits.`;
+    console.debug(prettySearch);
+    return prettySearch;
+  });
+
+  // #logEffect = effect(() => this.prettySearch());
 
   protected async handleSubmit() {
     this.isLoading.set(true);
