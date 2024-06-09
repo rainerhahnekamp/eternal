@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { SecurityStore } from 'src/app/shared/security';
@@ -9,16 +9,17 @@ import { SecurityStore } from 'src/app/shared/security';
   styleUrls: ['./header.component.scss'],
   standalone: true,
   imports: [RouterLink, MatButtonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  #securityStore = inject(SecurityStore);
-  user = this.#securityStore.loadedUser;
+  readonly #securityStore = inject(SecurityStore);
+  protected readonly user = this.#securityStore.loadedUser;
 
-  signOut() {
+  protected signOut() {
     this.#securityStore.signOut();
   }
 
-  signIn() {
+  protected signIn() {
     this.#securityStore.signIn();
   }
 }

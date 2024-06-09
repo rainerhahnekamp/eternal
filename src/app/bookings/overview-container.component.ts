@@ -1,4 +1,9 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { BookingsStore } from '@app/bookings/+state/bookings-store.service';
 import { OverviewComponent } from '@app/bookings/overview/overview.component';
 import { Customers } from '@app/customers/api';
@@ -10,13 +15,14 @@ import { Customers } from '@app/customers/api';
   }`,
   standalone: true,
   imports: [OverviewComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OverviewContainerComponent implements OnInit {
+export class OverviewContainerComponent {
   #repo = inject(BookingsStore);
 
   #customersApi = inject(Customers);
 
-  viewModel = computed(() => {
+  protected readonly viewModel = computed(() => {
     const bookings = this.#repo.bookings();
     const loaded = this.#repo.loaded();
     const customer = this.#customersApi.selectedCustomer();
@@ -31,7 +37,7 @@ export class OverviewContainerComponent implements OnInit {
     };
   });
 
-  ngOnInit(): void {
+  constructor() {
     this.#repo.load();
   }
 }

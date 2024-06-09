@@ -26,10 +26,11 @@ module.exports = {
                 hasOnPush = true;
               }
             });
-          }
 
-          if (!hasOnPush) {
-            context.report({node, message: "Component needs to be OnPush"});
+
+            if (!hasOnPush) {
+              context.report({node, message: "Component needs to be OnPush"});
+            }
           }
         },
       }),
