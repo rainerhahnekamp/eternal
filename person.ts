@@ -3,3 +3,5 @@ export interface Person {
   firstname: string;
   lastname: string
 }
+
+export const counter = 1
