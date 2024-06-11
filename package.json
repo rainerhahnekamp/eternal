@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "verify": "npm run test:ci && npm run lint",
     "websocket:start": "node ./ws-app/app.mjs",
-    "eslint:compile": "cd eslint && npx tsc"
+    "eslint:compile": "cd eslint && esbuild app.plugin.ts --out-extension:.js=.mjs --outdir=."
   },
   "private": true,
   "dependencies": {
