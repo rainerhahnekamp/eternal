@@ -5,7 +5,7 @@ const createRule = ESLintUtils.RuleCreator(
 );
 
 // Type: RuleModule<"uppercase", ...>
-export const upperCaseRule = createRule({
+export const uppercaseRule = createRule({
   name: 'app/uppercase',
   create(context) {
     return {
@@ -34,12 +34,3 @@ export const upperCaseRule = createRule({
   },
   defaultOptions: [],
 });
-
-export default {
-  meta: {},
-  configs: {},
-  rules: {
-    'app/uppercase': upperCaseRule,
-  },
-  processors: {},
-};

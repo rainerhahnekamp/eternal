@@ -10,7 +10,8 @@
     "test:ci": "ng test --source-map=false --browsers=ChromeHeadless --watch=false",
     "lint": "ng lint",
     "verify": "npm run test:ci && npm run lint",
-    "websocket:start": "node ./ws-app/app.mjs"
+    "websocket:start": "node ./ws-app/app.mjs",
+    "eslint:compile": "cd eslint && npx tsc"
   },
   "private": true,
   "dependencies": {
@@ -72,5 +73,11 @@
     "tailwindcss": "^3.3.3",
     "typescript": "~5.2.2",
     "typescript-eslint": "^8.0.0-alpha.29"
+  },
+  "overrides": {
+    "eslint-plugin-unused-imports": {
+      "typescript-eslint": "$typescript-eslint",
+      "@typescript-eslint/eslint-plugin": "$@typescript-eslint/eslint-plugin"
+    }
   }
 }
