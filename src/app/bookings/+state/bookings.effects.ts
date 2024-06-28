@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { filter, map } from 'rxjs';
 import { bookingsActions } from './bookings.actions';
 import { Booking } from './bookings.reducer';
