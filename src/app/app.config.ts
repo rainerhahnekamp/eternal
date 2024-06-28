@@ -7,7 +7,6 @@ import {
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { appRoutes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
 import {
@@ -37,13 +36,11 @@ import { sharedMasterDataProvider } from '@app/shared/master-data';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
-    provideClientHydration(),
     provideStore(),
     provideRouter(appRoutes, withComponentInputBinding()),
     provideHttpClient(
       withInterceptors([
         customersInterceptor,
-        // holidaysInterceptor,
         baseUrlInterceptor,
         loadingInterceptor,
         errorInterceptor,
