@@ -11,7 +11,7 @@ export class HolidaysEffects {
   #actions$ = inject(Actions);
   #httpClient = inject(HttpClient);
   #config = inject(Configuration);
-  #baseUrl = '/holiday';
+  #baseUrl = 'http://localhost:8080/holiday';
 
   load$ = createEffect(() => {
     return this.#actions$.pipe(

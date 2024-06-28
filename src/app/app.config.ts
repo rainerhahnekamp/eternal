@@ -33,7 +33,6 @@ import {
 } from '@app/shared/http';
 import { Configuration } from '@app/shared/config';
 import { sharedMasterDataProvider } from '@app/shared/master-data';
-import { holidaysInterceptor } from '@app/shared/http/holidays.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -44,7 +43,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([
         customersInterceptor,
-        holidaysInterceptor,
+        // holidaysInterceptor,
         baseUrlInterceptor,
         loadingInterceptor,
         errorInterceptor,
