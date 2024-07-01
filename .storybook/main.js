@@ -1,11 +1,15 @@
-module.exports = {
-  stories: [],
+const config = {
+  stories: ['../src/app/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
+  staticDirs: ['../src/assets'],
   addons: ['@storybook/addon-essentials'],
-  // uncomment the property below if you want to apply some webpack config globally
-  // webpackFinal: async (config, { configType }) => {
-  //   // Make whatever fine-grained changes you need that should apply to all storybook configs
-
-  //   // Return the altered config
-  //   return config;
-  // },
+  framework: {
+    name: '@storybook/angular',
+    options: {},
+  },
 };
+
+export default config;
+
+// To customize your webpack configuration you can use the webpackFinal field.
+// Check https://storybook.js.org/docs/react/builders/webpack#extending-storybooks-webpack-config
+// and https://nx.dev/packages/storybook/documents/custom-builder-configs

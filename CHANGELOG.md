@@ -1,3 +1,16 @@
+## 2.0.0
+
+- Merge all workshops in one repo with multiple branches
+- Use GitHub Actions
+- Fallback to Angular CLI
+
+## 1.9.0
+
+- Usage of Testing Library in Cypress
+- Mocking Configuration for Customers and Holidays
+- Angular 15
+- Fix DatePicker parsing issue
+
 ## 1.8.0
 
 - Cypress Component Testing as main testing tool for component & integration tests
