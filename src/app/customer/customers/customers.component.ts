@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { customerActions } from '../+state/customer.actions';
 import { fromCustomer } from '../+state/customer.selectors';
 import { format } from 'date-fns';
+import {delay} from 'rxjs';
 
 @Component({
   selector: 'app-customers',
