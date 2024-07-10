@@ -5,7 +5,7 @@ describe('Holidays', () => {
 
   it(
     'should do an implicit subject assertion',
-    { retries: { runMode: 2 } },
+    { retries: 2 },
     () => {
       cy.testid('btn-holidays').should('have.text', 'Holidays');
     },
