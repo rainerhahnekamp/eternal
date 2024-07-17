@@ -14,7 +14,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-architects/ngrx-toolkit": "^0.2.0",
+    "@angular-architects/ngrx-toolkit": "^18.0.0-rc.2.0",
     "@angular/animations": "^18.0.1",
     "@angular/cdk": "^18.0.1",
     "@angular/common": "^18.0.1",
@@ -30,7 +30,8 @@
     "@angular/ssr": "^18.0.2",
     "@ngrx/effects": "^18.0.1",
     "@ngrx/eslint-plugin": "^18.0.1",
-    "@ngrx/signals": "^17.2.0",
+    "@ngrx/operators": "^18.0.0",
+    "@ngrx/signals": "^18.0.0-rc.2",
     "@ngrx/store": "^18.0.1",
     "@ngrx/store-devtools": "^18.0.1",
     "date-fns": "^2.30.0",
@@ -39,8 +40,7 @@
     "keycloak-js": "^22.0.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.2",
-    "@ngrx/operators": "^18.0.0"
+    "zone.js": "~0.14.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.0.2",
