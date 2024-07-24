@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { webSocket } from 'rxjs/webSocket';
 
-type Data = { message?: string; status?: string };
+interface Data { message?: string; status?: string }
 
 declare global {
   interface Window {

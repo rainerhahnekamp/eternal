@@ -3258,15 +3258,15 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.2.tgz#821f8442f4175d8f0467b9daf26e3a18e2d02af2"
   integrity sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==
 
-"@softarc/eslint-plugin-sheriff@^0.15.0":
-  version "0.15.1"
-  resolved "https://registry.yarnpkg.com/@softarc/eslint-plugin-sheriff/-/eslint-plugin-sheriff-0.15.1.tgz#f7ba89f7c9079d1f2dc0d185a0d9fead5896a665"
-  integrity sha512-kUHJUmo20jYSVWvDw1iT1YGLLB+4Xc6lhACWZWtHlUwjs3VO8NWQpGl0qWMyEohGL8Pn9klcmwhHD0Lj5Fj0xQ==
+"@softarc/eslint-plugin-sheriff@^0.16.0":
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/@softarc/eslint-plugin-sheriff/-/eslint-plugin-sheriff-0.16.1.tgz#3b331a63549b9832d0e6ad535302a75d5708446d"
+  integrity sha512-7kawdwtYidtHMh/eEkjrT/PgPImHbQqIxTojohyV0s2mBHk3UqJaFZE/QKYXcn0hYupq3E3tsj/noU9GqcY/Aw==
 
-"@softarc/sheriff-core@^0.15.0":
-  version "0.15.1"
-  resolved "https://registry.yarnpkg.com/@softarc/sheriff-core/-/sheriff-core-0.15.1.tgz#fa9b603797879e59a6abec07f488a6e44e470c5c"
-  integrity sha512-hmfYcZp7UUF0e0CPpN+FqzrC3ViPo0ykYlseSpGrxdm1CQcXOIJN1SfPKkwwuhosed9sY4ywKeAq3Cf007U8SA==
+"@softarc/sheriff-core@^0.16.0":
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/@softarc/sheriff-core/-/sheriff-core-0.16.1.tgz#486a74a518b0d48ba0bf792f1d4adc5371ccdb42"
+  integrity sha512-4/mFmT2xs0txx2JqU1TwGpK1wQSJfdESqTznPNq3YldLNu4opN4xDUtBCEUzWtw/kHrATqB6YEYTtRHfOaNHEQ==
 
 "@testing-library/angular@^17.0.0":
   version "17.1.0"

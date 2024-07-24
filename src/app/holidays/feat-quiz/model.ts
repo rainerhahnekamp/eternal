@@ -1,6 +1,6 @@
 export type AnswerStatus = 'unanswered' | 'correct' | 'incorrect';
 
-export type Question = {
+export interface Question {
   id: number;
   holidayId: number;
   question: string;
@@ -8,13 +8,13 @@ export type Question = {
   choices: { id: number; text: string }[];
   explanation: string;
   status: AnswerStatus;
-};
+}
 
-export type Quiz = {
+export interface Quiz {
   title: string;
   questions: Question[];
   timeInSeconds: number;
-};
+}
 
 let currentId = 1;
 
