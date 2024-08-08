@@ -16,7 +16,7 @@ import {
 } from '@angular/material/card';
 import { QuizStatusComponent } from '@app/holidays/feature/quiz/quiz-status.component';
 import { QuizQuestionComponent } from '@app/holidays/feature/quiz/quiz-question.component';
-import { QuizStore } from '@app/holidays/feature/quiz/data/quiz-store';
+import { QuizStore } from './quiz-store';
 
 @Component({
   selector: 'app-quiz',
