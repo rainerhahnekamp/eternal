@@ -58,7 +58,7 @@ export const QuizStore = signalStore(
       ),
     ),
 
-    updateTimeLeft: rxMethod<unknown>(
+    _updateTimeLeft: rxMethod<unknown>(
       pipe(
         tap(() => {
           patchState(store, {
@@ -97,7 +97,7 @@ export const QuizStore = signalStore(
 
   withHooks((store) => ({
     onInit() {
-      store.updateTimeLeft(interval(1000));
+      store._updateTimeLeft(interval(1000));
     },
   })),
 );
