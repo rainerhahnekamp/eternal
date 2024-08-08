@@ -10,8 +10,10 @@ import { AnswerStatus, Question } from '@app/holidays/feature/quiz/model';
 import { computed, inject } from '@angular/core';
 import { QuizService } from '@app/holidays/feature/quiz/quiz.service';
 import { assertDefined } from '@app/shared/util';
-import { interval } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { interval, pipe, switchMap } from 'rxjs';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { tapResponse } from '@ngrx/operators';
+import { tap } from 'rxjs/operators';
 
 export const QuizStore = signalStore(
   {
@@ -43,10 +45,32 @@ export const QuizStore = signalStore(
   })),
 
   withMethods((store, quizService = inject(QuizService)) => ({
-    async load(id: number) {
-      const quiz = await quizService.findById(id);
-      patchState(store, quiz);
-    },
+    load: rxMethod<number>(
+      pipe(
+        switchMap((id) =>
+          quizService.findById(id).pipe(
+            tapResponse({
+              next: (quiz) => patchState(store, quiz),
+              error: console.error,
+            }),
+          ),
+        ),
+      ),
+    ),
+
+    updateTimeLeft: rxMethod<unknown>(
+      pipe(
+        tap(() => {
+          patchState(store, {
+            timeLeft:
+              store.timeInSeconds() -
+              Math.floor(
+                (new Date().getTime() - store.timeStarted().getTime()) / 1000,
+              ),
+          });
+        }),
+      ),
+    ),
 
     answer(questionId: number, choiceId: number) {
       const question = store
@@ -73,17 +97,7 @@ export const QuizStore = signalStore(
 
   withHooks((store) => ({
     onInit() {
-      interval(1000)
-        .pipe(takeUntilDestroyed())
-        .subscribe(() => {
-          patchState(store, {
-            timeLeft:
-              store.timeInSeconds() -
-              Math.floor(
-                (new Date().getTime() - store.timeStarted().getTime()) / 1000,
-              ),
-          });
-        });
+      store.updateTimeLeft(interval(1000));
     },
   })),
 );

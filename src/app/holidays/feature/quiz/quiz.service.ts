@@ -4,7 +4,7 @@ import { questionsIndia } from '@app/holidays/feature/quiz/data/questions-india'
 import { questionsNorway } from '@app/holidays/feature/quiz/data/questions-norway';
 import { questionsEgypt } from '@app/holidays/feature/quiz/data/questions-egypt';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 const questions = [...questionsIndia, ...questionsNorway, ...questionsEgypt];
@@ -25,12 +25,10 @@ export type QuizApi = {
 export class QuizService {
   readonly #httpClient = inject(HttpClient);
 
-  findById(id: number): Promise<Quiz> {
-    return firstValueFrom(
-      this.#httpClient
-        .get<QuizApi>(`http://localhost:8080/holiday/${id}/quiz`)
-        .pipe(map(toQuiz)),
-    );
+  findById(id: number): Observable<Quiz> {
+    return this.#httpClient
+      .get<QuizApi>(`http://localhost:8080/holiday/${id}/quiz`)
+      .pipe(map(toQuiz));
   }
 }
 

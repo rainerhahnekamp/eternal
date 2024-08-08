@@ -1,11 +1,4 @@
-import {
-  Component,
-  effect,
-  inject,
-  input,
-  numberAttribute,
-  untracked,
-} from '@angular/core';
+import { Component, inject, input, numberAttribute } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { JsonPipe, NgClass } from '@angular/common';
 import {
@@ -48,12 +41,7 @@ export class QuizComponent {
   protected readonly quizStore = inject(QuizStore);
   readonly id = input.required({ transform: numberAttribute });
 
-  // Logic
-  readonly #loadEffect = effect(() => {
-    const id = this.id();
-
-    untracked(async () => {
-      this.quizStore.load(id);
-    });
-  });
+  constructor() {
+    this.quizStore.load(this.id);
+  }
 }
