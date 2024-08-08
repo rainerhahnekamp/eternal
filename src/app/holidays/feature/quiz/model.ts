@@ -14,6 +14,7 @@ export type Quiz = {
   title: string;
   questions: Question[];
   timeInSeconds: number;
+  loaded: boolean;
 };
 
 let currentId = 1;

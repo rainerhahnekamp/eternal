@@ -39,7 +39,7 @@
     },
     {
       "files": ["*.ts"],
-      "extends": ["plugin:@ngrx/strict"]
+      "extends": ["plugin:@ngrx/all"]
     },
     {
       "files": ["*.ts"],

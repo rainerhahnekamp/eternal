@@ -5,14 +5,13 @@ import {
   inject,
   input,
   numberAttribute,
-  PLATFORM_ID,
   signal,
   untracked,
 } from '@angular/core';
 import { AnswerStatus, Quiz } from '@app/holidays/feature/quiz/model';
 import { MatButton } from '@angular/material/button';
 import { QuizService } from '@app/holidays/feature/quiz/quiz.service';
-import { isPlatformServer, JsonPipe, NgClass } from '@angular/common';
+import { JsonPipe, NgClass } from '@angular/common';
 import {
   MatCard,
   MatCardActions,
@@ -22,69 +21,18 @@ import {
 import { assertDefined } from '@app/shared/util';
 import { interval } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
-/**
- * Clock
- * Current as computed
- * Amount of answered/unanswered
- */
+import { QuizStatusComponent } from '@app/holidays/feature/quiz/quiz-status.component';
+import { QuizQuestionComponent } from '@app/holidays/feature/quiz/quiz-question.component';
 
 @Component({
   selector: 'app-quiz',
   template: ` <h2>{{ title() }}</h2>
-    @if (timeLeft() > 0) {
-      <p>Time Left: {{ timeLeft() }} seconds</p>
-    } @else if (timeLeft() < 0) {
-      <p>Time is up!</p>
-    }
-    <p>Status:</p>
-    <p>
-      <span class="text-green-500 pr-4">Correct: {{ status().correct }}</span
-      ><span class="text-red-500">Incorrect: {{ status().incorrect }}</span>
-    </p>
+    <app-quiz-status [timeLeft]="timeLeft()" [status]="status()" />
     @for (question of questions(); track question) {
-      <mat-card class="max-w-lg my-4">
-        <mat-card-header>{{ question.question }}</mat-card-header>
-        <mat-card-content>
-          <div
-            class="grid gap-4 w-full my-4"
-            [ngClass]="
-              question.choices.length === 3 ? 'grid-cols-3' : 'grid-cols-2'
-            "
-          >
-            @for (choice of question.choices; track choice) {
-              <button
-                mat-raised-button
-                (click)="answer(question.id, choice.id)"
-              >
-                {{ choice.text }}
-              </button>
-            }
-          </div>
-
-          @if (question.status !== 'unanswered') {
-            <div
-              class="my-2 border-2 p-1"
-              [ngClass]="
-                question.status === 'correct'
-                  ? 'border-green-500'
-                  : 'border-red-500'
-              "
-            >
-              @switch (question.status) {
-                @case ('correct') {
-                  <p class="text-green-500 font-bold">Right Answer</p>
-                }
-                @case ('incorrect') {
-                  <p class="text-red-500 font-bold">Wrong Answer</p>
-                }
-              }
-
-              <p class="italic">{{ question.explanation }}</p>
-            </div>
-          }
-        </mat-card-content>
-      </mat-card>
+      <app-quiz-question
+        [question]="question"
+        (answer)="answer(question.id, $event)"
+      ></app-quiz-question>
     }`,
   standalone: true,
   imports: [
@@ -95,22 +43,35 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatCardActions,
     MatCardContent,
     JsonPipe,
+    QuizStatusComponent,
+    QuizQuestionComponent,
   ],
 })
 export class QuizComponent {
-  isServer = isPlatformServer(inject(PLATFORM_ID));
-  quizService = inject(QuizService);
-  id = input.required({ transform: numberAttribute });
+  readonly #quizService = inject(QuizService);
+  readonly id = input.required({ transform: numberAttribute });
 
-  quiz = signal<Quiz>({ title: '', questions: [], timeInSeconds: 180 });
-  questions = computed(() => this.quiz().questions);
-  title = computed(() => this.quiz().title);
-  timeInSeconds = computed(() => this.quiz().timeInSeconds);
+  // State
+  protected readonly quizState = signal<Quiz>({
+    title: '',
+    loaded: false,
+    timeInSeconds: 180,
+    questions: [],
+  });
 
-  timeStarted = signal(new Date());
-  timeLeft = signal(0);
+  // Slices
+  protected readonly title = computed(() => this.quizState().title);
+  protected readonly loaded = computed(() => this.quizState().loaded);
+  protected readonly timeInSeconds = computed(
+    () => this.quizState().timeInSeconds,
+  );
+  protected readonly questions = computed(() => this.quizState().questions);
 
-  status = computed(() => {
+  protected readonly timeStarted = signal(new Date());
+  protected readonly timeLeft = signal(0);
+
+  // Derived Values
+  protected readonly status = computed(() => {
     const status: Record<AnswerStatus, number> = {
       unanswered: 0,
       correct: 0,
@@ -124,17 +85,17 @@ export class QuizComponent {
     return status;
   });
 
-  constructor() {
-    effect(async () => {
-      const quiz = await this.quizService.findById(this.id());
+  // Logic
+  readonly #loadEffect = effect(() => {
+    const id = this.id();
 
-      untracked(() => this.quiz.set(quiz));
+    untracked(async () => {
+      const quiz = await this.#quizService.findById(id);
+      this.quizState.set(quiz);
     });
+  });
 
-    if (this.isServer) {
-      this.timeLeft.set(this.timeInSeconds());
-      return;
-    }
+  constructor() {
     interval(1000)
       .pipe(takeUntilDestroyed())
       .subscribe(() => {
@@ -147,14 +108,14 @@ export class QuizComponent {
       });
   }
 
-  answer(questionId: number, choiceId: number) {
+  protected answer(questionId: number, choiceId: number) {
     const question = this.questions().find(
       (question) => question.id === questionId,
     );
     assertDefined(question);
 
-    this.quiz.update((quiz) => {
-      const questions = this.quiz().questions.map((question) => {
+    this.quizState.update((quiz) => {
+      const questions = this.quizState().questions.map((question) => {
         if (question.id === questionId) {
           const status: AnswerStatus =
             question.answer === choiceId ? 'correct' : 'incorrect';
