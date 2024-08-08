@@ -2,7 +2,6 @@ import {
   patchState,
   signalStore,
   withComputed,
-  withHooks,
   withMethods,
   withState,
 } from '@ngrx/signals';
@@ -10,10 +9,10 @@ import { AnswerStatus, Question } from '@app/holidays/feature/quiz/model';
 import { computed, inject } from '@angular/core';
 import { QuizService } from '@app/holidays/feature/quiz/quiz.service';
 import { assertDefined } from '@app/shared/util';
-import { interval, pipe, switchMap } from 'rxjs';
+import { pipe, switchMap } from 'rxjs';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
-import { tap } from 'rxjs/operators';
+import { withCountdown } from '@app/holidays/feature/quiz/with-countdown';
 
 export const QuizStore = signalStore(
   {
@@ -24,9 +23,8 @@ export const QuizStore = signalStore(
     loaded: false,
     timeInSeconds: 180,
     questions: new Array<Question>(),
-    timeStarted: new Date(),
-    timeLeft: 0,
   }),
+  withCountdown(),
 
   withComputed((state) => ({
     status: computed(() => {
@@ -58,20 +56,6 @@ export const QuizStore = signalStore(
       ),
     ),
 
-    _updateTimeLeft: rxMethod<unknown>(
-      pipe(
-        tap(() => {
-          patchState(store, {
-            timeLeft:
-              store.timeInSeconds() -
-              Math.floor(
-                (new Date().getTime() - store.timeStarted().getTime()) / 1000,
-              ),
-          });
-        }),
-      ),
-    ),
-
     answer(questionId: number, choiceId: number) {
       const question = store
         .questions()
@@ -92,12 +76,6 @@ export const QuizStore = signalStore(
           }
         }),
       });
-    },
-  })),
-
-  withHooks((store) => ({
-    onInit() {
-      store._updateTimeLeft(interval(1000));
     },
   })),
 );
