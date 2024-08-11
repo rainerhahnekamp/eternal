@@ -41,7 +41,7 @@
     "keycloak-js": "^22.0.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "typescript-eslint": "^8.0.0-alpha.54",
+    "typescript-eslint": "^8.0.1",
     "zone.js": "~0.14.2"
   },
   "devDependencies": {
