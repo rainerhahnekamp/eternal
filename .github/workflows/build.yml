@@ -8,8 +8,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '22'
-          cache: 'npm'
-      - run: npm ci
+          cache: 'yarn'
+      - run: npx yarn
       - run: npm run verify
       - run: cd github-tests && npm ci && npx playwright install && npx playwright test
       - uses: actions/upload-artifact@v3
