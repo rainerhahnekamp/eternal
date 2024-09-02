@@ -18,7 +18,7 @@ test.describe('Eternal', () => {
     await page.getByRole('link', { name: 'Holidays', exact: true }).click();
     await page
       .getByLabel(/Vienna/)
-      .getByRole('link')
+      .getByRole('link', {name: 'Request Brochure'})
       .click();
     await page.getByLabel('Address').fill('Domgasse 5');
     await page.getByRole('button', { name: 'Send' }).click();
