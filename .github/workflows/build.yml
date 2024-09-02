@@ -8,7 +8,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '22'
-          cache: 'yarn'
+          cache: 'npm'
       - run: npx yarn
       - run: npm run verify
       - run: cd github-tests && npm ci && npx playwright install && npx playwright test
@@ -18,4 +18,3 @@ jobs:
           name: playwright-report
           path: github-tests/playwright-report/
           retention-days: 30
-
