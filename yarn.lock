@@ -15,10 +15,10 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@angular-architects/ngrx-toolkit@^18.0.0-rc.2.0":
-  version "18.0.0-rc.2.0"
-  resolved "https://registry.yarnpkg.com/@angular-architects/ngrx-toolkit/-/ngrx-toolkit-18.0.0-rc.2.0.tgz#50a5f350add7005a6e1dd47d00f5bc1db33f5d45"
-  integrity sha512-TFKDrl7RIAOq4S7GonRgKKvo2RKnnhEVEjca3HA8HE2uVbYUI+mrkbi9aqkdWyG+lt5oOKhmsTBm9VhTqbjFfA==
+"@angular-architects/ngrx-toolkit@^18.0.3":
+  version "18.0.3"
+  resolved "https://registry.yarnpkg.com/@angular-architects/ngrx-toolkit/-/ngrx-toolkit-18.0.3.tgz#41ade4cff8f19903d4b2b27e6f45b56112d7566b"
+  integrity sha512-L8ctHd/GhjY6tx/iD6LYH+Zcjy3akWAcksvriD3jtoetpIQZqGBE9CSE9QN0AgVdUwa8WsB24ox7CRRTS/QElQ==
   dependencies:
     tslib "^2.3.0"
 
@@ -2801,10 +2801,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@ngrx/signals@18.0.0-rc.2":
-  version "18.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@ngrx/signals/-/signals-18.0.0-rc.2.tgz#4dafc5a3aa1e84637f06644f6bf3afbd2e35ee4e"
-  integrity sha512-KFj0I5seMVVqqXaoBqeQiR/+dKho4n+Ry/RmaAfa3f0rgYhfaxNTo7U39B7udIYjJf8Z+eYPmBFJEU3HGQU0mA==
+"@ngrx/signals@^18.0.2":
+  version "18.0.2"
+  resolved "https://registry.yarnpkg.com/@ngrx/signals/-/signals-18.0.2.tgz#9684da0f3ba6db656c281b0d71dc5e15e5d78098"
+  integrity sha512-FXmcY2cmkbhZtg9k8Ntq69SyelGmmb6fWtdButH4T8GGFH0o3f1FZTR829j4ynphy8SzuDhD/pzrnpWcV481oQ==
   dependencies:
     tslib "^2.3.0"
 
@@ -3258,15 +3258,15 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.2.tgz#821f8442f4175d8f0467b9daf26e3a18e2d02af2"
   integrity sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==
 
-"@softarc/eslint-plugin-sheriff@^0.16.0":
-  version "0.16.1"
-  resolved "https://registry.yarnpkg.com/@softarc/eslint-plugin-sheriff/-/eslint-plugin-sheriff-0.16.1.tgz#3b331a63549b9832d0e6ad535302a75d5708446d"
-  integrity sha512-7kawdwtYidtHMh/eEkjrT/PgPImHbQqIxTojohyV0s2mBHk3UqJaFZE/QKYXcn0hYupq3E3tsj/noU9GqcY/Aw==
+"@softarc/eslint-plugin-sheriff@^0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@softarc/eslint-plugin-sheriff/-/eslint-plugin-sheriff-0.17.0.tgz#01eca075e655b8fc1c76f912c7545f09c4a328be"
+  integrity sha512-JvDtwla4A4bYBZJGGNiEJkSy8qr8eK3jYXWEjVBN+VzDUSlt8zoSrU8P7Lt7QL8jB5XwcYbl+rh+GKeWc3nPgw==
 
-"@softarc/sheriff-core@^0.16.0":
-  version "0.16.1"
-  resolved "https://registry.yarnpkg.com/@softarc/sheriff-core/-/sheriff-core-0.16.1.tgz#486a74a518b0d48ba0bf792f1d4adc5371ccdb42"
-  integrity sha512-4/mFmT2xs0txx2JqU1TwGpK1wQSJfdESqTznPNq3YldLNu4opN4xDUtBCEUzWtw/kHrATqB6YEYTtRHfOaNHEQ==
+"@softarc/sheriff-core@^0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@softarc/sheriff-core/-/sheriff-core-0.17.0.tgz#eefc84dd82730991fd4d52965e4f9b74301f83f5"
+  integrity sha512-f0pkER3SULxBYRCynE/stvWoMcV9vvHTQI4mp33LvkhUknPzKNRRXbeMKn/X37jcH5IpVbHhbNcfbfXHaje7Ww==
 
 "@testing-library/angular@^17.0.0":
   version "17.1.0"
