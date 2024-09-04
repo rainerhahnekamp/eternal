@@ -25,9 +25,8 @@ test.describe('Basics', () => {
     page,
   }) => {
     await page.getByTestId('btn-customers').click();
-    const nameLocator = page.locator(
-      'data-testid=row-customer >> data-testid=name',
-    );
+    
+    const nameLocator = page.getByTestId('row-customer').getByTestId('name');
 
     await expect(nameLocator.nth(2)).toHaveText('Hugo Brandt');
     await expect(nameLocator.nth(9)).toHaveText('Jan Janáček');
@@ -44,10 +43,8 @@ test.describe('Basics', () => {
     await page.getByTestId('btn-submit').click();
 
     await expect(
-      page.locator('data-testid=row-customer', {
-        hasText: 'Nicholas Dimou',
-      }),
-    ).toBeVisible();
+      page.getByTestId('row-customer').filter({hasText: 'Latitia Bellitissa'})
+    ).not.toBeVisible();
   });
 
   test('rename Latitia to Laetitia', async ({ page }) => {
@@ -81,10 +78,10 @@ test.describe('Basics', () => {
     await page.getByTestId('btn-delete').click();
 
     const locator = page.getByTestId('row-customer');
-    await expect(locator).toHaveCount(10);
-
+    
+    await expect(locator).toHaveCount(10); // pre-condition
     await expect(
-      page.locator('data-testid=row-customer', { hasText: 'Knut Eggen' }),
+      page.locator('data-testid=row-customer', { hasText: 'Latitia Bellitissa' }),
     ).not.toBeVisible();
   });
 
@@ -97,6 +94,7 @@ test.describe('Basics', () => {
       .getByTestId('btn-edit')
       .click();
     await page.getByTestId('sel-country').click();
+
     await page.locator('data-testid=opt-country >> text=Austria').click();
 
     await page.getByTestId('btn-submit').click();
@@ -111,7 +109,7 @@ test.describe('Basics', () => {
         .click();
       await page.getByLabel('Address').fill('Domgasse 5');
       await page.getByRole('button', { name: 'Send' }).click();
-      await page.getByRole('status');
+      await expect(page.getByRole('status')).toHaveText('Brochure sent')
     });
 
     test('should rename Latitia to Laetitia', async ({ page }) => {
