@@ -21,6 +21,7 @@ export default defineConfig({
   workers: undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -35,12 +36,19 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testDir: 'tests/normal'
     },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
+    { name: 'logins', use: { ...devices['Desktop Chrome'] }, testDir: 'tests/logins' },
+    { name: 'john-list', use: { ...devices['Desktop Chrome'], storageState: 'john-list.json' }, testDir: 'tests/john-list', dependencies: ['logins'] },
+    { name: 'visual-regression', use: { ...devices['Desktop Safari'] }, testDir: 'tests/vr' }
+
+
+
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
 
     // {
     //   name: 'webkit',

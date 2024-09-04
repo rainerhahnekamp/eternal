@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { afterNextRender, Component } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HeaderComponent } from './core/header/header.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -21,4 +21,14 @@ import { LoaderComponent, MessageComponent } from '@app/shared/ui-messaging';
     MessageComponent,
   ],
 })
-export class AppComponent {}
+export class AppComponent {
+  isHydrated = false;
+
+  constructor() {
+    afterNextRender(() => {
+      window.setTimeout(() => {
+        this.isHydrated = true;
+      });
+    });
+  }
+}

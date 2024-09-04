@@ -1,0 +1,65 @@
+{
+  "cookies": [
+    {
+      "name": "AUTH_SESSION_ID",
+      "value": "b508947c-a481-4b76-b3c5-0f425ebc656d",
+      "domain": "auth.eternal-holidays.net",
+      "path": "/realms/eternal/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "AUTH_SESSION_ID_LEGACY",
+      "value": "b508947c-a481-4b76-b3c5-0f425ebc656d",
+      "domain": "auth.eternal-holidays.net",
+      "path": "/realms/eternal/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "KEYCLOAK_SESSION_LEGACY",
+      "value": "eternal/17cf8311-2b7f-4361-a069-ca15d7b53c11/b508947c-a481-4b76-b3c5-0f425ebc656d",
+      "domain": "auth.eternal-holidays.net",
+      "path": "/realms/eternal/",
+      "expires": 1725497904.985016,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "KEYCLOAK_IDENTITY",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI1Njc3MGUwYS00MzA1LTRjZjAtOWNjYi1iM2RlOGI5NTQxYzgifQ.eyJleHAiOjE3MjU0OTc5MDUsImlhdCI6MTcyNTQ2MTkwNSwianRpIjoiNWFjNTY1NjEtNTEwNC00MTFmLWFkMjEtZmMyMWMxOTYxMWJiIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLmV0ZXJuYWwtaG9saWRheXMubmV0Ojg0NDMvcmVhbG1zL2V0ZXJuYWwiLCJzdWIiOiIxN2NmODMxMS0yYjdmLTQzNjEtYTA2OS1jYTE1ZDdiNTNjMTEiLCJ0eXAiOiJTZXJpYWxpemVkLUlEIiwic2Vzc2lvbl9zdGF0ZSI6ImI1MDg5NDdjLWE0ODEtNGI3Ni1iM2M1LTBmNDI1ZWJjNjU2ZCIsInNpZCI6ImI1MDg5NDdjLWE0ODEtNGI3Ni1iM2M1LTBmNDI1ZWJjNjU2ZCIsInN0YXRlX2NoZWNrZXIiOiJOeUF6LWt2SGxXdzJQbGU3TWV4cWVTbUo2VTVLUjE4SlI1UENqakhuYVlvIn0.A6RbqWEkhMnbgFlFKDypVfFGPSZXXZHCwbMudRpgIBI",
+      "domain": "auth.eternal-holidays.net",
+      "path": "/realms/eternal/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "KEYCLOAK_IDENTITY_LEGACY",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI1Njc3MGUwYS00MzA1LTRjZjAtOWNjYi1iM2RlOGI5NTQxYzgifQ.eyJleHAiOjE3MjU0OTc5MDUsImlhdCI6MTcyNTQ2MTkwNSwianRpIjoiNWFjNTY1NjEtNTEwNC00MTFmLWFkMjEtZmMyMWMxOTYxMWJiIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLmV0ZXJuYWwtaG9saWRheXMubmV0Ojg0NDMvcmVhbG1zL2V0ZXJuYWwiLCJzdWIiOiIxN2NmODMxMS0yYjdmLTQzNjEtYTA2OS1jYTE1ZDdiNTNjMTEiLCJ0eXAiOiJTZXJpYWxpemVkLUlEIiwic2Vzc2lvbl9zdGF0ZSI6ImI1MDg5NDdjLWE0ODEtNGI3Ni1iM2M1LTBmNDI1ZWJjNjU2ZCIsInNpZCI6ImI1MDg5NDdjLWE0ODEtNGI3Ni1iM2M1LTBmNDI1ZWJjNjU2ZCIsInN0YXRlX2NoZWNrZXIiOiJOeUF6LWt2SGxXdzJQbGU3TWV4cWVTbUo2VTVLUjE4SlI1UENqakhuYVlvIn0.A6RbqWEkhMnbgFlFKDypVfFGPSZXXZHCwbMudRpgIBI",
+      "domain": "auth.eternal-holidays.net",
+      "path": "/realms/eternal/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "KEYCLOAK_SESSION",
+      "value": "eternal/17cf8311-2b7f-4361-a069-ca15d7b53c11/b508947c-a481-4b76-b3c5-0f425ebc656d",
+      "domain": "auth.eternal-holidays.net",
+      "path": "/realms/eternal/",
+      "expires": 1725497904.985156,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    }
+  ],
+  "origins": []
+}
