@@ -36,14 +36,25 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      testDir: 'tests/normal'
+      testDir: 'tests/normal',
     },
 
-    { name: 'logins', use: { ...devices['Desktop Chrome'] }, testDir: 'tests/logins' },
-    { name: 'john-list', use: { ...devices['Desktop Chrome'], storageState: 'john-list.json' }, testDir: 'tests/john-list', dependencies: ['logins'] },
-    { name: 'visual-regression', use: { ...devices['Desktop Safari'] }, testDir: 'tests/vr' }
-
-
+    {
+      name: 'logins',
+      use: { ...devices['Desktop Chrome'] },
+      testDir: 'tests/logins',
+    },
+    {
+      name: 'john-list',
+      use: { ...devices['Desktop Chrome'], storageState: 'john-list.json' },
+      testDir: 'tests/john-list',
+      dependencies: ['logins'],
+    },
+    {
+      name: 'visual-regression',
+      use: { ...devices['Desktop Safari'] },
+      testDir: 'tests/vr',
+    },
 
     // {
     //   name: 'firefox',

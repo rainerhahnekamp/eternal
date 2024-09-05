@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { assertDefined } from '@app/shared/util';
+import { AddressLookuper } from '@app/holidays/feature/address-lookuper.service';
 
 @Component({
   selector: 'app-request-info',
@@ -25,7 +26,7 @@ import { assertDefined } from '@app/shared/util';
 })
 export class RequestInfoComponent implements OnInit {
   #formBuilder = inject(NonNullableFormBuilder);
-  #lookuper = { lookup: (query: string) => of(Boolean(query)) };
+  #lookuper = inject(AddressLookuper);
 
   formGroup = this.#formBuilder.group({
     address: [''],
