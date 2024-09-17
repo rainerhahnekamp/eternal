@@ -11,37 +11,34 @@ import { Question } from '@app/holidays/feat-quiz/model';
 
 @Component({
   selector: 'app-quiz-question',
-  template: ` <mat-card class="max-w-lg my-4">
+  template: ` <mat-card
+    class="max-w-lg my-4"
+    role="region"
+    [attr.aria-label]="question().question"
+  >
     <mat-card-header>{{ question().question }}</mat-card-header>
     <mat-card-content>
+      @let choices = question().choices;
       <div
         class="grid gap-4 w-full my-4"
-        [ngClass]="
-          question().choices.length === 3 ? 'grid-cols-3' : 'grid-cols-2'
-        "
+        [ngClass]="choices.length === 3 ? 'grid-cols-3' : 'grid-cols-2'"
       >
-        @for (choice of question().choices; track choice) {
-          <button
-            mat-raised-button
-            (click)="
-              answer.emit({ questionId: question().id, choiceId: choice.id })
-            "
-          >
+        @for (choice of choices; track choice) {
+          <button mat-raised-button (click)="answer.emit(choice.id)">
             {{ choice.text }}
           </button>
         }
       </div>
 
-      @if (question().status !== 'unanswered') {
+      @let status = question().status;
+      @if (status !== 'unanswered') {
         <div
           class="my-2 border-2 p-1"
           [ngClass]="
-            question().status === 'correct'
-              ? 'border-green-500'
-              : 'border-red-500'
+            status === 'correct' ? 'border-green-500' : 'border-red-500'
           "
         >
-          @switch (question().status) {
+          @switch (status) {
             @case ('correct') {
               <p class="text-green-500 font-bold">Right Answer</p>
             }

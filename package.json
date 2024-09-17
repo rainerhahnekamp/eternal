@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "test:ci": "ng test --source-map=false --browsers=ChromeHeadless --watch=false",
+    "test:ci": "ng test --code-coverage --browsers=ChromeHeadless --watch=false",
     "lint": "ng lint",
     "verify": "npm run test:ci && npm run lint",
     "websocket:start": "node ./ws-app/app.mjs"

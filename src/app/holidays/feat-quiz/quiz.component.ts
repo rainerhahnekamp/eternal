@@ -19,17 +19,17 @@ import { QuizQuestionComponent } from '@app/holidays/feat-quiz/quiz-question.com
 
 @Component({
   selector: 'app-quiz',
-  template: ` <h2>{{ quizStore.title() }}</h2>
-    <app-quiz-status
-      [timeLeft]="quizStore.timeLeft()"
-      [status]="quizStore.status()"
-    />
-    @for (question of quizStore.questions(); track question) {
-      <app-quiz-question
-        [question]="question"
-        (answer)="handleAnswer($event)"
-      ></app-quiz-question>
-    }`,
+  template: `<h2>{{ quizStore.title() }}</h2>
+  <app-quiz-status
+    [timeLeft]="quizStore.timeLeft()"
+    [status]="quizStore.status()"
+  />
+  @for (question of quizStore.questions(); track question) {
+    <app-quiz-question
+      [question]="question"
+      (answer)="handleAnswer($event.questionId, $event.choiceId)"
+    ></app-quiz-question>
+  }`,
   standalone: true,
   imports: [
     MatButton,
@@ -53,7 +53,7 @@ export class QuizComponent {
     this.quizStore.setId(this.id);
   }
 
-  handleAnswer($event: { questionId: number; choiceId: number }) {
-    this.quizStore.answer($event.questionId, $event.choiceId);
+  handleAnswer(questionId: number, choiceId: number) {
+    this.quizStore.answer(questionId, choiceId);
   }
 }

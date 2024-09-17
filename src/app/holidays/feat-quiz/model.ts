@@ -1,5 +1,17 @@
 export type AnswerStatus = 'unanswered' | 'correct' | 'incorrect';
 
+export interface QuizApi {
+  id: number;
+  title: string;
+  timeInSeconds: number;
+  questions: {
+    id: number;
+    question: string;
+    explanation: string;
+    answers: { id: number; answer: string; isCorrect: boolean }[];
+  }[];
+}
+
 export interface Question {
   id: number;
   holidayId: number;
