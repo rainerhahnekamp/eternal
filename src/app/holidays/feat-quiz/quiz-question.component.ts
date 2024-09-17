@@ -58,5 +58,5 @@ import { Question } from '@app/holidays/feat-quiz/model';
 })
 export class QuizQuestionComponent {
   question = input.required<Question>();
-  answer = output<{ questionId: number; choiceId: number }>();
+  answer = output<number>();
 }
