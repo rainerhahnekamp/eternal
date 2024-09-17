@@ -22,7 +22,7 @@ export class QuizService {
   findById(id: number): Promise<Quiz> {
     return firstValueFrom(
       this.#httpClient
-        .get<QuizApi>(`http://localhost:8080/holiday/${id}/quiz`)
+        .get<QuizApi>(`/holiday/${id}/quiz`)
         .pipe(map(toQuiz)),
     );
   }
