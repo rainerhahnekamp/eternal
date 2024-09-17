@@ -27,7 +27,7 @@ import { QuizQuestionComponent } from '@app/holidays/feat-quiz/quiz-question.com
   @for (question of quizStore.questions(); track question) {
     <app-quiz-question
       [question]="question"
-      (answer)="handleAnswer($event.questionId, $event.choiceId)"
+      (answer)="handleAnswer(question.id, $event)"
     ></app-quiz-question>
   }`,
   standalone: true,
