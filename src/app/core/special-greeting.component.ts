@@ -66,7 +66,7 @@ export class SpecialGreetingComponent {
     const status = await window.navigator.permissions.query({
       name: 'geolocation',
     });
-    console.log(`status: ${status.state}`);
+
     if (status.state !== 'granted') {
       return;
     }

@@ -10,6 +10,7 @@ export interface Holiday {
   maxCount: number;
   soldOut: boolean;
   onSale: boolean;
+  hasQuiz: boolean;
 }
 
 let id = 1;
@@ -29,6 +30,7 @@ export function createHoliday(holiday: Partial<Holiday> = {}): Holiday {
       maxCount: 12,
       soldOut: false,
       onSale: false,
+      hasQuiz: false,
     },
     ...holiday,
   };

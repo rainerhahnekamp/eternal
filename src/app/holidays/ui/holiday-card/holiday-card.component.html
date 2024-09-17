@@ -8,8 +8,8 @@
   >
     <mat-card-header>
       <mat-card-title [id]="'holiday-card-' + holiday().id">
-        {{ holiday().title }}</mat-card-title
-      >
+        {{ holiday().title }}
+      </mat-card-title>
       <mat-card-subtitle>{{ holiday().teaser }}</mat-card-subtitle>
     </mat-card-header>
 
@@ -33,27 +33,41 @@
     </mat-card-content>
     <mat-card-actions class="flex justify-around items-center">
       @if (holiday().isFavourite) {
-        <mat-icon
-          appBlinker
-          (click)="removeFavourite.emit(holiday().id)"
-          class="cursor-pointer"
-          >favorite
-        </mat-icon>
+        <button mat-icon-button data-testid="btn-remove-favourite">
+          <mat-icon
+            (click)="removeFavourite.emit(holiday().id)"
+            title="remove from favourites"
+            >favorite
+          </mat-icon>
+        </button>
+      }
+      @if (holiday().hasQuiz) {
+        <a [routerLink]="['./quiz', holiday().id]" mat-icon-button title="quiz">
+          <mat-icon>quiz</mat-icon>
+        </a>
       }
       @if (!holiday().isFavourite) {
-        <mat-icon
-          appBlinker
-          (click)="addFavourite.emit(holiday().id)"
-          class="cursor-pointer"
-          >favorite_outlined
-        </mat-icon>
+        <button mat-icon-button data-testid="btn-add-favourite"
+                title="add to favourites">
+          <mat-icon
+            (click)="addFavourite.emit(holiday().id)"
+            >favorite_outlined
+          </mat-icon>
+        </button>
       }
+      <mat-icon
+        data-testid="btn-basket"
+        class="cursor-pointer"
+        title="add to basket"
+        >shopping_cart
+      </mat-icon>
       <a
         [routerLink]="['./request-info', holiday().id]"
         data-testid="btn-brochure"
-        mat-raised-button
+        mat-icon-button
+        title="Request Brochure"
       >
-        Get a Brochure
+        <mat-icon>info</mat-icon>
       </a>
     </mat-card-actions>
   </mat-card>

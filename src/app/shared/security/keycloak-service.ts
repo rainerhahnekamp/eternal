@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, NgZone } from '@angular/core';
 import Keycloak from 'keycloak-js';
 
 export interface UserProfile {
@@ -11,33 +11,40 @@ export interface UserProfile {
 
 @Injectable({ providedIn: 'root' })
 export class KeycloakService {
-  _keycloak: Keycloak | undefined;
-  profile: UserProfile | undefined;
+  #keycloak: Keycloak | undefined;
+  #profile: UserProfile | undefined;
+  readonly #zone = inject(NgZone);
 
   get keycloak() {
-    if (!this._keycloak) {
-      this._keycloak = new Keycloak({
+    if (!this.#keycloak) {
+      this.#keycloak = new Keycloak({
         url: 'https://auth.eternal-holidays.net:8443/',
         realm: 'eternal',
         clientId: 'account',
       });
     }
-    return this._keycloak;
+    return this.#keycloak;
+  }
+
+  get profile() {
+    return this.#profile;
   }
 
   async init() {
-    const authenticated = await this.keycloak.init({
-      onLoad: 'check-sso',
-      silentCheckSsoRedirectUri:
-        window.location.origin + '/assets/silent-check-sso.html',
-    });
+    const authenticated = await this.#zone.runOutsideAngular(() =>
+      this.keycloak.init({
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri:
+          window.location.origin + '/assets/silent-check-sso.html',
+      }),
+    );
 
     if (!authenticated) {
       return authenticated;
     }
-    this.profile =
+    this.#profile =
       (await this.keycloak.loadUserInfo()) as unknown as UserProfile;
-    this.profile.token = this.keycloak.token || '';
+    this.#profile.token = this.keycloak.token || '';
 
     return true;
   }

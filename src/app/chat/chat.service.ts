@@ -1,10 +1,16 @@
-import { ApplicationRef, inject, Injectable, signal } from '@angular/core';
+import {
+  ApplicationRef,
+  inject,
+  Injectable,
+  NgZone,
+  signal,
+} from '@angular/core';
 import { catchError, Observable } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { getWsConnect } from './web-socket-client';
 
-type Data = { message?: string; status?: string };
-export type Message = { text: string; sent: Date };
+interface Data { message?: string; status?: string }
+export interface Message { text: string; sent: Date }
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
@@ -13,9 +19,10 @@ export class ChatService {
   #messages = signal<Message[]>([]);
   messages = this.#messages.asReadonly();
   appRef = inject(ApplicationRef);
+  ngZone = inject(NgZone);
 
   connect() {
-    getWsConnect(() => this.appRef.tick())
+    getWsConnect(() => this.ngZone.run(() => this.appRef.tick()))
       .pipe(
         catchError((err) => {
           console.error(err);

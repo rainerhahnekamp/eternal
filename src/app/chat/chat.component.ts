@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { DatePipe } from '@angular/common';
@@ -18,6 +18,7 @@ import { ChatService } from './chat.service';
   </mat-list>`,
   imports: [MatListModule, MatIconModule, DatePipe],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatComponent {
   messages = inject(ChatService).messages;

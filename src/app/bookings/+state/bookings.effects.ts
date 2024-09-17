@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-// eslint-disable-next-line @softarc/sheriff/dependency-rule
-import { selectSelectedCustomer } from '@app/customers/feature';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { filter, map } from 'rxjs';
 import { bookingsActions } from './bookings.actions';
 import { Booking } from './bookings.reducer';
-import { MessageService } from '@app/shared/ui-messaging';
+import { Customers } from '@app/customers/api';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { tap } from 'rxjs/operators';
 
 const bookings: Map<number, Booking[]> = new Map<number, Booking[]>();
 bookings.set(1, [
@@ -38,15 +38,16 @@ bookings.set(3, [
 
 @Injectable()
 export class BookingsEffects {
+  #customers = inject(Customers);
   #actions$ = inject(Actions);
-  #store = inject(Store);
-  #uiMessage = inject(MessageService);
+  #selectedCustomer = toObservable(this.#customers.selectedCustomer);
 
   load$ = createEffect(() => {
     return this.#actions$.pipe(
       ofType(bookingsActions.load),
-      concatLatestFrom(() => this.#store.select(selectSelectedCustomer)),
+      concatLatestFrom(() => this.#selectedCustomer),
       map(([, customerId]) => customerId),
+      tap((value) => console.log(`id: ${value}`)),
       filter(Boolean),
       map((customer) =>
         bookingsActions.loaded({ bookings: bookings.get(customer.id) || [] }),
