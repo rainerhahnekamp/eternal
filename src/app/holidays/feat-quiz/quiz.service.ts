@@ -1,32 +1,48 @@
-import { Injectable } from '@angular/core';
-import { Quiz } from '@app/holidays/feat-quiz/model';
-import { questionsIndia } from '@app/holidays/feat-quiz/data/questions-india';
-import { questionsNorway } from '@app/holidays/feat-quiz/data/questions-norway';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from "@angular/core";
+import { Quiz } from "@app/holidays/feat-quiz/model";
+import { firstValueFrom, map } from "rxjs";
 
-const questions = [...questionsIndia, ...questionsNorway];
+export interface QuizApi {
+  id: number;
+  title: string;
+  timeInSeconds: number;
+  questions: {
+    id: number;
+    question: string;
+    explanation: string;
+    answers: { id: number; answer: string; isCorrect: boolean }[];
+  }[];
+}
 
 @Injectable({ providedIn: 'root' })
 export class QuizService {
+  readonly #httpClient = inject(HttpClient);
+
   findById(id: number): Promise<Quiz> {
-    return Promise.resolve({
-      title: 'Quiz',
-      timeInSeconds: 180,
-      questions: questions
-        .filter((question) => question.holidayId === id)
-        .map((question) => ({
-          ...question,
-          choices: shuffleArray(question.choices),
-        })),
-    });
+    return firstValueFrom(
+      this.#httpClient
+        .get<QuizApi>(`http://localhost:8080/holiday/${id}/quiz`)
+        .pipe(map(toQuiz)),
+    );
   }
 }
 
-export function shuffleArray<T>(array: T[]) {
-  const shuffledArray = [...array];
-  for (let i = shuffledArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-  }
-
-  return shuffledArray;
+function toQuiz(quiz: QuizApi, holidayId: number): Quiz {
+  return {
+    title: quiz.title,
+    timeInSeconds: quiz.timeInSeconds,
+    questions: quiz.questions.map((question) => ({
+      id: question.id,
+      holidayId,
+      question: question.question,
+      explanation: question.explanation,
+      status: 'unanswered',
+      answer: question.answers.find((answer) => answer.isCorrect)!.id,
+      choices: question.answers.map((answer) => ({
+        id: answer.id,
+        text: answer.answer,
+      })),
+    })),
+  };
 }

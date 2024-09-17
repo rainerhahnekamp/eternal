@@ -25,12 +25,12 @@ import { baseUrlInterceptor, errorInterceptor } from '@app/shared/http';
 import { Configuration } from '@app/shared/config';
 import { sharedMasterDataProvider } from '@app/shared/master-data';
 import { IMAGE_CONFIG } from '@angular/common';
-import { provideClientHydration } from '@angular/platform-browser';
+import { provideClientHydration, withEventReplay } from "@angular/platform-browser";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
-    provideClientHydration(),
+    provideClientHydration(withEventReplay()),
     {
       provide: IMAGE_CONFIG,
       useValue: {
