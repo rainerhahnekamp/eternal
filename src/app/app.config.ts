@@ -7,29 +7,35 @@ import {
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { appRoutes } from './app.routes';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
-import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { securityInterceptor } from 'src/app/shared/security';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { deAT } from 'date-fns/locale';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { ErrorHandlerService } from '@app/core/error-handler.service';
-import {
-  loadingInterceptor,
-  sharedUiMessagingProvider,
-} from '@app/shared/ui-messaging';
-import { baseUrlInterceptor, errorInterceptor } from '@app/shared/http';
-import { Configuration } from '@app/shared/config';
-import { sharedMasterDataProvider } from '@app/shared/master-data';
 import { IMAGE_CONFIG } from '@angular/common';
-import { provideClientHydration, withEventReplay } from "@angular/platform-browser";
+import {
+  provideClientHydration,
+  withEventReplay,
+} from '@angular/platform-browser';
+import { baseUrlInterceptor } from './shared/http/base-url.interceptor';
+import { loadingInterceptor } from './shared/ui-messaging/loader/loading.interceptor';
+import { errorInterceptor } from './shared/http/error.interceptor';
+import { sharedMasterDataProvider } from './shared/master-data/shared-master-data.provider';
+import { sharedUiMessagingProvider } from './shared/ui-messaging/shared-ui-messaging.provider';
+import { Configuration } from './shared/config/configuration';
+import { securityInterceptor } from './shared/security/security-interceptor';
+import { ErrorHandlerService } from './core/error-handler.service';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimations(),
+    provideAnimationsAsync(),
     provideClientHydration(withEventReplay()),
     {
       provide: IMAGE_CONFIG,
@@ -49,7 +55,7 @@ export const appConfig: ApplicationConfig = {
         securityInterceptor,
       ]),
     ),
-    provideStoreDevtools({ connectInZone: true }),
+    ...environment.providers,
     ...sharedMasterDataProvider,
     ...sharedUiMessagingProvider,
     importProvidersFrom([MatDateFnsModule]),

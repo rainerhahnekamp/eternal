@@ -5,10 +5,10 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { Configuration } from '@app/shared/config';
-import { ChatService } from '@app/chat/chat.service';
 import { MatButtonModule } from '@angular/material/button';
-import { SpecialGreetingComponent } from '@app/core/special-greeting.component';
+import { Configuration } from './shared/config/configuration';
+import { SpecialGreetingComponent } from './core/special-greeting.component';
+import { ChatService } from './chat/chat.service';
 
 @Component({
   selector: 'app-home',

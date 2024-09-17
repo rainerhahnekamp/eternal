@@ -1,5 +1,5 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { KeycloakService } from '@app/shared/security/keycloak-service';
+import { KeycloakService } from './internal/keycloak-service';
 import { inject } from '@angular/core';
 
 export const securityInterceptor: HttpInterceptorFn = (req, next) => {

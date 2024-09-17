@@ -11,8 +11,8 @@ import {
 } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { withSilentLoadContext } from '@app/shared/ui-messaging';
 import { isPlatformServer } from '@angular/common';
+import { withSilentLoadContext } from './shared/ui-messaging/loader/with-silent-load-context';
 
 @Injectable({ providedIn: 'root' })
 export class HeartbeatService {
