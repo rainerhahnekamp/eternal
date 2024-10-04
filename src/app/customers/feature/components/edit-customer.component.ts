@@ -16,7 +16,7 @@ import { CustomerStore } from '@app/customers/feature/components/customer-store.
 export class EditCustomerComponent {
   readonly #customerService = inject(CustomerStore);
 
-  readonly id = input.required({ transform: numberAttribute });
+  readonly id = input.required({transform: numberAttribute});
 
   protected readonly customer = this.#customerService.customer;
   protected readonly countries = this.#customerService.countries;
