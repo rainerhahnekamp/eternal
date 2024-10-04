@@ -6,4 +6,5 @@ import { appConfig } from '@app/app.config';
 
 registerLocaleData(localeDe, 'de-AT');
 
-bootstrapApplication(AppComponent, appConfig);
+bootstrapApplication(AppComponent, appConfig
+);

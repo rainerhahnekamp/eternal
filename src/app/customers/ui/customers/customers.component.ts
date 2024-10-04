@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, input, Output } from '@angular/core';
+import { Component, effect, input, output } from '@angular/core';
 import {
   MatSlideToggleChange,
   MatSlideToggleModule,
@@ -11,16 +11,6 @@ import { CustomerPipe } from '../customer.pipe';
 import { RouterLinkWithHref } from '@angular/router';
 import { DatePipe, NgIf } from '@angular/common';
 import { Customer } from '@app/customers/model';
-
-export interface CustomerWithSelected extends Customer {
-  selected: boolean;
-}
-export interface CustomersViewModel {
-  customers: CustomerWithSelected[];
-  pageIndex: number;
-  length: number;
-}
-
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
@@ -38,17 +28,17 @@ export interface CustomersViewModel {
   ],
 })
 export class CustomersComponent {
-  viewModel = input.required<CustomersViewModel>();
-  @Output() setSelected = new EventEmitter<number>();
-  @Output() setUnselected = new EventEmitter<number>();
-  @Output() switchPage = new EventEmitter<number>();
+  customers = input.required<Customer[]>();
+  setSelected = output<number>();
+  setUnselected = output<number>();
+  switchPage = output<number>();
 
   displayedColumns = ['name', 'country', 'birthdate', 'action'];
-  dataSource = new MatTableDataSource<CustomerWithSelected>([]);
+  dataSource = new MatTableDataSource();
 
-  constructor() {
-    effect(() => (this.dataSource.data = this.viewModel().customers));
-  }
+  dataSourceUpdateEffect = effect(
+    () => (this.dataSource.data = this.customers()),
+  );
 
   toggleSelection(toggleChange: MatSlideToggleChange, id: number) {
     if (toggleChange.checked) {

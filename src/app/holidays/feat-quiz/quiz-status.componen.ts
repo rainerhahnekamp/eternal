@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from "@angular/core";
+import { QuizStore } from "@app/holidays/feat-quiz/quiz-store";
 
 @Component({
   selector: 'app-quiz-status',
@@ -18,4 +19,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 export class QuizStatusComponent {
   timeLeft = input.required<number>();
   status = input.required<{ correct: number; incorrect: number }>();
+
+  quizStore = inject(QuizStore)
 }

@@ -11,7 +11,6 @@ import { CustomersStore } from '@app/customers/data';
     [customer]="customer"
     [countries]="countries()"
     (save)="submit($event)"
-    [showDeleteButton]="false"
   ></app-customer>`,
   standalone: true,
   imports: [CustomerComponent],

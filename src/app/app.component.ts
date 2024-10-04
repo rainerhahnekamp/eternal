@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, effect, signal } from "@angular/core";
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HeaderComponent } from './core/header/header.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -21,8 +21,8 @@ import { FooterComponent } from '@app/core/footer.component';
       </mat-drawer>
       <mat-drawer-content class="p-4">
         <app-loader />
-        <app-message />
         <router-outlet />
+        <app-message />
       </mat-drawer-content>
     </mat-drawer-container>
     <app-footer />

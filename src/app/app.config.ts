@@ -26,6 +26,7 @@ import { Configuration } from '@app/shared/config';
 import { sharedMasterDataProvider } from '@app/shared/master-data';
 import { IMAGE_CONFIG } from '@angular/common';
 import { provideClientHydration, withEventReplay } from "@angular/platform-browser";
+import { basketInterceptor } from "@app/basket/basket.interceptor";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -43,6 +44,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withFetch(),
       withInterceptors([
+        basketInterceptor,
         baseUrlInterceptor,
         loadingInterceptor,
         errorInterceptor,

@@ -2015,6 +2015,11 @@
   resolved "https://registry.npmjs.org/@jsonjoy.com/util/-/util-1.3.0.tgz"
   integrity sha512-Cebt4Vk7k1xHy87kHY7KSPLT77A7Ev7IfOblyLZhtYEhrdQ6fX4EoLq3xOQ3O/DRMEh2ok5nyC180E+ABS8Wmw==
 
+"@kurkle/color@^0.3.0":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@kurkle/color/-/color-0.3.2.tgz#5acd38242e8bde4f9986e7913c8fdf49d3aa199f"
+  integrity sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==
+
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.5"
   resolved "https://registry.npmjs.org/@leichtgewicht/ip-codec/-/ip-codec-2.0.5.tgz"
@@ -2489,15 +2494,15 @@
   resolved "https://registry.npmjs.org/@socket.io/component-emitter/-/component-emitter-3.1.2.tgz"
   integrity sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==
 
-"@softarc/eslint-plugin-sheriff@^0.17.0":
-  version "0.17.0"
-  resolved "https://registry.npmjs.org/@softarc/eslint-plugin-sheriff/-/eslint-plugin-sheriff-0.17.0.tgz"
-  integrity sha512-JvDtwla4A4bYBZJGGNiEJkSy8qr8eK3jYXWEjVBN+VzDUSlt8zoSrU8P7Lt7QL8jB5XwcYbl+rh+GKeWc3nPgw==
+"@softarc/eslint-plugin-sheriff@^0.17.3":
+  version "0.17.3"
+  resolved "https://registry.yarnpkg.com/@softarc/eslint-plugin-sheriff/-/eslint-plugin-sheriff-0.17.3.tgz#aa316f9ae1bef54df5dac6717b2fe45090083a7c"
+  integrity sha512-/XTZFE35c0yjBmdlzRI+zBSAguKoWSH/pX4DXh7dA4LMTavfoF2U1H6+2PdOy+IlAVGce1JRk9+6xKz19w8NXw==
 
-"@softarc/sheriff-core@^0.17.0":
-  version "0.17.0"
-  resolved "https://registry.npmjs.org/@softarc/sheriff-core/-/sheriff-core-0.17.0.tgz"
-  integrity sha512-f0pkER3SULxBYRCynE/stvWoMcV9vvHTQI4mp33LvkhUknPzKNRRXbeMKn/X37jcH5IpVbHhbNcfbfXHaje7Ww==
+"@softarc/sheriff-core@^0.17.3":
+  version "0.17.3"
+  resolved "https://registry.yarnpkg.com/@softarc/sheriff-core/-/sheriff-core-0.17.3.tgz#f1c29353ce0c44ff1108f16f5a353489f1e9d5db"
+  integrity sha512-3Go1KUDXrTaa3JRPTLyLs8ElHaXVAMox+YERVONR0jy4zvITK1gkLMpttxIXrnYFrmgPI4YL8qcsZsALvUygWQ==
 
 "@testing-library/angular@^17.0.0":
   version "17.3.1"
@@ -3439,6 +3444,13 @@ chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.npmjs.org/chardet/-/chardet-0.7.0.tgz"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
+
+chart.js@^4.4.4:
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-4.4.4.tgz#b682d2e7249f7a0cbb1b1d31c840266ae9db64b7"
+  integrity sha512-emICKGBABnxhMjUjlYRR12PmOXhJ2eJjEHL2/dZlWjxRAZT1D8xplLFq5M0tMQK8ja+wBS/tuVEJB5C6r7VxJA==
+  dependencies:
+    "@kurkle/color" "^0.3.0"
 
 "chokidar@>=3.0.0 <4.0.0", chokidar@^3.0.0, chokidar@^3.5.1, chokidar@^3.5.3, chokidar@^3.6.0:
   version "3.6.0"

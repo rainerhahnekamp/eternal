@@ -11,3 +11,5 @@ export const provideCustomer = () =>
     provideState(customersFeature),
     provideEffects([CustomersEffects]),
   ] as EnvironmentProviders[];
+
+export {CustomerService} from './customer.service';

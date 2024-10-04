@@ -1,31 +1,23 @@
-import { Component, inject } from '@angular/core';
-import { CustomersComponent } from '@app/customers/ui';
-import { CustomersStore } from '@app/customers/data';
+import { Component, inject, signal } from "@angular/core";
+import { CustomersComponent } from "@app/customers/ui";
+import { HttpClient } from "@angular/common/http";
+import { Customer } from "@app/customers/model";
 
 @Component({
   selector: 'app-customers-container',
   template: ` <app-customers
-    [viewModel]="viewModel()"
-    (setSelected)="setSelected($event)"
-    (setUnselected)="setUnselected()"
-    (switchPage)="switchPage($event)"
+    [customers]="customers()"
   ></app-customers>`,
   standalone: true,
   imports: [CustomersComponent],
 })
 export class CustomersContainerComponent {
-  #customersStore = inject(CustomersStore);
-  protected viewModel = this.#customersStore.pagedCustomers;
+  readonly #http = inject(HttpClient);
+  protected readonly customers = signal(new Array<Customer>())
 
-  setSelected(id: number) {
-    this.#customersStore.select(id);
-  }
-
-  setUnselected() {
-    this.#customersStore.unselect();
-  }
-
-  switchPage(page: number) {
-    console.log('switch to page ' + page + ' is not implemented');
+  constructor() {
+    this.#http.get<{content: Customer[]}>('/customer').subscribe((data) => {
+      this.customers.set(data.content);
+    });
   }
 }

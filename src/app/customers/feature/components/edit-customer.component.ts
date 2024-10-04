@@ -1,65 +1,27 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  input,
-  numberAttribute,
-} from '@angular/core';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { Component, inject, input, numberAttribute } from '@angular/core';
 import { CustomerComponent } from '@app/customers/ui';
-import { Customer } from '@app/customers/model';
-import { selectCountries } from '@app/shared/master-data';
-import { Store } from '@ngrx/store';
-import { CustomersStore } from '@app/customers/data';
+import { CustomerStore } from '@app/customers/feature/components/customer-store.service';
 
 @Component({
   selector: 'app-edit-customer',
   template: `
-    @if (data(); as value) {
-      <app-customer
-        [customer]="value.customer"
-        [countries]="value.countries"
-        [showDeleteButton]="true"
-        (save)="this.submit($event)"
-        (remove)="this.remove()"
-      ></app-customer>
+    @if (customer(); as value) {
+      <app-customer [customer]="value" [countries]="countries()"></app-customer>
     }
   `,
   standalone: true,
-  imports: [CustomerComponent, NgIf, AsyncPipe],
+  imports: [CustomerComponent],
+  providers: [CustomerStore],
 })
 export class EditCustomerComponent {
-  store = inject(Store);
-  #customersFacade = inject(CustomersStore);
+  readonly #customerService = inject(CustomerStore);
 
-  id = input.required({ transform: numberAttribute });
-  countries = this.store.selectSignal(selectCountries);
+  readonly id = input.required({ transform: numberAttribute });
 
-  data = computed(() => {
-    const customer = this.#customersFacade.selectedCustomer();
-    const countries = this.countries();
-
-    if (!customer) {
-      return;
-    }
-
-    return { customer, countries };
-  });
+  protected readonly customer = this.#customerService.customer;
+  protected readonly countries = this.#customerService.countries;
 
   constructor() {
-    effect(() => {
-      const id = this.id();
-
-      this.#customersFacade.select(id);
-    });
-  }
-
-  submit(customer: Customer) {
-    this.#customersFacade.update({ ...customer, id: this.id() });
-  }
-
-  remove() {
-    this.#customersFacade.remove(this.id());
+    this.#customerService.loadCustomer(this.id);
   }
 }

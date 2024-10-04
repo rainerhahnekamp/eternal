@@ -3,8 +3,7 @@ import { CustomersContainerComponent } from './components/customers-container.co
 import { EditCustomerComponent } from './components/edit-customer.component';
 import { dataGuard } from './services/data.guard';
 import { CustomersRootComponent } from './components/customers-root/customers-root.component';
-import { customersInterceptor, provideCustomer } from '@app/customers/data';
-import { provideHttpClient, withInterceptors, withRequestsMadeViaParent } from '@angular/common/http';
+import {  provideCustomer } from '@app/customers/data';
 
 export default [
   {
@@ -13,10 +12,6 @@ export default [
     component: CustomersRootComponent,
     providers: [
       provideCustomer(),
-      provideHttpClient(
-        withRequestsMadeViaParent(),
-        withInterceptors([customersInterceptor]),
-      ),
     ],
     children: [
       {

@@ -54,6 +54,12 @@ export const appRoutes: Routes = [
         loadChildren: () => import('@app/diary'),
       },
       { path: 'chat', component: ChatComponent },
+      // {
+      //   path: 'basket',
+      //   loadComponent: () => import('./basket/basket.component'),
+      // },
+      { path: 'chart', loadComponent: () => import('./chart/chart-container.component') },
+      { path: 'showcase', loadComponent: () => import('./showcase.component') },
     ],
   },
 ];

@@ -1,11 +1,4 @@
-import {
-  Component,
-  effect,
-  EventEmitter,
-  inject,
-  input,
-  Output,
-} from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -16,7 +9,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { RouterLinkWithHref } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
-import { FormErrorsComponent, Options } from '@app/shared/form';
+import { FormErrorsComponent, Option } from "@app/shared/form";
 import { Customer } from '@app/customers/model';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -38,16 +31,14 @@ import { MatSelectModule } from '@angular/material/select';
 })
 export class CustomerComponent {
   customer = input.required<Customer>();
-  countries = input.required<Options>();
-  showDeleteButton = input.required<boolean>();
-  @Output() save = new EventEmitter<Customer>();
-  @Output() remove = new EventEmitter<Customer>();
+  countries = input.required<Option[]>();
 
-  constructor() {
-    effect(() => {
-      this.formGroup.setValue(this.customer());
-    });
-  }
+  save = output<Customer>();
+  remove = output<Customer>();
+
+  formGroupUpdate = effect(() => {
+    this.formGroup.setValue(this.customer())
+  })
 
   formGroup = inject(NonNullableFormBuilder).group({
     id: [0],
@@ -56,6 +47,7 @@ export class CustomerComponent {
     country: ['', [Validators.required]],
     birthdate: ['', [Validators.required]],
   });
+
   submit() {
     if (this.formGroup.valid) {
       this.save.emit(this.formGroup.getRawValue());
