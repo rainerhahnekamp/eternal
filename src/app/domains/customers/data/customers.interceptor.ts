@@ -98,7 +98,7 @@ function put(
 
 function remove(url: string) {
   const id = Number(url.split('/').pop());
-  if (Math.isNaN(id)) {
+  if (Number.isNaN(id)) {
     throw new Error('invalid url for deletion');
   }
 
