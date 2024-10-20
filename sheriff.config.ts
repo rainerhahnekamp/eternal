@@ -6,21 +6,21 @@ const api = (from: string, to: string) => ({
 
 export const sheriffConfig: SheriffConfig = {
   entryFile: 'src/main.ts',
-  tagging: {
+  enableBarrelLess: true,
+  modules: {
     'src/app': {
-      bookings: ['domain:bookings', 'type:feature'],
-      diary: ['domain:diary', 'type:feature'],
       'shared/<shared>': ['shared', 'shared:<shared>'],
-      '<domain>/api': ['domain:<domain>:api', 'type:api'],
-      '<domain>/feat-<name>': ['domain:<domain>', 'type:feature'],
-      '<domain>/<type>': ['domain:<domain>', 'type:<type>'],
+      domains: {
+        diary: ['domain:diary', 'type:feature'],
+        bookings: ['domain:bookings', 'type:feature'],
+        '<domain>/api': ['domain:<domain>:api', 'type:api'],
+        '<domain>/feat-<name>': ['domain:<domain>', 'type:feature'],
+        '<domain>/<type>': ['domain:<domain>', 'type:<type>'],
+      },
     },
   },
   depRules: {
-    root: [
-      ...['type:api', 'type:feature'],
-      'shared'
-    ],
+    root: [...['type:api', 'type:feature'], 'shared'],
     'domain:*': [
       sameTag, // domain:bookings -> domain:bookings
       'shared',
@@ -39,7 +39,7 @@ export const sheriffConfig: SheriffConfig = {
     'type:data': ['type:model', 'shared:config', 'shared:ui-messaging'],
     'type:ui': ['type:model', 'shared:form', 'shared:ui'],
     'type:model': noDependencies,
-    'shared': 'shared',
+    shared: 'shared',
     'shared:http': ['shared:config', 'shared:ui-messaging'],
     'shared:ngrx-utils': 'shared:util',
     ...api('bookings', 'customers'),

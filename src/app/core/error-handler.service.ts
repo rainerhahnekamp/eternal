@@ -1,5 +1,5 @@
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
-import { MessageService } from '@app/shared/ui-messaging';
+import { MessageService } from '../shared/ui-messaging/message/message.service';
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandler {

@@ -4,8 +4,9 @@ import { HeaderComponent } from './core/header/header.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { SidemenuComponent } from './core/sidemenu/sidemenu.component';
 import { RouterOutlet } from '@angular/router';
-import { LoaderComponent, MessageComponent } from '@app/shared/ui-messaging';
-import { FooterComponent } from '@app/core/footer.component';
+import { LoaderComponent } from './shared/ui-messaging/loader/loader.component';
+import { MessageComponent } from './shared/ui-messaging/message/message.component';
+import { FooterComponent } from './core/footer.component';
 
 @Component({
   selector: 'app-root',

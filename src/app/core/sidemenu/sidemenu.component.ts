@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { SecurityStore } from 'src/app/shared/security';
-import { ChatService } from '@app/chat/chat.service';
 import { MatBadgeModule } from '@angular/material/badge';
+import { SecurityStore } from '../../shared/security/security-store';
+import { ChatService } from '../../chat/chat.service';
 
 @Component({
   selector: 'app-sidemenu',

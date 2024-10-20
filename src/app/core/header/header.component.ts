@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { SecurityStore } from 'src/app/shared/security';
+import { SecurityStore } from '../../shared/security/security-store';
 
 @Component({
   selector: 'app-header',
