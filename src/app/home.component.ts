@@ -71,13 +71,13 @@ import { ChatService } from './chat/chat.service';
   ],
 })
 export class HomeComponent implements OnInit {
-  config = inject(Configuration);
-  formGroup = inject(NonNullableFormBuilder).group({
+  protected readonly config = inject(Configuration);
+  protected readonly formGroup = inject(NonNullableFormBuilder).group({
     mockCustomers: [true],
     mockHolidays: [true],
     pagedCustomers: [true],
   });
-  chatService = inject(ChatService);
+  protected readonly chatService = inject(ChatService);
 
   mockCustomers = new FormControl(true, {
     nonNullable: true,
