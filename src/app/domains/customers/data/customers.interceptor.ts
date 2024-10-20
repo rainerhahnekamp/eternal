@@ -97,12 +97,11 @@ function put(
 }
 
 function remove(url: string) {
-  const matches = url.match(/(\d+)(?=$)/);
-  if (!matches) {
+  const id = Number(url.split('/').pop());
+  if (Math.isNaN(id)) {
     throw new Error('invalid url for deletion');
   }
 
-  const id = Number(matches[0]);
   customers = customers.filter((customer) => customer.id !== id);
   return pagedCustomers(1).pipe(logRequest('DELETE', url));
 }
