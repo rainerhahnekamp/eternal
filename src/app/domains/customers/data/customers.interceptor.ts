@@ -97,7 +97,7 @@ function put(
 }
 
 function remove(url: string) {
-  const matches = url.match(/(\d+)$/);
+  const matches = url.match(/(\d+)(?=$)/);
   if (!matches) {
     throw new Error('invalid url for deletion');
   }
