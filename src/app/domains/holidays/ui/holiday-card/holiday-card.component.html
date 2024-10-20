@@ -33,12 +33,12 @@
     </mat-card-content>
     <mat-card-actions class="flex justify-around items-center">
       @if (holiday().isFavourite) {
-        <button mat-icon-button data-testid="btn-remove-favourite">
-          <mat-icon
-            (click)="removeFavourite.emit(holiday().id)"
-            title="remove from favourites"
-            >favorite
-          </mat-icon>
+        <button
+          mat-icon-button
+          data-testid="btn-remove-favourite"
+          (click)="removeFavourite.emit(holiday().id)"
+        >
+          <mat-icon title="remove from favourites">favorite</mat-icon>
         </button>
       }
       @if (holiday().hasQuiz) {
@@ -51,10 +51,9 @@
           mat-icon-button
           data-testid="btn-add-favourite"
           title="add to favourites"
+          (click)="addFavourite.emit(holiday().id)"
         >
-          <mat-icon (click)="addFavourite.emit(holiday().id)"
-            >favorite_outlined
-          </mat-icon>
+          <mat-icon>favorite_outlined</mat-icon>
         </button>
       }
       <mat-icon
