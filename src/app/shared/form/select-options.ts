@@ -3,4 +3,4 @@ export interface Option {
   value: string;
 }
 
-export type Options = Option[];
+export type SelectOptions = Option[];

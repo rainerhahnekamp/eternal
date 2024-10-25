@@ -29,7 +29,21 @@
           }
         </div>
       </figure>
-      {{ holiday().description }}
+      @if (isEditing()) {
+        @defer {
+          <div>
+            <app-quill [text]="holiday().description" />
+            <div class="flex justify-evenly mt-2">
+              <button mat-raised-button (click)="cancelEdit()">Cancel</button>
+              <button mat-raised-button (click)="saveEdit()" color="primary">
+                Save
+              </button>
+            </div>
+          </div>
+        }
+      } @else {
+        {{ holiday().description }}
+      }
     </mat-card-content>
     <mat-card-actions class="flex justify-around items-center">
       @if (holiday().isFavourite) {
@@ -70,6 +84,13 @@
       >
         <mat-icon>info</mat-icon>
       </a>
+      <button
+        (click)="toggleEditing()"
+        mat-icon-button
+        title="Edit Description"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>

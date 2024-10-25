@@ -18,8 +18,7 @@ import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Customer } from '../../model/customer';
-import { FormErrorsComponent } from '../../../../shared/form/form-errors.component';
-import { Options } from '../../../../shared/form/options';
+import { SelectOptions } from '../../../../shared/form/select-options';
 
 @Component({
   selector: 'app-customer',
@@ -33,13 +32,12 @@ import { Options } from '../../../../shared/form/options';
     RouterLinkWithHref,
     NgIf,
     MatInputModule,
-    FormErrorsComponent,
     MatSelectModule,
   ],
 })
 export class CustomerComponent {
   customer = input.required<Customer>();
-  countries = input.required<Options>();
+  countries = input.required<SelectOptions>();
   showDeleteButton = input.required<boolean>();
   @Output() save = new EventEmitter<Customer>();
   @Output() remove = new EventEmitter<Customer>();

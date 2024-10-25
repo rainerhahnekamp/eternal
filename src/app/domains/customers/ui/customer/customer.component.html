@@ -3,19 +3,11 @@
   <mat-form-field>
     <mat-label>Firstname</mat-label>
     <input data-testid="inp-firstname" formControlName="firstname" matInput />
-    <mat-error
-      ><app-form-errors
-        [control]="formGroup.controls.firstname"
-      ></app-form-errors>
-    </mat-error>
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Name</mat-label>
     <input data-testid="inp-name" formControlName="name" matInput />
-    <mat-error
-      ><app-form-errors [control]="formGroup.controls.name"></app-form-errors>
-    </mat-error>
   </mat-form-field>
 
   <mat-form-field>
@@ -27,11 +19,6 @@
         }}</mat-option>
       }
     </mat-select>
-    <mat-error
-      ><app-form-errors
-        [control]="formGroup.controls.country"
-      ></app-form-errors>
-    </mat-error>
   </mat-form-field>
 
   <mat-form-field>
@@ -44,11 +31,6 @@
     />
     <mat-datepicker-toggle matIconSuffix [for]="picker" />
     <mat-datepicker #picker />
-    <mat-error
-      ><app-form-errors
-        [control]="formGroup.controls.birthdate"
-      ></app-form-errors>
-    </mat-error>
   </mat-form-field>
 
   <div class="buttons">
