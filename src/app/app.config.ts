@@ -71,11 +71,7 @@ export const appConfig: ApplicationConfig = {
     { provide: ErrorHandler, useClass: ErrorHandlerService },
     {
       provide: Configuration,
-      useValue: new Configuration(
-        'https://api.eternal-holidays.net',
-        true,
-        false,
-      ),
+      useValue: new Configuration(environment.baseUrl, true, false),
     },
   ],
 };

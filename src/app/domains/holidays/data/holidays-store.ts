@@ -34,14 +34,7 @@ export const HolidayStore = signalStore(
           httpClient.get<Holiday[]>(baseUrl),
         );
 
-        patchState(store, {
-          holidays: holidays.map((holiday) => ({
-            ...holiday,
-            imageUrl: holiday.imageUrl.startsWith('/assets')
-              ? holiday.imageUrl
-              : `${config.baseUrl}${holiday.imageUrl}`,
-          })),
-        });
+        patchState(store, { holidays });
       },
       search(query: string, type: number) {
         patchState(store, { filter: { query, type } });
