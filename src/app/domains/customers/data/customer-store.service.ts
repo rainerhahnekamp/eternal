@@ -13,42 +13,49 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { concatMap, switchMap, tap } from 'rxjs/operators';
 import { Configuration } from '../../../shared/config/configuration';
 import { mapResponse, tapResponse } from '@ngrx/operators';
-import { EMPTY } from 'rxjs';
+import { EMPTY, pipe } from 'rxjs';
 import { Router } from '@angular/router';
 import { MessageService } from '../../../shared/ui-messaging/message/message.service';
+import { withDevtools } from '@angular-architects/ngrx-toolkit';
 
 export const CustomerStore = signalStore(
   { providedIn: 'root' },
+  withDevtools('customer'),
   withEntities<Customer>(),
   withState({
     page: 0,
     total: 0,
     selectedId: undefined as number | undefined,
+    status: 'init' as 'init' | 'loading' | 'loaded',
   }),
   withMethods((store) => {
     const httpClient = inject(HttpClient);
     const config = inject(Configuration);
     const router = inject(Router);
     const uiMessage = inject(MessageService);
-    const baseUrl = '';
+    const baseUrl = '/customer';
 
     const _load = rxMethod<{ page: number; callback?: () => void }>(
-      switchMap(({ page, callback }) =>
-        httpClient
-          .get<{ content: Customer[]; total: number }>(baseUrl, {
-            params: new HttpParams().set(
-              'page',
-              config.pagedCustomers ? page : 0,
+      pipe(
+        tap(() => patchState(store, { status: 'loading' })),
+        switchMap(({ page, callback }) =>
+          httpClient
+            .get<{ content: Customer[]; total: number }>(baseUrl, {
+              params: new HttpParams().set(
+                'page',
+                config.pagedCustomers ? page : 0,
+              ),
+            })
+            .pipe(
+              mapResponse({
+                next: ({ content, total }) =>
+                  patchState(store, setAllEntities(content), { total, page }),
+                error: () => EMPTY,
+              }),
+              tap(() => (callback ? callback() : {})),
+              tap(() => patchState(store, { status: 'loaded' })),
             ),
-          })
-          .pipe(
-            mapResponse({
-              next: ({ content, total }) =>
-                patchState(store, setAllEntities(content), { total, page }),
-              error: () => EMPTY,
-            }),
-            tap(() => (callback ? callback() : {})),
-          ),
+        ),
       ),
     );
 

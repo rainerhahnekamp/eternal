@@ -30,6 +30,6 @@ export class CustomersContainerComponent {
   }
 
   switchPage(page: number) {
-    console.log('switch to page ' + page + ' is not implemented');
+    this.#customerStore.load(page + 1);
   }
 }
