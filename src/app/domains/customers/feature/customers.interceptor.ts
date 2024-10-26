@@ -7,7 +7,7 @@ import {
 import { inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay, map, tap } from 'rxjs/operators';
-import { customers as originalCustomers } from '../data/internal/customer-data';
+import { customers as originalCustomers } from './internal/customer-data';
 import { Customer } from '../model/customer';
 import { Configuration } from '../../../shared/config/configuration';
 

@@ -1,7 +1,6 @@
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { lastValueFrom } from 'rxjs';
-import { AddressLookuper } from './internal/address-lookuper.service';
+import { lastValueFrom, of } from 'rxjs';
 import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
@@ -26,7 +25,9 @@ import { RouterLink } from '@angular/router';
 })
 export class RequestInfoComponent {
   #formBuilder = inject(NonNullableFormBuilder);
-  #lookuper = inject(AddressLookuper);
+  #lookuper = {
+    lookup: (query: string) => of(query),
+  };
 
   formGroup = this.#formBuilder.group({
     address: [''],
