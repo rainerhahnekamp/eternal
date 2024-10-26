@@ -13,7 +13,6 @@ import { concatMap, filter, tap } from 'rxjs/operators';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { Holiday } from '../model/holiday';
-import { Configuration } from '../../../shared/config/configuration';
 
 export const HolidayStore = signalStore(
   { providedIn: 'root' },
@@ -25,7 +24,6 @@ export const HolidayStore = signalStore(
   }),
   withMethods((store) => {
     const baseUrl = '/holiday';
-    const config = inject(Configuration);
     const httpClient = inject(HttpClient);
 
     return {
