@@ -1,11 +1,14 @@
-import { Component, inject } from '@angular/core';
-import { CustomersComponent } from '../../../ui/customers/customers.component';
-import { CustomersStore } from '../../../data/provide-customer';
+import { Component, inject, Signal } from '@angular/core';
+import {
+  CustomersComponent,
+  CustomersViewModel,
+} from '../../../ui/customers/customers.component';
+import { CustomerStore } from '../../../data/customer-store.service';
 
 @Component({
   selector: 'app-customers-container',
   template: ` <app-customers
-    [viewModel]="viewModel()"
+    [viewModel]="pagedCustomer()"
     (setSelected)="setSelected($event)"
     (setUnselected)="setUnselected()"
     (switchPage)="switchPage($event)"
@@ -14,18 +17,19 @@ import { CustomersStore } from '../../../data/provide-customer';
   imports: [CustomersComponent],
 })
 export class CustomersContainerComponent {
-  #customersStore = inject(CustomersStore);
-  protected viewModel = this.#customersStore.pagedCustomers;
+  readonly #customerStore = inject(CustomerStore);
+
+  pagedCustomer: Signal<CustomersViewModel> = this.#customerStore.pagedCustomer;
 
   setSelected(id: number) {
-    this.#customersStore.select(id);
+    this.#customerStore.select(id);
   }
 
   setUnselected() {
-    this.#customersStore.unselect();
+    this.#customerStore.unselect();
   }
 
   switchPage(page: number) {
-    console.log('switch to page ' + page + ' is not implemented');
+    this.#customerStore.load(page + 1);
   }
 }

@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CustomerComponent } from '../../../ui/customer/customer.component';
-import { CustomersStore } from '../../../data/provide-customer';
 import { Customer } from '../../../model/customer';
 import { selectCountries } from '../../../../../shared/master-data/master.reducer';
+import { CustomerStore } from '../../../data/customer-store.service';
 
 @Component({
   selector: 'app-add-customer',
@@ -17,8 +17,8 @@ import { selectCountries } from '../../../../../shared/master-data/master.reduce
   imports: [CustomerComponent],
 })
 export class AddCustomerComponent {
-  #customersFacade = inject(CustomersStore);
-  #store = inject(Store);
+  readonly #customerStore = inject(CustomerStore);
+  readonly #store = inject(Store);
 
   customer: Customer = {
     id: 0,
@@ -31,6 +31,6 @@ export class AddCustomerComponent {
   protected countries = this.#store.selectSignal(selectCountries);
 
   submit(customer: Customer) {
-    this.#customersFacade.add(customer);
+    this.#customerStore.add(customer);
   }
 }
