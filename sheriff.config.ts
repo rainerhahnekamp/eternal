@@ -42,6 +42,8 @@ export const sheriffConfig: SheriffConfig = {
     shared: 'shared',
     'shared:http': ['shared:config', 'shared:ui-messaging'],
     'shared:ngrx-utils': 'shared:util',
+    'shared:security': 'shared:http',
+    'shared:ui-messaging': noDependencies,
     ...api('bookings', 'customers'),
   },
 };

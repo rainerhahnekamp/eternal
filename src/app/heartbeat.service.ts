@@ -12,7 +12,9 @@ import {
 import { map } from 'rxjs/operators';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { isPlatformServer } from '@angular/common';
-import { withSilentLoadContext } from './shared/ui-messaging/loader/with-silent-load-context';
+import { withContextTokens } from './shared/ui-messaging/loader/context';
+import { SILENT_LOAD_CONTEXT } from './shared/http/silent-load.context';
+import { ANONYMOUS_CONTEXT } from './shared/http/anonymous.context';
 
 @Injectable({ providedIn: 'root' })
 export class HeartbeatService {
@@ -25,7 +27,12 @@ export class HeartbeatService {
     switchMap(() =>
       window.navigator.onLine
         ? this.#httpClient
-            .get('/heartbeat', { context: withSilentLoadContext() })
+            .get('/heartbeat', {
+              context: withContextTokens(
+                SILENT_LOAD_CONTEXT,
+                ANONYMOUS_CONTEXT,
+              ),
+            })
             .pipe(
               map(() => true),
               catchError(() => of(false)),

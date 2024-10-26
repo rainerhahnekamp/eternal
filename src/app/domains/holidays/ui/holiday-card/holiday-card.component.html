@@ -10,7 +10,7 @@
       <mat-card-title [id]="'holiday-card-' + holiday().id">
         {{ holiday().title }}
       </mat-card-title>
-      <mat-card-subtitle>{{ holiday().teaser }}</mat-card-subtitle>
+      <mat-card-subtitle class="h-12">{{ holiday().teaser }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
@@ -29,21 +29,25 @@
           }
         </div>
       </figure>
-      @if (isEditing()) {
-        @defer {
-          <div>
-            <app-quill [text]="holiday().description" />
-            <div class="flex justify-evenly mt-2">
-              <button mat-raised-button (click)="cancelEdit()">Cancel</button>
-              <button mat-raised-button (click)="saveEdit()" color="primary">
-                Save
-              </button>
+      <div>
+        @if (isEditing()) {
+          @defer {
+            <div>
+              <app-quill [text]="holiday().description" />
+              <div class="flex justify-evenly mt-2">
+                <button mat-raised-button (click)="cancelEdit()">Cancel</button>
+                <button mat-raised-button (click)="saveEdit()" color="primary">
+                  Save
+                </button>
+              </div>
             </div>
+          }
+        } @else {
+          <div class="h-20 overflow-hidden">
+            {{ holiday().description }}
           </div>
         }
-      } @else {
-        {{ holiday().description }}
-      }
+      </div>
     </mat-card-content>
     <mat-card-actions class="flex justify-around items-center">
       @if (holiday().isFavourite) {

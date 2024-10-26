@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { ERROR_MESSAGE_CONTEXT } from './error-message.context';
 import { MessageService } from '../ui-messaging/message/message.service';
-import { SILENT_LOAD_CONTEXT } from '../ui-messaging/loader/silent-load.context';
+import { SILENT_LOAD_CONTEXT } from './silent-load.context';
 
 export const errorInterceptor: HttpInterceptorFn = (req, handle) => {
   const uiMessage = inject(MessageService);

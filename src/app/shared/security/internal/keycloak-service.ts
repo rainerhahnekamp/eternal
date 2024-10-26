@@ -17,10 +17,11 @@ export class KeycloakService {
 
   get keycloak() {
     if (!this.#keycloak) {
+      console.log('initialize keycloak');
       this.#keycloak = new Keycloak({
         url: 'https://auth.eternal-holidays.net:8443/',
         realm: 'eternal',
-        clientId: 'account',
+        clientId: 'frontend',
       });
     }
     return this.#keycloak;

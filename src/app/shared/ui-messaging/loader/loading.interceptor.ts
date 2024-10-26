@@ -2,7 +2,7 @@ import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SILENT_LOAD_CONTEXT } from './silent-load.context';
+import { SILENT_LOAD_CONTEXT } from '../../http/silent-load.context';
 import { LoadingService } from './loading.service';
 
 export const loadingInterceptor: HttpInterceptorFn = (req, handle) => {

@@ -2,6 +2,10 @@ mat-card {
 
   max-width: 305px;
 
+  mat-card-content {
+    height: 250px;
+  }
+
   &.sold-out {
     mat-card-header,
     figure,
