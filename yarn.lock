@@ -9546,6 +9546,18 @@ playwright-core@1.48.1:
   resolved "https://registry.npmjs.org/playwright-core/-/playwright-core-1.48.1.tgz"
   integrity sha512-Yw/t4VAFX/bBr1OzwCuOMZkY1Cnb4z/doAFSwf4huqAGWmf9eMNjmK7NiOljCdLmxeRYcGPPmcDgU0zOlzP0YA==
 
+playwright-core@1.48.2:
+  version "1.48.2"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.48.2.tgz#cd76ed8af61690edef5c05c64721c26a8db2f3d7"
+  integrity sha512-sjjw+qrLFlriJo64du+EK0kJgZzoQPsabGF4lBvsid+3CNIZIYLgnMj9V6JY5VhM2Peh20DJWIVpVljLLnlawA==
+
+playwright-webkit@^1.48.2:
+  version "1.48.2"
+  resolved "https://registry.yarnpkg.com/playwright-webkit/-/playwright-webkit-1.48.2.tgz#7fedb23aae3378203fe0f9b7e155a34f0d0b3cd7"
+  integrity sha512-heEJ23FPkNeQKoB+5l5RG23cXP/8WKSzIIySt1/HZKOdNTfKHIVxhBKWcHPDyPruwtuVDb//TOkEwqx8pPZc/w==
+  dependencies:
+    playwright-core "1.48.2"
+
 playwright@1.48.1:
   version "1.48.1"
   resolved "https://registry.npmjs.org/playwright/-/playwright-1.48.1.tgz"
