@@ -71,7 +71,7 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.development.ts"
                 }
-              ],
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -121,6 +121,24 @@
               "src/**/*.ts",
               "src/**/*.html"
             ]
+          }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "eternal:build",
+            "compodoc": false,
+            "port": 6006
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "eternal:build",
+            "compodoc": false,
+            "outputDir": "storybook-static"
           }
         }
       }
