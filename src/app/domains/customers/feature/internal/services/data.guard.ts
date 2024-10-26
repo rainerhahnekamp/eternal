@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { CanActivateFn } from '@angular/router';
-import { CustomersStore } from '../../../data/provide-customer';
+import { CustomerStore } from '../../../data/customer-store.service';
 
 export const dataGuard: CanActivateFn = () => {
-  const customersFacade = inject(CustomersStore);
+  const customersFacade = inject(CustomerStore);
   customersFacade.load(1);
   return true;
 };

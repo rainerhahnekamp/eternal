@@ -45,5 +45,7 @@ export class HolidayCardComponent {
     this.isEditing.set(false);
   }
 
-  saveEdit() {}
+  saveEdit() {
+    console.log('save edit');
+  }
 }

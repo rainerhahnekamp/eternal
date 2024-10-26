@@ -6,7 +6,6 @@ import {
 import { Routes } from '@angular/router';
 import { dataGuard } from './internal/services/data.guard';
 import { CustomersRootComponent } from './internal/components/customers-root/customers-root.component';
-import { provideCustomer } from '../data/provide-customer';
 import { CustomersContainerComponent } from './internal/components/customers-container.component';
 import { AddCustomerComponent } from './internal/components/add-customer.component';
 import { EditCustomerComponent } from './internal/components/edit-customer.component';
@@ -18,7 +17,6 @@ export default [
     canActivate: [dataGuard],
     component: CustomersRootComponent,
     providers: [
-      provideCustomer(),
       provideHttpClient(
         withRequestsMadeViaParent(),
         withInterceptors([customersInterceptor]),
