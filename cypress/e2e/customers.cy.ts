@@ -1,6 +1,7 @@
 describe('Customers', () => {
   beforeEach(() => {
     cy.visit('');
+    cy.testid('hydrated').should('contain.text', 'Application is ready');
   });
 
   it('should count the entries', () => {
@@ -28,7 +29,7 @@ describe('Customers', () => {
     cy.testid('opt-country').contains('USA').click();
     cy.testid('inp-birthdate').type('12.10.1995');
     cy.testid('btn-submit').click();
-    cy.testid('btn-customers-next').click();
+    cy.get('mat-paginator').find('.mat-mdc-paginator-navigation-next').click();
 
     cy.testid('row-customer').should('contain.text', 'Tom Lincoln');
   });

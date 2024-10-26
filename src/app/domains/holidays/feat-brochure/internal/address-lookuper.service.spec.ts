@@ -1,5 +1,5 @@
-import { AddressLookuper } from './address-lookuper.service';
 import { expect } from '@jest/globals';
+import { AddressLookuper } from './address-lookuper.service';
 
 describe('Address Lookuper', () => {
   it('should pass addresses in the constructor', () => {
@@ -13,7 +13,7 @@ describe('Address Lookuper', () => {
   it('should count the queries', () => {
     const lookuper = new AddressLookuper(() => []);
     expect(lookuper.counter).toBe(0);
-    lookuper.lookup('Domgasse');
+    lookuper.lookup('Domgasse 5');
     expect(lookuper.counter).toBe(1);
   });
 });

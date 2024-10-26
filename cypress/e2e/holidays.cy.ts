@@ -1,6 +1,7 @@
 describe('Holidays', () => {
   beforeEach(() => {
     cy.visit('');
+    cy.testid('hydrated').should('contain.text', 'Application is ready');
   });
 
   it(
@@ -33,8 +34,8 @@ describe('Holidays', () => {
     cy.contains('[data-testid=holiday-card]', 'Firenze')
       .find('[data-testid=btn-brochure]')
       .click();
-    cy.testid('ri-address').type('Domgasse 5');
-    cy.testid('ri-search').click();
-    cy.testid('ri-message').should('contain.text', 'Brochure sent');
+    cy.testid('address').type('Domgasse 5');
+    cy.testid('btn-search').click();
+    cy.testid('lookup-result').should('contain.text', 'Brochure sent');
   });
 });
