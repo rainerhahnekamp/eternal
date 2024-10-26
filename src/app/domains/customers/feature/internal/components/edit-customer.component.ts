@@ -1,7 +1,6 @@
 import {
   Component,
   computed,
-  effect,
   inject,
   input,
   numberAttribute,
@@ -9,9 +8,9 @@ import {
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { CustomerComponent } from '../../../ui/customer/customer.component';
-import { CustomersStore } from '../../../data/provide-customer';
 import { Customer } from '../../../model/customer';
 import { selectCountries } from '../../../../../shared/master-data/master.reducer';
+import { CustomerStore } from '../../../data/customer-store.service';
 
 @Component({
   selector: 'app-edit-customer',
@@ -30,14 +29,14 @@ import { selectCountries } from '../../../../../shared/master-data/master.reduce
   imports: [CustomerComponent, NgIf, AsyncPipe],
 })
 export class EditCustomerComponent {
-  store = inject(Store);
-  #customersFacade = inject(CustomersStore);
+  readonly #store = inject(Store);
+  readonly #customerStore = inject(CustomerStore);
 
-  id = input.required({ transform: numberAttribute });
-  countries = this.store.selectSignal(selectCountries);
+  readonly id = input.required({ transform: numberAttribute });
+  readonly countries = this.#store.selectSignal(selectCountries);
 
-  data = computed(() => {
-    const customer = this.#customersFacade.selectedCustomer();
+  readonly data = computed(() => {
+    const customer = this.#customerStore.selectedCustomer();
     const countries = this.countries();
 
     if (!customer) {
@@ -48,18 +47,14 @@ export class EditCustomerComponent {
   });
 
   constructor() {
-    effect(() => {
-      const id = this.id();
-
-      this.#customersFacade.select(id);
-    });
+    this.#customerStore.select(this.id);
   }
 
   submit(customer: Customer) {
-    this.#customersFacade.update({ ...customer, id: this.id() });
+    this.#customerStore.update({ ...customer, id: this.id() });
   }
 
   remove() {
-    this.#customersFacade.remove(this.id());
+    this.#customerStore.remove(this.id());
   }
 }
