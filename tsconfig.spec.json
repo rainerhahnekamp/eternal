@@ -3,7 +3,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
-    "types": ["jest"]
+    "types": ["jest"],
+    "target": "es2015"
   },
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }

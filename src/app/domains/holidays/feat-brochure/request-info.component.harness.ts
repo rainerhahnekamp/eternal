@@ -5,7 +5,6 @@ import { MatInputHarness } from '@angular/material/input/testing';
 export class RequestInfoComponentHarness extends ComponentHarness {
   static hostSelector = 'app-request-info';
 
-  protected getTitle = this.locatorFor('h2');
   protected getInput = this.locatorFor(MatInputHarness);
   protected getButton = this.locatorFor(
     MatButtonHarness.with({ selector: '[data-testid=btn-search]' }),
