@@ -13,6 +13,7 @@ import { RouterLinkWithHref } from '@angular/router';
 import { Holiday } from '../../model/holiday';
 import { BlinkerDirective } from '../../../../shared/ui/blinker.directive';
 import { QuillComponent } from '../../../../shared/form/quill/quill.component';
+import { ImageLoadedDirective } from '../../../../shared/ui/image-loaded.directive';
 
 @Component({
   selector: 'app-holiday-card',
@@ -28,6 +29,7 @@ import { QuillComponent } from '../../../../shared/form/quill/quill.component';
     NgIf,
     RouterLinkWithHref,
     QuillComponent,
+    ImageLoadedDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -45,5 +47,7 @@ export class HolidayCardComponent {
     this.isEditing.set(false);
   }
 
-  saveEdit() {}
+  saveEdit() {
+    console.log('save edit');
+  }
 }

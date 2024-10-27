@@ -45,17 +45,18 @@ Cypress.Commands.add('login', (username?: string, password?: string) => {
     { username, password },
     () => {
       cy.visit('');
+      cy.testid('hydrated').should('contain.text', 'Application is ready');
       cy.testid('btn-sign-in').click();
       cy.origin(
-        'dev-xbu2-fid.eu.auth0.com/',
+        'https://auth.eternal-holidays.net:8443',
         { args: { username, password } },
         ({ username, password }) => {
-          cy.get('.auth0-lock-input-email').type(username || '');
-          cy.get('.auth0-lock-input-show-password').type(password || '');
-          cy.get('.auth0-lock-submit').click();
+          cy.get('#username').type(username || '');
+          cy.get('#password').type(password || '');
+          cy.get('#kc-login').click();
         },
       );
-      cy.testid('p-username').should('have.text', 'Welcome John List');
+      cy.testid('p-username').should('contain.text', 'Welcome John List');
     },
     { cacheAcrossSpecs: true },
   );

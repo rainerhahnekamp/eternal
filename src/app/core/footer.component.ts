@@ -8,6 +8,7 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { HeartbeatService } from '../heartbeat.service';
 import { SecurityStore } from '../shared/security/security-store';
+import { Configuration } from '../shared/config/configuration';
 
 @Component({
   selector: 'app-footer',
@@ -15,7 +16,7 @@ import { SecurityStore } from '../shared/security/security-store';
     <footer class="p-2 background-color-toolbar">
       @if (isHydrated() && securityLoaded()) {
         <div
-          class="text-xs flex items-center justify-end gap-2"
+          class="text-xs flex items-center justify-end gap-2 text-grey-500"
           data-testid="hydrated"
         >
           <span>Application is ready</span>
@@ -23,6 +24,12 @@ import { SecurityStore } from '../shared/security/security-store';
             <mat-icon>wifi</mat-icon>
           } @else {
             <mat-icon class="text-red-500">wifi_off</mat-icon>
+          }
+
+          @if (config.runHeartbeat()) {
+            <mat-icon>refresh</mat-icon>
+          } @else {
+            <mat-icon class="text-gray-400">refresh</mat-icon>
           }
         </div>
       }
@@ -36,6 +43,7 @@ export class FooterComponent {
   readonly isHydrated = signal(false);
   readonly securityLoaded = inject(SecurityStore).loaded;
   readonly apiReachable = inject(HeartbeatService).status;
+  protected readonly config = inject(Configuration);
 
   constructor() {
     afterNextRender(() => this.isHydrated.set(true));
