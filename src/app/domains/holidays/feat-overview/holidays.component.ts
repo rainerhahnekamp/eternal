@@ -8,11 +8,7 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { MatButton } from '@angular/material/button';
 import { HolidayCardComponent } from '../ui/holiday-card/holiday-card.component';
 import { HolidayStore } from '../data/holidays-store';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { concatMap, delay, filter, map } from 'rxjs/operators';
-import { concat, first, Observable, of } from 'rxjs';
-import { ImagesLoadedService } from '../../../shared/ui/images-loaded.service';
-import { createHoliday, Holiday } from '../model/holiday';
+import { createHoliday } from '../model/holiday';
 
 const hiddenVienna = {
   ...createHoliday({
@@ -82,30 +78,11 @@ const hiddenVienna = {
 })
 export class HolidaysComponent implements OnInit {
   #holidaysStore = inject(HolidayStore);
-  #imagesLoadedService = inject(ImagesLoadedService);
+
+  protected readonly holidays = this.#holidaysStore.holidaysWithFavourite;
 
   protected search = '';
   protected type = '0';
-
-  #holidays$: Observable<(Holiday & { isFavourite: boolean })[]> = toObservable(
-    this.#holidaysStore.holidaysWithFavourite,
-  ).pipe(
-    concatMap((holidays) => {
-      return holidays.length
-        ? concat(
-            of(holidays),
-            this.#imagesLoadedService.loaded$.pipe(
-              filter(Boolean),
-              map(() => [...holidays, hiddenVienna]),
-              delay(1000),
-              first(),
-            ),
-          )
-        : of(holidays);
-    }),
-  );
-
-  holidays = toSignal(this.#holidays$);
 
   ngOnInit(): void {
     this.#holidaysStore.load();
