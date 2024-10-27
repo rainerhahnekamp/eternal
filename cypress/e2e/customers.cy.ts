@@ -47,7 +47,6 @@ describe('init', () => {
     customer.submit();
     cy.get('mat-paginator').find('.mat-mdc-paginator-navigation-next').click();
 
-
     cy.testid('row-customer').should('contain.text', 'Tom Lincoln');
   });
 
