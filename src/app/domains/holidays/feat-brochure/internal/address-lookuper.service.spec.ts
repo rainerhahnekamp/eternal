@@ -11,6 +11,7 @@ import {
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { createMock } from '@testing-library/angular/jest-utils';
 import { assertType } from '../../../../shared/testing/assert-type';
+import { TestScheduler } from 'rxjs/internal/testing/TestScheduler';
 
 describe('Address Lookuper', () => {
   const setup = (httpClient: HttpClient): AddressLookuper =>
@@ -112,5 +113,19 @@ describe('Address Lookuper', () => {
     expect(lookuper.counter).toBe(0);
     lookuper.lookup('Domgasse');
     expect(lookuper.counter).toBe(1);
+  });
+
+  it('should use RxJs Marbles', () => {
+    const scheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
+
+    scheduler.run(({ cold, expectObservable }) => {
+      const httpClient = createMock(HttpClient);
+      httpClient.get.mockReturnValue(cold('150ms r', { r: [true] }));
+      const lookuper = setup(httpClient);
+      const isValid$ = lookuper.lookup('Domgasse 5');
+      expectObservable(isValid$).toBe('150ms t', { t: true });
+    });
   });
 });

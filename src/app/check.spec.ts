@@ -1,6 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestBed } from '@angular/core/testing';
-import { NewsletterComponent } from '@app/newsletter/newsletter.component';
+import { NewsletterComponent } from './newsletter/newsletter.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 it('jest should work', () => {
   expect(true).toBe(true);
@@ -8,7 +9,7 @@ it('jest should work', () => {
 
 it('should test Newsletter', () => {
   const fixture = TestBed.configureTestingModule({
-    imports: [NewsletterComponent],
+    imports: [NewsletterComponent, NoopAnimationsModule],
   }).createComponent(NewsletterComponent);
 
   fixture.detectChanges();
