@@ -93,6 +93,7 @@ export class Customers {
         }
       });
 
+    cy.testid('row-customer').should('have.length.greaterThan', 0);
     cy.get('mat-paginator')
       .find('.mat-mdc-paginator-navigation-next')
       .then(($button) => {

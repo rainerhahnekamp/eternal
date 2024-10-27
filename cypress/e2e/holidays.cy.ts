@@ -29,7 +29,6 @@ describe('Holidays', () => {
 
   it('should mock the holidays', () => {
     cy.intercept('GET', '**/holiday', { fixture: 'holidays.json' });
-    cy.visit('');
     cy.testid('btn-holidays').click();
     cy.get('app-holiday-card').should('contain.text', 'Unicorn');
   });
