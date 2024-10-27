@@ -94,6 +94,7 @@ export const CustomerStore = signalStore(
           httpClient.delete<Customer[]>(`${baseUrl}/${id}`).pipe(
             tapResponse({
               next: () => {
+                router.navigateByUrl('/customer');
                 _load({ page: 1 });
               },
               error: () => EMPTY,
