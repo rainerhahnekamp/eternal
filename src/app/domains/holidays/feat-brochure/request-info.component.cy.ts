@@ -1,12 +1,10 @@
 import { RequestInfoComponent } from './request-info.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { mount } from 'cypress/angular';
-import { provideStore } from '@ngrx/store';
-import { Configuration } from '@app/shared';
 import { provideRouter } from '@angular/router';
-import { provideHolidays } from '@app/holidays/+state';
 import { asyncScheduler, scheduled } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Configuration } from '../../../shared/config/configuration';
 
 describe('Request Info Component', () => {
   for (const { message, response } of [
@@ -20,8 +18,6 @@ describe('Request Info Component', () => {
         imports: [RequestInfoComponent, NoopAnimationsModule],
         providers: [
           provideRouter([]),
-          provideStore(),
-          provideHolidays,
           {
             provide: Configuration,
             useValue: { baseUrl: 'http://localhost:4200' },
@@ -30,9 +26,9 @@ describe('Request Info Component', () => {
         ],
       });
 
-      cy.testid('ri-address').should('have.value', 'Domgasse 5');
-      cy.testid('ri-search').click();
-      cy.testid('ri-message').should('have.text', message);
+      cy.testid('address').should('have.value', 'Domgasse 5');
+      cy.testid('btn-search').click();
+      cy.testid('lookup-result').should('contain.text', message);
     });
   }
 });
