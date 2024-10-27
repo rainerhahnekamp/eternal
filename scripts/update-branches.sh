@@ -4,7 +4,7 @@ set -e
 i=0
 while read line
 do
-  branches[$i]="$line"
+  branches[$i]="workshop/testing/cypress/$line"
   i=$((i+1))
 done < scripts/branches.txt
 
