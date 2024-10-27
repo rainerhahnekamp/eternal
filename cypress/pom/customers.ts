@@ -26,7 +26,7 @@ export class Customers {
     firstname: string,
     name: string,
     country: string,
-    birthdate: Date
+    birthdate: Date,
   ) {
     customer.setFirstname(firstname);
     customer.setName(name);
@@ -50,31 +50,38 @@ export class Customers {
 
   verifyCustomerDoesNotExist(customer: string) {
     const checkOnPage = (hasNextPage: boolean) => {
-      return cy.get('[data-testid=row-customer] p.name').then(($names) => {
-        const exists = Cypress._.some(
-          $names.toArray(),
-          ($name) => $name.textContent === customer
-        );
+      return cy
+        .get('[data-testid=row-customer] [data-testid=name]')
+        .then(($names) => {
+          const exists = Cypress._.some(
+            $names.toArray(),
+            ($name) => $name.textContent === customer,
+          );
 
-        if (exists) {
-          throw new Error(`Customer ${customer} does exist`);
-        }
+          if (exists) {
+            throw new Error(`Customer ${customer} does exist`);
+          }
 
-        if (hasNextPage) {
-          this.nextPage().then(checkOnPage);
-        }
-      });
+          if (hasNextPage) {
+            this.nextPage().then(checkOnPage);
+          }
+        });
     };
 
-    this.nextPage().then(checkOnPage);
+    cy.get('mat-paginator')
+      .find('.mat-mdc-paginator-navigation-next')
+      .then(($button) => {
+        const isDisabled = $button.prop('disabled');
+        checkOnPage(!isDisabled);
+      });
   }
 
   verifyCustomer(customer: string) {
     const checkOnPage = (hasNextPage: boolean) =>
-      cy.get('[data-testid=row-customer] p.name').then(($names) => {
+      cy.get('[data-testid=row-customer] [data-testid=name]').then(($names) => {
         const exists = Cypress._.some(
           $names.toArray(),
-          ($name) => ($name.textContent || '').trim() === customer
+          ($name) => ($name.textContent || '').trim() === customer,
         );
         cy.log(String(exists));
         if (!exists) {
@@ -86,15 +93,22 @@ export class Customers {
         }
       });
 
-    cy.testid('btn-customers-next').then(($button) => {
-      const isDisabled = $button.prop('disabled');
-      checkOnPage(!isDisabled);
-    });
+    cy.testid('row-customer').should('have.length.greaterThan', 0);
+    cy.get('mat-paginator')
+      .find('.mat-mdc-paginator-navigation-next')
+      .then(($button) => {
+        const isDisabled = $button.prop('disabled');
+        checkOnPage(!isDisabled);
+      });
   }
 
   private nextPage(): Chainable<boolean> {
-    cy.testid('btn-customers-next').as('button');
-    cy.get('[data-testid=row-customer]:first() p.name').as('firstCustomerName');
+    cy.get('mat-paginator')
+      .find('.mat-mdc-paginator-navigation-next')
+      .as('button');
+    cy.get('[data-testid=row-customer]:first() [data-testid=name]').as(
+      'firstCustomerName',
+    );
 
     return cy.get('@button').then(($button) => {
       const isDisabled = $button.prop('disabled');

@@ -1,0 +1,101 @@
+<div class="flex flex-wrap justify-evenly">
+  <mat-card
+    data-testid="holiday-card"
+    [ngClass]="{ 'sold-out': holiday().soldOut }"
+    class="my-4 mx-4"
+    [attr.aria-labelledby]="'holiday-card-' + holiday().id"
+    aria-labelledby="holiday-title"
+  >
+    <mat-card-header>
+      <mat-card-title [id]="'holiday-card-' + holiday().id">
+        {{ holiday().title }}
+      </mat-card-title>
+      <mat-card-subtitle class="h-12">{{ holiday().teaser }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <figure>
+        <img
+          [alt]="holiday().title"
+          [src]="holiday().imageUrl"
+          class="max-w-none"
+          app-img-loaded
+        />
+        <div class="badge-overlay">
+          @if (holiday().onSale) {
+            <span class="top-left badge">On Sale</span>
+          }
+          @if (holiday().soldOut) {
+            <span class="middle-full badge">Sold out</span>
+          }
+        </div>
+      </figure>
+      <div>
+        @if (isEditing()) {
+          @defer {
+            <div>
+              <app-quill [text]="holiday().description" />
+              <div class="flex justify-evenly mt-2">
+                <button mat-raised-button (click)="cancelEdit()">Cancel</button>
+                <button mat-raised-button (click)="saveEdit()" color="primary">
+                  Save
+                </button>
+              </div>
+            </div>
+          }
+        } @else {
+          <div class="h-20 overflow-hidden">
+            {{ holiday().description }}
+          </div>
+        }
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="flex justify-around items-center">
+      @if (holiday().isFavourite) {
+        <button
+          mat-icon-button
+          data-testid="btn-remove-favourite"
+          (click)="removeFavourite.emit(holiday().id)"
+        >
+          <mat-icon title="remove from favourites">favorite</mat-icon>
+        </button>
+      }
+      @if (holiday().hasQuiz) {
+        <a [routerLink]="['./quiz', holiday().id]" mat-icon-button title="quiz">
+          <mat-icon>quiz</mat-icon>
+        </a>
+      }
+      @if (!holiday().isFavourite) {
+        <button
+          mat-icon-button
+          data-testid="btn-add-favourite"
+          title="add to favourites"
+          (click)="addFavourite.emit(holiday().id)"
+        >
+          <mat-icon>favorite_outlined</mat-icon>
+        </button>
+      }
+      <mat-icon
+        data-testid="btn-basket"
+        class="cursor-pointer"
+        title="add to basket"
+        >shopping_cart
+      </mat-icon>
+      <a
+        [routerLink]="['./request-info', holiday().id]"
+        data-testid="btn-brochure"
+        mat-icon-button
+        title="Request Brochure"
+      >
+        <mat-icon>info</mat-icon>
+      </a>
+      <button
+        (click)="toggleEditing()"
+        mat-icon-button
+        title="Edit Description"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

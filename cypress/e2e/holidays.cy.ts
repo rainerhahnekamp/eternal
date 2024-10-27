@@ -1,6 +1,7 @@
-describe('misc', () => {
+describe('Holidays', () => {
   beforeEach(() => {
     cy.visit('');
+    cy.testid('hydrated').should('contain.text', 'Application is ready');
   });
 
   it('should do an implicit subject assertion', () => {
@@ -21,14 +22,13 @@ describe('misc', () => {
     cy.contains('[data-testid=holiday-card]', 'Firenze')
       .find('[data-testid=btn-brochure]')
       .click();
-    cy.get('[data-testid=ri-address]').type('Domgasse 5');
-    cy.get('[data-testid=ri-search]').click();
-    cy.get('[data-testid=ri-message]').should('contain.text', 'Brochure sent');
+    cy.testid('address').type('Domgasse 5');
+    cy.testid('btn-search').click();
+    cy.testid('lookup-result').should('contain.text', 'Brochure sent');
   });
 
   it('should mock the holidays', () => {
     cy.intercept('GET', '**/holiday', { fixture: 'holidays.json' });
-    cy.visit('');
     cy.testid('btn-holidays').click();
     cy.get('app-holiday-card').should('contain.text', 'Unicorn');
   });

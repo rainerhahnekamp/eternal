@@ -6,6 +6,7 @@ import { customers } from '../pom/customers';
 describe('init', () => {
   beforeEach(() => {
     cy.visit('');
+    cy.testid('hydrated').should('contain.text', 'Application is ready');
   });
 
   (
@@ -44,7 +45,7 @@ describe('init', () => {
     customer.setCountry('USA');
     customer.setBirthday(new Date(1995, 9, 12));
     customer.submit();
-    cy.testid('btn-customers-next').click();
+    cy.get('mat-paginator').find('.mat-mdc-paginator-navigation-next').click();
 
     cy.testid('row-customer').should('contain.text', 'Tom Lincoln');
   });
@@ -55,7 +56,6 @@ describe('init', () => {
       Math.random().toString(36).substring(2, 15);
     const fullName = `Max ${name}`;
 
-    cy.visit('');
     customers.open();
     customers.add();
     customers.submitForm('Max', name, 'Austria', new Date(1985, 11, 12));
