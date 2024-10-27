@@ -5,7 +5,11 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { setAllEntities, withEntities } from '@ngrx/signals/entities';
+import {
+  removeAllEntities,
+  setAllEntities,
+  withEntities,
+} from '@ngrx/signals/entities';
 import { Customer } from '../model/customer';
 import { computed, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -37,7 +41,9 @@ export const CustomerStore = signalStore(
 
     const _load = rxMethod<{ page: number; callback?: () => void }>(
       pipe(
-        tap(() => patchState(store, { status: 'loading' })),
+        tap(() =>
+          patchState(store, { status: 'loading' }, removeAllEntities()),
+        ),
         switchMap(({ page, callback }) =>
           httpClient
             .get<{ content: Customer[]; total: number }>(baseUrl, {
@@ -71,8 +77,8 @@ export const CustomerStore = signalStore(
               tapResponse({
                 next: () => {
                   uiMessage.info('Customer has been updated');
-                  router.navigateByUrl('/customer');
                   _load({ page: 1 });
+                  router.navigateByUrl('/customer');
                 },
                 error: () => EMPTY,
               }),
@@ -82,9 +88,12 @@ export const CustomerStore = signalStore(
       update: rxMethod<Customer>(
         concatMap((customer) =>
           httpClient.put<Customer[]>(baseUrl, customer).pipe(
-            tap(() => {
-              router.navigateByUrl('/customer');
-              _load({ page: 1 });
+            tapResponse({
+              next: () => {
+                _load({ page: 1 });
+                router.navigateByUrl('/customer');
+              },
+              error: () => EMPTY,
             }),
           ),
         ),
@@ -94,8 +103,8 @@ export const CustomerStore = signalStore(
           httpClient.delete<Customer[]>(`${baseUrl}/${id}`).pipe(
             tapResponse({
               next: () => {
-                router.navigateByUrl('/customer');
                 _load({ page: 1 });
+                router.navigateByUrl('/customer');
               },
               error: () => EMPTY,
             }),
