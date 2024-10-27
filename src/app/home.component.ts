@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Configuration } from './shared/config/configuration';
 import { SpecialGreetingComponent } from './core/special-greeting.component';
 import { ChatService } from './chat/chat.service';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-home',
@@ -39,6 +40,11 @@ import { ChatService } from './chat/chat.service';
         data-testid="tgl-paged-customers"
         >Paged Customers
       </mat-slide-toggle>
+      <mat-slide-toggle
+        formControlName="runHeartbeat"
+        data-testid="tgl-run-heartbeat"
+        >Heartbeat
+      </mat-slide-toggle>
     </form>
     <div class="w-72">
       <button class="my-4" mat-raised-button (click)="enableWebsocket()">
@@ -68,6 +74,7 @@ import { ChatService } from './chat/chat.service';
     MatSlideToggleModule,
     MatButtonModule,
     SpecialGreetingComponent,
+    MatIcon,
   ],
 })
 export class HomeComponent implements OnInit {
@@ -76,6 +83,7 @@ export class HomeComponent implements OnInit {
     mockCustomers: [true],
     mockHolidays: [true],
     pagedCustomers: [true],
+    runHeartbeat: [true],
   });
   protected readonly chatService = inject(ChatService);
 
@@ -87,11 +95,14 @@ export class HomeComponent implements OnInit {
     nonNullable: true,
   });
 
+  runHeartbeat = new FormControl(true, { nonNullable: true });
+
   ngOnInit(): void {
     this.formGroup.setValue({
       mockCustomers: this.config.mockCustomers,
       mockHolidays: this.config.mockHolidays,
       pagedCustomers: this.config.pagedCustomers,
+      runHeartbeat: this.config.runHeartbeat(),
     });
     this.formGroup.valueChanges.subscribe(() =>
       this.config.updateFeatures(this.formGroup.getRawValue()),
