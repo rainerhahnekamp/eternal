@@ -4,9 +4,6 @@
 const config = {
   verbose: true,
   testMatch: ["<rootDir>/src/app/**/*.spec.ts"],
-  moduleNameMapper: {
-    "@app/(.*)$": "<rootDir>/src/app/$1",
-  },
 };
 
 module.exports = config;
