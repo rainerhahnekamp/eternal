@@ -1,64 +1,74 @@
-import { marbles } from 'rxjs-marbles/jest';
 import {
   combineLatest,
   EmptyError,
   exhaustMap,
   first,
+  lastValueFrom,
   map,
   mergeMap,
   Observable,
   of,
+  reduce,
+  switchMap,
 } from 'rxjs';
-import { concatMap, filter, switchMap, tap } from 'rxjs/operators';
 import { expect } from '@jest/globals';
+import { TestScheduler } from 'rxjs/internal/testing/TestScheduler';
+import { concatMap, filter, tap } from 'rxjs/operators';
 
 describe('RxJs', () => {
-  test(
-    'multiply by 2',
-    marbles((m) => {
-      const source = m.cold('--a-b-c', { a: 2, b: 10, c: 25 });
+  let testScheduler: TestScheduler;
 
+  beforeEach(
+    () =>
+      (testScheduler = new TestScheduler((actual, expected) => {
+        expect(actual).toEqual(expected);
+      })),
+  );
+
+  test('multiply by 2', () => {
+    testScheduler.run(({ cold, expectObservable }) => {
+      const source = cold('--a-b-c', { a: 2, b: 10, c: 25 });
       const destination = source.pipe(map((n) => n * 2));
 
-      m.expect(destination).toBeObservable('--x-y-z', {
+      expectObservable(destination).toBe('--x-y-z', {
         x: 4,
         y: 20,
         z: 50,
       });
-    })
-  );
+    });
+  });
 
-  test(
-    'multiply by 2',
-    marbles((m) => {
-      const source = m.cold('--a-b-c', { a: 2, b: 10, c: 25 });
-
-      const destination = source.pipe(map((n) => n * 2));
-
-      m.expect(destination).toBeObservable('--x-y-z', {
-        x: 4,
-        y: 20,
-        z: 50,
+  test('unsubscription', () =>
+    testScheduler.run(({ cold, expectObservable }) => {
+      const source = cold('abcde', {
+        a: 'Hauptstraße 3',
+        b: '',
+        c: 'Domgasse 5',
+        d: 'Kärntnerring 12',
+        e: 'Praterstern 2',
       });
-    })
-  );
 
-  test(
-    'combine Latest',
-    marbles((m) => {
-      const s1 = m.cold('-a', { a: 1 });
-      const s2 = m.cold('a-', { a: 2 });
+      const destination = source.pipe(
+        filter((address) => address === 'Domgasse 5'),
+        first(),
+      );
+
+      expectObservable(destination).toBe('--(a|)', { a: 'Domgasse 5' });
+    }));
+
+  test('combine Latest', () =>
+    testScheduler.run(({ cold, expectObservable }) => {
+      const s1 = cold('-a', { a: 1 });
+      const s2 = cold('a-', { a: 2 });
 
       const dest = combineLatest([s1, s2]).pipe(map(([a, b]) => a + b));
-      m.expect(dest).toBeObservable('-a', { a: 3 });
-    })
-  );
+      expectObservable(dest).toBe('-a', { a: 3 });
+    }));
 
-  test(
-    'query counter',
-    marbles((m) => {
+  test('query counter', () =>
+    testScheduler.run(({ cold, expectObservable, flush }) => {
       let searchCounter = 0;
-      const source = m.cold('d 2ms p 2ms h', {
+      const source = cold('d 2ms p 2ms h', {
         d: 'Domgasse 5',
         p: 'Praterstern',
         h: 'Herrengasse 12',
@@ -70,21 +80,19 @@ describe('RxJs', () => {
         map(([, street, streetNumber]) => ({
           street,
           streetNumber,
-        }))
+        })),
       );
-      m.expect(destination).toBeObservable('d 5ms h', {
+      expectObservable(destination).toBe('d 5ms h', {
         d: { street: 'Domgasse', streetNumber: '5' },
         h: { street: 'Herrengasse', streetNumber: '12' },
       });
-      m.flush();
+      flush();
       expect(searchCounter).toBe(2);
-    })
-  );
+    }));
 
-  test(
-    'operator filterTruthy',
-    marbles((m) => {
-      const source = m.cold('abcdef', {
+  test('operator filterTruthy', () =>
+    testScheduler.run(({ cold, expectObservable }) => {
+      const source = cold('abcdef', {
         a: null,
         b: undefined,
         c: false,
@@ -96,95 +104,82 @@ describe('RxJs', () => {
       const filterTruthy = (observable: Observable<unknown>) =>
         observable.pipe(filter((data) => !!data));
       const destination = source.pipe(filterTruthy);
-      m.expect(destination).toBeObservable('-----f', { f: 1 });
-    })
-  );
+      expectObservable(destination).toBe('-----f', { f: 1 });
+    }));
 
-  test(
-    'error with first operator on completed',
-    marbles((m) => {
-      const source$ = m.cold('|');
+  test('error with first operator on completed', () =>
+    testScheduler.run(({ cold, expectObservable }) => {
+      const source$ = cold('|');
       const destination$ = source$.pipe(first());
 
-      m.expect(destination$).toBeObservable('#', undefined, new EmptyError());
-    })
-  );
+      expectObservable(destination$).toBe('#', undefined, new EmptyError());
+    }));
 
-  test('asynchronicity', (done) => {
+  test('asynchronicity', async () => {
     const lookuper = (query: string) =>
       new Promise<boolean>((resolve) => {
         resolve(query === 'Domgasse 5');
       });
 
     const source = of('Praterstern', 'Domgasse 5');
-    const hits: boolean[] = [];
-    source.pipe(concatMap((query) => lookuper(query))).subscribe((isHit) => {
-      hits.push(isHit);
-
-      if (hits.length === 2) {
-        expect(hits).toEqual([false, true]);
-        done();
-      }
-    });
+    const hits: boolean[] = await lastValueFrom(
+      source.pipe(
+        concatMap((query) => lookuper(query)),
+        reduce((acc, value) => [...acc, value], new Array<boolean>()),
+      ),
+    );
+    expect(hits).toEqual([false, true]);
   });
 
-  test(
-    'switchMap',
-    marbles((m) => {
-      const source: Observable<string> = m.cold('pd', {
+  test('switchMap', () =>
+    testScheduler.run(({ cold, expectObservable }) => {
+      const source: Observable<string> = cold('pd', {
         p: 'Praterstern',
         d: 'Domgasse 5',
       });
       const dest: Observable<boolean> = source.pipe(
-        switchMap((query) => m.cold('---b', { b: query === 'Domgasse 5' }))
+        switchMap((query) => cold('---b', { b: query === 'Domgasse 5' })),
       );
 
-      m.expect(dest).toBeObservable('----t', { t: true });
-    })
-  );
+      expectObservable(dest).toBe('----t', { t: true });
+    }));
 
-  test(
-    'mergeMap',
-    marbles((m) => {
-      const source: Observable<string> = m.cold('pd', {
+  test('mergeMap', () =>
+    testScheduler.run(({ cold, expectObservable }) => {
+      const source: Observable<string> = cold('pd', {
         p: 'Praterstern',
         d: 'Domgasse 5',
       });
       const dest: Observable<boolean> = source.pipe(
-        mergeMap((query) => m.cold('---b', { b: query === 'Domgasse 5' }))
+        mergeMap((query) => cold('---b', { b: query === 'Domgasse 5' })),
       );
 
-      m.expect(dest).toBeObservable('---ft', { f: false, t: true });
-    })
-  );
+      expectObservable(dest).toBe('---ft', { f: false, t: true });
+    }));
 
-  test(
-    'concatMap',
-    marbles((m) => {
-      const source: Observable<string> = m.cold('pd', {
+  test('concatMap', () =>
+    testScheduler.run(({ cold, expectObservable }) => {
+      const source: Observable<string> = cold('pd', {
         p: 'Praterstern',
         d: 'Domgasse 5',
       });
       const dest: Observable<boolean> = source.pipe(
-        concatMap((query) => m.cold('---b|', { b: query === 'Domgasse 5' }))
+        concatMap((query) => cold('---b|', { b: query === 'Domgasse 5' })),
       );
 
-      m.expect(dest).toBeObservable('---f---t', { f: false, t: true });
-    })
-  );
+      expectObservable(dest).toBe('---f---t', { f: false, t: true });
+    }));
 
-  test(
-    'exhaustMap',
-    marbles((m) => {
-      const source: Observable<string> = m.cold('pd', {
+  test('exhaustMap', () =>
+    testScheduler.run(({ cold, expectObservable }) => {
+      const source: Observable<string> = cold('pd', {
         p: 'Praterstern',
         d: 'Domgasse 5',
       });
       const dest: Observable<boolean> = source.pipe(
-        exhaustMap((query) => m.cold('---b', { b: query === 'Domgasse 5' }))
+        exhaustMap((query) => cold('---b', { b: query === 'Domgasse 5' })),
       );
 
-      m.expect(dest).toBeObservable('---f', { f: false, t: true });
-    })
-  );
+      expectObservable(dest).toBe('---f', { f: false, t: true });
+    }));
 });
