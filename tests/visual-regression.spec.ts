@@ -35,7 +35,7 @@ test.describe('Visual Regression', () => {
       baseURL: process.env['STORYBOOK_INSTANCE'] || 'http://localhost:6006',
     });
     for (const story of [
-      'angkor-wat',
+      'primary',
       'minimal',
       'overflown',
       'sold-out',
@@ -46,7 +46,7 @@ test.describe('Visual Regression', () => {
     ]) {
       test(`story: ${story}`, async ({ page }) => {
         await page.goto(
-          `iframe.html?id=holiday-holiday-card--${story}&viewMode=story`,
+          `http://localhost:6006/iframe.html?id=holiday-card-component--${story}&viewMode=story`,
         );
         await expect(page).toHaveScreenshot(`holiday-card-${story}.png`);
       });
