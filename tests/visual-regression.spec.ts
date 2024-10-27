@@ -46,7 +46,7 @@ test.describe('Visual Regression', () => {
     ]) {
       test(`story: ${story}`, async ({ page }) => {
         await page.goto(
-          `iframe.html?id=eternal-holiday-card--${story}&viewMode=story`,
+          `iframe.html?id=holiday-holiday-card--${story}&viewMode=story`,
         );
         await expect(page).toHaveScreenshot(`holiday-card-${story}.png`);
       });
