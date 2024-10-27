@@ -6,7 +6,7 @@ export default defineConfig({
     baseUrl: 'http://localhost:4200',
     experimentalWebKitSupport: true,
     env: {
-      loginUsername: 'john.list@host.com',
+      loginUsername: 'john.list',
       loginPassword: 'John List',
     },
     setupNodeEvents(on) {
