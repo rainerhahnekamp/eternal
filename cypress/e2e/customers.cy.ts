@@ -56,7 +56,6 @@ describe('init', () => {
       Math.random().toString(36).substring(2, 15);
     const fullName = `Max ${name}`;
 
-    cy.visit('');
     customers.open();
     customers.add();
     customers.submitForm('Max', name, 'Austria', new Date(1985, 11, 12));
