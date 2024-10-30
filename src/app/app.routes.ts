@@ -49,7 +49,7 @@ export const appRoutes: Routes = [
         path: 'bookings',
         loadChildren: () => import('./domains/bookings/bookings.routes'),
       },
-      { path: 'newsletter', component: NewsletterComponent },
+      { path: 'newsletter/:email', component: NewsletterComponent },
       {
         path: 'diary',
         loadChildren: () => import('src/app/domains/diary/diary.routes'),

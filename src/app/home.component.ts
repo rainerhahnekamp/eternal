@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -14,6 +14,14 @@ import { MatIcon } from '@angular/material/icon';
 @Component({
   selector: 'app-home',
   template: `<h2 data-testid="greeting">Welcome to Eternal</h2>
+    <button data-testid="btn-click" mat-raised-button (click)="toggleClick()">
+      {{ buttonLabel() }}
+    </button>
+
+    <div data-testid="block">
+      <div data-testid="block"></div>
+    </div>
+
     <app-special-greeting />
     <p data-testid="txt-greeting-1">
       Eternal is an imaginary travel agency and is used as training application
@@ -111,5 +119,13 @@ export class HomeComponent implements OnInit {
 
   enableWebsocket() {
     this.chatService.connect();
+  }
+
+  isClicked = signal(false);
+  buttonLabel = computed(() =>
+    this.isClicked() ? 'Unklick mich' : 'Klick mich',
+  );
+  toggleClick() {
+    this.isClicked.update((value) => !value);
   }
 }

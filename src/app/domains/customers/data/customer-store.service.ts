@@ -83,8 +83,8 @@ export const CustomerStore = signalStore(
         concatMap((customer) =>
           httpClient.put<Customer[]>(baseUrl, customer).pipe(
             tap(() => {
-              router.navigateByUrl('/customer');
               _load({ page: 1 });
+              router.navigateByUrl('/customer');
             }),
           ),
         ),
@@ -94,8 +94,8 @@ export const CustomerStore = signalStore(
           httpClient.delete<Customer[]>(`${baseUrl}/${id}`).pipe(
             tapResponse({
               next: () => {
-                router.navigateByUrl('/customer');
                 _load({ page: 1 });
+                router.navigateByUrl('/customer');
               },
               error: () => EMPTY,
             }),

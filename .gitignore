@@ -55,3 +55,6 @@ session.json
 /playwright/.cache/
 
 *storybook.log
+/test-results/
+/playwright-report/
+/playwright/.cache/
