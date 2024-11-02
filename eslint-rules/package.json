@@ -1,0 +1,16 @@
+{
+  "name": "eslint-rules",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@typescript-eslint/rule-tester": "^8.12.2",
+    "vitest": "^2.1.4"
+  }
+}
