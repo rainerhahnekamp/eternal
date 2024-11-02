@@ -55,3 +55,5 @@ session.json
 /playwright/.cache/
 
 *storybook.log
+/eslint-rules/dist/
+/eslint-rules/node_modules/
