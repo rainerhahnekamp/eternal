@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.10",
+    "@angular-devkit/schematics-cli": "^18.2.11",
     "@angular/cli": "~18.2.10",
     "@angular/compiler-cli": "^18.2.9",
     "@chromatic-com/storybook": "^1.9.0",

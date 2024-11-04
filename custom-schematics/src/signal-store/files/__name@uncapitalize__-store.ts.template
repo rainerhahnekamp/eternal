@@ -1,0 +1,19 @@
+import {
+  signalStore,
+  withState,
+  withMethods,
+  withComputed,
+  withHooks,
+} from '@ngrx/signals';
+import { State, Store } from "@ngrx/store";
+
+export interface <%=capitalize(name)%>State {
+  // Define the state here
+}
+
+export const <%=capitalize(name)%>Store = signalStore(
+  { providedIn: 'root' },
+  <% if (!skipState) { %>withState<<%= capitalize(name) %>State>({}),
+   <% } %><% if (!skipMethods) { %>withMethods((store) => ({})),
+   <% } %><% if (!skipComputed) { %>withComputed((state) => ({})),
+   <% } %><% if (withHooks) { %>withHooks((store) => ({})), <% } %>);

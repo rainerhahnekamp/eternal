@@ -1,0 +1,14 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "custom-schematics": {
+      "description": "A blank schematic.",
+      "factory": "./custom-schematics/index#customSchematics"
+    },
+    "signal-store": {
+      "description": "A blank schematic.",
+      "factory": "./signal-store/index#signalStore",
+      "schema": "./signal-store/schema.json"
+    }
+  }
+}

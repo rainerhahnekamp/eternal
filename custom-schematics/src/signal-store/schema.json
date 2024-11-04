@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SignalStore",
+  "title": "SignalStore Schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the Store",
+      "x-prompt": "What is the name of the store?"
+    },
+    "skipState": {
+      "type": "boolean",
+      "description": "Skip withState",
+      "default": false
+    },
+    "skipMethods": {
+      "type": "boolean",
+      "description": "Skip withMethods",
+      "default": false
+    },
+    "skipComputed": {
+      "type": "boolean",
+      "description": "Skip withComputed",
+      "default": false
+    },
+    "withHooks": {
+      "type": "boolean",
+      "description": "Skip withHooks",
+      "default": false
+    }
+  },
+  "required": ["name"]
+}
+
