@@ -9,6 +9,10 @@
       "description": "A blank schematic.",
       "factory": "./signal-store/index#signalStore",
       "schema": "./signal-store/schema.json"
+    },
+    "ng-add": {
+      "description": "Add eslint-plugin",
+      "factory": "./ng-add/index#ngAdd"
     }
   }
 }
