@@ -1,6 +1,6 @@
 {
-  "name": "custom-schematics",
-  "version": "0.0.0",
+  "name": "@hahnekamp/custom-schematics",
+  "version": "0.0.2",
   "description": "A blank schematics",
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -22,5 +22,8 @@
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
     "jasmine": "^5.0.0"
+  },
+  "ng-update": {
+    "migrations": "./src/migrations/migrations.json"
   }
 }

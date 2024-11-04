@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "update-0-0-2": {
+      "description": "Do something",
+      "version": "0.0.2",
+      "factory": "./v0_0_2/index"
+    }
+  }
+}

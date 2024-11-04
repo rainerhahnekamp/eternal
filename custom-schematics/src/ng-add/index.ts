@@ -1,9 +1,9 @@
 import { Rule, SchematicContext } from '@angular-devkit/schematics';
-import { updateESLint } from '../util/update-eslint-plugin';
+import { updateDependency } from '../util/update-dependency';
 
-export default function ngAdd(): Rule {
+export function ngAdd(): Rule {
   return (tree, _context: SchematicContext) => {
-    updateESLint('0.0.1', tree, _context);
+    updateDependency('@ngrx/signals', '18.0.0', tree, _context);
 
     return tree;
   };

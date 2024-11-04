@@ -1,7 +1,7 @@
-import { JsonValue } from '@angular-devkit/core';
 import { SchematicContext, Tree } from '@angular-devkit/schematics';
+import { JsonObject, JsonValue } from '@angular-devkit/core';
 
-interface PackageJson {
+interface PackageJson extends JsonObject {
   dependencies: Record<string, string>;
   devDependencies: Record<string, string>;
 }
@@ -28,7 +28,8 @@ function assertPackageJson(
   }
 }
 
-export function updateESLint(
+export function updateDependency(
+  dependency: string,
   version: string,
   tree: Tree,
   _context: SchematicContext,
@@ -36,13 +37,9 @@ export function updateESLint(
   const packageJson = tree.readJson('package.json');
   assertPackageJson(packageJson);
 
-  if (
-    packageJson.devDependencies['@rainerhahnekamp/eslint-plugin'] !== version
-  ) {
-    packageJson.devDependencies['@rainerhahnekamp/eslint-plugin'] = version;
+  if (packageJson.dependencies[dependency] !== version) {
+    packageJson.dependencies[dependency] = version;
     tree.overwrite('package.json', JSON.stringify(packageJson, null, 2));
-    _context.logger.info(
-      "Updated '@rainerhahnekamp/eslint-plugin' to version " + version,
-    );
+    _context.logger.info(`Updated ${dependency} to version ${version}`);
   }
 }
