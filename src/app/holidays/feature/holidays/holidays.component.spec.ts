@@ -1,9 +1,6 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { render, screen } from '@testing-library/angular';
-import {
-  HttpTestingController,
-  provideHttpClientTesting,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { HolidaysComponent } from './holidays.component';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
