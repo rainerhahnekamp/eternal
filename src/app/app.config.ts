@@ -29,18 +29,15 @@ import {
 } from '@app/shared/http';
 import { Configuration } from '@app/shared/config';
 import { sharedMasterDataProvider } from '@app/shared/master-data';
-import { holidaysInterceptor } from '@app/shared/http/holidays.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
-    provideClientHydration(),
     provideStore(),
     provideRouter(appRoutes, withComponentInputBinding()),
     provideHttpClient(
       withInterceptors([
         customersInterceptor,
-        holidaysInterceptor,
         baseUrlInterceptor,
         loadingInterceptor,
         errorInterceptor,

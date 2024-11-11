@@ -17,14 +17,6 @@ export class HolidaysEffects {
     return this.#actions$.pipe(
       ofType(holidaysActions.load),
       switchMap(() => this.#httpClient.get<Holiday[]>(this.#baseUrl)),
-      map((holidays) =>
-        holidays.map((holiday) => ({
-          ...holiday,
-          imageUrl: holiday.imageUrl.startsWith('/assets')
-            ? holiday.imageUrl
-            : `${this.#config.baseUrl}${holiday.imageUrl}`,
-        })),
-      ),
       map((holidays) => holidaysActions.loaded({ holidays })),
     );
   });
