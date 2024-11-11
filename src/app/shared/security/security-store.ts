@@ -16,7 +16,7 @@ const initialState: SecurityState = {
 };
 
 export const SecurityStore = signalStore(
-  { providedIn: 'root' },
+  { providedIn: 'root', protectedState: false },
   withState(initialState),
   withMethods(() => {
     const keycloakService = inject(KeycloakService);
