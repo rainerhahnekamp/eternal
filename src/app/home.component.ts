@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -14,6 +14,11 @@ import { MatIcon } from '@angular/material/icon';
 @Component({
   selector: 'app-home',
   template: `<h2 data-testid="greeting">Welcome to Eternal</h2>
+    <div class="m-4">
+      <button (click)="toggleClicked()" mat-raised-button>
+        {{ buttonLabel() }}
+      </button>
+    </div>
     <app-special-greeting />
     <p data-testid="txt-greeting-1">
       Eternal is an imaginary travel agency and is used as training application
@@ -96,6 +101,13 @@ export class HomeComponent implements OnInit {
   });
 
   runHeartbeat = new FormControl(true, { nonNullable: true });
+
+  clicked = signal(false);
+  buttonLabel = computed(() => (this.clicked() ? 'Unclick me' : 'Click me'));
+
+  toggleClicked() {
+    this.clicked.update((value) => !value);
+  }
 
   ngOnInit(): void {
     this.formGroup.setValue({
