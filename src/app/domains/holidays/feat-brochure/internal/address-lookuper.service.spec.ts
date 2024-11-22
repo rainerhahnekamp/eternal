@@ -6,15 +6,14 @@ import { createMock } from '@testing-library/angular/jest-utils';
 import { TestBed } from '@angular/core/testing';
 
 describe('Address Lookuper', () => {
-  // HOMEWORK
-  // beforeEach(() => {
-  //   jest.useFakeTimers();
-  // });
-  //
-  // afterEach(async () => {
-  //   // await jest.runOnlyPendingTimersAsync();
-  //   jest.useRealTimers();
-  // });
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(async () => {
+    await jest.runOnlyPendingTimersAsync();
+    jest.useRealTimers();
+  });
 
   const setup = (httpClient: unknown) =>
     TestBed.configureTestingModule({
@@ -31,8 +30,10 @@ describe('Address Lookuper', () => {
       httpClient.get.mockReturnValue(scheduled([addresses], asyncScheduler));
 
       const lookuper = setup(httpClient);
+      const promise = lastValueFrom(lookuper.lookup(query));
+      jest.runOnlyPendingTimers();
 
-      const outcome = await lastValueFrom(lookuper.lookup(query));
+      const outcome = await promise;
 
       expect(outcome).toBe(isValid);
     });

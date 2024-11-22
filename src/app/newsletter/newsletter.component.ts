@@ -1,5 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import {
+  AbstractControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -9,10 +10,17 @@ import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { FormErrorsComponent } from '../shared/form/form-errors.component';
+import { NewsletterService } from './newsletter.service';
+import { SubNewsletterComponent } from './sub-newsletter.component';
+
+function fakeAsyncValidator(ac: AbstractControl) {
+  return Promise.resolve().then(() => ({}));
+}
 
 @Component({
   selector: 'app-newsletter',
   template: `<h2>Newsletter</h2>
+    <app-sub-newsletter />
     <form (ngSubmit)="handleSubmit()" [formGroup]="formGroup">
       <div class="flex flex-col max-w-fit items-center">
         <mat-form-field>
@@ -28,7 +36,12 @@ import { FormErrorsComponent } from '../shared/form/form-errors.component';
       </div>
     </form>
 
-    <p data-testid="p-message">{{ message() }}</p>`,
+    <p data-testid="p-counter">
+      Count of successful subscriptions: {{ subscriptionCount() }}
+    </p>
+    @if (message()) {
+      <p data-testid="p-message">{{ message() }}</p>
+    }`,
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -39,17 +52,38 @@ import { FormErrorsComponent } from '../shared/form/form-errors.component';
     MatIcon,
     MatButton,
     FormErrorsComponent,
+    SubNewsletterComponent,
   ],
 })
 export class NewsletterComponent {
   message = signal('');
+  subscriptionCount = signal(0);
+
+  effectRef = effect(
+    () => {
+      const value = this.message();
+      if (!value || value === 'Please provide an email') {
+        return;
+      }
+
+      this.subscriptionCount.update((value) => value + 1);
+    },
+    { allowSignalWrites: true },
+  );
+
+  newsletterService = inject(NewsletterService);
+
   formGroup = inject(NonNullableFormBuilder).group({
-    email: ['', Validators.required],
+    email: ['', Validators.required, fakeAsyncValidator],
   });
 
   handleSubmit() {
     if (this.formGroup.valid) {
-      this.message.set('Thank you for your subscription');
+      this.newsletterService
+        .send(this.formGroup.getRawValue().email)
+        .subscribe(() => {
+          this.message.set('Thank you for your subscription');
+        });
     } else {
       this.message.set('Please provide an email');
     }

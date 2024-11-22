@@ -2835,9 +2835,9 @@
   resolved "https://registry.npmjs.org/@pkgr/core/-/core-0.1.1.tgz"
   integrity sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==
 
-"@playwright/test@^1.48.1":
+"@playwright/test@1.48.1":
   version "1.48.1"
-  resolved "https://registry.npmjs.org/@playwright/test/-/test-1.48.1.tgz"
+  resolved "https://registry.yarnpkg.com/@playwright/test/-/test-1.48.1.tgz#343e710fcf2e559529e3ec8d7782e09f325b9396"
   integrity sha512-s9RtWoxkOLmRJdw3oFvhFbs9OJS0BzrLUc8Hf6l2UdCNd1rqeEyD4BhCJkvzeEoD1FsK4mirsWwGerhVmYKtZg==
   dependencies:
     playwright "1.48.1"
@@ -8935,6 +8935,11 @@ neo-async@^2.6.2:
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+ng-mocks@^14.13.1:
+  version "14.13.1"
+  resolved "https://registry.yarnpkg.com/ng-mocks/-/ng-mocks-14.13.1.tgz#9fef8cc902a0d9d3250550d83514f9c65d4cd366"
+  integrity sha512-eyfnjXeC108SqVD09i/cBwCpKkK0JjBoAg8jp7oQS2HS081K3WJTttFpgLGeLDYKmZsZ6nYpI+HHNQ3OksaJ7A==
+
 nice-napi@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/nice-napi/-/nice-napi-1.0.2.tgz"
@@ -9543,7 +9548,7 @@ pkg-dir@^7.0.0:
 
 playwright-core@1.48.1:
   version "1.48.1"
-  resolved "https://registry.npmjs.org/playwright-core/-/playwright-core-1.48.1.tgz"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.48.1.tgz#5fe28fb9a9326dae88d4608c35e819163cceeb23"
   integrity sha512-Yw/t4VAFX/bBr1OzwCuOMZkY1Cnb4z/doAFSwf4huqAGWmf9eMNjmK7NiOljCdLmxeRYcGPPmcDgU0zOlzP0YA==
 
 playwright-core@1.48.2:
@@ -9560,7 +9565,7 @@ playwright-webkit@^1.48.2:
 
 playwright@1.48.1:
   version "1.48.1"
-  resolved "https://registry.npmjs.org/playwright/-/playwright-1.48.1.tgz"
+  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.48.1.tgz#2a920cfbec4572c84789e757d8b044baaed49435"
   integrity sha512-j8CiHW/V6HxmbntOfyB4+T/uk08tBy6ph0MpBXwuoofkSnLmlfdYNNkFTYD6ofzzlSqLA1fwH4vwvVFvJgLN0w==
   dependencies:
     playwright-core "1.48.1"
