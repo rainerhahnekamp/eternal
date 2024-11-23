@@ -11,7 +11,6 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-home',
   template: `<h2 data-testid="greeting">Welcome to Eternal</h2>
-    <h3>Today's Special User: {{ user() }}</h3>
     <p data-testid="txt-greeting-1">
       Eternal is an imaginary travel agency and is used as training application
       for Angular developers.
@@ -54,8 +53,6 @@ export class HomeComponent implements OnInit {
   mockHolidays = new FormControl(true, {
     nonNullable: true,
   });
-  user = signal<string | undefined>(undefined);
-  httpClient = inject(HttpClient);
 
   ngOnInit(): void {
     this.formGroup.setValue({
@@ -65,13 +62,5 @@ export class HomeComponent implements OnInit {
     this.formGroup.valueChanges.subscribe(() =>
       this.config.updateFeatures(this.formGroup.getRawValue()),
     );
-
-    this.httpClient
-      .get<{ first_name: string; last_name: string }>(
-        'https://random-data-api.com/api/v2/users',
-      )
-      .subscribe((value) =>
-        this.user.set(`${value.first_name} ${value.last_name}`),
-      );
   }
 }
