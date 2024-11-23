@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -6,7 +6,6 @@ import {
 } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Configuration } from '@app/shared/config';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',

@@ -1,7 +1,7 @@
-export type ConfigurationFeatures = {
+export interface ConfigurationFeatures {
   mockHolidays: boolean;
   mockCustomers: boolean;
-};
+}
 
 export class Configuration {
   #baseUrl: string;
