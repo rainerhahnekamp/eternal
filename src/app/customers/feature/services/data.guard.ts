@@ -5,6 +5,6 @@ import { customersActions } from '../+state/customers.actions';
 
 export const dataGuard: CanActivateFn = () => {
   const store = inject(Store);
-  store.dispatch(customersActions.load({ page: 1 }));
+  store.dispatch(customersActions.load({ page: 0 }));
   return true;
 };
