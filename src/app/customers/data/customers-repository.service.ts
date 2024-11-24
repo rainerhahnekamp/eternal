@@ -28,7 +28,7 @@ export class CustomersRepository {
     return this.#store.selectSignal(fromCustomers.selectById(id));
   }
 
-  load(page: number = 1): void {
+  load(page = 0): void {
     this.#store.dispatch(customersActions.load({ page }));
   }
 
