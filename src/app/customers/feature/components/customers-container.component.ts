@@ -33,6 +33,6 @@ export class CustomersContainerComponent {
   }
 
   switchPage(page: number) {
-    this.#repo.get(page + 1);
+    this.#repo.get(page);
   }
 }
