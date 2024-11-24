@@ -3,26 +3,18 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatMap, map, switchMap } from 'rxjs/operators';
 import { holidaysActions } from './holidays.actions';
-import { Configuration } from '@app/shared/config';
 import { Holiday } from '@app/holidays/model';
 
 @Injectable()
 export class HolidaysEffects {
   #actions$ = inject(Actions);
   #httpClient = inject(HttpClient);
-  #config = inject(Configuration);
   #baseUrl = '/holiday';
 
   load$ = createEffect(() => {
     return this.#actions$.pipe(
       ofType(holidaysActions.load),
       switchMap(() => this.#httpClient.get<Holiday[]>(this.#baseUrl)),
-      map((holidays) =>
-        holidays.map((holiday) => ({
-          ...holiday,
-          imageUrl: `${this.#config.baseUrl}${holiday.imageUrl}`,
-        })),
-      ),
       map((holidays) => holidaysActions.loaded({ holidays })),
     );
   });
