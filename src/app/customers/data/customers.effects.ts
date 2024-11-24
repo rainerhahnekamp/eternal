@@ -1,14 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { concatMap, filter, map, tap } from 'rxjs/operators';
 import { customersActions } from './customers.actions';
 import { MessageService } from '@app/shared/ui-messaging';
 import { Customer } from '@app/customers/model';
 import { Store } from '@ngrx/store';
 import { customersFeature } from '@app/customers/data/customers.reducer';
+import { concatLatestFrom } from '@ngrx/operators';
 import { safeSwitchMap } from '@app/shared/ngrx-utils';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 @Injectable()
 export class CustomersEffects {
@@ -17,7 +18,7 @@ export class CustomersEffects {
   #router = inject(Router);
   #uiMessage = inject(MessageService);
   #store = inject(Store);
-  #baseUrl = '/customers';
+  #baseUrl = '/customer';
 
   init$ = createEffect(() => {
     return this.#actions$.pipe(
@@ -26,7 +27,7 @@ export class CustomersEffects {
         this.#store.select(customersFeature.selectIsLoaded),
       ),
       filter(([, isLoaded]) => isLoaded === false),
-      map(() => customersActions.get({ page: 1 })),
+      map(() => customersActions.load({ page: 0 })),
     );
   });
 
@@ -73,7 +74,7 @@ export class CustomersEffects {
       ),
 
       tap(() => this.#router.navigateByUrl('/customers')),
-      map(() => customersActions.load({ page: 1 })),
+      map(() => customersActions.load({ page: 0 })),
     );
   });
 
@@ -91,7 +92,7 @@ export class CustomersEffects {
           tap(() => this.#router.navigateByUrl(forward)),
         ),
       ),
-      map(() => customersActions.load({ page: 1 })),
+      map(() => customersActions.load({ page: 0 })),
     );
   });
 
@@ -102,7 +103,7 @@ export class CustomersEffects {
         this.#http.delete<Customer[]>(`${this.#baseUrl}/${customer.id}`),
       ),
       tap(() => this.#router.navigateByUrl('/customers')),
-      map(() => customersActions.load({ page: 1 })),
+      map(() => customersActions.load({ page: 0 })),
     );
   });
 }
