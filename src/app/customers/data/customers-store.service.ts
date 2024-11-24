@@ -12,14 +12,14 @@ import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { MessageService } from '@app/shared/ui-messaging';
 
-export type CustomersState = {
+export interface CustomersState {
   customers: Customer[];
   page: number;
   total: number;
   selectedId: number | undefined;
   isLoaded: boolean;
   hasError: boolean;
-};
+}
 
 export const initialState: CustomersState = {
   customers: [],

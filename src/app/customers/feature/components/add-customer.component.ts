@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { CustomerComponent } from '@app/customers/ui';
 import { Customer } from '@app/customers/model';
 import { selectCountries } from '@app/shared/master-data';
-import { CustomersRepository, CustomersStore } from '@app/customers/data';
+import { CustomersStore } from '@app/customers/data';
 import { Store } from '@ngrx/store';
 
 @Component({

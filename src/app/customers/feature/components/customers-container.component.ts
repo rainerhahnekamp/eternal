@@ -1,6 +1,6 @@
 import { Component, computed, inject, Signal } from '@angular/core';
 import { CustomersComponent, CustomersViewModel } from '@app/customers/ui';
-import { CustomersRepository, CustomersStore } from '@app/customers/data';
+import { CustomersStore } from '@app/customers/data';
 
 @Component({
   selector: 'app-customers-container',
@@ -19,7 +19,7 @@ export class CustomersContainerComponent {
     const pagedCustomers = this.#store.pagedCustomers();
     return {
       customers: pagedCustomers.customers,
-      pageIndex: pagedCustomers.page - 1,
+      pageIndex: pagedCustomers.page,
       length: pagedCustomers.total,
     };
   });
@@ -33,6 +33,6 @@ export class CustomersContainerComponent {
   }
 
   switchPage(page: number) {
-    this.#store.get(page + 1);
+    this.#store.get(page);
   }
 }
