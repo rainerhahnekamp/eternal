@@ -13,7 +13,7 @@ export class CustomersEffects {
   #http = inject(HttpClient);
   #router = inject(Router);
   #uiMessage = inject(MessageService);
-  #baseUrl = '/customers';
+  #baseUrl = '/customer';
 
   load$ = createEffect(() => {
     return this.#actions$.pipe(
@@ -43,7 +43,7 @@ export class CustomersEffects {
       ),
 
       tap(() => this.#router.navigateByUrl('/customers')),
-      map(() => customersActions.load({ page: 1 })),
+      map(() => customersActions.load({ page: 0 })),
     );
   });
 
@@ -55,7 +55,7 @@ export class CustomersEffects {
           .put<Customer[]>(this.#baseUrl, customer)
           .pipe(tap(() => this.#uiMessage.info('Customer has been updated'))),
       ),
-      map(() => customersActions.load({ page: 1 })),
+      map(() => customersActions.load({ page: 0 })),
     );
   });
 
@@ -66,7 +66,7 @@ export class CustomersEffects {
         this.#http.delete<Customer[]>(`${this.#baseUrl}/${customer.id}`),
       ),
       tap(() => this.#router.navigateByUrl('/customers')),
-      map(() => customersActions.load({ page: 1 })),
+      map(() => customersActions.load({ page: 0 })),
     );
   });
 }
