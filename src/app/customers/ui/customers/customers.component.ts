@@ -54,6 +54,7 @@ export class CustomersComponent implements OnChanges {
 
   ngOnChanges(): void {
     if (this.viewModel) {
+      console.log(this.viewModel);
       this.dataSource.data = this.viewModel.customers;
     }
   }

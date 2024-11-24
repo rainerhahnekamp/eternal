@@ -32,7 +32,7 @@ export class CustomersRepository {
     this.#store.dispatch(customersActions.init());
   }
 
-  get(page: number = 1): void {
+  get(page = 0): void {
     this.#store.dispatch(customersActions.get({ page }));
   }
 

@@ -23,7 +23,7 @@
   </button>
 </form>
 @if (lookupResult$ | async; as lookupResult) {
-<p data-testid="lookup-result" aria-live="assertive" role="status">
-  {{ lookupResult }}
-</p>
+  <p data-testid="lookup-result" aria-live="assertive" role="status">
+    {{ lookupResult }}
+  </p>
 }
