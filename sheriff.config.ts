@@ -1,11 +1,11 @@
 import { noDependencies, sameTag, SheriffConfig } from '@softarc/sheriff-core';
 
 export const sheriffConfig: SheriffConfig = {
-  tagging: {
+  modules: {
     'src/app': {
       bookings: ['domain:bookings', 'type:feature'],
       diary: ['domain:diary', 'type:feature'],
-      'shared/<shared>': 'shared:<shared>',
+      'shared/<shared>': ['shared', 'shared:<shared>'],
       '<domain>/<type>': ['domain:<domain>', 'type:<type>'],
     },
   },
@@ -16,9 +16,11 @@ export const sheriffConfig: SheriffConfig = {
       'shared:http',
       'shared:master-data',
       'shared:ui-messaging',
+      'shared:security',
       ({ to }) => to.startsWith('domain'),
     ],
-    'domain:*': sameTag,
+    'domain:*': [sameTag, 'shared'],
+    shared: 'shared',
     'type:feature': [
       'type:data',
       'type:ui',
