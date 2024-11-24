@@ -7,7 +7,7 @@ import { CustomersApi } from '@app/customers/api';
   selector: 'app-overview-container',
   template: ` @if (viewModel(); as value) {
     <app-overview [viewModel]="value"></app-overview>
-    }`,
+  }`,
   standalone: true,
   imports: [OverviewComponent],
 })

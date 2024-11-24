@@ -10,12 +10,12 @@ import { fromHolidays, holidaysActions } from '@app/holidays/data';
   template: `<h2>Choose among our Holidays</h2>
     <div class="flex flex-wrap justify-evenly">
       @for (holiday of holidays(); track byId($index, holiday)) {
-      <app-holiday-card
-        [holiday]="holiday"
-        (addFavourite)="addFavourite($event)"
-        (removeFavourite)="removeFavourite($event)"
-      >
-      </app-holiday-card>
+        <app-holiday-card
+          [holiday]="holiday"
+          (addFavourite)="addFavourite($event)"
+          (removeFavourite)="removeFavourite($event)"
+        >
+        </app-holiday-card>
       }
     </div> `,
   standalone: true,
