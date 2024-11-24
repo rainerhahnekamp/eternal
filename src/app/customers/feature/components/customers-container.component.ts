@@ -20,7 +20,7 @@ export class CustomersContainerComponent {
   viewModel: Signal<CustomersViewModel> = this.#store.selectSignal(
     createSelector(fromCustomers.selectPagedCustomers, (pagedCustomers) => ({
       customers: pagedCustomers.customers,
-      pageIndex: pagedCustomers.page - 1,
+      pageIndex: pagedCustomers.page,
       length: pagedCustomers.total,
     })),
   );
