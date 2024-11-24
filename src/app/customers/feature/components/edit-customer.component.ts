@@ -15,12 +15,12 @@ import { customersActions, fromCustomers } from '@app/customers/data';
   selector: 'app-edit-customer',
   template: `
     @if (data(); as value) {
-    <app-customer
-      [customer]="value.customer"
-      [countries]="value.countries"
-      (save)="this.submit($event)"
-      (remove)="this.remove($event)"
-    ></app-customer>
+      <app-customer
+        [customer]="value.customer"
+        [countries]="value.countries"
+        (save)="this.submit($event)"
+        (remove)="this.remove($event)"
+      ></app-customer>
     }
   `,
   standalone: true,
