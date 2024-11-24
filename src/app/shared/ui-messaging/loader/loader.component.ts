@@ -7,7 +7,7 @@ import { LoadingService } from '@app/shared/ui-messaging/loader/loading.service'
   selector: 'app-loader',
   template: `<mat-progress-bar
     [ngStyle]="{
-      visibility: (loadingService.loading$ | async) ? 'visible' : 'hidden'
+      visibility: (loadingService.loading$ | async) ? 'visible' : 'hidden',
     }"
     mode="indeterminate"
   ></mat-progress-bar>`,

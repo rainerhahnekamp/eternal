@@ -20,11 +20,11 @@
 
   <mat-form-field>
     <mat-label>Country</mat-label>
-    <mat-select formControlName="country" data-testid="sel-country"
-      >@for (country of countries; track country) {
-      <mat-option [value]="country.value" data-testid="opt-country">{{
-        country.label
-      }}</mat-option>
+    <mat-select formControlName="country" data-testid="sel-country">
+      @for (country of countries; track country) {
+        <mat-option [value]="country.value" data-testid="opt-country">{{
+          country.label
+        }}</mat-option>
       }
     </mat-select>
     <mat-error
@@ -63,14 +63,14 @@
       Delete
     </button>
     @if (showSubmitButton) {
-    <button
-      color="primary"
-      mat-raised-button
-      type="submit"
-      data-testid="btn-submit"
-    >
-      Save
-    </button>
+      <button
+        color="primary"
+        mat-raised-button
+        type="submit"
+        data-testid="btn-submit"
+      >
+        Save
+      </button>
     }
   </div>
 </form>

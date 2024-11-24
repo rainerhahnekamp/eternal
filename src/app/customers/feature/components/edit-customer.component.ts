@@ -14,14 +14,14 @@ import { Store } from '@ngrx/store';
 @Component({
   selector: 'app-edit-customer',
   template: `
-    @if (data();as value) {
-    <app-customer
-      [customer]="value.customer"
-      [countries]="value.countries"
-      (save)="this.submit($event)"
-      (remove)="this.remove($event)"
-      [showSubmitButton]="showSubmitButton()"
-    ></app-customer>
+    @if (data(); as value) {
+      <app-customer
+        [customer]="value.customer"
+        [countries]="value.countries"
+        (save)="this.submit($event)"
+        (remove)="this.remove($event)"
+        [showSubmitButton]="showSubmitButton()"
+      ></app-customer>
     }
   `,
   standalone: true,

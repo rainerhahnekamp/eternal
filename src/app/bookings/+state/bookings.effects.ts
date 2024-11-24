@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { Actions, createEffect } from '@ngrx/effects';
 import { map } from 'rxjs';
 import { bookingsActions } from './bookings.actions';
 import { Booking } from './bookings.reducer';
 import { CustomersApi } from '@app/customers/api';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { filterDefined } from '@app/shared/ngrx-utils';
+import { createEffect } from '@ngrx/effects';
+import { filterDefined } from '../../shared/ngrx-utils';
 
 const bookings: Map<number, Booking[]> = new Map<number, Booking[]>();
 bookings.set(1, [
@@ -38,7 +38,6 @@ bookings.set(3, [
 @Injectable()
 export class BookingsEffects {
   #customersApi = inject(CustomersApi);
-  #actions$ = inject(Actions);
   #selectedCustomer = toObservable(this.#customersApi.selectedCustomer);
 
   load$ = createEffect(() => {
