@@ -1,9 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { AsyncPipe, NgForOf } from '@angular/common';
 import { HolidayCardComponent } from '@app/holidays/ui';
 import { Holiday } from '@app/holidays/model';
-import { fromHolidays, holidaysActions } from '@app/holidays/data';
+import { HolidaysStore } from '../../data/holidays-store.service';
 
 @Component({
   selector: 'app-holidays',
@@ -22,19 +21,20 @@ import { fromHolidays, holidaysActions } from '@app/holidays/data';
   imports: [AsyncPipe, HolidayCardComponent, NgForOf],
 })
 export class HolidaysComponent implements OnInit {
-  #store = inject(Store);
-  holidays = this.#store.selectSignal(fromHolidays.selectHolidaysWithFavourite);
+  #store = inject(HolidaysStore);
+
+  holidays = this.#store.holidaysWithFavourite;
 
   ngOnInit(): void {
-    this.#store.dispatch(holidaysActions.load());
+    this.#store.get();
   }
 
   addFavourite(id: number) {
-    this.#store.dispatch(holidaysActions.addFavourite({ id }));
+    this.#store.addFavourite(id);
   }
 
   removeFavourite(id: number) {
-    this.#store.dispatch(holidaysActions.removeFavourite({ id }));
+    this.#store.removeFavourite(id);
   }
 
   byId(index: number, holiday: Holiday) {
