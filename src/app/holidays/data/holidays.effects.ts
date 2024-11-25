@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatMap, map, switchMap } from 'rxjs/operators';
 import { holidaysActions } from './holidays.actions';
-import { Holiday } from '@app/holidays/model';
+import { Holiday } from '../model';
 
 @Injectable()
 export class HolidaysEffects {

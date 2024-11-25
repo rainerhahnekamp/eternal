@@ -5,21 +5,18 @@ import {
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { HolidaysComponent } from './holidays.component';
-import { provideState, provideStore } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
-import { holidaysFeature } from '../+state/holidays.reducer';
-import { HolidaysEffects } from '../+state/holidays.effects';
+import { provideStore } from '@ngrx/store';
 import { Configuration } from '@app/shared/config';
 import { createHolidays } from '@app/holidays/model';
 import { provideHttpClient } from '@angular/common/http';
+import { provideHolidays } from '../../data';
 
 describe('Holidays Component', () => {
   const setup = async () =>
     render(HolidaysComponent, {
       providers: [
         provideStore(),
-        provideState(holidaysFeature),
-        provideEffects([HolidaysEffects]),
+        provideHolidays(),
         provideHttpClient(),
         provideHttpClientTesting(),
         {

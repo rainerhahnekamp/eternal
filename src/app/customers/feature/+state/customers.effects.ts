@@ -12,8 +12,8 @@ export class CustomersEffects {
   #actions$ = inject(Actions);
   #http = inject(HttpClient);
   #router = inject(Router);
-  #uiMessage = inject(MessageService);
   #baseUrl = '/customer';
+  #uiMessage = inject(MessageService);
 
   load$ = createEffect(() => {
     return this.#actions$.pipe(

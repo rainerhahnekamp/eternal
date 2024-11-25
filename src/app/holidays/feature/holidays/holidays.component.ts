@@ -1,10 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { holidaysActions } from '../+state/holidays.actions';
-import { fromHolidays } from '../+state/holidays.selectors';
 import { AsyncPipe, NgForOf } from '@angular/common';
 import { HolidayCardComponent } from '@app/holidays/ui';
 import { Holiday } from '@app/holidays/model';
+import { fromHolidays, holidaysActions } from '../../data';
 
 @Component({
   selector: 'app-holidays',

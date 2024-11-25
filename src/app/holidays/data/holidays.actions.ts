@@ -1,4 +1,4 @@
-import { Holiday } from '@app/holidays/model';
+import { Holiday } from '../model';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const holidaysActions = createActionGroup({

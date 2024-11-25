@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { holidaysActions } from './holidays.actions';
-import { Holiday } from '@app/holidays/model';
+import { Holiday } from '../model';
 
 export interface HolidaysState {
   holidays: Holiday[];
