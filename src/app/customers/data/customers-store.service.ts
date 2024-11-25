@@ -11,6 +11,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { MessageService } from '@app/shared/ui-messaging';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { switchMap } from 'rxjs/operators';
+import { tapResponse } from '@ngrx/operators';
 
 export interface CustomersState {
   customers: Customer[];
@@ -30,7 +33,7 @@ export const initialState: CustomersState = {
   hasError: false,
 };
 
-const baseUrl = '/customers';
+const baseUrl = '/customer';
 
 export const CustomersStore = signalStore(
   { providedIn: 'root' },
@@ -59,45 +62,61 @@ export const CustomersStore = signalStore(
     };
   }),
 
-  withMethods((state) => {
+  withMethods((store, httpClient = inject(HttpClient)) => {
+    const _load = rxMethod<number>(
+      switchMap((page) => {
+        patchState(store, { customers: [], total: 0, isLoaded: false });
+        return httpClient
+          .get<{ content: Customer[]; total: number }>(baseUrl, {
+            params: new HttpParams().set('page', page),
+          })
+
+          .pipe(
+            tapResponse({
+              next: ({ content, total }) =>
+                patchState(store, {
+                  total,
+                  customers: content,
+                  isLoaded: true,
+                }),
+              error: () => {
+                patchState(store, { hasError: true });
+              },
+            }),
+          );
+      }),
+    );
+
+    return {
+      _load,
+      init() {
+        if (store.isLoaded()) {
+          return;
+        }
+
+        _load(0);
+      },
+      get(page: number) {
+        const currentPage = store.page();
+        if (page === currentPage) {
+          return;
+        }
+
+        _load(page);
+      },
+    };
+  }),
+
+  withMethods((store) => {
     const http = inject(HttpClient);
     const router = inject(Router);
     const uiMessage = inject(MessageService);
-    const load = (page: number) => {
-      http
-        .get<{ content: Customer[]; total: number }>(baseUrl, {
-          params: new HttpParams().set('page', page),
-        })
-        .pipe()
-        .subscribe({
-          next: ({ content, total }) =>
-            patchState(state, { total, customers: content, isLoaded: true }),
-          error: () => patchState(state, { hasError: true }),
-        });
-    };
-    const get = (page: number) => {
-      const currentPage = state.page();
-      if (page === currentPage) {
-        return;
-      }
-
-      load(page);
-    };
-    const init = () => {
-      if (state.isLoaded()) {
-        return;
-      }
-
-      get(1);
-    };
 
     return {
-      get,
-      init,
       async add(customer: Customer) {
         await lastValueFrom(http.post(baseUrl, customer));
         router.navigateByUrl('/customers');
-        load(1);
+        store._load(0);
       },
       async update(
         customer: Customer,
@@ -111,21 +130,21 @@ export const CustomersStore = signalStore(
         }
         uiMessage.info(message);
         router.navigateByUrl(forward);
-        load(1);
+        store._load(0);
       },
       async remove(customer: Customer) {
         await lastValueFrom(http.delete(`${baseUrl}/${customer.id}`));
         router.navigateByUrl('/customers');
-        load(1);
+        store._load(0);
       },
       select(id: number) {
-        patchState(state, { selectedId: id });
+        patchState(store, { selectedId: id });
       },
       unselect() {
-        patchState(state, { selectedId: undefined });
+        patchState(store, { selectedId: undefined });
       },
       findById: (id: number) => {
-        return computed(() => state.customers().find((p) => p.id === id));
+        return computed(() => store.customers().find((p) => p.id === id));
       },
     };
   }),
