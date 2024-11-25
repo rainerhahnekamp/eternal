@@ -9,7 +9,7 @@ import { provideStore } from '@ngrx/store';
 import { Configuration } from '@app/shared/config';
 import { createHolidays } from '@app/holidays/model';
 import { provideHttpClient } from '@angular/common/http';
-import { provideHolidays } from '../../data';
+import { provideHolidays } from '@app/holidays/data';
 
 describe('Holidays Component', () => {
   const setup = async () =>

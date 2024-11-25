@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { RequestInfoComponent } from './request-info/request-info.component';
-import { provideHolidays } from '../data';
+import { provideHolidays } from '@app/holidays/data';
 
 export const holidaysRoutes: Routes = [
   {

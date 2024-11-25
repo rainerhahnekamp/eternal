@@ -1,22 +1,16 @@
-import { provideEffects } from '@ngrx/effects';
-import { provideState } from '@ngrx/store';
-import { CustomersEffects } from './+state/customers.effects';
-import { customersFeature } from './+state/customers.reducer';
 import { AddCustomerComponent } from './components/add-customer.component';
 import { CustomersContainerComponent } from './components/customers-container.component';
 import { EditCustomerComponent } from './components/edit-customer.component';
 import { dataGuard } from './services/data.guard';
 import { CustomersRootComponent } from './components/customers-root/customers-root.component';
+import { provideCustomers } from '@app/customers/data';
 
 export default [
   {
     path: '',
     canActivate: [dataGuard],
     component: CustomersRootComponent,
-    providers: [
-      provideState(customersFeature),
-      provideEffects([CustomersEffects]),
-    ],
+    providers: [provideCustomers()],
     children: [
       {
         path: '',

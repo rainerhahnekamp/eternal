@@ -1,8 +1,7 @@
 import { Component, inject, Signal } from '@angular/core';
 import { createSelector, Store } from '@ngrx/store';
-import { customersActions } from '../+state/customers.actions';
-import { fromCustomers } from '../+state/customers.selectors';
 import { CustomersComponent, CustomersViewModel } from '@app/customers/ui';
+import { customersActions, fromCustomers } from '@app/customers/data';
 
 @Component({
   selector: 'app-customers-container',

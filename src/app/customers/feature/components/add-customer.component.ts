@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { CustomerComponent } from '@app/customers/ui';
 import { Customer } from '@app/customers/model';
 import { selectCountries } from '@app/shared/master-data';
-import { customersActions } from '@app/customers/feature/+state/customers.actions';
+import { customersActions } from '@app/customers/data';
 
 @Component({
   selector: 'app-add-customer',
