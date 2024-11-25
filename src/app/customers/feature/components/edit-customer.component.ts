@@ -1,6 +1,5 @@
 import { Component, Signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { AsyncPipe, NgIf } from '@angular/common';
@@ -8,8 +7,9 @@ import { CustomerComponent } from '@app/customers/ui';
 import { Customer } from '@app/customers/model';
 import { Options } from '@app/shared/form';
 import { selectCountries } from '@app/shared/master-data';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { customersActions, fromCustomers } from '@app/customers/data';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { CustomersRepository } from '@app/customers/data';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-edit-customer',
@@ -32,22 +32,19 @@ export class EditCustomerComponent {
 
   constructor(
     private store: Store,
+    private repo: CustomersRepository,
     private route: ActivatedRoute,
   ) {
     const countries$: Observable<Options> = this.store.select(selectCountries);
-    const customer$ = this.store
-      .select(
-        fromCustomers.selectById(
-          Number(this.route.snapshot.paramMap.get('id') || ''),
-        ),
-      )
-      .pipe(
-        this.#verifyCustomer,
-        map((customer) => {
-          this.customerId = customer.id;
-          return { ...customer };
-        }),
-      );
+    const customer$ = toObservable(
+      this.repo.findById(Number(this.route.snapshot.paramMap.get('id') || '')),
+    ).pipe(
+      this.#verifyCustomer,
+      map((customer) => {
+        this.customerId = customer.id;
+        return { ...customer };
+      }),
+    );
 
     this.data = toSignal(
       combineLatest({
@@ -59,19 +56,11 @@ export class EditCustomerComponent {
 
   submit(customer: Customer) {
     console.log('hi');
-    this.store.dispatch(
-      customersActions.update({
-        customer: { ...customer, id: this.customerId },
-      }),
-    );
+    this.repo.update({ ...customer, id: this.customerId });
   }
 
   remove(customer: Customer) {
-    this.store.dispatch(
-      customersActions.remove({
-        customer: { ...customer, id: this.customerId },
-      }),
-    );
+    this.repo.remove({ ...customer, id: this.customerId });
   }
 
   #verifyCustomer(customer$: Observable<undefined | Customer>) {

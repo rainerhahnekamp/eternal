@@ -43,7 +43,7 @@ export class CustomersEffects {
       ),
 
       tap(() => this.#router.navigateByUrl('/customers')),
-      map(() => customersActions.load({ page: 1 })),
+      map(() => customersActions.load({ page: 0 })),
     );
   });
 
@@ -66,7 +66,7 @@ export class CustomersEffects {
         this.#http.delete<Customer[]>(`${this.#baseUrl}/${customer.id}`),
       ),
       tap(() => this.#router.navigateByUrl('/customers')),
-      map(() => customersActions.load({ page: 1 })),
+      map(() => customersActions.load({ page: 0 })),
     );
   });
 }
