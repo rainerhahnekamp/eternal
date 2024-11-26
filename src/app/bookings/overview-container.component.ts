@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { BookingsRepository } from '@app/bookings/+state/bookings-repository.service';
 import { OverviewComponent } from '@app/bookings/overview/overview.component';
 import { CustomersApi } from '@app/customers/api';
@@ -7,11 +7,11 @@ import { CustomersApi } from '@app/customers/api';
   selector: 'app-overview-container',
   template: ` @if (viewModel(); as value) {
     <app-overview [viewModel]="value"></app-overview>
-    }`,
+  }`,
   standalone: true,
   imports: [OverviewComponent],
 })
-export class OverviewContainerComponent implements OnInit {
+export class OverviewContainerComponent {
   #repo = inject(BookingsRepository);
 
   #customersApi = inject(CustomersApi);
@@ -30,8 +30,4 @@ export class OverviewContainerComponent implements OnInit {
       bookings,
     };
   });
-
-  ngOnInit(): void {
-    this.#repo.load();
-  }
 }

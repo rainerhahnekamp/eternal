@@ -1,10 +1,10 @@
-import { Holiday } from '../model';
+import { Holiday } from '@app/holidays/model';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const holidaysActions = createActionGroup({
   source: 'Holidays',
   events: {
-    Get: emptyProps(), // Intention of Components to show data
+    Get: emptyProps(),
     Load: emptyProps(),
     Loaded: props<{ holidays: Holiday[] }>(),
     'Add Favourite': props<{ id: number }>(),

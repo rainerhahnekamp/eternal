@@ -1,6 +1,6 @@
 import { Component, computed, inject, Signal } from '@angular/core';
 import { CustomersComponent, CustomersViewModel } from '@app/customers/ui';
-import { CustomersRepository } from '@app/customers/data';
+import { CustomerStore } from '../../data/customers-store.service';
 
 @Component({
   selector: 'app-customers-container',
@@ -14,7 +14,8 @@ import { CustomersRepository } from '@app/customers/data';
   imports: [CustomersComponent],
 })
 export class CustomersContainerComponent {
-  #repo = inject(CustomersRepository);
+  #repo = inject(CustomerStore);
+
   viewModel: Signal<CustomersViewModel> = computed(() => {
     const pagedCustomers = this.#repo.pagedCustomers();
     return {
@@ -33,6 +34,6 @@ export class CustomersContainerComponent {
   }
 
   switchPage(page: number) {
-    console.log('switch to page ' + page + ' is not implemented');
+    this.#repo.load(page);
   }
 }

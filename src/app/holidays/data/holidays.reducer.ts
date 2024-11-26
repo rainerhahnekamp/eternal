@@ -1,7 +1,7 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { holidaysActions } from './holidays.actions';
-import { Holiday } from '../model';
-import { LoadStatus } from '../../shared/ngrx-utils';
+import { Holiday } from '@app/holidays/model';
+import { LoadStatus } from '@app/shared/ngrx-utils';
 
 export interface HolidaysState {
   holidays: Holiday[];
@@ -23,7 +23,6 @@ export const holidaysFeature = createFeature({
       holidaysActions.load,
       (state): HolidaysState => ({
         ...state,
-        holidays: [],
         loadStatus: 'loading',
       }),
     ),
@@ -31,8 +30,8 @@ export const holidaysFeature = createFeature({
       holidaysActions.loaded,
       (state, { holidays }): HolidaysState => ({
         ...state,
-        holidays,
         loadStatus: 'loaded',
+        holidays,
       }),
     ),
     on(holidaysActions.favouriteAdded, (state, { id }): HolidaysState => {
