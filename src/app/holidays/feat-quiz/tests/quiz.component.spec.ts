@@ -13,7 +13,7 @@ import { QuizComponent } from "@app/holidays/feat-quiz";
 import { createQuiz } from "@app/holidays/feat-quiz/tests/create-quiz";
 import { ui } from "@app/holidays/feat-quiz/tests/ui";
 
-xdescribe('QuizComponent', () => {
+describe('QuizComponent', () => {
   const setup = async () => {
     TestBed.configureTestingModule({
       providers: [
