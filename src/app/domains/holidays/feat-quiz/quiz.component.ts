@@ -30,7 +30,6 @@ import { QuizQuestionComponent } from './internal/quiz-question.component';
         (answer)="handleAnswer($event)"
       ></app-quiz-question>
     }`,
-  standalone: true,
   imports: [
     MatButton,
     NgClass,

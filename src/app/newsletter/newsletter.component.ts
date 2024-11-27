@@ -29,7 +29,6 @@ import { FormErrorsComponent } from '../shared/form/form-errors.component';
     </form>
 
     <p data-testid="p-message">{{ message() }}</p>`,
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatLabel,

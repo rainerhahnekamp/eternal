@@ -24,7 +24,6 @@ import { SelectOptions } from '../../../../shared/form/select-options';
   selector: 'app-customer',
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss'],
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatButtonModule,

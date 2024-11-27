@@ -13,7 +13,6 @@ import { Customers } from '../../customers/api/customers.service';
   template: ` @if (viewModel(); as value) {
     <app-overview [viewModel]="value"></app-overview>
   }`,
-  standalone: true,
   imports: [OverviewComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

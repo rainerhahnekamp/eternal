@@ -24,7 +24,6 @@ export interface CustomersViewModel {
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
-  standalone: true,
   imports: [
     MatIconModule,
     MatButtonModule,

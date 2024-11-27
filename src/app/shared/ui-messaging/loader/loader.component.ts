@@ -11,7 +11,6 @@ import { LoadingService } from './loading.service';
     }"
     mode="indeterminate"
   ></mat-progress-bar>`,
-  standalone: true,
   imports: [MatProgressBarModule, NgStyle, AsyncPipe],
 })
 export class LoaderComponent {

@@ -68,7 +68,6 @@ import { MatIcon } from '@angular/material/icon';
         }
       }
     </div> `,
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatSlideToggleModule,

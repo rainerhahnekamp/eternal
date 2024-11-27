@@ -13,7 +13,6 @@ import { CustomerStore } from '../../../data/customer-store.service';
     (setUnselected)="setUnselected()"
     (switchPage)="switchPage($event)"
   ></app-customers>`,
-  standalone: true,
   imports: [CustomersComponent],
 })
 export class CustomersContainerComponent {

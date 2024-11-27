@@ -25,7 +25,6 @@ import { CustomerStore } from '../../../data/customer-store.service';
       ></app-customer>
     }
   `,
-  standalone: true,
   imports: [CustomerComponent, NgIf, AsyncPipe],
 })
 export class EditCustomerComponent {

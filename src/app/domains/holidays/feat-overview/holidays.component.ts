@@ -48,7 +48,6 @@ import { HolidayStore } from '../data/holidays-store';
         </app-holiday-card>
       }
     </div> `,
-  standalone: true,
   imports: [
     AsyncPipe,
     HolidayCardComponent,

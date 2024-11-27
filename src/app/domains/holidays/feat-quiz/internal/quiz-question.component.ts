@@ -55,7 +55,6 @@ import { Question } from './model';
       }
     </mat-card-content>
   </mat-card>`,
-  standalone: true,
   imports: [MatButton, MatCardModule, NgClass],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

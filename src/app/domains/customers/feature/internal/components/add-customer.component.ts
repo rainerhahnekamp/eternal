@@ -13,7 +13,6 @@ import { CustomerStore } from '../../../data/customer-store.service';
     (save)="submit($event)"
     [showDeleteButton]="false"
   ></app-customer>`,
-  standalone: true,
   imports: [CustomerComponent],
 })
 export class AddCustomerComponent {
