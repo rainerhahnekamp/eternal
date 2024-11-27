@@ -14,7 +14,6 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { RouterLinkWithHref } from '@angular/router';
-import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Customer } from '../../model/customer';
@@ -29,7 +28,6 @@ import { SelectOptions } from '../../../../shared/form/select-options';
     MatButtonModule,
     MatDatepickerModule,
     RouterLinkWithHref,
-    NgIf,
     MatInputModule,
     MatSelectModule,
   ],
