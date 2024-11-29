@@ -3,7 +3,6 @@ const eslint = require("@eslint/js");
 const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
 const sheriff = require("@softarc/eslint-plugin-sheriff");
-const prettier = require("eslint-plugin-prettier/recommended");
 const unusedImports = require("eslint-plugin-unused-imports");
 
 module.exports = tseslint.config(
@@ -63,5 +62,4 @@ module.exports = tseslint.config(
       ],
     },
   },
-  prettier,
 );
