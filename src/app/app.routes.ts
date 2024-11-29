@@ -7,6 +7,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { Configuration } from './shared/config/configuration';
 import { SecurityStore } from './shared/security/security-store';
 import { ChatComponent } from './chat/chat.component';
+import BasketComponent from './basket/basket.component';
 
 export const appRoutes: Routes = [
   {
@@ -55,6 +56,7 @@ export const appRoutes: Routes = [
         loadChildren: () => import('src/app/domains/diary/diary.routes'),
       },
       { path: 'chat', component: ChatComponent },
+      { path: 'basket', component: BasketComponent },
     ],
   },
 ];

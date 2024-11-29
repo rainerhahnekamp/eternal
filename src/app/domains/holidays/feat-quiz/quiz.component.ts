@@ -5,8 +5,6 @@ import {
   input,
   numberAttribute,
 } from '@angular/core';
-import { MatButton } from '@angular/material/button';
-import { JsonPipe } from '@angular/common';
 
 import { QuizStore } from './internal/quiz-store';
 import { QuizStatusComponent } from './internal/quiz-status.componen';
@@ -25,7 +23,7 @@ import { QuizQuestionComponent } from './internal/quiz-question.component';
         (answer)="handleAnswer($event)"
       ></app-quiz-question>
     }`,
-  imports: [MatButton, QuizStatusComponent, QuizQuestionComponent, JsonPipe],
+  imports: [QuizStatusComponent, QuizQuestionComponent],
   providers: [QuizStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

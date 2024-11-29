@@ -8,10 +8,9 @@ import {
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { RouterLinkWithHref } from '@angular/router';
 import { Holiday } from '../../model/holiday';
-import { BlinkerDirective } from '../../../../shared/ui/blinker.directive';
 import { QuillComponent } from '../../../../shared/form/quill/quill.component';
 
 @Component({
@@ -21,10 +20,8 @@ import { QuillComponent } from '../../../../shared/form/quill/quill.component';
   imports: [
     MatCardModule,
     MatButtonModule,
-    BlinkerDirective,
     MatIconModule,
     NgClass,
-    NgIf,
     RouterLinkWithHref,
     QuillComponent,
   ],

@@ -31,9 +31,9 @@
       required
     >
       @for (country of countries(); track country) {
-        <mat-option [value]="country.value" data-testid="opt-country">{{
-          country.label
-        }}</mat-option>
+        <mat-option [value]="country.value" data-testid="opt-country"
+          >{{ country.label }}
+        </mat-option>
       }
     </mat-select>
   </mat-form-field>

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Message } from './message';
 import { MessageStore } from './message.store';
 import { MatIconModule } from '@angular/material/icon';
-import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-message',
@@ -21,7 +21,7 @@ import { NgClass, NgForOf, NgIf } from '@angular/common';
       }
     `,
   ],
-  imports: [MatIconModule, NgClass, NgForOf, NgIf],
+  imports: [MatIconModule, NgClass],
   animations: [
     trigger('myTrigger', [
       transition(':enter', [

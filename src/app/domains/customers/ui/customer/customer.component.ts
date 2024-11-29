@@ -7,7 +7,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Customer } from '../../model/customer';
 import { SelectOptions } from '../../../../shared/form/select-options';
-import { FormErrorsComponent } from '../../../../shared/form/form-errors.component';
 
 @Component({
   selector: 'app-customer',
@@ -19,22 +18,20 @@ import { FormErrorsComponent } from '../../../../shared/form/form-errors.compone
     RouterLinkWithHref,
     MatInputModule,
     MatSelectModule,
-    FormErrorsComponent,
     FormsModule,
   ],
 })
 export class CustomerComponent {
-  customer = input.required<Customer>();
+  customer = input.required<Customer>(); // original
+  formCustomer = linkedSignal(this.customer);
+
   countries = input.required<SelectOptions>();
   showDeleteButton = input.required<boolean>();
   save = output<Customer>();
   remove = output<Customer>();
-  formCustomer = linkedSignal(this.customer);
 
   submit() {
-    if (this.formCustomer) {
-      this.save.emit(this.formCustomer());
-    }
+    this.save.emit(this.formCustomer());
   }
 
   handleRemove() {

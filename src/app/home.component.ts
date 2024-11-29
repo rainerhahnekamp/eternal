@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { Configuration } from './shared/config/configuration';
 import { SpecialGreetingComponent } from './core/special-greeting.component';
 import { ChatService } from './chat/chat.service';
-import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-home',
@@ -73,7 +72,6 @@ import { MatIcon } from '@angular/material/icon';
     MatSlideToggleModule,
     MatButtonModule,
     SpecialGreetingComponent,
-    MatIcon,
   ],
 })
 export class HomeComponent implements OnInit {
