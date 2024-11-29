@@ -18,7 +18,6 @@ import { QuillComponent } from '../../../../shared/form/quill/quill.component';
   selector: 'app-holiday-card',
   templateUrl: './holiday-card.component.html',
   styleUrls: ['./holiday-card.component.scss'],
-  standalone: true,
   imports: [
     MatCardModule,
     MatButtonModule,

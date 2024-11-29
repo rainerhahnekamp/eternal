@@ -7,7 +7,6 @@ import { SecurityStore } from '../../shared/security/security-store';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  standalone: true,
   imports: [RouterLink, MatButtonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

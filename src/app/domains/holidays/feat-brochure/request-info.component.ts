@@ -11,7 +11,6 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-request-info',
   templateUrl: './request-info.component.html',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatFormField,

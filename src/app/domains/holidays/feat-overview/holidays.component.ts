@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AsyncPipe, NgForOf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -48,11 +48,9 @@ import { HolidayStore } from '../data/holidays-store';
         </app-holiday-card>
       }
     </div> `,
-  standalone: true,
   imports: [
     AsyncPipe,
     HolidayCardComponent,
-    NgForOf,
     FormsModule,
     MatFormFieldModule,
     MatIconModule,

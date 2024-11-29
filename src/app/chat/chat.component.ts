@@ -17,7 +17,6 @@ import { ChatService } from './chat.service';
     }
   </mat-list>`,
   imports: [MatListModule, MatIconModule, DatePipe],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatComponent {

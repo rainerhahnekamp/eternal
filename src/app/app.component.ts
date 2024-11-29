@@ -29,7 +29,6 @@ import { FooterComponent } from './core/footer.component';
     <app-footer />
   </div>`,
   styleUrls: ['./app.component.scss'],
-  standalone: true,
   imports: [
     HeaderComponent,
     LoaderComponent,

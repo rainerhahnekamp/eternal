@@ -35,7 +35,6 @@ import { Configuration } from '../shared/config/configuration';
       }
     </footer>
   `,
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIcon],
 })

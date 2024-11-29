@@ -16,7 +16,6 @@ export interface ViewModel {
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
-  standalone: true,
   imports: [MatTableModule, CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

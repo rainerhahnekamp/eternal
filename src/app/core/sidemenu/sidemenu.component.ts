@@ -9,7 +9,6 @@ import { ChatService } from '../../chat/chat.service';
   selector: 'app-sidemenu',
   templateUrl: './sidemenu.component.html',
   styleUrls: ['./sidemenu.component.scss'],
-  standalone: true,
   imports: [MatButtonModule, RouterLink, MatBadgeModule],
 })
 export class SidemenuComponent {
