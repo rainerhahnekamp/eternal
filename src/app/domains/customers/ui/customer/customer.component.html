@@ -1,18 +1,35 @@
-<form (ngSubmit)="submit()" [formGroup]="formGroup" class="app-customer">
-  <input type="hidden" formControlName="id" />
+@let customer = formCustomer();
+<form (ngSubmit)="submit()" class="app-customer">
   <mat-form-field>
     <mat-label>Firstname</mat-label>
-    <input data-testid="inp-firstname" formControlName="firstname" matInput />
+    <input
+      data-testid="inp-firstname"
+      [(ngModel)]="customer.firstname"
+      name="firstname"
+      matInput
+      required
+    />
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Name</mat-label>
-    <input data-testid="inp-name" formControlName="name" matInput />
+    <input
+      data-testid="inp-name"
+      [(ngModel)]="customer.name"
+      name="name"
+      matInput
+      required
+    />
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Country</mat-label>
-    <mat-select formControlName="country" data-testid="sel-country">
+    <mat-select
+      [(ngModel)]="customer.country"
+      data-testid="sel-country"
+      name="country"
+      required
+    >
       @for (country of countries(); track country) {
         <mat-option [value]="country.value" data-testid="opt-country">{{
           country.label
@@ -24,10 +41,12 @@
   <mat-form-field>
     <mat-label>Birthdate</mat-label>
     <input
+      name="birthdate"
       matInput
       [matDatepicker]="picker"
-      formControlName="birthdate"
+      [(ngModel)]="customer.birthdate"
       data-testid="inp-birthdate"
+      required
     />
     <mat-datepicker-toggle matIconSuffix [for]="picker" />
     <mat-datepicker #picker />
