@@ -13,9 +13,27 @@ export const sheriffConfig: SheriffConfig = {
       domains: {
         diary: ['domain:diary', 'type:feature'],
         bookings: ['domain:bookings', 'type:feature'],
-        '<domain>/api': ['domain:<domain>:api', 'type:api'],
-        '<domain>/feat-<name>': ['domain:<domain>', 'type:feature'],
-        '<domain>/<type>': ['domain:<domain>', 'type:<type>'],
+        '<domain>/api': ['domain:<domain>:api', 'sub-domain:api', 'type:api'],
+        '<domain>/feat-<feature>': [
+          'domain:<domain>',
+          'sub-domain:none',
+          'type:feature',
+        ],
+        '<domain>/sub-<name>': [
+          'domain:<domain>',
+          'sub-domain:<name>',
+          'type:feature',
+        ],
+        '<domain>/sub-<sub>': {
+          data: ['domain:<domain>', 'sub-domain:<sub>', 'type:data'],
+          model: ['domain:<domain>', 'sub-domain:<sub>', 'type:model'],
+          ui: ['domain:<domain>', 'sub-domain:<sub>', 'type:ui'],
+        },
+        '<domain>/<type>': [
+          'domain:<domain>',
+          'type:<type>',
+          'sub-domain:none',
+        ],
       },
     },
   },
@@ -24,8 +42,10 @@ export const sheriffConfig: SheriffConfig = {
     'domain:*': [
       sameTag, // domain:bookings -> domain:bookings
       'shared',
-      ({ from, to }) => from.startsWith(to), // domain:bookings:api -> domain:bookings
+      ({ from, to }) => from.endsWith(':api') && from.startsWith(to), // domain:bookings:api -> domain:bookings
     ],
+    'sub-domain:api': ({ to }) => to.startsWith('sub-domain'),
+    'sub-domain:*': [sameTag, 'shared'],
     'type:api': [({ to }) => to.startsWith('type'), 'shared:config'],
     'type:feature': [
       ...['type:api', 'type:data', 'type:ui', 'type:model'],
@@ -36,7 +56,12 @@ export const sheriffConfig: SheriffConfig = {
       'shared:ui-messaging',
       'shared:util',
     ],
-    'type:data': ['type:model', 'shared:config', 'shared:ui-messaging'],
+    'type:data': [
+      'type:model',
+      'shared:config',
+      'shared:ui-messaging',
+      'shared:util',
+    ],
     'type:ui': ['type:model', 'shared:form', 'shared:ui'],
     'type:model': noDependencies,
     shared: 'shared',

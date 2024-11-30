@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { HolidaysComponent } from '../feat-overview/holidays.component';
 import { RequestInfoComponent } from '../feat-brochure/request-info.component';
-import { QuizComponent } from '../feat-quiz/quiz.component';
+import { QuizComponent } from '../sub-quiz/quiz.component';
 
 export default [
   {

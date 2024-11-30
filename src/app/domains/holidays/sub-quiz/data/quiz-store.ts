@@ -6,7 +6,7 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { AnswerStatus, Question } from './model';
+import { AnswerStatus, Question } from '../model/model';
 import { QuizService } from './quiz.service';
 import { computed, inject, PLATFORM_ID } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
