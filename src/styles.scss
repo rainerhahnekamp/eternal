@@ -1,4 +1,8 @@
 @use "@angular/material" as mat;
+@use "tailwindcss/base";
+@use "tailwindcss/components";
+@use "tailwindcss/utilities";
+@use "sass:map";
 
 $palette: (
   50: #e4f2f6,
@@ -55,10 +59,6 @@ $candy-app-theme: mat.m2-define-light-theme(
 );
 @include mat.all-component-themes($candy-app-theme);
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
 body::before {
   content: "";
   position: absolute;
@@ -78,7 +78,7 @@ a {
 }
 
 .error {
-  color: map-get(mat.$m2-red-palette, 500);
+  color: map.get(mat.$m2-red-palette, 500);
 }
 
 mat-checkbox + mat-checkbox,
