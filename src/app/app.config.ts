@@ -2,8 +2,8 @@ import {
   ApplicationConfig,
   ErrorHandler,
   importProvidersFrom,
-  LOCALE_ID,
-} from '@angular/core';
+  LOCALE_ID, provideExperimentalCheckNoChangesForDebug, provideExperimentalZonelessChangeDetection
+} from "@angular/core";
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { appRoutes } from './app.routes';
@@ -32,6 +32,8 @@ import { sharedMasterDataProvider } from '@app/shared/master-data';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideExperimentalZonelessChangeDetection(),
+    // provideExperimentalCheckNoChangesForDebug({interval: 1000}),
     provideAnimations(),
     provideStore(),
     provideRouter(appRoutes, withComponentInputBinding()),
