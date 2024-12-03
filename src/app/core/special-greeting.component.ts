@@ -32,8 +32,8 @@ function deg2rad(deg: number) {
 }
 
 @Component({
-  selector: 'app-special-greeting',
-  template: `@if (showSpecialGreeting()) {
+    selector: 'app-special-greeting',
+    template: `@if (showSpecialGreeting()) {
     <div>
       <h3>{{ greeting() }}</h3>
       <p>
@@ -43,8 +43,7 @@ function deg2rad(deg: number) {
       <p>Your current time is {{ time | date: 'HH:mm' }}</p>
     </div>
   }`,
-  standalone: true,
-  imports: [DecimalPipe, DatePipe],
+    imports: [DecimalPipe, DatePipe]
 })
 export class SpecialGreetingComponent {
   isBrowser = isPlatformBrowser(inject(PLATFORM_ID));

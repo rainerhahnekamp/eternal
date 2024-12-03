@@ -21,20 +21,19 @@ import { Customer } from '@app/customers/model';
 import { MatSelectModule } from '@angular/material/select';
 
 @Component({
-  selector: 'app-customer',
-  templateUrl: './customer.component.html',
-  styleUrls: ['./customer.component.scss'],
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatDatepickerModule,
-    RouterLinkWithHref,
-    NgIf,
-    MatInputModule,
-    FormErrorsComponent,
-    MatSelectModule,
-  ],
+    selector: 'app-customer',
+    templateUrl: './customer.component.html',
+    styleUrls: ['./customer.component.scss'],
+    imports: [
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatDatepickerModule,
+        RouterLinkWithHref,
+        NgIf,
+        MatInputModule,
+        FormErrorsComponent,
+        MatSelectModule,
+    ]
 })
 export class CustomerComponent {
   customer = input.required<Customer>();

@@ -8,19 +8,18 @@ import { BlinkerDirective } from '@app/shared/ui';
 import { Holiday } from '@app/holidays/model';
 
 @Component({
-  selector: 'app-holiday-card',
-  templateUrl: './holiday-card.component.html',
-  styleUrls: ['./holiday-card.component.scss'],
-  standalone: true,
-  imports: [
-    MatCardModule,
-    MatButtonModule,
-    BlinkerDirective,
-    MatIconModule,
-    NgClass,
-    NgIf,
-    RouterLinkWithHref,
-  ],
+    selector: 'app-holiday-card',
+    templateUrl: './holiday-card.component.html',
+    styleUrls: ['./holiday-card.component.scss'],
+    imports: [
+        MatCardModule,
+        MatButtonModule,
+        BlinkerDirective,
+        MatIconModule,
+        NgClass,
+        NgIf,
+        RouterLinkWithHref,
+    ]
 })
 export class HolidayCardComponent {
   holiday = input.required<Holiday & { isFavourite: boolean }>();

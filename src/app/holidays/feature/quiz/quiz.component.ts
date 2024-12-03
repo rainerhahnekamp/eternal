@@ -24,8 +24,8 @@ import { QuizStatusComponent } from './ui/quiz-status.component';
 import { QuizQuestionComponent } from './ui/quiz-question.component';
 
 @Component({
-  selector: 'app-quiz',
-  template: `
+    selector: 'app-quiz',
+    template: `
     <h2>{{ title() }}</h2>
     <app-quiz-status [status]="status" />
 
@@ -45,19 +45,18 @@ import { QuizQuestionComponent } from './ui/quiz-question.component';
       Next Question
     </button>
   `,
-  standalone: true,
-  imports: [
-    MatButton,
-    NgClass,
-    MatCard,
-    MatCardHeader,
-    MatCardActions,
-    MatCardContent,
-    JsonPipe,
-    QuizStatusComponent,
-    QuizQuestionComponent,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatButton,
+        NgClass,
+        MatCard,
+        MatCardHeader,
+        MatCardActions,
+        MatCardContent,
+        JsonPipe,
+        QuizStatusComponent,
+        QuizQuestionComponent,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QuizComponent {
   id = input.required({ transform: numberAttribute });

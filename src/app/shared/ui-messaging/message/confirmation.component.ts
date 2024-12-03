@@ -12,13 +12,12 @@ export interface ConfirmationData {
 }
 
 @Component({
-  template: `<h1 mat-dialog-title>Confirm</h1>
+    template: `<h1 mat-dialog-title>Confirm</h1>
     <div mat-dialog-content [innerHTML]="data.message"></div>
     <div mat-dialog-actions>
       <button mat-button mat-dialog-close>OK</button>
     </div>`,
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule],
+    imports: [MatDialogModule, MatButtonModule]
 })
 export class ConfirmationComponent {
   dialogRef = inject(MatDialogRef<ConfirmationComponent>);

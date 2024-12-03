@@ -12,8 +12,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { SpecialGreetingComponent } from '@app/core/special-greeting.component';
 
 @Component({
-  selector: 'app-home',
-  template: `<h2 data-testid="greeting">Welcome to Eternal</h2>
+    selector: 'app-home',
+    template: `<h2 data-testid="greeting">Welcome to Eternal</h2>
     <app-special-greeting />
     <p data-testid="txt-greeting-1">
       Eternal is an imaginary travel agency and is used as training application
@@ -68,13 +68,12 @@ import { SpecialGreetingComponent } from '@app/core/special-greeting.component';
         Application is ready
       </div>
     } `,
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatSlideToggleModule,
-    MatButtonModule,
-    SpecialGreetingComponent,
-  ],
+    imports: [
+        ReactiveFormsModule,
+        MatSlideToggleModule,
+        MatButtonModule,
+        SpecialGreetingComponent,
+    ]
 })
 export class HomeComponent implements OnInit {
   isBrowser = isPlatformBrowser(inject(PLATFORM_ID));

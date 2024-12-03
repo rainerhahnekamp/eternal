@@ -10,8 +10,8 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-newsletter',
-  template: `<h2>Newsletter</h2>
+    selector: 'app-newsletter',
+    template: `<h2>Newsletter</h2>
     <form (ngSubmit)="handleSubmit()" [formGroup]="formGroup">
       <div class="flex flex-col max-w-fit items-center">
         <mat-form-field>
@@ -27,16 +27,15 @@ import { MatButton } from '@angular/material/button';
     </form>
 
     <p data-testid="p-message">{{ message() }}</p>`,
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatLabel,
-    MatHint,
-    MatFormField,
-    MatInput,
-    MatIcon,
-    MatButton,
-  ],
+    imports: [
+        ReactiveFormsModule,
+        MatLabel,
+        MatHint,
+        MatFormField,
+        MatInput,
+        MatIcon,
+        MatButton,
+    ]
 })
 export class NewsletterComponent {
   message = signal('');

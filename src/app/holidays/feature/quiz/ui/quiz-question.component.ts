@@ -5,8 +5,8 @@ import { Question } from "../model";
 import { NgClass } from "@angular/common";
 
 @Component({
-  selector: 'app-quiz-question',
-  template: `
+    selector: 'app-quiz-question',
+    template: `
     <mat-card class="max-w-lg my-4">
       <mat-card-header>{{ question().question }}</mat-card-header>
       <mat-card-content>
@@ -46,8 +46,7 @@ import { NgClass } from "@angular/common";
         }
       </mat-card-content>
     </mat-card>`,
-  standalone: true,
-  imports: [MatButton, MatCard, MatCardHeader, MatCardContent, NgClass],
+    imports: [MatButton, MatCard, MatCardHeader, MatCardContent, NgClass]
 })
 export class QuizQuestionComponent {
   readonly question = input.required<Question>();

@@ -10,10 +10,9 @@ import { MessageService } from '@app/shared/ui-messaging';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-overview',
-  templateUrl: './overview.component.html',
-  standalone: true,
-  imports: [MatTableModule, DatePipe],
+    selector: 'app-overview',
+    templateUrl: './overview.component.html',
+    imports: [MatTableModule, DatePipe]
 })
 export class OverviewComponent {
   userName = '';

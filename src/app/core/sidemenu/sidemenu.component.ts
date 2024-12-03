@@ -6,11 +6,10 @@ import { ChatService } from '@app/chat/chat.service';
 import { MatBadgeModule } from '@angular/material/badge';
 
 @Component({
-  selector: 'app-sidemenu',
-  templateUrl: './sidemenu.component.html',
-  styleUrls: ['./sidemenu.component.scss'],
-  standalone: true,
-  imports: [MatButtonModule, RouterLink, MatBadgeModule],
+    selector: 'app-sidemenu',
+    templateUrl: './sidemenu.component.html',
+    styleUrls: ['./sidemenu.component.scss'],
+    imports: [MatButtonModule, RouterLink, MatBadgeModule]
 })
 export class SidemenuComponent {
   securityStore = inject(SecurityStore);

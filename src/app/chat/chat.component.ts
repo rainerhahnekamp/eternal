@@ -5,8 +5,8 @@ import { DatePipe } from '@angular/common';
 import { ChatService } from './chat.service';
 
 @Component({
-  selector: 'app-chat',
-  template: ` <mat-list>
+    selector: 'app-chat',
+    template: ` <mat-list>
     <div mat-subheader>Messages</div>
     @for (message of messages(); track message.sent) {
       <mat-list-item data-testid="chat-message">
@@ -16,8 +16,7 @@ import { ChatService } from './chat.service';
       </mat-list-item>
     }
   </mat-list>`,
-  imports: [MatListModule, MatIconModule, DatePipe],
-  standalone: true,
+    imports: [MatListModule, MatIconModule, DatePipe]
 })
 export class ChatComponent {
   messages = inject(ChatService).messages;

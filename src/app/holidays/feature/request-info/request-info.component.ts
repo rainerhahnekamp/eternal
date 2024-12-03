@@ -8,18 +8,17 @@ import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-request-info',
-  templateUrl: './request-info.component.html',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormField,
-    MatIcon,
-    MatLabel,
-    MatInput,
-    MatButton,
-    MatHint,
-  ],
+    selector: 'app-request-info',
+    templateUrl: './request-info.component.html',
+    imports: [
+        ReactiveFormsModule,
+        MatFormField,
+        MatIcon,
+        MatLabel,
+        MatInput,
+        MatButton,
+        MatHint,
+    ]
 })
 export class RequestInfoComponent {
   #formBuilder = inject(NonNullableFormBuilder);

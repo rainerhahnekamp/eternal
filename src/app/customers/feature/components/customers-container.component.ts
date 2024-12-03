@@ -5,15 +5,14 @@ import { fromCustomers } from '../+state/customers.selectors';
 import { CustomersComponent, CustomersViewModel } from '@app/customers/ui';
 
 @Component({
-  selector: 'app-customers-container',
-  template: ` <app-customers
+    selector: 'app-customers-container',
+    template: ` <app-customers
     [viewModel]="viewModel()"
     (setSelected)="setSelected($event)"
     (setUnselected)="setUnselected()"
     (switchPage)="switchPage($event)"
   ></app-customers>`,
-  standalone: true,
-  imports: [CustomersComponent],
+    imports: [CustomersComponent]
 })
 export class CustomersContainerComponent {
   #store = inject(Store);

@@ -4,11 +4,10 @@ import { RouterLink } from '@angular/router';
 import { SecurityStore } from 'src/app/shared/security';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
-  standalone: true,
-  imports: [RouterLink, MatButtonModule],
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    imports: [RouterLink, MatButtonModule]
 })
 export class HeaderComponent {
   #securityStore = inject(SecurityStore);
