@@ -17,7 +17,6 @@ import { Holiday } from '@app/holidays/model';
         BlinkerDirective,
         MatIconModule,
         NgClass,
-        NgIf,
         RouterLinkWithHref,
     ]
 })

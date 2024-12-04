@@ -28,7 +28,7 @@ import { Store } from '@ngrx/store';
       ></app-customer>
     }
   `,
-    imports: [CustomerComponent, NgIf, AsyncPipe]
+    imports: [CustomerComponent]
 })
 export class EditCustomerComponent {
   store = inject(Store);

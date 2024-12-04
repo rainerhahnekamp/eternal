@@ -19,7 +19,7 @@ import { Holiday } from '@app/holidays/model';
         </app-holiday-card>
       }
     </div> `,
-    imports: [AsyncPipe, HolidayCardComponent, NgForOf]
+    imports: [HolidayCardComponent]
 })
 export class HolidaysComponent implements OnInit {
   #store = inject(Store);

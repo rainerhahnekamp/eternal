@@ -21,7 +21,7 @@ import { NgClass, NgForOf, NgIf } from '@angular/common';
       }
     `,
     ],
-    imports: [MatIconModule, NgClass, NgForOf, NgIf],
+    imports: [MatIconModule, NgClass],
     animations: [
         trigger('myTrigger', [
             transition(':enter', [

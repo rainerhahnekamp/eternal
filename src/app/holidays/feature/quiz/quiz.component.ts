@@ -47,12 +47,6 @@ import { QuizQuestionComponent } from './ui/quiz-question.component';
   `,
     imports: [
         MatButton,
-        NgClass,
-        MatCard,
-        MatCardHeader,
-        MatCardActions,
-        MatCardContent,
-        JsonPipe,
         QuizStatusComponent,
         QuizQuestionComponent,
     ],

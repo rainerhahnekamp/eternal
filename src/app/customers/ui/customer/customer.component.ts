@@ -29,7 +29,6 @@ import { MatSelectModule } from '@angular/material/select';
         MatButtonModule,
         MatDatepickerModule,
         RouterLinkWithHref,
-        NgIf,
         MatInputModule,
         FormErrorsComponent,
         MatSelectModule,

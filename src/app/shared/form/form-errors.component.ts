@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
       <span>This field is mandatory</span>
     }
   }`,
-    imports: [NgIf, JsonPipe, MatInputModule]
+    imports: [MatInputModule]
 })
 export class FormErrorsComponent {
   @Input() control: AbstractControl | undefined;
