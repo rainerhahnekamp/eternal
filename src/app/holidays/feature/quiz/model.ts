@@ -38,3 +38,11 @@ export const createQuestion = (
     status: 'unanswered',
   };
 };
+
+export function createQuiz(value: Partial<Quiz>): Quiz {
+  return {
+    title: value.title ?? 'Quiz',
+    questions: value.questions ?? [],
+    timeInSeconds: value.timeInSeconds ?? 0,
+  };
+}
