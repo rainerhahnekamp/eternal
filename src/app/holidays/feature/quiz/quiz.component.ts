@@ -2,35 +2,30 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
   input,
+  linkedSignal,
   numberAttribute,
   signal,
-  untracked,
 } from '@angular/core';
-import { AnswerStatus, Question, Quiz } from '@app/holidays/feature/quiz/model';
 import { MatButton } from '@angular/material/button';
+import { AnswerStatus, Question, Quiz } from '@app/holidays/feature/quiz/model';
 import { QuizService } from '@app/holidays/feature/quiz/quiz.service';
-import { DatePipe, getLocaleCurrencyName, JsonPipe, NgClass } from "@angular/common";
-import {
-  MatCard,
-  MatCardActions,
-  MatCardContent,
-  MatCardHeader,
-} from '@angular/material/card';
+
+import { rxResource } from '@angular/core/rxjs-interop';
 import { assertDefined } from '@app/shared/util';
-import { QuizStatusComponent } from './ui/quiz-status.component';
 import { QuizQuestionComponent } from './ui/quiz-question.component';
+import { QuizStatusComponent } from './ui/quiz-status.component';
+
+const emptyQuiz: Quiz = { title: '', questions: [], timeInSeconds: 60 };
 
 @Component({
-    selector: 'app-quiz',
-    template: `
+  selector: 'app-quiz',
+  template: `
     <h2>{{ title() }}</h2>
     <app-quiz-status [status]="status" />
 
-    @let question = currentQuestion();
-    @if (question) {
+    @if (currentQuestion(); as question) {
       <app-quiz-question
         [question]="question"
         (answer)="answer(question.id, $event)"
@@ -45,21 +40,28 @@ import { QuizQuestionComponent } from './ui/quiz-question.component';
       Next Question
     </button>
   `,
-    imports: [
-        MatButton,
-        QuizStatusComponent,
-        QuizQuestionComponent,
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [MatButton, QuizStatusComponent, QuizQuestionComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizComponent {
   id = input.required({ transform: numberAttribute });
 
   quizService = inject(QuizService);
-  quiz = signal<Quiz>({ title: '', questions: [], timeInSeconds: 180 });
-  questions = computed(() => this.quiz().questions);
-  title = computed(() => this.quiz().title);
 
+  // Data State
+  quizResource = rxResource({
+    request: () => this.id(),
+    loader: (options) => {
+      const id = options.request;
+      return this.quizService.findById(id);
+    },
+  });
+
+  quiz = linkedSignal(() => this.quizResource.value() || emptyQuiz);
+  title = computed(() => this.quiz().title);
+  questions = computed(() => this.quiz().questions);
+
+  // UI State
   currentQuestionIx = signal(0);
   currentQuestion = computed<Question | undefined>(
     (quiz = this.quiz(), currentQuestionIx = this.currentQuestionIx()) =>
@@ -76,8 +78,10 @@ export class QuizComponent {
     (
       hasNextQuestion = this.hasNextQuestion(),
       currentQuestion = this.currentQuestion(),
-    ) => !hasNextQuestion || (currentQuestion?.status === 'unanswered')
+    ) => !hasNextQuestion || currentQuestion?.status === 'unanswered',
   );
+
+  // Logic
 
   nextQuestion() {
     this.currentQuestionIx.update((value) => value + 1);
@@ -88,18 +92,6 @@ export class QuizComponent {
     correct: 0,
     incorrect: 0,
   };
-
-  constructor() {
-    effect(async () => {
-      const id = this.id();
-      untracked(() => this.loadQuiz(id));
-    });
-  }
-
-  private async loadQuiz(id: number) {
-    const quiz = await this.quizService.findById(id);
-    this.quiz.set(quiz);
-  }
 
   answer(questionId: number, choiceId: number) {
     const question = this.questions().find(

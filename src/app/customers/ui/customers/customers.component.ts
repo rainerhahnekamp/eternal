@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CustomerPipe } from '../customer.pipe';
 import { RouterLinkWithHref } from '@angular/router';
-import { DatePipe, NgIf } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Customer } from '@app/customers/model';
 
 export interface CustomerWithSelected extends Customer {
@@ -22,18 +22,18 @@ export interface CustomersViewModel {
 }
 
 @Component({
-    selector: 'app-customers',
-    templateUrl: './customers.component.html',
-    imports: [
-        MatIconModule,
-        MatButtonModule,
-        CustomerPipe,
-        MatPaginatorModule,
-        MatTableModule,
-        MatSlideToggleModule,
-        RouterLinkWithHref,
-        DatePipe,
-    ]
+  selector: 'app-customers',
+  templateUrl: './customers.component.html',
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    CustomerPipe,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSlideToggleModule,
+    RouterLinkWithHref,
+    DatePipe,
+  ],
 })
 export class CustomersComponent {
   viewModel = input.required<CustomersViewModel>();

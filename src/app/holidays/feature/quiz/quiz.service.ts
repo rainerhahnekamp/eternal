@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { firstValueFrom, map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Quiz } from './model';
 
 export interface QuizApi {
@@ -19,10 +19,10 @@ export interface QuizApi {
 export class QuizService {
   readonly #httpClient = inject(HttpClient);
 
-  findById(id: number): Promise<Quiz> {
-    return firstValueFrom(
-      this.#httpClient.get<QuizApi>(`/holiday/${id}/quiz`).pipe(map(toQuiz)),
-    );
+  findById(id: number): Observable<Quiz> {
+    return this.#httpClient
+      .get<QuizApi>(`/holiday/${id}/quiz`)
+      .pipe(map(toQuiz));
   }
 }
 

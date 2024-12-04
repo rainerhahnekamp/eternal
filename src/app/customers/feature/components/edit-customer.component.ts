@@ -9,15 +9,14 @@ import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { customersActions } from '../+state/customers.actions';
 import { fromCustomers } from '../+state/customers.selectors';
-import { AsyncPipe, NgIf } from '@angular/common';
 import { CustomerComponent } from '@app/customers/ui';
 import { Customer } from '@app/customers/model';
 import { selectCountries } from '@app/shared/master-data';
 import { Store } from '@ngrx/store';
 
 @Component({
-    selector: 'app-edit-customer',
-    template: `
+  selector: 'app-edit-customer',
+  template: `
     @if (data(); as value) {
       <app-customer
         [customer]="value.customer"
@@ -28,7 +27,7 @@ import { Store } from '@ngrx/store';
       ></app-customer>
     }
   `,
-    imports: [CustomerComponent]
+  imports: [CustomerComponent],
 })
 export class EditCustomerComponent {
   store = inject(Store);

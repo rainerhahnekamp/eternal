@@ -106,11 +106,11 @@ importers:
         specifier: ^18.4.0
         version: 18.6.3
       '@softarc/eslint-plugin-sheriff':
-        specifier: ^0.14.3
-        version: 0.14.6(@softarc/sheriff-core@0.14.6(typescript@5.5.4))(eslint@8.57.1)
+        specifier: ^0.18.0
+        version: 0.18.0(@softarc/sheriff-core@0.18.0(typescript@5.5.4))(@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)
       '@softarc/sheriff-core':
-        specifier: ^0.14.3
-        version: 0.14.6(typescript@5.5.4)
+        specifier: ^0.18.0
+        version: 0.18.0(typescript@5.5.4)
       '@testing-library/angular':
         specifier: ^17.3.4
         version: 17.3.4(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.1(@angular/animations@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/router@19.0.1(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.1(@angular/animations@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1))(@testing-library/dom@10.4.0)
@@ -187,7 +187,7 @@ importers:
         specifier: ~5.5.4
         version: 5.5.4
       typescript-eslint:
-        specifier: ^8.4.0
+        specifier: ^8.17.0
         version: 8.17.0(eslint@8.57.1)(typescript@5.5.4)
 
 packages:
@@ -2029,14 +2029,16 @@ packages:
   '@socket.io/component-emitter@3.1.2':
     resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
 
-  '@softarc/eslint-plugin-sheriff@0.14.6':
-    resolution: {integrity: sha512-5qzjnVE1aFQnTIaqAaYzbl2Qlenalh2mLHnzJD++V214kxTTz1jXiohNrmIFIxSwrN8swTsGdQLVKCQ0A2VPSQ==}
+  '@softarc/eslint-plugin-sheriff@0.18.0':
+    resolution: {integrity: sha512-9oQaN15rtpyTUJvh1nKh0YTY5oYcnGrKJf79NNoXUmoeDQIRpzMtWBm85Mcxvbqs80918Q/zd70yUOeWXc3kAA==}
     peerDependencies:
-      '@softarc/sheriff-core': 0.14.6
-      eslint: '>=8.0.0'
+      '@softarc/sheriff-core': 0.18.0
+      '@typescript-eslint/utils': ^5.48.2 || ^6.0.0 || ^7.0.0 || ^8.0.0-alpha.20
+      eslint: ^8.0.0 || ^9.0.0
 
-  '@softarc/sheriff-core@0.14.6':
-    resolution: {integrity: sha512-x31f6EhzSXw5oX2JHWHt2QBSeUKY6Kp752pWDZ3TKuuOdavbhzDa6D7/XEx7a8GnQUqm7MI5JAhy/ycZthQTzQ==}
+  '@softarc/sheriff-core@0.18.0':
+    resolution: {integrity: sha512-HnwAn1sKEHY+QJUHN4mIpcn+RDfDQwmbEmWt/zobEjZqiYsXsY586MNl1/rjc8tJZ/aWtr5lyatxyC5TUs4UBg==}
+    hasBin: true
     peerDependencies:
       typescript: '>=4.8'
 
@@ -7610,12 +7612,13 @@ snapshots:
 
   '@socket.io/component-emitter@3.1.2': {}
 
-  '@softarc/eslint-plugin-sheriff@0.14.6(@softarc/sheriff-core@0.14.6(typescript@5.5.4))(eslint@8.57.1)':
+  '@softarc/eslint-plugin-sheriff@0.18.0(@softarc/sheriff-core@0.18.0(typescript@5.5.4))(@typescript-eslint/utils@8.17.0(eslint@8.57.1)(typescript@5.5.4))(eslint@8.57.1)':
     dependencies:
-      '@softarc/sheriff-core': 0.14.6(typescript@5.5.4)
+      '@softarc/sheriff-core': 0.18.0(typescript@5.5.4)
+      '@typescript-eslint/utils': 8.17.0(eslint@8.57.1)(typescript@5.5.4)
       eslint: 8.57.1
 
-  '@softarc/sheriff-core@0.14.6(typescript@5.5.4)':
+  '@softarc/sheriff-core@0.18.0(typescript@5.5.4)':
     dependencies:
       typescript: 5.5.4
 

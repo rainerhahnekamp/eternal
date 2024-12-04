@@ -1,11 +1,11 @@
 import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 
-export type ConfigurationFeatures = {
+export interface ConfigurationFeatures {
   mockHolidays: boolean;
   mockCustomers: boolean;
   pagedCustomers: boolean;
-};
+}
 
 export class Configuration {
   #baseUrl: string;

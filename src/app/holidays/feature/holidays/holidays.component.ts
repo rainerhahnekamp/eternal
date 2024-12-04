@@ -2,13 +2,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { holidaysActions } from '../+state/holidays.actions';
 import { fromHolidays } from '../+state/holidays.selectors';
-import { AsyncPipe, NgForOf } from '@angular/common';
 import { HolidayCardComponent } from '@app/holidays/ui';
 import { Holiday } from '@app/holidays/model';
 
 @Component({
-    selector: 'app-holidays',
-    template: `<h2>Choose among our Holidays</h2>
+  selector: 'app-holidays',
+  template: `<h2>Choose among our Holidays</h2>
     <div class="flex flex-wrap justify-evenly">
       @for (holiday of holidays(); track byId($index, holiday)) {
         <app-holiday-card
@@ -19,7 +18,7 @@ import { Holiday } from '@app/holidays/model';
         </app-holiday-card>
       }
     </div> `,
-    imports: [HolidayCardComponent]
+  imports: [HolidayCardComponent],
 })
 export class HolidaysComponent implements OnInit {
   #store = inject(Store);
