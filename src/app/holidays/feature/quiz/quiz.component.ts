@@ -73,7 +73,7 @@ export class QuizComponent {
 
   isNextButtonDisabled = linkedSignal(() => {
     this.currentQuestion();
-    return !this.hasNextQuestion;
+    return true;
   });
 
   // Logic
@@ -111,6 +111,7 @@ export class QuizComponent {
     });
 
     this.updateStatus();
+    this.isNextButtonDisabled.set(false);
   }
 
   private updateStatus() {
