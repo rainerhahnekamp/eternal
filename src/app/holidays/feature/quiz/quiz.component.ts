@@ -64,25 +64,19 @@ export class QuizComponent {
   // UI State
   currentQuestionIx = signal(0);
   currentQuestion = computed<Question | undefined>(
-    (quiz = this.quiz(), currentQuestionIx = this.currentQuestionIx()) =>
-      quiz.questions[currentQuestionIx],
+    () => this.quiz().questions[this.currentQuestionIx()],
   );
 
   hasNextQuestion = computed(
-    (quiz = this.quiz(), currentQuestionIx = this.currentQuestionIx()) => {
-      return currentQuestionIx < quiz.questions.length - 1;
-    },
+    () => this.currentQuestionIx() < this.quiz().questions.length - 1,
   );
 
-  isNextButtonDisabled = computed(
-    (
-      hasNextQuestion = this.hasNextQuestion(),
-      currentQuestion = this.currentQuestion(),
-    ) => !hasNextQuestion || currentQuestion?.status === 'unanswered',
-  );
+  isNextButtonDisabled = linkedSignal(() => {
+    this.currentQuestion();
+    return !this.hasNextQuestion;
+  });
 
   // Logic
-
   nextQuestion() {
     this.currentQuestionIx.update((value) => value + 1);
   }
