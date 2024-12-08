@@ -1,4 +1,3 @@
-// eslint-disable-next-line @softarc/sheriff/dependency-rule
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { of } from 'rxjs';

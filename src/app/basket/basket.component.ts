@@ -48,7 +48,7 @@ export default class BasketComponent {
   protected readonly selectedProductId = signal(0);
   amount = signal(1);
 
-  #resetEffect = effect(() => {
+  private readonly resetEffect = effect(() => {
     this.selectedProductId();
     untracked(() => this.amount.set(1));
   });
