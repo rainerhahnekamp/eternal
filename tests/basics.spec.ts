@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 test.describe('Basics', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('');
+    await expect(page.getByText('Application is ready')).toBeVisible();
   });
 
   test('header is Unforgettable Holidays', async ({ page }) => {
@@ -107,7 +108,7 @@ test.describe('Basics', () => {
       await page.getByRole('link', { name: 'Holidays', exact: true }).click();
       await page
         .getByLabel(/Firenze/i)
-        .getByRole('link', { name: 'Get a Brochure' })
+        .getByRole('link', { name: 'Request Brochure' })
         .click();
       await page.getByLabel('Address').fill('Domgasse 5');
       await page.getByRole('button', { name: 'Send' }).click();
