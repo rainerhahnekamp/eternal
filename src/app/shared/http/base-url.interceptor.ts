@@ -1,6 +1,6 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Configuration } from '@app/shared/config';
+import { Configuration } from '../config/configuration';
 
 export const baseUrlInterceptor: HttpInterceptorFn = (req, next) => {
   const baseUrl = inject(Configuration).baseUrl;
