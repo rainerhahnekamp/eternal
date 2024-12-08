@@ -1,18 +1,20 @@
 <a class="home" routerLink="/">
   <h1>
-    <img alt="Eteneral" src="/assets/logo.png" />
+    <img alt="Eternal" src="/assets/logo.png" />
     Unforgettable Holidays
   </h1>
 </a>
 <div class="security">
-  @if (user$ | async; as user) {
-    @if (user.anonymous) {
+  @if (user(); as userValue) {
+    @if (userValue.anonymous) {
       <button data-testid="btn-sign-in" mat-raised-button (click)="signIn()">
         Sign In
       </button>
     } @else {
       <div class="flex items-center">
-        <p class="profile" data-testid="p-username">Welcome {{ user.name }}</p>
+        <p class="profile" data-testid="p-username">
+          Welcome {{ userValue.name }}
+        </p>
         <button
           (click)="signOut()"
           data-testid="btn-sign-out"
