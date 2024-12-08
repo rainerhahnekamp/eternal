@@ -19,6 +19,7 @@ test.describe('Sequential CRUD', () => {
 
   test.beforeEach(async ({ page, sidemenuPage }) => {
     await page.goto('');
+    await expect(page.getByText('Application is ready')).toBeVisible();
     await page.getByRole('switch', { name: 'Mock Customers' }).click();
     await sidemenuPage.select('Customers');
   });

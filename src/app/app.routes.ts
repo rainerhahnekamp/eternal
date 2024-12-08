@@ -1,10 +1,13 @@
 import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { NewsletterComponent } from './newsletter/newsletter.component';
-import { SecurityService } from 'src/app/shared/security';
 import { inject } from '@angular/core';
 import { filter } from 'rxjs/operators';
-import { Configuration } from '@app/shared/config';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { Configuration } from './shared/config/configuration';
+import { SecurityStore } from './shared/security/security-store';
+import { ChatComponent } from './chat/chat.component';
+import BasketComponent from './basket/basket.component';
 
 export const appRoutes: Routes = [
   {
@@ -25,7 +28,7 @@ export const appRoutes: Routes = [
         }
       },
       () => {
-        return inject(SecurityService).loaded$.pipe(filter(Boolean));
+        return toObservable(inject(SecurityStore).loaded).pipe(filter(Boolean));
       },
     ],
     children: [
@@ -36,21 +39,24 @@ export const appRoutes: Routes = [
       { path: 'home', redirectTo: '' },
       {
         path: 'holidays',
-        loadChildren: () => import('@app/holidays/feature'),
+        loadChildren: () => import('./domains/holidays/api/holidays-routes'),
       },
       {
         path: 'customer',
-        loadChildren: () => import('@app/customers/feature'),
+        loadChildren: () =>
+          import('./domains/customers/feature/customers.routes'),
       },
       {
         path: 'bookings',
-        loadChildren: () => import('@app/bookings'),
+        loadChildren: () => import('./domains/bookings/bookings.routes'),
       },
       { path: 'newsletter', component: NewsletterComponent },
       {
         path: 'diary',
-        loadChildren: () => import('@app/diary'),
+        loadChildren: () => import('src/app/domains/diary/diary.routes'),
       },
+      { path: 'chat', component: ChatComponent },
+      { path: 'basket', component: BasketComponent },
     ],
   },
 ];

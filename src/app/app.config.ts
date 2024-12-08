@@ -3,50 +3,65 @@ import {
   ErrorHandler,
   importProvidersFrom,
   LOCALE_ID,
+  provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { appRoutes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
 import {
   provideHttpClient,
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { provideSecurity, securityInterceptor } from 'src/app/shared/security';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { deAT } from 'date-fns/locale';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { ErrorHandlerService } from '@app/core/error-handler.service';
+import { IMAGE_CONFIG } from '@angular/common';
 import {
-  loadingInterceptor,
-  sharedUiMessagingProvider,
-} from '@app/shared/ui-messaging';
-import { baseUrlInterceptor, errorInterceptor } from '@app/shared/http';
-import { Configuration } from '@app/shared/config';
-import { sharedMasterDataProvider } from '@app/shared/master-data';
+  provideClientHydration,
+  withEventReplay,
+} from '@angular/platform-browser';
+import { baseUrlInterceptor } from './shared/http/base-url.interceptor';
+import { loadingInterceptor } from './shared/ui-messaging/loader/loading.interceptor';
+import { errorInterceptor } from './shared/http/error.interceptor';
+import { sharedMasterDataProvider } from './shared/master-data/shared-master-data.provider';
+import { sharedUiMessagingProvider } from './shared/ui-messaging/shared-ui-messaging.provider';
+import { Configuration } from './shared/config/configuration';
+import { securityInterceptor } from './shared/security/security-interceptor';
+import { ErrorHandlerService } from './core/error-handler.service';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { environment } from '../environments/environment';
+import { customersInterceptor } from './domains/customers/feature/customers.interceptor';
+import { holidaysInterceptor } from './domains/holidays/api/holidays.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimations(),
-    provideClientHydration(),
+    provideExperimentalZonelessChangeDetection(),
+    provideAnimationsAsync(),
+    provideClientHydration(withEventReplay()),
+    {
+      provide: IMAGE_CONFIG,
+      useValue: {
+        disableImageSizeWarning: true,
+        disableImageLazyLoadWarning: true,
+      },
+    },
     provideStore(),
     provideRouter(appRoutes, withComponentInputBinding()),
     provideHttpClient(
+      withFetch(),
       withInterceptors([
+        customersInterceptor,
+        holidaysInterceptor,
         baseUrlInterceptor,
         loadingInterceptor,
         errorInterceptor,
         securityInterceptor,
       ]),
-      withFetch(),
     ),
-    provideStoreDevtools(),
-    ...provideSecurity,
+    ...environment.providers,
     ...sharedMasterDataProvider,
     ...sharedUiMessagingProvider,
     importProvidersFrom([MatDateFnsModule]),
@@ -62,11 +77,7 @@ export const appConfig: ApplicationConfig = {
     { provide: ErrorHandler, useClass: ErrorHandlerService },
     {
       provide: Configuration,
-      useValue: new Configuration(
-        'https://api.eternal-holidays.net',
-        true,
-        false,
-      ),
+      useValue: new Configuration(environment.baseUrl, true, false),
     },
   ],
 };

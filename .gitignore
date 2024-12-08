@@ -52,3 +52,7 @@ session.json
 # Spring
 .gradle
 /test-results/
+/playwright-report/
+/playwright/.cache/
+
+*storybook.log

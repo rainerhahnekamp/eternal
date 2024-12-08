@@ -12,6 +12,7 @@ const test = base.extend<CustomersFixtures & ShellFixtures>({
 test.describe('Basics', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('');
+    await expect(page.getByText('Application is ready')).toBeVisible();
   });
 
   test('header is Unforgettable Holidays', async ({ page }) => {
