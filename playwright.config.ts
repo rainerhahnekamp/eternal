@@ -27,14 +27,27 @@ export default defineConfig({
     baseURL: 'http://localhost:4200',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
+      name: 'authentication',
       use: { ...devices['Desktop Chrome'] },
+      testMatch: 'authenticate.setup.ts',
+    },
+    {
+      name: 'john-list',
+      use: { ...devices['Desktop Chrome'], storageState: 'john-list.json' },
+      testDir: 'tests/john-list',
+      dependencies: ['authentication'],
+    },
+
+    {
+      name: 'unauthenticated',
+      use: { ...devices['Desktop Chrome'] },
+      testDir: 'tests/unauthenticated',
     },
 
     /* Test against mobile viewports. */
