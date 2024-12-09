@@ -20,12 +20,11 @@ describe('Quiz Service', () => {
     }).createComponent(QuizComponent);
 
     fixture.componentRef.setInput('id', 1);
-    fixture.autoDetectChanges(true);
     const httpClient = TestBed.inject(HttpTestingController);
-    const req = httpClient.expectOne('/holiday/1/quiz');
-    req.flush(createQuiz(1));
     await fixture.whenStable();
 
+    const req = httpClient.expectOne('/holiday/1/quiz');
+    req.flush(createQuiz(1));
     const question = screen.getByLabelText('question');
     const status = screen.getByLabelText('quiz-status');
 
