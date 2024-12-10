@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -9,6 +9,7 @@ import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { FormErrorsComponent } from '../shared/form/form-errors.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-newsletter',
@@ -27,8 +28,9 @@ import { FormErrorsComponent } from '../shared/form/form-errors.component';
         </button>
       </div>
     </form>
-
-    <p data-testid="p-message">{{ message() }}</p>`,
+    <p>{{ city() }}</p>
+    <p>{{ state() | json }}</p>
+    <!--    <p data-testid="p-message">{{ message() }}</p>--> `,
   imports: [
     ReactiveFormsModule,
     MatLabel,
@@ -38,19 +40,39 @@ import { FormErrorsComponent } from '../shared/form/form-errors.component';
     MatIcon,
     MatButton,
     FormErrorsComponent,
+    JsonPipe,
   ],
 })
 export class NewsletterComponent {
-  message = signal('');
+  isFormValid = signal(false);
+  message = computed(() => {
+    console.log('executing computed...');
+    return this.isFormValid() ? 'Form is valid' : 'Form is invalid';
+  });
+
+  constructor() {
+    effect(() => console.log(this.isFormValid()));
+  }
+
   formGroup = inject(NonNullableFormBuilder).group({
     email: ['', Validators.required],
   });
 
+  state = signal({
+    id: 1,
+    name: 'Konrad',
+    location: {
+      city: 'Silkeborg',
+      country: 'Denmark',
+    },
+  });
+
+  city = computed(() => this.state().location.city);
+
   handleSubmit() {
-    if (this.formGroup.valid) {
-      this.message.set('Thank you for your subscription');
-    } else {
-      this.message.set('Please provide an email');
-    }
+    this.state.update((value) => {
+      value.location = { ...value.location, city: 'Aarhus' };
+      return value;
+    });
   }
 }
