@@ -1,4 +1,4 @@
-import { SheriffConfig } from '@softarc/sheriff-core';
+import { sameTag, SheriffConfig } from "@softarc/sheriff-core";
 
 /**
  * Minimal configuration for Sheriff
@@ -8,11 +8,13 @@ import { SheriffConfig } from '@softarc/sheriff-core';
 
 export const config: SheriffConfig = {
   modules: {
+    'src/app/shared': 'shared',
     'src/app/<domain>': {
-      feature: ['type:feature'],
-      ui: ['type:ui'],
-      data: ['type:data'],
-      model: ['type:model'],
+      api: ['domain:<domain>:api', 'type:api'],
+      feature: ['domain:<domain>', 'type:feature'],
+      ui: ['domain:<domain>', 'type:ui'],
+      data: ['domain:<domain>', 'type:data'],
+      model: ['domain:<domain>', 'type:model'],
     },
   },
   enableBarrelLess: true,
@@ -20,7 +22,10 @@ export const config: SheriffConfig = {
     root: ['noTag', 'type:feature'],
     noTag: 'noTag',
 
-    'type:feature': ['type:*'],
+    'domain:*': [sameTag, 'shared'],
+    'domain:quiz': 'domain:booking:api',
+
+    'type:feature': ['type:*', 'shared'],
     'type:ui': 'type:model',
     'type:data': 'type:model',
     'type:model': [],

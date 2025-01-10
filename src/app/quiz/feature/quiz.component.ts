@@ -4,6 +4,7 @@ import { Question } from '../model/model';
 import { QuizQuestionComponent } from '../ui/quiz-question.component';
 import { QuizService } from '../data/quiz.service';
 import { UserService } from "../../shared/user.service";
+import { BookingInfoService } from "../../booking/api/booking-info.service";
 
 @Component({
   selector: 'app-quiz',
@@ -28,6 +29,7 @@ import { UserService } from "../../shared/user.service";
 export class QuizComponent {
   readonly quizService = inject(QuizService);
   readonly userService = inject(UserService);
+  readonly bookingInfo = inject(BookingInfoService);
 
   protected readonly quizResource = this.quizService.quizResource;
   protected readonly status = this.quizService.status;
