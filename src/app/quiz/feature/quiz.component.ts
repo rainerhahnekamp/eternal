@@ -3,6 +3,7 @@ import { QuizProgressComponent } from '../ui/quiz-progress.component';
 import { Question } from '../model/model';
 import { QuizQuestionComponent } from '../ui/quiz-question.component';
 import { QuizService } from '../data/quiz.service';
+import { UserService } from "../../shared/user.service";
 
 @Component({
   selector: 'app-quiz',
@@ -26,9 +27,12 @@ import { QuizService } from '../data/quiz.service';
 })
 export class QuizComponent {
   readonly quizService = inject(QuizService);
+  readonly userService = inject(UserService);
+
   protected readonly quizResource = this.quizService.quizResource;
   protected readonly status = this.quizService.status;
   protected readonly progress = this.quizService.progress;
+
 
   handleAnswer(question: Question, answerId: number) {
     this.quizService.handleAnswer(question, answerId);
