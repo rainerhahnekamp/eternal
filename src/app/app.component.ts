@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { QuizComponent } from './quiz.component';
+import { QuizComponent } from './quiz/feature/quiz.component';
 import {
   MatDrawerContainer,
   MatDrawerContent,
