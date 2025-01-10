@@ -15,11 +15,12 @@ export const config: SheriffConfig = {
       model: ['type:model'],
     },
   },
+  enableBarrelLess: true,
   depRules: {
-    root: 'noTag',
+    root: ['noTag', 'type:feature'],
     noTag: 'noTag',
 
-    'type:feature': ['type:ui'],
+    'type:feature': ['type:*'],
     'type:ui': 'type:model',
     'type:data': 'type:model',
     'type:model': [],

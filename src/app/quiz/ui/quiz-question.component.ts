@@ -1,7 +1,6 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { Question } from '../model/model';
-import { QuizService } from '../data/quiz.service';
 
 @Component({
   selector: 'app-quiz-question',
@@ -27,9 +26,7 @@ export class QuizQuestionComponent {
   readonly status = input.required<string>();
   answered = output<number>();
 
-  readonly quizService = inject(QuizService);
-
   handleAnswer(id: number) {
-    this.quizService.handleAnswer(this.question(), id);
+    this.answered.emit(id);
   }
 }
