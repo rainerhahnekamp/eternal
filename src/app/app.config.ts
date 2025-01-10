@@ -16,12 +16,19 @@ import { deAT } from 'date-fns/locale';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideRouter } from '@angular/router';
+import { QuizComponent } from './quiz/feature/quiz.component';
+import { BookingComponent } from './booking/feature/booking.component';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideAnimationsAsync(),
     provideHttpClient(withFetch(), withInterceptors([])),
+    provideRouter([
+      { path: 'quiz', component: QuizComponent },
+      { path: 'booking', component: BookingComponent },
+    ]),
     importProvidersFrom([MatDateFnsModule]),
     {
       provide: MAT_DATE_LOCALE,
