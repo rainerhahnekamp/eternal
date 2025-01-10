@@ -1,10 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Injectable } from "@angular/core";
 import { QuizProgressComponent } from '../ui/quiz-progress.component';
 import { Question } from '../model/model';
 import { QuizQuestionComponent } from '../ui/quiz-question.component';
 import { QuizService } from '../data/quiz.service';
 import { UserService } from "../../shared/user.service";
 import { BookingInfoService } from "../../booking/api/booking-info.service";
+
+@Injectable()
+export abstract class UserInfo {
+  abstract hasUserBooked(holiday: string): boolean
+}
 
 @Component({
   selector: 'app-quiz',

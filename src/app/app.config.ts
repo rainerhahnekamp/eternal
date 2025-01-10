@@ -17,8 +17,9 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { QuizComponent } from './quiz/feature/quiz.component';
+import { QuizComponent, UserInfo } from "./quiz/feature/quiz.component";
 import { BookingComponent } from './booking/feature/booking.component';
+import { DefaultUserInfo } from "./default-user-info";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,7 +27,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(withFetch(), withInterceptors([])),
     provideRouter([
-      { path: 'quiz', component: QuizComponent },
+      { path: 'quiz', component: QuizComponent, providers: [{provide: UserInfo, useValue: DefaultUserInfo}] },
       { path: 'booking', component: BookingComponent },
     ]),
     importProvidersFrom([MatDateFnsModule]),
