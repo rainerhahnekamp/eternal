@@ -1,19 +1,21 @@
-import { AsyncPipe, NgStyle } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { NgStyle } from '@angular/common';
+import { Component, computed, inject } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { LoadingService } from '@app/shared/ui-messaging/loader/loading.service';
+import { LoadingService } from './loading.service';
 
 @Component({
   selector: 'app-loader',
   template: `<mat-progress-bar
     [ngStyle]="{
-      visibility: (loadingService.loading$ | async) ? 'visible' : 'hidden'
+      visibility: visibility(),
     }"
     mode="indeterminate"
   ></mat-progress-bar>`,
-  standalone: true,
-  imports: [MatProgressBarModule, NgStyle, AsyncPipe],
+  imports: [MatProgressBarModule, NgStyle],
 })
 export class LoaderComponent {
-  loadingService = inject(LoadingService);
+  readonly #loadingService = inject(LoadingService);
+  protected readonly visibility = computed(() =>
+    this.#loadingService.loading() ? 'visible' : 'hidden',
+  );
 }

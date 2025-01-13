@@ -13,6 +13,7 @@ const test = base.extend<ShellFixtures & CustomersFixtures>({
 test.describe('CRUD for Customers', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('');
+    await expect(page.getByText('Application is ready')).toBeVisible();
   });
 
   test('add, edit, and delete customer', async ({

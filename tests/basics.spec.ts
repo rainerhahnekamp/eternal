@@ -1,17 +1,10 @@
-import { expect, test as base } from '@playwright/test';
-import {
-  CustomersFixtures,
-  customersFixtures,
-} from './fixtures/customer.fixtures';
-import { shellFixtures, ShellFixtures } from './fixtures/shell.fixtures';
+import { expect } from '@playwright/test';
+import { test } from './fixtures/test';
 
-const test = base.extend<CustomersFixtures & ShellFixtures>({
-  ...customersFixtures,
-  ...shellFixtures,
-});
 test.describe('Basics', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('');
+    await expect(page.getByText('Application is ready')).toBeVisible();
   });
 
   test('header is Unforgettable Holidays', async ({ page }) => {
