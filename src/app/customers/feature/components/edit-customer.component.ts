@@ -12,8 +12,8 @@ import { CustomersStore } from '@app/customers/data';
 import { Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-edit-customer',
-  template: `
+    selector: 'app-edit-customer',
+    template: `
     @if (data(); as value) {
       <app-customer
         [customer]="value.customer"
@@ -24,8 +24,7 @@ import { Store } from '@ngrx/store';
       ></app-customer>
     }
   `,
-  standalone: true,
-  imports: [CustomerComponent, NgIf, AsyncPipe],
+    imports: [CustomerComponent, NgIf, AsyncPipe]
 })
 export class EditCustomerComponent {
   showSubmitButton = signal(true);

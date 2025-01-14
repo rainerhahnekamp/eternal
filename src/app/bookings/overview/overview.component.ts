@@ -9,10 +9,9 @@ export interface ViewModel {
 }
 
 @Component({
-  selector: 'app-overview',
-  templateUrl: './overview.component.html',
-  standalone: true,
-  imports: [MatTableModule, CommonModule],
+    selector: 'app-overview',
+    templateUrl: './overview.component.html',
+    imports: [MatTableModule, CommonModule]
 })
 export class OverviewComponent {
   @Input() viewModel: ViewModel | undefined;

@@ -8,8 +8,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Configuration } from '@app/shared/config';
 
 @Component({
-  selector: 'app-home',
-  template: `<h2 data-testid="greeting">Welcome to Eternal</h2>
+    selector: 'app-home',
+    template: `<h2 data-testid="greeting">Welcome to Eternal</h2>
     <p data-testid="txt-greeting-1">
       Eternal is an imaginary travel agency and is used as training application
       for Angular developers.
@@ -31,8 +31,7 @@ import { Configuration } from '@app/shared/config';
         >Mock Holidays
       </mat-slide-toggle>
     </form> `,
-  standalone: true,
-  imports: [ReactiveFormsModule, MatSlideToggleModule],
+    imports: [ReactiveFormsModule, MatSlideToggleModule]
 })
 export class HomeComponent implements OnInit {
   config = inject(Configuration);

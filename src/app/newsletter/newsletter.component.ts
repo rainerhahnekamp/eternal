@@ -6,16 +6,15 @@ import {
 } from '@angular/forms';
 
 @Component({
-  selector: 'app-newsletter',
-  template: `<h2>Newsletter</h2>
+    selector: 'app-newsletter',
+    template: `<h2>Newsletter</h2>
     <form (ngSubmit)="handleSubmit()" [formGroup]="formGroup">
       <input data-testid="inp-email" formControlName="email" type="text" />
       <button data-testid="btn-subscribe">Subscribe</button>
     </form>
 
     <p data-testid="p-message">{{ message() }}</p> `,
-  standalone: true,
-  imports: [ReactiveFormsModule],
+    imports: [ReactiveFormsModule]
 })
 export class NewsletterComponent {
   message = signal('');

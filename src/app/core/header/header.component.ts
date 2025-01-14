@@ -5,11 +5,10 @@ import { RouterLink } from '@angular/router';
 import { SecurityService } from 'src/app/shared/security';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
-  standalone: true,
-  imports: [RouterLink, MatButtonModule, AsyncPipe, NgIf],
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    imports: [RouterLink, MatButtonModule, AsyncPipe, NgIf]
 })
 export class HeaderComponent {
   #securityService = inject(SecurityService);

@@ -11,18 +11,17 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { assertDefined } from '@app/shared/util';
 
 @Component({
-  selector: 'app-request-info',
-  templateUrl: './request-info.component.html',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatButtonModule,
-    AsyncPipe,
-    NgIf,
-  ],
+    selector: 'app-request-info',
+    templateUrl: './request-info.component.html',
+    imports: [
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatButtonModule,
+        AsyncPipe,
+        NgIf,
+    ]
 })
 export class RequestInfoComponent implements OnInit {
   #formBuilder = inject(NonNullableFormBuilder);

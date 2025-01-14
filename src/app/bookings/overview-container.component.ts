@@ -4,12 +4,11 @@ import { OverviewComponent } from '@app/bookings/overview/overview.component';
 import { CustomersApi } from '@app/customers/api';
 
 @Component({
-  selector: 'app-overview-container',
-  template: ` @if (viewModel(); as value) {
+    selector: 'app-overview-container',
+    template: ` @if (viewModel(); as value) {
     <app-overview [viewModel]="value"></app-overview>
   }`,
-  standalone: true,
-  imports: [OverviewComponent],
+    imports: [OverviewComponent]
 })
 export class OverviewContainerComponent {
   #repo = inject(BookingsRepository);

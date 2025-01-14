@@ -4,10 +4,9 @@ import { CustomersRepository } from '@app/customers/data';
 import { MessageService } from '@app/shared/ui-messaging';
 
 @Component({
-  selector: 'app-customers-root',
-  templateUrl: './customers-root.component.html',
-  standalone: true,
-  imports: [RouterOutlet],
+    selector: 'app-customers-root',
+    templateUrl: './customers-root.component.html',
+    imports: [RouterOutlet]
 })
 export class CustomersRootComponent {
   constructor(

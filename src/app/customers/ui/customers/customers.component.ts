@@ -28,20 +28,19 @@ export interface CustomersViewModel {
 }
 
 @Component({
-  selector: 'app-customers',
-  templateUrl: './customers.component.html',
-  standalone: true,
-  imports: [
-    MatIconModule,
-    MatButtonModule,
-    CustomerPipe,
-    MatPaginatorModule,
-    MatTableModule,
-    MatSlideToggleModule,
-    RouterLinkWithHref,
-    NgIf,
-    DatePipe,
-  ],
+    selector: 'app-customers',
+    templateUrl: './customers.component.html',
+    imports: [
+        MatIconModule,
+        MatButtonModule,
+        CustomerPipe,
+        MatPaginatorModule,
+        MatTableModule,
+        MatSlideToggleModule,
+        RouterLinkWithHref,
+        NgIf,
+        DatePipe,
+    ]
 })
 export class CustomersComponent implements OnChanges {
   @Input() viewModel: CustomersViewModel | undefined;

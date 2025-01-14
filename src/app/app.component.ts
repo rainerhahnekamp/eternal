@@ -7,17 +7,16 @@ import { RouterOutlet } from '@angular/router';
 import { LoaderComponent } from '@app/shared/ui-messaging';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  standalone: true,
-  imports: [
-    HeaderComponent,
-    LoaderComponent,
-    SidemenuComponent,
-    MatToolbarModule,
-    MatSidenavModule,
-    RouterOutlet,
-  ],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    imports: [
+        HeaderComponent,
+        LoaderComponent,
+        SidemenuComponent,
+        MatToolbarModule,
+        MatSidenavModule,
+        RouterOutlet,
+    ]
 })
 export class AppComponent {}

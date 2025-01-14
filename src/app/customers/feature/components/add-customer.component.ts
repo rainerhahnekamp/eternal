@@ -7,15 +7,14 @@ import { CustomersStore } from '@app/customers/data';
 import { Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-add-customer',
-  template: ` <app-customer
+    selector: 'app-add-customer',
+    template: ` <app-customer
     [customer]="customer"
     [countries]="countries()"
     (save)="submit($event)"
     [showDeleteButton]="false"
   ></app-customer>`,
-  standalone: true,
-  imports: [CustomerComponent, NgIf, AsyncPipe],
+    imports: [CustomerComponent, NgIf, AsyncPipe]
 })
 export class AddCustomerComponent {
   #store = inject(Store);
