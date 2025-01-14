@@ -7,21 +7,20 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { assertDefined } from '@app/shared/util';
 
 @Component({
-    selector: 'app-request-info',
-    templateUrl: './request-info.component.html',
-    imports: [
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatButtonModule,
-        AsyncPipe,
-        NgIf,
-    ]
+  selector: 'app-request-info',
+  templateUrl: './request-info.component.html',
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatButtonModule,
+    AsyncPipe,
+  ],
 })
 export class RequestInfoComponent implements OnInit {
   #formBuilder = inject(NonNullableFormBuilder);

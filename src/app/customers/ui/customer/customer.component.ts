@@ -16,27 +16,25 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { RouterLinkWithHref } from '@angular/router';
-import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { FormErrorsComponent, Options } from '@app/shared/form';
 import { Customer } from '@app/customers/model';
 import { MatSelectModule } from '@angular/material/select';
 
 @Component({
-    selector: 'app-customer',
-    templateUrl: './customer.component.html',
-    styleUrls: ['./customer.component.scss'],
-    imports: [
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        RouterLinkWithHref,
-        NgIf,
-        MatInputModule,
-        FormErrorsComponent,
-        MatSelectModule,
-    ]
+  selector: 'app-customer',
+  templateUrl: './customer.component.html',
+  styleUrls: ['./customer.component.scss'],
+  imports: [
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    RouterLinkWithHref,
+    MatInputModule,
+    FormErrorsComponent,
+    MatSelectModule,
+  ],
 })
 export class CustomerComponent implements OnChanges {
   @Input() customer: Customer | undefined;

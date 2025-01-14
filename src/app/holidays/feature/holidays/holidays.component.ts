@@ -1,13 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AsyncPipe, NgForOf } from '@angular/common';
 import { HolidayCardComponent } from '@app/holidays/ui';
 import { Holiday } from '@app/holidays/model';
 import { fromHolidays, holidaysActions } from '@app/holidays/data';
 
 @Component({
-    selector: 'app-holidays',
-    template: `<h2>Choose among our Holidays</h2>
+  selector: 'app-holidays',
+  template: `<h2>Choose among our Holidays</h2>
     <div class="flex flex-wrap justify-evenly">
       @for (holiday of holidays(); track byId($index, holiday)) {
         <app-holiday-card
@@ -18,7 +17,7 @@ import { fromHolidays, holidaysActions } from '@app/holidays/data';
         </app-holiday-card>
       }
     </div> `,
-    imports: [AsyncPipe, HolidayCardComponent, NgForOf]
+  imports: [HolidayCardComponent],
 })
 export class HolidaysComponent {
   #store = inject(Store);

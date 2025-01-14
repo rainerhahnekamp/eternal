@@ -2,7 +2,6 @@ import { Component, inject, signal, Signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { AsyncPipe, NgIf } from '@angular/common';
 import { CustomerComponent } from '@app/customers/ui';
 import { Customer } from '@app/customers/model';
 import { Options } from '@app/shared/form';
@@ -12,8 +11,8 @@ import { CustomersStore } from '@app/customers/data';
 import { Store } from '@ngrx/store';
 
 @Component({
-    selector: 'app-edit-customer',
-    template: `
+  selector: 'app-edit-customer',
+  template: `
     @if (data(); as value) {
       <app-customer
         [customer]="value.customer"
@@ -24,7 +23,7 @@ import { Store } from '@ngrx/store';
       ></app-customer>
     }
   `,
-    imports: [CustomerComponent, NgIf, AsyncPipe]
+  imports: [CustomerComponent],
 })
 export class EditCustomerComponent {
   showSubmitButton = signal(true);
