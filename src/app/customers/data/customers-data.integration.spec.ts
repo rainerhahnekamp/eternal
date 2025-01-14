@@ -4,7 +4,7 @@ import {
   HttpTestingController,
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
-import { CustomersRepository, provideCustomers } from '@app/customers/data';
+import { CustomersStore, provideCustomers } from '@app/customers/data';
 import { provideRouter } from '@angular/router';
 import { Configuration } from '@app/shared/config';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -30,7 +30,7 @@ describe('Customers Data', () => {
       ],
     });
 
-    const repository = TestBed.inject(CustomersRepository);
+    const repository = TestBed.inject(CustomersStore);
     const httpCtrl = TestBed.inject(HttpTestingController);
 
     return { repository, httpCtrl };

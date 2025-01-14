@@ -1,151 +1,69 @@
-import {
-  patchState,
-  signalStore,
-  withComputed,
-  withMethods,
-  withState,
-} from '@ngrx/signals';
+import { inject, Injectable, Signal } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { customersActions } from './customers.actions';
 import { Customer } from '@app/customers/model';
-import { computed, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { lastValueFrom } from 'rxjs';
-import { MessageService } from '@app/shared/ui-messaging';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { switchMap } from 'rxjs/operators';
-import { tapResponse } from '@ngrx/operators';
+import { fromCustomers } from '@app/customers/data/customers.selectors';
 
-export interface CustomersState {
-  customers: Customer[];
-  page: number;
-  total: number;
-  selectedId: number | undefined;
-  isLoaded: boolean;
-  hasError: boolean;
-}
+@Injectable({ providedIn: 'root' })
+export class CustomersStore {
+  #store = inject(Store);
 
-export const initialState: CustomersState = {
-  customers: [],
-  page: 0,
-  total: 0,
-  selectedId: undefined,
-  isLoaded: false,
-  hasError: false,
-};
+  get customers(): Signal<Customer[]> {
+    return this.#store.selectSignal(fromCustomers.selectCustomers);
+  }
 
-const baseUrl = '/customer';
+  get pagedCustomers(): Signal<{
+    customers: (Customer & { selected: boolean })[];
+    total: number;
+    page: number;
+  }> {
+    return this.#store.selectSignal(fromCustomers.selectPagedCustomers);
+  }
 
-export const CustomersStore = signalStore(
-  { providedIn: 'root' },
-  withState(initialState),
-  withComputed((state) => {
-    return {
-      selectedCustomer: computed(() => {
-        const selectedId = state.selectedId();
-        return state.customers().find((customer) => customer.id === selectedId);
-      }),
-      pagedCustomers: computed(() => {
-        const customers = state.customers();
-        const selectedId = state.selectedId();
-        const page = state.page();
-        const total = state.total();
+  get selectedCustomer(): Signal<Customer | undefined> {
+    return this.#store.selectSignal(fromCustomers.selectSelectedCustomer);
+  }
 
-        return {
-          customers: customers.map((customer) => ({
-            ...customer,
-            selected: customer.id === selectedId,
-          })),
-          page,
-          total,
-        };
-      }),
-    };
-  }),
+  get hasError(): Signal<boolean> {
+    return this.#store.selectSignal(fromCustomers.selectHasError);
+  }
 
-  withMethods((store, httpClient = inject(HttpClient)) => {
-    const _load = rxMethod<number>(
-      switchMap((page) => {
-        patchState(store, { customers: [], total: 0, isLoaded: false });
-        return httpClient
-          .get<{ content: Customer[]; total: number }>(baseUrl, {
-            params: new HttpParams().set('page', page),
-          })
+  findById(id: number): Signal<Customer | undefined> {
+    return this.#store.selectSignal(fromCustomers.selectById(id));
+  }
 
-          .pipe(
-            tapResponse({
-              next: ({ content, total }) =>
-                patchState(store, {
-                  total,
-                  customers: content,
-                  isLoaded: true,
-                }),
-              error: () => {
-                patchState(store, { hasError: true });
-              },
-            }),
-          );
-      }),
+  init(): void {
+    this.#store.dispatch(customersActions.init());
+  }
+
+  get(page = 0): void {
+    this.#store.dispatch(customersActions.get({ page }));
+  }
+
+  add(customer: Customer): void {
+    this.#store.dispatch(customersActions.add({ customer }));
+  }
+
+  update(
+    customer: Customer,
+    forward: string,
+    message: string,
+    callback?: () => void,
+  ): void {
+    this.#store.dispatch(
+      customersActions.update({ customer, forward, message, callback }),
     );
+  }
 
-    return {
-      _load,
-      init() {
-        if (store.isLoaded()) {
-          return;
-        }
+  remove(customer: Customer): void {
+    this.#store.dispatch(customersActions.remove({ customer }));
+  }
 
-        _load(0);
-      },
-      get(page: number) {
-        const currentPage = store.page();
-        if (page === currentPage) {
-          return;
-        }
+  select(id: number): void {
+    this.#store.dispatch(customersActions.select({ id }));
+  }
 
-        _load(page);
-      },
-    };
-  }),
-
-  withMethods((store) => {
-    const http = inject(HttpClient);
-    const router = inject(Router);
-    const uiMessage = inject(MessageService);
-
-    return {
-      async add(customer: Customer) {
-        await lastValueFrom(http.post(baseUrl, customer));
-        router.navigateByUrl('/customers');
-        store._load(0);
-      },
-      async update(
-        customer: Customer,
-        forward: string,
-        message: string,
-        callback?: () => void,
-      ) {
-        await lastValueFrom(http.put(baseUrl, customer));
-        if (callback) {
-          callback();
-        }
-        uiMessage.info(message);
-        router.navigateByUrl(forward);
-        store._load(0);
-      },
-      async remove(customer: Customer) {
-        await lastValueFrom(http.delete(`${baseUrl}/${customer.id}`));
-        router.navigateByUrl('/customers');
-        store._load(0);
-      },
-      select(id: number) {
-        patchState(store, { selectedId: id });
-      },
-      unselect() {
-        patchState(store, { selectedId: undefined });
-      },
-      findById: (id: number) => {
-        return computed(() => store.customers().find((p) => p.id === id));
-      },
-    };
-  }),
-);
+  unselect(): void {
+    this.#store.dispatch(customersActions.unselect());
+  }
+}
