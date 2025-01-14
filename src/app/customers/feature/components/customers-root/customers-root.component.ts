@@ -1,4 +1,4 @@
-import { Component, effect } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { CustomersStore } from '@app/customers/data';
 import { MessageService } from '@app/shared/ui-messaging';
@@ -9,13 +9,11 @@ import { MessageService } from '@app/shared/ui-messaging';
   imports: [RouterOutlet],
 })
 export class CustomersRootComponent {
-  constructor(
-    customersRepository: CustomersStore,
-    router: Router,
-    messageService: MessageService,
-  ) {
+  readonly #customersStore = inject(CustomersStore);
+
+  constructor(router: Router, messageService: MessageService) {
     effect(() => {
-      const hasError = customersRepository.hasError();
+      const hasError = this.#customersStore.hasError();
       if (!hasError) {
         return;
       }
