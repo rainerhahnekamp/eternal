@@ -2,4 +2,4 @@ workshop/playwright/main
 workshop/playwright/01-starter/init
 workshop/playwright/01-starter/solution
 workshop/playwright/02-basics/init
-workshop/playwright/02-basics/init
+workshop/playwright/02-basics/solution
