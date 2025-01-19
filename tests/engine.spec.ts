@@ -6,9 +6,6 @@ test('select customer', async ({ page }) => {
   await page.getByText('Application is ready').waitFor();
   await page.getByRole('link', { name: 'Customers' }).click();
   await expect(
-    page
-      .getByText('Hugo Brandt')
-      .locator('sibling=mat-cell')
-      .getByTestId('btn-edit'),
+    page.getByText('Hugo Brandt').locator('sibling=td').getByTestId('btn-edit'),
   ).toHaveMatIcon();
 });

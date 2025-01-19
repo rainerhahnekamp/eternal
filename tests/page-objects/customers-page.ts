@@ -11,7 +11,7 @@ export class CustomersPage {
       .getByRole('rowgroup')
       .last()
       .getByRole('row')
-      .getByText(name);
+      .filter({ hasText: name });
   }
 
   async add(): Promise<void> {

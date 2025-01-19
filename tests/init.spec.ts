@@ -8,7 +8,7 @@ test('test', async ({ page }) => {
   await expect(
     page
       .getByText('Helene Ford')
-      .locator('sibling=mat-cell')
+      .locator('sibling=td')
       .filter({ has: page.locator('mat-icon') }),
   ).toBeVisible();
 });
