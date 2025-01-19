@@ -1,18 +1,21 @@
 import { Observable } from 'rxjs';
 import { webSocket } from 'rxjs/webSocket';
 
-type Data = { message?: string; status?: string };
+interface Data {
+  message?: string;
+  status?: string;
+}
 
 declare global {
   interface Window {
     mockedClient?: (data: Data) => void;
-    playwright: unknown;
+    e2e: unknown;
   }
 }
 
 export const getWsConnect = (triggerCd: () => void): Observable<Data> => {
-  if (window.playwright) {
-    console.info('WebSocket is controlled by Playwright');
+  if (window.e2e) {
+    console.info('WebSocket is controlled by the E2E Framework');
     return new Observable<Data>((subscriber) => {
       window.mockedClient = (data: Data) => {
         subscriber.next(data);

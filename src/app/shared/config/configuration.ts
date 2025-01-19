@@ -1,13 +1,17 @@
-export type ConfigurationFeatures = {
+import { signal } from '@angular/core';
+
+export interface ConfigurationFeatures {
   mockHolidays: boolean;
   mockCustomers: boolean;
   pagedCustomers: boolean;
-};
+  runHeartbeat: boolean;
+}
 
 export class Configuration {
   #baseUrl: string;
   #mockCustomers: boolean;
   #mockHolidays: boolean;
+  #runHeartbeat = signal(true);
   #pagedCustomers: boolean;
 
   #storageKey = 'eternal-configuration';
@@ -17,6 +21,7 @@ export class Configuration {
     mockCustomers = true,
     mockHolidays = true,
     pagedCustomers = true,
+    runHeartbeat = false,
   ) {
     this.#baseUrl = baseUrl;
     const values = { mockCustomers, mockHolidays, pagedCustomers };
@@ -24,6 +29,7 @@ export class Configuration {
     this.#mockCustomers = values.mockCustomers;
     this.#mockHolidays = values.mockHolidays;
     this.#pagedCustomers = values.pagedCustomers;
+    this.#runHeartbeat.set(runHeartbeat);
   }
 
   get baseUrl() {
@@ -39,22 +45,18 @@ export class Configuration {
   get pagedCustomers() {
     return this.#pagedCustomers;
   }
-
-  get features() {
-    return {
-      mockHolidays: this.#mockHolidays,
-      mockCustomers: this.#mockCustomers,
-      pagedCustomers: this.#pagedCustomers,
-    };
+  get runHeartbeat() {
+    return this.#runHeartbeat.asReadonly();
   }
 
   updateFeatures(configurationFeatures: Partial<ConfigurationFeatures>) {
-    const { mockHolidays, mockCustomers, pagedCustomers } =
+    const { mockHolidays, mockCustomers, pagedCustomers, runHeartbeat } =
       configurationFeatures;
 
     this.#mockHolidays = mockHolidays ?? this.#mockHolidays;
     this.#mockCustomers = mockCustomers ?? this.#mockCustomers;
     this.#pagedCustomers = pagedCustomers ?? this.#pagedCustomers;
+    this.#runHeartbeat.set(runHeartbeat ?? this.#runHeartbeat());
 
     localStorage.setItem(
       this.#storageKey,

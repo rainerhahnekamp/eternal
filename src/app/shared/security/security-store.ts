@@ -1,5 +1,5 @@
 import { computed, inject, PLATFORM_ID } from '@angular/core';
-import { KeycloakService } from './keycloak-service';
+import { KeycloakService } from './internal/keycloak-service';
 import {
   patchState,
   signalStore,
@@ -9,7 +9,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import { isPlatformServer } from '@angular/common';
-import { ANONYMOUS_USER, SecurityState } from '@app/shared/security/models';
+import { ANONYMOUS_USER, SecurityState } from './internal/models';
 
 const initialState: SecurityState = {
   loaded: false,
