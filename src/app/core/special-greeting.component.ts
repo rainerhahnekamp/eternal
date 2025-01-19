@@ -43,7 +43,6 @@ function deg2rad(deg: number) {
       <p>Your current time is {{ time | date: 'HH:mm' }}</p>
     </div>
   }`,
-  standalone: true,
   imports: [DecimalPipe, DatePipe],
 })
 export class SpecialGreetingComponent {
@@ -66,7 +65,7 @@ export class SpecialGreetingComponent {
     const status = await window.navigator.permissions.query({
       name: 'geolocation',
     });
-    console.log(`status: ${status.state}`);
+
     if (status.state !== 'granted') {
       return;
     }

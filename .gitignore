@@ -47,6 +47,12 @@ Thumbs.db
 /test-results
 session.json
 /playwright-report
+/playwright/.cache/
 
 # Spring
 .gradle
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+*storybook.log
