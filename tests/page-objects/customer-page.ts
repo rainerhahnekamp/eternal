@@ -12,12 +12,14 @@ export class CustomerPage {
 
   async fillIn(customerData: CustomerData) {
     if (customerData.firstname !== undefined) {
-      await this.page.getByLabel('Firstname').fill(customerData.firstname);
+      await this.page
+        .getByRole('textbox', { name: 'Firstname' })
+        .fill(customerData.firstname);
     }
 
     if (customerData.lastname !== undefined) {
       await this.page
-        .getByLabel('Name', { exact: true })
+        .getByRole('textbox', { name: 'Name', exact: true })
         .fill(customerData.lastname);
     }
 
@@ -25,11 +27,14 @@ export class CustomerPage {
       const day = customerData.birthday.getDate();
       const month = customerData.birthday.getMonth() + 1;
       const year = customerData.birthday.getFullYear();
-      await this.page.getByLabel('Birthdate').fill(`${day}.${month}.${year}`);
+
+      await this.page
+        .getByRole('textbox', { name: 'Birthdate' })
+        .fill(`${day}.${month}.${year}`);
     }
 
     if (customerData.country !== undefined) {
-      await this.page.getByLabel('Country').click();
+      await this.page.getByRole('combobox', { name: 'Country' }).click();
       await this.page
         .getByRole('option', { name: customerData.country })
         .click();

@@ -8,13 +8,13 @@ test.describe('Basics', () => {
   });
 
   test('header is Unforgettable Holidays', async ({ page }) => {
-    await expect(page.locator('h1')).toHaveText('Unforgettable Holidays');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+      'Unforgettable Holidays',
+    );
   });
 
   test('greeting on home', async ({ page }) => {
-    await expect(page.getByTestId('txt-greeting-1')).toContainText(
-      'imaginary travel agency',
-    );
+    await expect(page.getByText('imaginary travel agency')).toBeVisible();
   });
 
   test.describe('Customers', () => {
@@ -29,12 +29,12 @@ test.describe('Basics', () => {
     test('3rd customer is Hugo Brand; 10th is Jan Janáček', async ({
       customersPage,
     }) => {
-      await expect(
-        customersPage.rowsLocator.getByTestId('name').nth(2),
-      ).toHaveText('Hugo Brandt');
-      await expect(
-        customersPage.rowsLocator.getByTestId('name').nth(9),
-      ).toHaveText('Jan Janáček');
+      await expect(customersPage.rowsLocator.nth(2)).toContainText(
+        'Hugo Brandt',
+      );
+      await expect(customersPage.rowsLocator.nth(9)).toContainText(
+        'Jan Janáček',
+      );
     });
 
     test('add Nicholas Dimou as new customer', async ({

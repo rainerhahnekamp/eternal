@@ -6,7 +6,12 @@ export class CustomersPage {
   rowsLocator = this.page.getByTestId('row-customer');
 
   rowByName(name: string) {
-    return this.page.getByLabel(name);
+    return this.page
+      .getByRole('table', { name: 'customers' })
+      .getByRole('rowgroup')
+      .last()
+      .getByRole('row')
+      .getByText(name);
   }
 
   async add(): Promise<void> {
@@ -14,9 +19,6 @@ export class CustomersPage {
   }
 
   async edit(name: string): Promise<void> {
-    await this.page
-      .getByLabel(name)
-      .getByRole('link', { name: 'Edit' })
-      .click();
+    await this.rowByName(name).getByRole('link', { name: 'Edit' }).click();
   }
 }
