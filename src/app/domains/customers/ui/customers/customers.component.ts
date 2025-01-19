@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, input, Output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import {
   MatSlideToggleChange,
   MatSlideToggleModule,
@@ -7,14 +7,15 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { CustomerPipe } from '../internal/customer.pipe';
 import { RouterLinkWithHref } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Customer } from '../../model/customer';
+import { CustomerPipe } from '../internal/customer.pipe';
 
 export interface CustomerWithSelected extends Customer {
   selected: boolean;
 }
+
 export interface CustomersViewModel {
   customers: CustomerWithSelected[];
   pageIndex: number;
@@ -27,26 +28,31 @@ export interface CustomersViewModel {
   imports: [
     MatIconModule,
     MatButtonModule,
-    CustomerPipe,
     MatPaginatorModule,
     MatTableModule,
     MatSlideToggleModule,
     RouterLinkWithHref,
     DatePipe,
+    CustomerPipe,
   ],
 })
 export class CustomersComponent {
-  viewModel = input.required<CustomersViewModel>();
-  @Output() setSelected = new EventEmitter<number>();
-  @Output() setUnselected = new EventEmitter<number>();
-  @Output() switchPage = new EventEmitter<number>();
+  readonly viewModel = input.required<CustomersViewModel>();
+  readonly setSelected = output<number>();
+  readonly setUnselected = output<number>();
+  readonly switchPage = output<number>();
 
-  displayedColumns = ['name', 'country', 'birthdate', 'action'];
-  dataSource = new MatTableDataSource<CustomerWithSelected>([]);
+  protected readonly displayedColumns = [
+    'name',
+    'country',
+    'birthdate',
+    'action',
+  ];
 
-  constructor() {
-    effect(() => (this.dataSource.data = this.viewModel().customers));
-  }
+  protected readonly dataSource = computed(
+    () =>
+      new MatTableDataSource<CustomerWithSelected>(this.viewModel().customers),
+  );
 
   toggleSelection(toggleChange: MatSlideToggleChange, id: number) {
     if (toggleChange.checked) {
