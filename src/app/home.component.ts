@@ -1,15 +1,14 @@
-import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { Configuration } from '@app/shared/config';
-import { ChatService } from '@app/chat/chat.service';
 import { MatButtonModule } from '@angular/material/button';
-import { isPlatformBrowser } from '@angular/common';
-import { SpecialGreetingComponent } from '@app/core/special-greeting.component';
+import { Configuration } from './shared/config/configuration';
+import { SpecialGreetingComponent } from './core/special-greeting.component';
+import { ChatService } from './chat/chat.service';
 
 @Component({
   selector: 'app-home',
@@ -40,6 +39,11 @@ import { SpecialGreetingComponent } from '@app/core/special-greeting.component';
         data-testid="tgl-paged-customers"
         >Paged Customers
       </mat-slide-toggle>
+      <mat-slide-toggle
+        formControlName="runHeartbeat"
+        data-testid="tgl-run-heartbeat"
+        >Heartbeat
+      </mat-slide-toggle>
     </form>
     <div class="w-72">
       <button class="my-4" mat-raised-button (click)="enableWebsocket()">
@@ -62,13 +66,7 @@ import { SpecialGreetingComponent } from '@app/core/special-greeting.component';
           </p>
         }
       }
-    </div>
-    @if (isBrowser) {
-      <div class="text-right text-xs" data-testid="hydrated">
-        Application is ready
-      </div>
-    } `,
-  standalone: true,
+    </div> `,
   imports: [
     ReactiveFormsModule,
     MatSlideToggleModule,
@@ -77,14 +75,14 @@ import { SpecialGreetingComponent } from '@app/core/special-greeting.component';
   ],
 })
 export class HomeComponent implements OnInit {
-  isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
-  config = inject(Configuration);
-  formGroup = inject(NonNullableFormBuilder).group({
+  protected readonly config = inject(Configuration);
+  protected readonly formGroup = inject(NonNullableFormBuilder).group({
     mockCustomers: [true],
     mockHolidays: [true],
     pagedCustomers: [true],
+    runHeartbeat: [true],
   });
-  chatService = inject(ChatService);
+  protected readonly chatService = inject(ChatService);
 
   mockCustomers = new FormControl(true, {
     nonNullable: true,
@@ -94,11 +92,14 @@ export class HomeComponent implements OnInit {
     nonNullable: true,
   });
 
+  runHeartbeat = new FormControl(true, { nonNullable: true });
+
   ngOnInit(): void {
     this.formGroup.setValue({
       mockCustomers: this.config.mockCustomers,
       mockHolidays: this.config.mockHolidays,
       pagedCustomers: this.config.pagedCustomers,
+      runHeartbeat: this.config.runHeartbeat(),
     });
     this.formGroup.valueChanges.subscribe(() =>
       this.config.updateFeatures(this.formGroup.getRawValue()),
