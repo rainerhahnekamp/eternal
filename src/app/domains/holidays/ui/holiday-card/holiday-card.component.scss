@@ -1,5 +1,4 @@
 mat-card {
-
   max-width: 305px;
 
   mat-card-content {
@@ -39,10 +38,18 @@ mat-card {
       overflow: hidden;
       pointer-events: none;
       z-index: 100;
-      -webkit-transition: width 1s ease, height 1s ease;
-      -moz-transition: width 1s ease, height 1s ease;
-      -o-transition: width 1s ease, height 1s ease;
-      transition: width 0.4s ease, height 0.4s ease;
+      -webkit-transition:
+        width 1s ease,
+        height 1s ease;
+      -moz-transition:
+        width 1s ease,
+        height 1s ease;
+      -o-transition:
+        width 1s ease,
+        height 1s ease;
+      transition:
+        width 0.4s ease,
+        height 0.4s ease;
     }
 
     .badge {
@@ -58,7 +65,7 @@ mat-card {
 
     .badge::before,
     .badge::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       margin: 0 -1px;
