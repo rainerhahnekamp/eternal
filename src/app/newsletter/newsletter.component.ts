@@ -8,6 +8,7 @@ import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
+import { FormErrorsComponent } from '../shared/form/form-errors.component';
 
 @Component({
   selector: 'app-newsletter',
@@ -20,6 +21,7 @@ import { MatButton } from '@angular/material/button';
           <mat-icon matSuffix>location_on</mat-icon>
           <mat-hint>Please enter your email</mat-hint>
         </mat-form-field>
+        <app-form-errors [control]="formGroup.controls.email" />
         <button mat-raised-button data-testid="btn-subscribe" class="my-4">
           Subscribe
         </button>
@@ -27,7 +29,6 @@ import { MatButton } from '@angular/material/button';
     </form>
 
     <p data-testid="p-message">{{ message() }}</p>`,
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatLabel,
@@ -36,6 +37,7 @@ import { MatButton } from '@angular/material/button';
     MatInput,
     MatIcon,
     MatButton,
+    FormErrorsComponent,
   ],
 })
 export class NewsletterComponent {
