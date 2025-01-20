@@ -27,15 +27,14 @@ module.exports = {
               }
             });
 
-
             if (!hasOnPush) {
-              context.report({node, message: "Component needs to be OnPush"});
+              context.report({ node, message: "Component needs to be OnPush" });
             }
           }
         },
       }),
     },
-    'signal-api': {
+    "signal-api": {
       defaultOptions: [],
       meta: {
         type: "suggestion",
@@ -50,11 +49,13 @@ module.exports = {
       create: (context) => ({
         Decorator: (node) => {
           if (["Input", "Output"].includes(node.expression?.callee?.name)) {
-            context.report({node, message: `${node.expression.callee.name} is not allowed`});
+            context.report({
+              node,
+              message: `${node.expression.callee.name} is not allowed`,
+            });
           }
         },
       }),
-
-    }
+    },
   },
 };
