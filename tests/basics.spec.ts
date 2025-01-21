@@ -1,6 +1,8 @@
 import { expect } from '@playwright/test';
 import { test } from './fixtures/test';
 
+const softExpect = expect.configure({ soft: process.env['CI'] ? true : false });
+
 test.describe('Basics', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('');
@@ -54,10 +56,19 @@ test.describe('Basics', () => {
     });
 
     test('rename Latitia to Laetitia', async ({
+      page,
       customersPage,
       customerPage,
     }) => {
       await customersPage.edit('Latitia');
+      await expect(
+        page.getByRole('textbox', { name: 'Firstname' }),
+      ).not.toHaveValue('');
+      const firstname = await page
+        .getByRole('textbox', { name: 'Firstname' })
+        .inputValue();
+      expect(firstname).toContain('La');
+
       await customerPage.fillIn({
         firstname: 'Laetitia',
         lastname: 'Bellitissa-Wagner',
@@ -85,6 +96,39 @@ test.describe('Basics', () => {
       await customersPage.edit('Hugo Brandt');
       await customerPage.fillIn({ country: 'Austria' });
       await customerPage.submit();
+    });
+
+    test('should add and delete', async ({
+      customerPage,
+      customersPage,
+      page,
+    }) => {
+      await test.step('add customer', async () => {
+        await customersPage.add();
+        await customerPage.fillIn({
+          firstname: 'Nicholas',
+          lastname: 'Dimou',
+          country: 'Greece',
+          birthday: new Date(1978, 3, 1),
+        });
+        await customerPage.submit();
+
+        await softExpect(
+          customersPage.rowByName('Nicholas Damou'),
+        ).toBeVisible();
+      });
+
+      await test.step('remove customer', async () => {
+        await customersPage.edit('Nicholas Dimou');
+
+        page.on('dialog', (dialog) => dialog.accept());
+        await customerPage.remove();
+
+        await expect(customersPage.rowsLocator).toHaveCount(10);
+        await expect(
+          customersPage.rowByName('Nicholas Dimou'),
+        ).not.toBeVisible();
+      });
     });
   });
 });

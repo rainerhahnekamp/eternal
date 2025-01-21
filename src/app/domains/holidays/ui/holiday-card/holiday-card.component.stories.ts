@@ -22,14 +22,63 @@ export default meta;
 type Story = StoryObj<HolidayCardComponent>;
 
 export const Primary: Story = {
-  args: {
-    holiday: {
-      ...createHoliday({
-        title: 'Welcome',
-        description: 'Welcome to the Angular Testing Workshop',
-        imageUrl: 'vienna.jpg',
-      }),
-      isFavourite: false,
+  render: () => ({
+    props: {
+      holiday: {
+        ...createHoliday({
+          title: 'Welcome',
+          description: 'Welcome to the Angular Testing Workshop',
+          imageUrl: 'vienna.jpg',
+        }),
+        isFavourite: false,
+      },
     },
-  },
+  }),
+};
+
+export const OnSale: Story = {
+  render: () => ({
+    props: {
+      holiday: {
+        ...createHoliday({
+          title: 'Welcome',
+          description: 'Welcome to the Angular Testing Workshop',
+          imageUrl: 'vienna.jpg',
+          onSale: true,
+        }),
+        isFavourite: false,
+      },
+    },
+  }),
+};
+
+export const SoldOut: Story = {
+  render: () => ({
+    props: {
+      holiday: {
+        ...createHoliday({
+          title: 'Welcome',
+          description: 'Welcome to the Angular Testing Workshop',
+          imageUrl: 'vienna.jpg',
+          soldOut: true,
+        }),
+        isFavourite: false,
+      },
+    },
+  }),
+};
+
+export const Favourite: Story = {
+  render: () => ({
+    props: {
+      holiday: {
+        ...createHoliday({
+          title: 'Welcome',
+          description: 'Welcome to the Angular Testing Workshop',
+          imageUrl: 'vienna.jpg',
+        }),
+        isFavourite: true,
+      },
+    },
+  }),
 };

@@ -26,6 +26,7 @@ import { QuillComponent } from '../../../../shared/form/quill/quill.component';
     QuillComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class HolidayCardComponent {
   holiday = input.required<Holiday & { isFavourite: boolean }>();

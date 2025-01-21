@@ -1,6 +1,10 @@
 mat-card {
   max-width: 305px;
 
+  mat-card-title {
+    font-weight: normal;
+  }
+
   mat-card-content {
     height: 250px;
   }
