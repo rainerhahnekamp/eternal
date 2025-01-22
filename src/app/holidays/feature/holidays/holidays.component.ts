@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { HolidayCardComponent } from '@app/holidays/ui';
 import { Holiday } from '@app/holidays/model';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { HolidaysService, HolidayWithFavourite } from './holidays.service';
@@ -23,8 +23,19 @@ import { HolidaysService, HolidayWithFavourite } from './holidays.service';
       <button mat-raised-button>Search</button>
     </form>
 
+    <p>{{ prettySearch() }}</p>
+    <p>Counter: {{ counter().value }}</p>
+
+    <button (click)="changeHolidayTitles()">Change Holiday Titles</button>
+
+    <div>
+      <button mat-raised-button (click)="togglePrettySearch()">
+        Toggle Pretty Search
+      </button>
+    </div>
+
     <div class="flex flex-wrap justify-evenly">
-      @for (holiday of holidays; track byId($index, holiday)) {
+      @for (holiday of holidays(); track holiday) {
         <app-holiday-card
           [holiday]="holiday"
           (addFavourite)="addFavourite($event)"
@@ -36,9 +47,18 @@ import { HolidaysService, HolidayWithFavourite } from './holidays.service';
   imports: [HolidayCardComponent, FormsModule, MatInputModule, MatButton],
 })
 export class HolidaysComponent {
-  name = '';
-  description = '';
-  holidays = [] as HolidayWithFavourite[];
+  name = signal('');
+  description = signal('');
+  holidays = signal<HolidayWithFavourite[]>([]);
+  counter = signal({ value: 0 });
+
+  formGroup = inject(FormBuilder).nonNullable;
+
+  showPrettySearch = signal(false);
+  filteredHolidays = computed(() => {
+    const name = this.name();
+    return this.holidays().filter((holiday) => holiday.title.startsWith(name));
+  });
 
   #holidaysService = inject(HolidaysService);
 
@@ -54,10 +74,33 @@ export class HolidaysComponent {
     return holiday.id;
   }
 
+  prettySearch = computed(() => {
+    const value = `Found: ${this.holidays().length}`;
+    return value;
+  });
+
+  printPrettySearch() {
+    console.log(this.prettySearch());
+  }
+
   async search() {
-    this.holidays = await this.#holidaysService.findByPromise(
-      this.name,
-      this.description,
+    const holidays = await this.#holidaysService.findByPromise(
+      this.name(),
+      this.description(),
+    );
+    this.holidays.update((value) => {
+      value.push(...holidays);
+      return value;
+    });
+  }
+
+  togglePrettySearch() {
+    this.showPrettySearch.update((value) => !value);
+  }
+
+  changeHolidayTitles() {
+    this.holidays.update((holidays) =>
+      holidays.map((holiday) => ({ ...holiday, title: 'Munich' })),
     );
   }
 }

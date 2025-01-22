@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal, Signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Holiday } from '../../model';
 import { lastValueFrom, map, Observable } from 'rxjs';
@@ -13,13 +13,15 @@ export class HolidaysService {
   find(name: string, description: string): Observable<HolidayWithFavourite[]> {
     return this.#httpClient.get<Holiday[]>(this.#url).pipe(
       map((holidays) => {
-        return holidays
-          .filter(
-            (holiday) =>
-              holiday.title.startsWith(name) &&
-              holiday.description.startsWith(description),
-          )
-          .map((holiday) => ({ ...holiday, isFavourite: false }));
+        return (
+          holidays
+            // .filter(
+            //   (holiday) =>
+            //     holiday.title.startsWith(name) &&
+            //     holiday.description.startsWith(description),
+            // )
+            .map((holiday) => ({ ...holiday, isFavourite: false }))
+        );
       }),
     );
   }
@@ -29,5 +31,9 @@ export class HolidaysService {
     description: string,
   ): Promise<HolidayWithFavourite[]> {
     return lastValueFrom(this.find(name, description));
+  }
+
+  getFilters(): Signal<{ name: string; description: string }> {
+    return signal({ name: '', description: '' }).asReadonly();
   }
 }
