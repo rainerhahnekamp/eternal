@@ -5,6 +5,7 @@ import { SecurityService } from 'src/app/shared/security';
 import { inject } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { Configuration } from '@app/shared/config';
+import BasketComponent from './basket.component';
 
 export const appRoutes: Routes = [
   {
@@ -50,6 +51,10 @@ export const appRoutes: Routes = [
       {
         path: 'diary',
         loadChildren: () => import('@app/diary'),
+      },
+      {
+        path: 'basket',
+        component: BasketComponent,
       },
     ],
   },

@@ -1,60 +1,91 @@
-import { Component, inject, OnInit } from '@angular/core';
-import {
-  FormControl,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { Configuration } from '@app/shared/config';
+import {
+  debounceTime,
+  exhaustMap,
+  map,
+  Observable,
+  shareReplay,
+  Subject,
+} from 'rxjs';
+import { Holiday } from './holidays/model';
+import { HttpClient } from '@angular/common/http';
+import { AsyncPipe } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-home',
-    template: `<h2 data-testid="greeting">Welcome to Eternal</h2>
-    <p data-testid="txt-greeting-1">
-      Eternal is an imaginary travel agency and is used as training application
-      for Angular developers.
-    </p>
-    <p data-testid="txt-greeting-2">
-      You can click around, do whatever you want but don't expect to be able to
-      book a real holiday 😉.
-    </p>
-    <h3 class="mt-8 text-l font-bold">Settings</h3>
-    <form [formGroup]="formGroup" class="flex flex-col gap-y-5">
-      <mat-slide-toggle
-        formControlName="mockCustomers"
-        data-testid="tgl-mock-customers"
-        >Mock Customers
-      </mat-slide-toggle>
-      <mat-slide-toggle
-        formControlName="mockHolidays"
-        data-testid="tgl-mock-holidays"
-        >Mock Holidays
-      </mat-slide-toggle>
-    </form> `,
-    imports: [ReactiveFormsModule, MatSlideToggleModule]
+  selector: 'app-home',
+  template: `<input [formControl]="name" placeholder="Title" />
+    <h3>Found Holidays</h3>
+    <ul>
+      @for (holiday of holidays$ | async; track holiday) {
+        <li>Holiday {{ holiday.title }}</li>
+      }
+    </ul> `,
+  imports: [ReactiveFormsModule, MatSlideToggleModule, AsyncPipe],
 })
-export class HomeComponent implements OnInit {
-  config = inject(Configuration);
-  formGroup = inject(NonNullableFormBuilder).group({
-    mockCustomers: [true],
-    mockHolidays: [true],
-  });
+export class HomeComponent {
+  name = new FormControl<string>('', { nonNullable: true });
+  httpClient = inject(HttpClient);
 
-  mockCustomers = new FormControl(true, {
-    nonNullable: true,
-  });
+  holidays$: Observable<Holiday[]> = this.name.valueChanges.pipe(
+    exhaustMap((value) => this.requestHolidays(value)),
+  );
 
-  mockHolidays = new FormControl(true, {
-    nonNullable: true,
-  });
+  requestHolidays(name: string): Observable<Holiday[]> {
+    return this.httpClient
+      .get<Holiday[]>(`https://api.eternal-holidays.net/holiday?name=${name}`)
+      .pipe(
+        debounceTime(300),
+        filter((value) => value.length > 3),
+        map((holidays) =>
+          holidays.filter((holiday) => holiday.title.startsWith(name)),
+        ),
+      );
+  }
 
-  ngOnInit(): void {
-    this.formGroup.setValue({
-      mockCustomers: this.config.mockCustomers,
-      mockHolidays: this.config.mockHolidays,
-    });
-    this.formGroup.valueChanges.subscribe(() =>
-      this.config.updateFeatures(this.formGroup.getRawValue()),
+  _ngOnInit() {
+    // const subject = new ReplaySubject();
+    // subject.next(1);
+    // subject.subscribe((value) => console.log(`Subscription 1 ${value}`));
+    //
+    // subject.next(2);
+    // subject.subscribe((value) => console.log(`Subscription 2 ${value}`));
+    //
+    // subject.next(3);
+    // subject.subscribe((value) => console.log(`Subscription 3 ${value}`));
+
+    const get = () =>
+      this.httpClient.get<Holiday[]>(
+        'https://api.eternal-holidays.net/holiday',
+      );
+
+    // inside of share()
+    function createSharedHoliday() {
+      const holidays$ = new Subject<Holiday[]>();
+
+      get().subscribe({ next: (holidays) => holidays$.next(holidays) });
+      return holidays$.asObservable();
+    }
+
+    const holidays$ = get().pipe(
+      // share({
+      //   resetOnComplete: false,
+      //   resetOnRefCountZero: false,
+      //   connector: () => new ReplaySubject(),
+      // }),
+      shareReplay(),
     );
+
+    holidays$.subscribe((holidays) => console.log(holidays));
+    holidays$.subscribe((holidays) => console.log(holidays));
+
+    setTimeout(() => {
+      console.log('starting 3rd subscription');
+      holidays$.subscribe((holidays) => console.log(holidays));
+    }, 500);
+
+    console.log('Finished...');
   }
 }

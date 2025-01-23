@@ -12,6 +12,33 @@ export interface Holiday {
   onSale: boolean;
 }
 
+interface Person {
+  id: number;
+  age: number;
+}
+
+class CPerson {
+  constructor(
+    public id: number,
+    public age: number,
+  ) {}
+}
+
+interface Car {
+  id: number;
+  age: number;
+  name: string;
+}
+
+function introduce(person: CPerson) {}
+
+const konrad: Person = { id: 1, age: 40 };
+
+introduce({ id: 1, age: -1 });
+
+const bmw: Car = { id: 5, age: 5, name: '3er' };
+introduce(bmw);
+
 let id = 1;
 
 export function createHoliday(holiday: Partial<Holiday> = {}): Holiday {
