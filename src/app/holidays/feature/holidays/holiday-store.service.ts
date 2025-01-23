@@ -3,16 +3,21 @@ import { Holiday } from '../../model';
 import { HttpClient } from '@angular/common/http';
 import {
   patchState,
+  signalMethod,
   signalStore,
   withComputed,
   withMethods,
   withProps,
   withState,
 } from '@ngrx/signals';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { debounceTime, lastValueFrom, pipe } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { withFavourites } from './with-favourites';
+import { withDevtools } from '@angular-architects/ngrx-toolkit';
 
 interface HolidayState {
   _holidays: Holiday[];
-  favouriteIds: number[];
   searchParams: {
     name: string;
     description: string;
@@ -20,11 +25,8 @@ interface HolidayState {
   isLoaded: boolean;
 }
 
-// https://tinyurl.com/25-ngrx-eso
-
 const initialState: HolidayState = {
   _holidays: [],
-  favouriteIds: [],
   searchParams: {
     name: '',
     description: '',
@@ -33,6 +35,8 @@ const initialState: HolidayState = {
 };
 
 export const HolidayStore = signalStore(
+  { providedIn: 'root' },
+  withDevtools('holidays'),
   withProps(() => {
     const httpClient = inject(HttpClient);
     return {
@@ -40,6 +44,7 @@ export const HolidayStore = signalStore(
       url: 'https://api.eternal-holidays.net/holiday',
     };
   }),
+  withFavourites(),
   withState(initialState),
   withComputed((state) => {
     return {
@@ -63,38 +68,35 @@ export const HolidayStore = signalStore(
   }),
   withMethods((store) => {
     return {
-      search(name: string, description: string) {
-        patchState(store, { searchParams: { name, description } });
+      search1: signalMethod<{ name: string; description: string }>(
+        async (searchParams) => {
+          patchState(store, { searchParams });
+          const holidays = await lastValueFrom(
+            store.httpClient.get<Holiday[]>(store.url, {
+              params: searchParams,
+            }),
+          );
+          patchState(store, { _holidays: holidays });
+        },
+      ),
+      search: rxMethod<{ name: string; description: string }>(
+        pipe(
+          debounceTime(500),
+          tap((searchParams) => patchState(store, { searchParams })),
+          switchMap((searchParams) =>
+            store.httpClient.get<Holiday[]>(store.url, {
+              params: searchParams,
+            }),
+          ),
+          tap((_holidays) => {
+            patchState(store, {
+              _holidays,
+            });
+          }),
+        ),
+      ),
 
-        if (store.isLoaded()) {
-          return;
-        }
-
-        store.httpClient.get<Holiday[]>(store.url).subscribe((holidays) => {
-          patchState(store, {
-            _holidays: holidays,
-            isLoaded: true,
-          });
-        });
-      },
-
-      addFavourite(holidayId: number) {
-        if (store.favouriteIds().includes(holidayId)) {
-          return;
-        }
-
-        patchState(store, (value) => ({
-          favouriteIds: [...value.favouriteIds, holidayId],
-        }));
-      },
-
-      removeFavourite(holidayId: number) {
-        patchState(store, (value) => ({
-          favouriteIds: value.favouriteIds.filter((id) => id !== holidayId),
-        }));
-      },
-
-      refresh() {
+      _refresh() {
         store.httpClient.get<Holiday[]>(store.url).subscribe((_holidays) => {
           patchState(store, {
             _holidays,

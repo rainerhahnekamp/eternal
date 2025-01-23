@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Holiday } from '@app/holidays/model';
 import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -41,6 +41,15 @@ export class HolidaysComponent {
 
   #holidaysStore = inject(HolidayStore);
 
+  searchParams = computed(() => ({
+    name: this.name(),
+    description: this.description(),
+  }));
+
+  constructor() {
+    this.#holidaysStore.search1(this.searchParams);
+  }
+
   holidays = this.#holidaysStore.holidays;
 
   addFavourite(id: number) {
@@ -59,7 +68,5 @@ export class HolidaysComponent {
     console.log(`Effect: ${this.name()}`);
   });
 
-  search() {
-    this.#holidaysStore.search(this.name(), this.description());
-  }
+  search() {}
 }
