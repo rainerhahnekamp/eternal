@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { RouterLinkWithHref } from '@angular/router';
-import { DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { Customer } from '../../model/customer';
 import { CustomerPipe } from '../internal/customer.pipe';
 
@@ -34,6 +34,7 @@ export interface CustomersViewModel {
     RouterLinkWithHref,
     DatePipe,
     CustomerPipe,
+    AsyncPipe,
   ],
 })
 export class CustomersComponent {
