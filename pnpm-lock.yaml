@@ -177,6 +177,9 @@ importers:
       eslint:
         specifier: ^8.57.0
         version: 8.57.1
+      eslint-plugin-playwright:
+        specifier: ^2.2.0
+        version: 2.2.0(eslint@8.57.1)
       eslint-plugin-storybook:
         specifier: ^0.10.1
         version: 0.10.2(eslint@8.57.1)(typescript@5.6.3)
@@ -3487,6 +3490,12 @@ packages:
 
   eslint-plugin-custom@file:eslint-plugin-custom:
     resolution: {directory: eslint-plugin-custom, type: directory}
+
+  eslint-plugin-playwright@2.2.0:
+    resolution: {integrity: sha512-qSQpAw7RcSzE3zPp8FMGkthaCWovHZ/BsXtpmnGax9vQLIovlh1bsZHEa2+j2lv9DWhnyeLM/qZmp7ffQZfQvg==}
+    engines: {node: '>=16.6.0'}
+    peerDependencies:
+      eslint: '>=8.40.0'
 
   eslint-plugin-storybook@0.10.2:
     resolution: {integrity: sha512-iOrFJfyLgRLIbWDLbbs3J4yrknvIB+uiZ8KGqGOEXTL7/BGuBMZLiIU9Q4Pm/VYJrHN4JqmMtwCSrAemHL2nFg==}
@@ -10026,6 +10035,11 @@ snapshots:
   escape-string-regexp@4.0.0: {}
 
   eslint-plugin-custom@file:eslint-plugin-custom: {}
+
+  eslint-plugin-playwright@2.2.0(eslint@8.57.1):
+    dependencies:
+      eslint: 8.57.1
+      globals: 13.24.0
 
   eslint-plugin-storybook@0.10.2(eslint@8.57.1)(typescript@5.6.3):
     dependencies:
