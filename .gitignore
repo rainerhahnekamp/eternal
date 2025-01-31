@@ -56,3 +56,7 @@ session.json
 /playwright/.cache/
 
 *storybook.log
+
+# Playwright
+node_modules/
+/blob-report/
