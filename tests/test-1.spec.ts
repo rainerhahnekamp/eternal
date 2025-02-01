@@ -1,10 +1,11 @@
-import { test, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { test } from './fixtures';
 
-test('request brochure for Holiday London', async ({ page }) => {
+test('request brochure for Holiday London', async ({ page, shell }) => {
   await page.goto('http://localhost:4200/');
   await page.getByText('Application is ready').waitFor();
 
-  await page.getByRole('link', { name: 'Holidays', exact: true }).click();
+  await shell.openItem('Holidays');
   await page
     .getByLabel('London')
     .getByRole('link', { name: 'Brochure' })
