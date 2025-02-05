@@ -40,7 +40,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideAnimationsAsync(),
-    provideClientHydration(withEventReplay()),
     {
       provide: IMAGE_CONFIG,
       useValue: {

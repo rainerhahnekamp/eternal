@@ -37,9 +37,10 @@ import { HolidayStore } from '../data/holidays-store';
         <button color="primary" mat-raised-button>Search</button>
       </div>
     </form>
-    <div class="flex flex-wrap justify-evenly">
+    <div class="flex flex-wrap justify-evenly" role="grid" aria-label="Holidays">
       @for (holiday of holidays(); track holiday.id) {
         <app-holiday-card
+          role="gridcell"
           [holiday]="holiday"
           (addFavourite)="addFavourite($event)"
           (removeFavourite)="removeFavourite($event)"
