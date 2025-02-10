@@ -2,17 +2,18 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   input,
   linkedSignal,
   numberAttribute,
   signal,
+  untracked,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { AnswerStatus, Question, Quiz } from '@app/holidays/feature/quiz/model';
 import { QuizService } from '@app/holidays/feature/quiz/quiz.service';
 
-import { rxResource } from '@angular/core/rxjs-interop';
 import { assertDefined } from '@app/shared/util';
 import { QuizQuestionComponent } from './ui/quiz-question.component';
 import { QuizStatusComponent } from './ui/quiz-status.component';
@@ -22,8 +23,8 @@ const emptyQuiz: Quiz = { title: '', questions: [], timeInSeconds: 60 };
 @Component({
   selector: 'app-quiz',
   template: `
-    <h2>{{ title() }}</h2>
-    <app-quiz-status [status]="status" />
+    <h2>{{ quiz().title }}</h2>
+    <app-quiz-status [status]="status()" />
 
     @if (currentQuestion(); as question) {
       <app-quiz-question
@@ -47,28 +48,21 @@ export class QuizComponent {
   id = input.required({ transform: numberAttribute });
 
   quizService = inject(QuizService);
+  quiz = signal(emptyQuiz);
 
-  // Data State
-  quizResource = rxResource({
-    request: () => this.id(),
-    loader: (options) => {
-      const id = options.request;
-      return this.quizService.findById(id);
-    },
-  });
+  constructor() {
+    effect(() => {
+      const id = this.id();
 
-  quiz = linkedSignal(() => this.quizResource.value() || emptyQuiz);
-  title = computed(() => this.quiz().title);
-  questions = computed(() => this.quiz().questions);
+      void untracked(async () =>
+        this.quiz.set(await this.quizService.findById(id)),
+      );
+    });
+  }
 
-  // UI State
   currentQuestionIx = signal(0);
   currentQuestion = computed<Question | undefined>(
     () => this.quiz().questions[this.currentQuestionIx()],
-  );
-
-  hasNextQuestion = computed(
-    () => this.currentQuestionIx() < this.quiz().questions.length - 1,
   );
 
   isNextButtonDisabled = linkedSignal(() => {
@@ -76,48 +70,32 @@ export class QuizComponent {
     return true;
   });
 
+  status = computed(() => {
+    const status: Record<AnswerStatus, number> = {
+      unanswered: 0,
+      correct: 0,
+      incorrect: 0,
+    };
+
+    for (const question of this.quiz().questions) {
+      status[question.status]++;
+    }
+
+    return status;
+  });
+
   // Logic
   nextQuestion() {
     this.currentQuestionIx.update((value) => value + 1);
   }
 
-  status: Record<AnswerStatus, number> = {
-    unanswered: 0,
-    correct: 0,
-    incorrect: 0,
-  };
-
-  answer(questionId: number, choiceId: number) {
-    const question = this.questions().find(
+  answer(questionId: number, answerId: number) {
+    const question = this.quiz().questions.find(
       (question) => question.id === questionId,
     );
     assertDefined(question);
+    this.quizService.answerQuestion(this.quiz, questionId, answerId);
 
-    this.quiz.update((quiz) => {
-      const questions = this.quiz().questions.map((question) => {
-        if (question.id === questionId) {
-          const status: AnswerStatus =
-            question.answer === choiceId ? 'correct' : 'incorrect';
-          return {
-            ...question,
-            status,
-          };
-        } else {
-          return question;
-        }
-      });
-
-      return { ...quiz, questions };
-    });
-
-    this.updateStatus();
     this.isNextButtonDisabled.set(false);
-  }
-
-  private updateStatus() {
-    this.status = { correct: 0, incorrect: 0, unanswered: 0 };
-    for (const question of this.questions()) {
-      this.status[question.status]++;
-    }
   }
 }

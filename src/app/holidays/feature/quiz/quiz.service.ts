@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { Quiz } from './model';
+import { inject, Injectable, WritableSignal } from '@angular/core';
+import { lastValueFrom, map } from 'rxjs';
+import { AnswerStatus, Quiz } from './model';
 
 export interface QuizApi {
   id: number;
@@ -19,10 +19,33 @@ export interface QuizApi {
 export class QuizService {
   readonly #httpClient = inject(HttpClient);
 
-  findById(id: number): Observable<Quiz> {
-    return this.#httpClient
-      .get<QuizApi>(`/holiday/${id}/quiz`)
-      .pipe(map(toQuiz));
+  findById(id: number): Promise<Quiz> {
+    return lastValueFrom(
+      this.#httpClient.get<QuizApi>(`/holiday/${id}/quiz`).pipe(map(toQuiz)),
+    );
+  }
+
+  answerQuestion(
+    quiz: WritableSignal<Quiz>,
+    questionId: number,
+    answerId: number,
+  ) {
+    quiz.update((quiz) => {
+      const questions = quiz.questions.map((question) => {
+        if (question.id === questionId) {
+          const status: AnswerStatus =
+            question.answer === answerId ? 'correct' : 'incorrect';
+          return {
+            ...question,
+            status: status,
+          };
+        } else {
+          return question;
+        }
+      });
+
+      return { ...quiz, questions };
+    });
   }
 }
 
