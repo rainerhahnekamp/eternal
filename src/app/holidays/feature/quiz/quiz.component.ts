@@ -2,13 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
   input,
   linkedSignal,
   numberAttribute,
+  PendingTasks,
+  resource,
   signal,
-  untracked,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { AnswerStatus, Question, Quiz } from '@app/holidays/feature/quiz/model';
@@ -23,7 +23,8 @@ const emptyQuiz: Quiz = { title: '', questions: [], timeInSeconds: 60 };
 @Component({
   selector: 'app-quiz',
   template: `
-    <h2>{{ quiz().title }}</h2>
+    @let quiz = quizResource.value();
+    <h2>{{ quiz.title }}</h2>
     <app-quiz-status [status]="status()" />
 
     @if (currentQuestion(); as question) {
@@ -46,23 +47,19 @@ const emptyQuiz: Quiz = { title: '', questions: [], timeInSeconds: 60 };
 })
 export class QuizComponent {
   id = input.required({ transform: numberAttribute });
+  pendingTasks = inject(PendingTasks);
 
   quizService = inject(QuizService);
-  quiz = signal(emptyQuiz);
+  quizResource = resource({
+    request: this.id,
+    defaultValue: emptyQuiz,
+    loader: () => this.quizService.findById(this.id()),
+  });
 
-  constructor() {
-    effect(() => {
-      const id = this.id();
-
-      void untracked(async () =>
-        this.quiz.set(await this.quizService.findById(id)),
-      );
-    });
-  }
-
+  //region UI
   currentQuestionIx = signal(0);
   currentQuestion = computed<Question | undefined>(
-    () => this.quiz().questions[this.currentQuestionIx()],
+    () => this.quizResource.value().questions[this.currentQuestionIx()],
   );
 
   isNextButtonDisabled = linkedSignal(() => {
@@ -77,12 +74,13 @@ export class QuizComponent {
       incorrect: 0,
     };
 
-    for (const question of this.quiz().questions) {
+    for (const question of this.quizResource.value().questions) {
       status[question.status]++;
     }
 
     return status;
   });
+  //endregion
 
   // Logic
   nextQuestion() {
@@ -90,12 +88,20 @@ export class QuizComponent {
   }
 
   answer(questionId: number, answerId: number) {
-    const question = this.quiz().questions.find(
-      (question) => question.id === questionId,
-    );
+    const question = this.quizResource
+      .value()
+      .questions.find((question) => question.id === questionId);
     assertDefined(question);
-    this.quizService.answerQuestion(this.quiz, questionId, answerId);
+    this.quizService.answerQuestion(
+      this.quizResource.value,
+      questionId,
+      answerId,
+    );
 
-    this.isNextButtonDisabled.set(false);
+    const done = this.pendingTasks.add();
+    setTimeout(() => {
+      this.isNextButtonDisabled.set(false);
+      done();
+    }, 1000);
   }
 }
