@@ -15,7 +15,7 @@ import { NgClass } from '@angular/common';
           question().choices.length === 3 ? 'grid-cols-3' : 'grid-cols-2'
         "
       >
-        @for (choice of question().choices; track choice) {
+        @for (choice of question().choices; track choice.id) {
           <button
             mat-raised-button
             (click)="answer.emit(choice.id)"
