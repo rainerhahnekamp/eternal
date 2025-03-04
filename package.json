@@ -37,6 +37,7 @@
     "@ngrx/store": "^19.0.1",
     "@ngrx/store-devtools": "^19.0.1",
     "@sentry/angular": "^9.3.0",
+    "@sentry/cli": "^2.42.2",
     "date-fns": "^2.30.0",
     "eslint-plugin-custom": "file:eslint-plugin-custom",
     "express": "^4.18.2",
