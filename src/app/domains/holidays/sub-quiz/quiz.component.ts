@@ -1,41 +1,40 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  inject,
   input,
   numberAttribute,
+  signal,
 } from '@angular/core';
 
 import { QuizStore } from './data/quiz-store';
-import { QuizStatusComponent } from './ui/quiz-status.componen';
-import { QuizQuestionComponent } from './ui/quiz-question.component';
+import { z } from 'zod';
+import { httpResource } from '@angular/common/http';
 
 @Component({
   selector: 'app-quiz',
-  template: ` <h2>{{ quizStore.title() }}</h2>
-    <app-quiz-status
-      [timeLeft]="quizStore.timeLeft()"
-      [status]="quizStore.status()"
-    />
-    @for (question of quizStore.questions(); track question) {
-      <app-quiz-question
-        [question]="question"
-        (answer)="handleAnswer($event)"
-      ></app-quiz-question>
-    }`,
-  imports: [QuizStatusComponent, QuizQuestionComponent],
+  template: ` <h2>{{ quiz.value().name }}</h2> `,
   providers: [QuizStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizComponent {
-  quizStore = inject(QuizStore);
   id = input.required({ transform: numberAttribute });
 
-  constructor() {
-    this.quizStore.setId(this.id);
-  }
+  quizSchema = z.object({
+    name: z.string(),
+    timeInSeconds: z.number(),
+  });
 
-  handleAnswer($event: { questionId: number; choiceId: number }) {
-    this.quizStore.answer($event.questionId, $event.choiceId);
+  isQuizActive = signal(false);
+  quiz = httpResource(
+    () => (this.isQuizActive() ? `someurl/${this.id()}` : undefined),
+    {
+      parse: this.quizSchema.parse,
+      defaultValue: { name: '', timeInSeconds: 0 },
+    },
+  );
+
+  refresh() {
+    this.isQuizActive.set(true);
+    this.quiz.reload();
   }
 }

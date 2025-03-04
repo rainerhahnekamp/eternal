@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # Sentry Web Service
+  sentry:
+    image: getsentry/sentry:latest
+    platform: linux/amd64  # Force x86_64 for compatibility on Mac M1/M2/M3
+    container_name: sentry
+    restart: unless-stopped
+    depends_on:
+      - sentry_db
+      - sentry_redis
+    environment:
+      SENTRY_SECRET_KEY: 'your-secret-key'
+      SENTRY_REDIS_HOST: sentry_redis
+      SENTRY_DB_USER: sentry
+      SENTRY_DB_PASSWORD: sentry
+      SENTRY_DB_NAME: sentry
+      SENTRY_DB_HOST: sentry_db
+    ports:
+      - "9000:9000"
+    volumes:
+      - sentry_data:/var/lib/sentry/files
+
+  # Sentry Worker (Background tasks)
+  sentry_worker:
+    image: getsentry/sentry:latest
+    platform: linux/amd64
+    container_name: sentry_worker
+    restart: unless-stopped
+    depends_on:
+      - sentry
+    environment:
+      SENTRY_SECRET_KEY: 'your-secret-key'
+    command: "sentry run worker"
+
+  # Sentry Cron (Scheduled tasks)
+  sentry_cron:
+    image: getsentry/sentry:latest
+    platform: linux/amd64
+    container_name: sentry_cron
+    restart: unless-stopped
+    depends_on:
+      - sentry
+    environment:
+      SENTRY_SECRET_KEY: 'your-secret-key'
+    command: "sentry run cron"
+
+  # Sentry Database (PostgreSQL)
+  sentry_db:
+    image: postgres:15
+    platform: linux/amd64
+    container_name: sentry_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sentry
+      POSTGRES_PASSWORD: sentry
+      POSTGRES_DB: sentry
+    volumes:
+      - sentry_db:/var/lib/postgresql/data
+
+  # Sentry Redis (for caching & background jobs)
+  sentry_redis:
+    image: redis:latest
+    platform: linux/amd64
+    container_name: sentry_redis
+    restart: unless-stopped
+    volumes:
+      - sentry_redis:/data
+
+volumes:
+  sentry_data:
+  sentry_db:
+  sentry_redis:

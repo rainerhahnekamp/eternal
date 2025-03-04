@@ -2,10 +2,17 @@ import {
   ApplicationConfig,
   ErrorHandler,
   importProvidersFrom,
+  inject,
   LOCALE_ID,
+  provideAppInitializer,
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import {
+  provideRouter,
+  Router,
+  withComponentInputBinding,
+} from '@angular/router';
+import * as Sentry from '@sentry/angular';
 
 import { appRoutes } from './app.routes';
 import { provideStore } from '@ngrx/store';
@@ -19,10 +26,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { deAT } from 'date-fns/locale';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { IMAGE_CONFIG } from '@angular/common';
-import {
-  provideClientHydration,
-  withEventReplay,
-} from '@angular/platform-browser';
+
 import { baseUrlInterceptor } from './shared/http/base-url.interceptor';
 import { loadingInterceptor } from './shared/ui-messaging/loader/loading.interceptor';
 import { errorInterceptor } from './shared/http/error.interceptor';
@@ -30,7 +34,6 @@ import { sharedMasterDataProvider } from './shared/master-data/shared-master-dat
 import { sharedUiMessagingProvider } from './shared/ui-messaging/shared-ui-messaging.provider';
 import { Configuration } from './shared/config/configuration';
 import { securityInterceptor } from './shared/security/security-interceptor';
-import { ErrorHandlerService } from './core/error-handler.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { environment } from '../environments/environment';
 import { customersInterceptor } from './domains/customers/feature/customers.interceptor';
@@ -40,7 +43,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideAnimationsAsync(),
-    provideClientHydration(withEventReplay()),
     {
       provide: IMAGE_CONFIG,
       useValue: {
@@ -74,10 +76,21 @@ export const appConfig: ApplicationConfig = {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },
     },
-    { provide: ErrorHandler, useClass: ErrorHandlerService },
+    // { provide: ErrorHandler, useClass: ErrorHandlerService },
     {
       provide: Configuration,
       useValue: new Configuration(environment.baseUrl, true, false),
     },
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler(),
+    },
+    {
+      provide: Sentry.TraceService,
+      deps: [Router],
+    },
+    provideAppInitializer(() => {
+      inject(Sentry.TraceService);
+    }),
   ],
 };
