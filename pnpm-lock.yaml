@@ -129,6 +129,9 @@ importers:
       '@playwright/test':
         specifier: ^1.48.1
         version: 1.48.2
+      '@softarc/detective':
+        specifier: ^1.3.0
+        version: 1.3.0(typescript@5.6.3)
       '@softarc/eslint-plugin-sheriff':
         specifier: ^0.18.0
         version: 0.18.0(@softarc/sheriff-core@0.18.0(typescript@5.6.3))(@typescript-eslint/utils@8.12.2(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1)
@@ -2405,12 +2408,22 @@ packages:
   '@socket.io/component-emitter@3.1.2':
     resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
 
+  '@softarc/detective@1.3.0':
+    resolution: {integrity: sha512-a+jhC5irushRL/rPO7LTiJUS9jffD4FGg2ioo7/GgQZcIN3mqXX/xxzbej+64RE3EH0pxDetbHTUa6B9noOjgA==}
+    hasBin: true
+
   '@softarc/eslint-plugin-sheriff@0.18.0':
     resolution: {integrity: sha512-9oQaN15rtpyTUJvh1nKh0YTY5oYcnGrKJf79NNoXUmoeDQIRpzMtWBm85Mcxvbqs80918Q/zd70yUOeWXc3kAA==}
     peerDependencies:
       '@softarc/sheriff-core': 0.18.0
       '@typescript-eslint/utils': ^5.48.2 || ^6.0.0 || ^7.0.0 || ^8.0.0-alpha.20
       eslint: ^8.0.0 || ^9.0.0
+
+  '@softarc/sheriff-core@0.17.3':
+    resolution: {integrity: sha512-3Go1KUDXrTaa3JRPTLyLs8ElHaXVAMox+YERVONR0jy4zvITK1gkLMpttxIXrnYFrmgPI4YL8qcsZsALvUygWQ==}
+    hasBin: true
+    peerDependencies:
+      typescript: '>=4.8'
 
   '@softarc/sheriff-core@0.18.0':
     resolution: {integrity: sha512-HnwAn1sKEHY+QJUHN4mIpcn+RDfDQwmbEmWt/zobEjZqiYsXsY586MNl1/rjc8tJZ/aWtr5lyatxyC5TUs4UBg==}
@@ -3430,6 +3443,10 @@ packages:
   cookie-signature@1.0.6:
     resolution: {integrity: sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==}
 
+  cookie@0.6.0:
+    resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==}
+    engines: {node: '>= 0.6'}
+
   cookie@0.7.1:
     resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
     engines: {node: '>= 0.6'}
@@ -3931,6 +3948,10 @@ packages:
 
   exponential-backoff@3.1.1:
     resolution: {integrity: sha512-dX7e/LHVJ6W3DE1MHWi9S1EYzDESENfLrYohG2G++ovZrYOkm4Knwa0mc1cn84xJOR4KEU0WSchhLbd0UklbHw==}
+
+  express@4.21.0:
+    resolution: {integrity: sha512-VqcNGcj/Id5ZT1LZ/cfihi3ttTn+NJmkli2eZADigjq29qTlWi/hAQ43t/VLPq8+UX06FCEx3ByOYet6ZFblng==}
+    engines: {node: '>= 0.10.0'}
 
   express@4.21.1:
     resolution: {integrity: sha512-YSFlK1Ee0/GC8QaO91tHcDxJiE/X4FbpAyQWkxAvG6AXCuR65YzK8ua6D9hvi/TzUfZMpc+BwuM1IPw8fmQBiQ==}
@@ -8984,11 +9005,26 @@ snapshots:
 
   '@socket.io/component-emitter@3.1.2': {}
 
+  '@softarc/detective@1.3.0(typescript@5.6.3)':
+    dependencies:
+      '@softarc/sheriff-core': 0.17.3(typescript@5.6.3)
+      express: 4.21.0
+      fast-glob: 3.3.2
+      micromatch: 4.0.8
+      tslib: 2.8.1
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
   '@softarc/eslint-plugin-sheriff@0.18.0(@softarc/sheriff-core@0.18.0(typescript@5.6.3))(@typescript-eslint/utils@8.12.2(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1)':
     dependencies:
       '@softarc/sheriff-core': 0.18.0(typescript@5.6.3)
       '@typescript-eslint/utils': 8.12.2(eslint@8.57.1)(typescript@5.6.3)
       eslint: 8.57.1
+
+  '@softarc/sheriff-core@0.17.3(typescript@5.6.3)':
+    dependencies:
+      typescript: 5.6.3
 
   '@softarc/sheriff-core@0.18.0(typescript@5.6.3)':
     dependencies:
@@ -10269,6 +10305,8 @@ snapshots:
 
   cookie-signature@1.0.6: {}
 
+  cookie@0.6.0: {}
+
   cookie@0.7.1: {}
 
   cookie@0.7.2: {}
@@ -10852,6 +10890,42 @@ snapshots:
       strip-final-newline: 3.0.0
 
   exponential-backoff@3.1.1: {}
+
+  express@4.21.0:
+    dependencies:
+      accepts: 1.3.8
+      array-flatten: 1.1.1
+      body-parser: 1.20.3
+      content-disposition: 0.5.4
+      content-type: 1.0.5
+      cookie: 0.6.0
+      cookie-signature: 1.0.6
+      debug: 2.6.9
+      depd: 2.0.0
+      encodeurl: 2.0.0
+      escape-html: 1.0.3
+      etag: 1.8.1
+      finalhandler: 1.3.1
+      fresh: 0.5.2
+      http-errors: 2.0.0
+      merge-descriptors: 1.0.3
+      methods: 1.1.2
+      on-finished: 2.4.1
+      parseurl: 1.3.3
+      path-to-regexp: 0.1.10
+      proxy-addr: 2.0.7
+      qs: 6.13.0
+      range-parser: 1.2.1
+      safe-buffer: 5.2.1
+      send: 0.19.0
+      serve-static: 1.16.2
+      setprototypeof: 1.2.0
+      statuses: 2.0.1
+      type-is: 1.6.18
+      utils-merge: 1.0.1
+      vary: 1.1.2
+    transitivePeerDependencies:
+      - supports-color
 
   express@4.21.1:
     dependencies:

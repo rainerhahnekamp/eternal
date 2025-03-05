@@ -56,3 +56,6 @@ session.json
 /playwright/.cache/
 
 *storybook.log
+
+# Sentry Config File
+.sentryclirc

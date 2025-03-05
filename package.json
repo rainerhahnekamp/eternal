@@ -8,11 +8,13 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:ci": "ng test --source-map=false --browsers=ChromeHeadless --watch=false",
+    "detective": "detective",
     "lint": "ng lint",
     "verify": "npm run test:ci && npm run lint",
     "websocket:start": "node ./ws-app/app.mjs",
     "storybook": "ng run eternal:storybook",
-    "build-storybook": "ng run eternal:build-storybook"
+    "build-storybook": "ng run eternal:build-storybook",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org rainer-hahnekamp --project eternal ./dist/eternal/browser && sentry-cli sourcemaps upload --org rainer-hahnekamp --project eternal ./dist/eternal/browser"
   },
   "private": true,
   "dependencies": {
@@ -58,6 +60,7 @@
     "@commitlint/cli": "^18.4.0",
     "@commitlint/config-conventional": "^18.4.0",
     "@playwright/test": "^1.48.1",
+    "@softarc/detective": "^1.3.0",
     "@softarc/eslint-plugin-sheriff": "^0.18.0",
     "@softarc/sheriff-core": "^0.18.0",
     "@storybook/addon-essentials": "^8.3.6",

@@ -3,7 +3,6 @@ import { HolidayCardComponent } from './holiday-card.component';
 import { Meta, moduleMetadata, StoryObj } from '@storybook/angular/';
 import { createHoliday } from '../../model/holiday';
 import { provideLocationMocks } from '@angular/common/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 const meta: Meta<HolidayCardComponent> = {
@@ -11,8 +10,8 @@ const meta: Meta<HolidayCardComponent> = {
   component: HolidayCardComponent,
   decorators: [
     moduleMetadata({
+      imports: [HolidayCardComponent],
       providers: [provideNoopAnimations(), provideLocationMocks()],
-      imports: [RouterTestingModule],
     }),
   ],
 };

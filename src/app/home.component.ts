@@ -50,6 +50,8 @@ import { ChatService } from './chat/chat.service';
         Enable Chat
       </button>
 
+      <button mat-raised-button (click)="throwError()">Throw</button>
+
       @switch (chatService.status()) {
         @case ('failed') {
           <p
@@ -108,5 +110,9 @@ export class HomeComponent implements OnInit {
 
   enableWebsocket() {
     this.chatService.connect();
+  }
+
+  throwError() {
+    throw new Error('This is a test error');
   }
 }
