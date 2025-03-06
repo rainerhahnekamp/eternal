@@ -4,7 +4,7 @@ export function createQuiz(holidayId: number): QuizApi {
   return {
     id: holidayId,
     title: 'Angular Quiz',
-    timeInSeconds: 2,
+    timeInSeconds: 280,
     questions: [
       {
         id: 1,
