@@ -16,6 +16,7 @@ import { isPlatformServer } from '@angular/common';
 import { assertDefined } from '../../../../shared/util/assert-defined';
 
 export const QuizStore = signalStore(
+  { providedIn: 'root' },
   withState({
     title: '',
     questions: [] as Question[],

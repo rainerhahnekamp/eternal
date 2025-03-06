@@ -11,7 +11,7 @@ import { Question } from '../model/model';
 
 @Component({
   selector: 'app-quiz-question',
-  template: ` <mat-card class="max-w-lg my-4">
+  template: ` <mat-card class="max-w-lg my-4" aria-label="question">
     <mat-card-header>{{ question().question }}</mat-card-header>
     <mat-card-content>
       <div

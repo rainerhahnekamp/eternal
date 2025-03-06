@@ -24,11 +24,21 @@ export const sheriffConfig: SheriffConfig = {
           'sub-domain:<name>',
           'type:feature',
         ],
-        '<domain>/sub-<sub>': {
-          data: ['domain:<domain>', 'sub-domain:<sub>', 'type:data'],
-          model: ['domain:<domain>', 'sub-domain:<sub>', 'type:model'],
-          ui: ['domain:<domain>', 'sub-domain:<sub>', 'type:ui'],
-        },
+        '<domain>/sub-<sub>/data': [
+          'domain:<domain>',
+          'sub-domain:<sub>',
+          'type:data',
+        ],
+        '<domain>/sub-<sub>/model': [
+          'domain:<domain>',
+          'sub-domain:<sub>',
+          'type:model',
+        ],
+        '<domain>/sub-<sub>/ui': [
+          'domain:<domain>',
+          'sub-domain:<sub>',
+          'type:ui',
+        ],
         '<domain>/<type>': [
           'domain:<domain>',
           'type:<type>',

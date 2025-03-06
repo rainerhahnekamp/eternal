@@ -24,7 +24,6 @@ import { QuizQuestionComponent } from './ui/quiz-question.component';
       ></app-quiz-question>
     }`,
   imports: [QuizStatusComponent, QuizQuestionComponent],
-  providers: [QuizStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizComponent {
