@@ -118,8 +118,8 @@ importers:
         specifier: ^18.4.0
         version: 18.6.3
       '@playwright/test':
-        specifier: ^1.48.1
-        version: 1.48.2
+        specifier: ^1.51.1
+        version: 1.51.1
       '@softarc/eslint-plugin-sheriff':
         specifier: ^0.18.0
         version: 0.18.0(@softarc/sheriff-core@0.18.0(typescript@5.6.3))(@typescript-eslint/utils@8.12.2(eslint@8.57.1)(typescript@5.6.3))(eslint@8.57.1)
@@ -2041,8 +2041,8 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@playwright/test@1.48.2':
-    resolution: {integrity: sha512-54w1xCWfXuax7dz4W2M9uw0gDyh+ti/0K/MxcCUxChFh37kkdxPdfZDw5QBbuPUJHr1CiHJ1hXgSs+GgeQc5Zw==}
+  '@playwright/test@1.51.1':
+    resolution: {integrity: sha512-nM+kEaTSAoVlXmMPH10017vn3FSiFqr/bh4fKg9vmAdMfd9SDqRZNvPSiAHADc/itWak+qPvMPZQOPwCBW7k7Q==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -5176,13 +5176,13 @@ packages:
     resolution: {integrity: sha512-Ie9z/WINcxxLp27BKOCHGde4ITq9UklYKDzVo1nhk5sqGEXU3FpkwP5GM2voTGJkGd9B3Otl+Q4uwSOeSUtOBA==}
     engines: {node: '>=14.16'}
 
-  playwright-core@1.48.2:
-    resolution: {integrity: sha512-sjjw+qrLFlriJo64du+EK0kJgZzoQPsabGF4lBvsid+3CNIZIYLgnMj9V6JY5VhM2Peh20DJWIVpVljLLnlawA==}
+  playwright-core@1.51.1:
+    resolution: {integrity: sha512-/crRMj8+j/Nq5s8QcvegseuyeZPxpQCZb6HNk3Sos3BlZyAknRjoyJPFWkpNn8v0+P3WiwqFF8P+zQo4eqiNuw==}
     engines: {node: '>=18'}
     hasBin: true
 
-  playwright@1.48.2:
-    resolution: {integrity: sha512-NjYvYgp4BPmiwfe31j4gHLa3J7bD2WiBz8Lk2RoSsmX38SVIARZ18VYjxLjAcDsAhA+F4iSEXTSGgjua0rrlgQ==}
+  playwright@1.51.1:
+    resolution: {integrity: sha512-kkx+MB2KQRkyxjYPc3a0wLZZoDczmppyGJIvQ43l+aZihkaVvmu/21kiyaHeHjiFxjxNNFnUncKmcGIyOojsaw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -8487,9 +8487,9 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@playwright/test@1.48.2':
+  '@playwright/test@1.51.1':
     dependencies:
-      playwright: 1.48.2
+      playwright: 1.51.1
 
   '@rollup/rollup-android-arm-eabi@4.34.8':
     optional: true
@@ -12036,11 +12036,11 @@ snapshots:
     dependencies:
       find-up: 6.3.0
 
-  playwright-core@1.48.2: {}
+  playwright-core@1.51.1: {}
 
-  playwright@1.48.2:
+  playwright@1.51.1:
     dependencies:
-      playwright-core: 1.48.2
+      playwright-core: 1.51.1
     optionalDependencies:
       fsevents: 2.3.2
 
