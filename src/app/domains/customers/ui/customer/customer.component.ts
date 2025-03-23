@@ -26,7 +26,8 @@ export class CustomerComponent {
   customer = input.required<Customer>();
 
   formCustomer: Customer | undefined;
-  #formCustomerSync = effect(
+
+  private _formCustomerSync = effect(
     () => (this.formCustomer = { ...this.customer() }),
   );
 
