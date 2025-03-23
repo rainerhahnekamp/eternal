@@ -19,6 +19,6 @@ import { ChatService } from './chat.service';
   imports: [MatListModule, MatIconModule, DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChatComponent {
+export default class ChatComponent {
   messages = inject(ChatService).messages;
 }
