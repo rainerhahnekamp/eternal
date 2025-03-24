@@ -4,9 +4,10 @@ import {
   effect,
   Input,
   OnChanges,
+  provideExperimentalZonelessChangeDetection,
   signal,
 } from '@angular/core';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import { applicationConfig, Meta, StoryObj } from '@storybook/angular';
 import { ActivatedRoute } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,7 +35,6 @@ import { MatIconModule } from '@angular/material/icon';
       }
     `,
   ],
-  standalone: true,
   imports: [MatButtonModule, MatIconModule],
 })
 export class SliderComponent implements OnChanges {
@@ -72,8 +72,11 @@ const meta: Meta<SliderComponent> = {
   title: 'Isolated Component',
   component: SliderComponent,
   decorators: [
-    moduleMetadata({
-      providers: [{ provide: ActivatedRoute, useValue: undefined }],
+    applicationConfig({
+      providers: [
+        provideExperimentalZonelessChangeDetection(),
+        { provide: ActivatedRoute, useValue: undefined },
+      ],
     }),
   ],
 };
