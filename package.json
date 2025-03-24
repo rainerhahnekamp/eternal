@@ -51,6 +51,7 @@
     "@angular-eslint/schematics": "19.2.1",
     "@angular/cli": "~19.2.4",
     "@angular/compiler-cli": "^19.2.3",
+    "@axe-core/playwright": "^4.10.1",
     "@chromatic-com/storybook": "^1.9.0",
     "@commitlint/cli": "^18.4.0",
     "@commitlint/config-conventional": "^18.4.0",
