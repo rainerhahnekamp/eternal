@@ -40,7 +40,7 @@ import { FormErrorsComponent } from '../shared/form/form-errors.component';
     FormErrorsComponent,
   ],
 })
-export class NewsletterComponent {
+export default class NewsletterComponent {
   message = signal('');
   formGroup = inject(NonNullableFormBuilder).group({
     email: ['', Validators.required],

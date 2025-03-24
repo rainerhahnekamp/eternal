@@ -1,17 +1,18 @@
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
 import { HolidayCardComponent } from './holiday-card.component';
-import { ActivatedRoute } from '@angular/router';
+
+import { Meta, moduleMetadata, StoryObj } from '@storybook/angular/';
 import { Holiday } from '../../model/holiday';
+import { provideLocationMocks } from '@angular/common/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 const meta: Meta<HolidayCardComponent> = {
-  title: 'Eternal/Holiday Card',
+  title: 'Holiday Card Component',
   component: HolidayCardComponent,
   decorators: [
     moduleMetadata({
-      providers: [{ provide: ActivatedRoute, useValue: {} }],
-      imports: [MatButtonModule, MatCardModule],
+      providers: [provideNoopAnimations(), provideLocationMocks()],
+      imports: [RouterTestingModule],
     }),
   ],
 };

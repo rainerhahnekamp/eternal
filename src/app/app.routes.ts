@@ -1,13 +1,10 @@
 import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
-import { NewsletterComponent } from './newsletter/newsletter.component';
 import { inject } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Configuration } from './shared/config/configuration';
 import { SecurityStore } from './shared/security/security-store';
-import { ChatComponent } from './chat/chat.component';
-import BasketComponent from './basket/basket.component';
 
 export const appRoutes: Routes = [
   {
@@ -50,13 +47,19 @@ export const appRoutes: Routes = [
         path: 'bookings',
         loadChildren: () => import('./domains/bookings/bookings.routes'),
       },
-      { path: 'newsletter', component: NewsletterComponent },
+      {
+        path: 'newsletter',
+        loadComponent: () => import('./newsletter/newsletter.component'),
+      },
       {
         path: 'diary',
         loadChildren: () => import('src/app/domains/diary/diary.routes'),
       },
-      { path: 'chat', component: ChatComponent },
-      { path: 'basket', component: BasketComponent },
+      { path: 'chat', loadComponent: () => import('./chat/chat.component') },
+      {
+        path: 'basket',
+        loadComponent: () => import('./basket/basket.component'),
+      },
     ],
   },
 ];
