@@ -33,3 +33,17 @@ export const Primary: Story = {
     },
   },
 };
+
+export const OnSale: Story = {
+  args: {
+    holiday: {
+      ...createHoliday({
+        title: 'Welcome',
+        description: 'Welcome to the Angular Testing Workshop',
+        imageUrl: 'vienna.jpg',
+        onSale: true,
+      }),
+      isFavourite: false,
+    },
+  },
+};
