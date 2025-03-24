@@ -11,12 +11,11 @@ import { computed, inject } from '@angular/core';
 import { lastValueFrom, pipe } from 'rxjs';
 import { concatMap, filter, tap } from 'rxjs/operators';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { Holiday } from '../model/holiday';
 
 export const HolidayStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('holidays'),
+  // withDevtools('holidays'),
   withState({
     holidays: new Array<Holiday>(),
     favouriteIds: new Array<number>(),
