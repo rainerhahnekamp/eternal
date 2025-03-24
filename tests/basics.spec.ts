@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test } from './fixtures/test';
+import { test } from './fixtures';
 
 test.describe('Basics', () => {
   test.beforeEach(async ({ page }) => {
