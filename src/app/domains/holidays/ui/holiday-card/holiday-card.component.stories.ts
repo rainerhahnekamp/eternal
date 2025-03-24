@@ -1,18 +1,21 @@
 import { HolidayCardComponent } from './holiday-card.component';
 
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular/';
+import { applicationConfig, Meta, StoryObj } from '@storybook/angular';
 import { Holiday } from '../../model/holiday';
-import { provideLocationMocks } from '@angular/common/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideRouter } from '@angular/router';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 
 const meta: Meta<HolidayCardComponent> = {
   title: 'Holiday Card Component',
   component: HolidayCardComponent,
   decorators: [
-    moduleMetadata({
-      providers: [provideNoopAnimations(), provideLocationMocks()],
-      imports: [RouterTestingModule],
+    applicationConfig({
+      providers: [
+        provideExperimentalZonelessChangeDetection(),
+        provideNoopAnimations(),
+        provideRouter([]),
+      ],
     }),
   ],
 };
