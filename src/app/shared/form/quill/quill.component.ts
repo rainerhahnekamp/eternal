@@ -7,7 +7,6 @@ import {
   viewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import Quill from 'quill';
 import { QuillCounter } from '../internal/quill-counter.service';
 
 @Component({
@@ -19,7 +18,7 @@ import { QuillCounter } from '../internal/quill-counter.service';
 })
 export class QuillComponent {
   protected readonly quillId = inject(QuillCounter).nextInstanceId();
-  protected quill: Quill | undefined;
+  protected quill: unknown;
 
   text = input.required<string>();
 
@@ -27,7 +26,9 @@ export class QuillComponent {
 
   constructor() {
     afterNextRender(() => {
-      new Quill(this.quillEl()?.nativeElement, { theme: 'snow' });
+      import('quill').then(
+        (m) => new m.default(this.quillEl()?.nativeElement, { theme: 'snow' }),
+      );
     });
   }
 }

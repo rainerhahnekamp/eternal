@@ -1,7 +1,6 @@
 import { expect } from '@playwright/test';
-import { test } from './fixtures/test';
+import { test } from './fixtures';
 import { AxeBuilder } from '@axe-core/playwright';
-import { first } from 'rxjs';
 
 test.describe('A11y', () => {
   test.beforeEach(async ({ page }) => {
