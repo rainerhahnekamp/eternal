@@ -25,7 +25,6 @@ import { QuillComponent } from '../../../../shared/form/quill/quill.component';
     RouterLinkWithHref,
     QuillComponent,
   ],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HolidayCardComponent {
