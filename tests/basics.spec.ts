@@ -26,9 +26,7 @@ test.describe('Basics', () => {
     page,
   }) => {
     await page.getByTestId('btn-customers').click();
-    const nameLocator = page.locator(
-      'data-testid=row-customer >> data-testid=name',
-    );
+    const nameLocator = page.getByTestId('row-customer').getByTestId('name');
 
     await expect(nameLocator.nth(2)).toHaveText('Hugo Brandt');
     await expect(nameLocator.nth(9)).toHaveText('Jan Janáček');
