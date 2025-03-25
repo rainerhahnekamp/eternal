@@ -1,4 +1,4 @@
-import { inject, Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import Keycloak from 'keycloak-js';
 
 export interface UserProfile {
@@ -13,7 +13,6 @@ export interface UserProfile {
 export class KeycloakService {
   #keycloak: Keycloak | undefined;
   #profile: UserProfile | undefined;
-  readonly #zone = inject(NgZone);
 
   get keycloak() {
     if (!this.#keycloak) {
@@ -32,13 +31,11 @@ export class KeycloakService {
   }
 
   async init() {
-    const authenticated = await this.#zone.runOutsideAngular(() =>
-      this.keycloak.init({
-        onLoad: 'check-sso',
-        silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/silent-check-sso.html',
-      }),
-    );
+    const authenticated = await this.keycloak.init({
+      onLoad: 'check-sso',
+      silentCheckSsoRedirectUri:
+        window.location.origin + '/assets/silent-check-sso.html',
+    });
 
     if (!authenticated) {
       return authenticated;
