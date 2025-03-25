@@ -53,7 +53,7 @@ export const appRoutes: Routes = [
       },
       {
         path: 'diary',
-        loadChildren: () => import('src/app/domains/diary/diary.routes'),
+        loadChildren: () => import('./domains/diary/diary.routes'),
       },
       { path: 'chat', loadComponent: () => import('./chat/chat.component') },
       {
