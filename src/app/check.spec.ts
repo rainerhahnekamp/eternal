@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { NewsletterComponent } from './newsletter/newsletter.component';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import NewsletterComponent from './newsletter/newsletter.component';
 
 it('jest should work', () => {
   expect(true).toBe(true);
