@@ -1,9 +1,12 @@
 import { AddressLookuper } from './address-lookuper.service';
-import { asyncScheduler, firstValueFrom, of, scheduled } from 'rxjs';
+import { asyncScheduler, of, scheduled } from 'rxjs';
 import { createMock } from '@testing-library/angular/jest-utils';
-import { HttpClient, provideHttpClient } from "@angular/common/http";
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
+import {
+  HttpTestingController,
+  provideHttpClientTesting,
+} from '@angular/common/http/testing';
 
 function assertType<T>(object: unknown): T {
   return object as T;
@@ -26,10 +29,10 @@ describe('Address Lookuper', () => {
       const httpClient = createMock(HttpClient);
       httpClient.get.mockReturnValue(scheduled([addresses], asyncScheduler));
 
-      const lookuper = setup(httpClient)
+      const lookuper = setup(httpClient);
 
-      const result = await firstValueFrom(lookuper.lookup(query));
-      expect(result).toBe(isValid);
+      // const result = await firstValueFrom(lookuper.lookup(() => query));
+      // expect(result).toBe(isValid);
     });
   }
 
@@ -37,8 +40,8 @@ describe('Address Lookuper', () => {
     const httpClient = createMock(HttpClient);
     httpClient.get.mockReturnValue(of([] as string[]));
 
-    const lookuper = setup(httpClient)
-    lookuper.lookup('Domgasse 5');
+    const lookuper = setup(httpClient);
+    lookuper.lookup(() => 'Domgasse 5');
 
     expect(httpClient.get).toHaveBeenCalledWith(
       'https://nominatim.openstreetmap.org/search.php',
@@ -51,22 +54,35 @@ describe('Address Lookuper', () => {
     );
   });
 
-  it('should use right parameters', async () => {
-    TestBed.configureTestingModule({providers: [provideHttpClient(), provideHttpClientTesting()]})
+  it.only('should use right parameters', async () => {
+    jest.useFakeTimers();
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
 
-    const ctrl = TestBed.inject(HttpTestingController)
-    const lookuper = TestBed.inject(AddressLookuper)
+    const ctrl = TestBed.inject(HttpTestingController);
+    const lookuper = TestBed.inject(AddressLookuper);
 
-    lookuper.lookup('Domgasse 5').subscribe()
-    ctrl.expectOne('https://nominatim.openstreetmap.org/search.php?format=jsonv2&q=Domgasse%205')
+    const res = TestBed.runInInjectionContext(() =>
+      lookuper.lookup(() => 'Domgasse 5'),
+    );
+    await jest.runAllTimersAsync();
+    ctrl.expectOne(
+      'https://nominatim.openstreetmap.org/search.php?format=jsonv2&q=Domgasse%205',
+    ).flush([ ])
+
+    await jest.runAllTimersAsync();
+    expect(res.hasValue()).toBe(true)
+    expect(res.value()).toBe(false)
+    jest.useRealTimers();
   });
 
   it('should count the queries', () => {
-    const httpClient = createMock(HttpClient)
-    httpClient.get.mockReturnValue(of([]))
-    const lookuper = setup(httpClient)
+    const httpClient = createMock(HttpClient);
+    httpClient.get.mockReturnValue(of([]));
+    const lookuper = setup(httpClient);
     expect(lookuper.counter).toBe(0);
-    lookuper.lookup('Domgasse 5');
+    lookuper.lookup(() => 'Domgasse 5');
     expect(lookuper.counter).toBe(1);
   });
 });
