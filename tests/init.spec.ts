@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { test } from './fixtures/fixtures';
+import { SidemenuPageObject } from './page-objects/sidemenu-page-object';
 
 test('init', async ({ page }) => {
   await test.step('test1', async () => {

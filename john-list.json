@@ -1,0 +1,55 @@
+{
+  "cookies": [
+    {
+      "name": "KEYCLOAK_3P_COOKIE_SAMESITE",
+      "value": "supported",
+      "domain": "auth.eternal-holidays.net",
+      "path": "/realms/eternal/protocol/openid-connect/3p-cookies",
+      "expires": 1742911437.839352,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "AUTH_SESSION_ID",
+      "value": "NGRkM2IwNjEtMWMyNy00OGYxLWIyMTEtM2ExNDQwMjFlZmQ0LklRZXJLSnBIaVVzMTVMeFZqTVJIT3p6a0NobW1IeHVGdEhfSC0tVjJJcUhuOTdYTS1IZmphdElXajBfNjNibG5kWjYwQWh1X2pwYjFsVG1JcmlZZ2JB.d8ac203d02dc-3089",
+      "domain": "auth.eternal-holidays.net",
+      "path": "/realms/eternal/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "KC_AUTH_SESSION_HASH",
+      "value": "HFncXIMRr0qiM+F4+h3p1vwOHBuuzBQG2xcSVIANanQ",
+      "domain": "auth.eternal-holidays.net",
+      "path": "/realms/eternal/",
+      "expires": 1742911437.339351,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "KEYCLOAK_IDENTITY",
+      "value": "eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIxOGZjODFjYi1kOGFmLTQ2ZDctYmE0YS0zYzEzODkzMDBmMTkifQ.eyJleHAiOjE3NDI5NDczNzcsImlhdCI6MTc0MjkxMTM3NywianRpIjoiZDg4OWU4YzgtNGZhNi00YjAwLTg3Y2MtMjkzZjQ3MGE5YmUzIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLmV0ZXJuYWwtaG9saWRheXMubmV0Ojg0NDMvcmVhbG1zL2V0ZXJuYWwiLCJzdWIiOiI4OTk1YmUxZS04NDUyLTQyMWUtYmUxNi1hN2JkNmU2MjVhNDUiLCJ0eXAiOiJTZXJpYWxpemVkLUlEIiwic2lkIjoiNGRkM2IwNjEtMWMyNy00OGYxLWIyMTEtM2ExNDQwMjFlZmQ0Iiwic3RhdGVfY2hlY2tlciI6IkJmdF9KZE9tX3R3b19tQTBZZ3BiczlzX3pFR3cwbmJDR2FtaElibEVpNHMifQ.Fve3LR9uG9NdOet_7RuUd2kPLpwSOLJTLvKrPAvRCBe0SS2iYxTIycj4qCYH_cdkjIWkc-8ASwEHFSX6dT-vVw",
+      "domain": "auth.eternal-holidays.net",
+      "path": "/realms/eternal/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "KEYCLOAK_SESSION",
+      "value": "HFncXIMRr0qiM-F4-h3p1vwOHBuuzBQG2xcSVIANanQ",
+      "domain": "auth.eternal-holidays.net",
+      "path": "/realms/eternal/",
+      "expires": 1742947377.617751,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    }
+  ],
+  "origins": []
+}

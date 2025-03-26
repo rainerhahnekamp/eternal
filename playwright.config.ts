@@ -34,7 +34,16 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome'],  },
+    },
+
+    { name: 'login', use: { ...devices['Desktop Chrome'] }, testMatch: '*.login.ts' },
+    {
+      name: 'john-list',
+      use: { ...devices['Desktop Chrome'], storageState: 'john-list.json' },
+      testDir: './tests/john-list',
+      dependencies: ['login']
+
     },
 
     /* Test against mobile viewports. */
