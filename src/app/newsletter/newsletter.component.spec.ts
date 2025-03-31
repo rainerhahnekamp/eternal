@@ -1,13 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import NewsletterComponent from './newsletter.component';
 import { By } from '@angular/platform-browser';
-import { provideHttpClient } from "@angular/common/http";
+import { provideHttpClient } from '@angular/common/http';
 
-import { Component } from "@angular/core";
-import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
-import { provideRouter } from "@angular/router";
-import { provideLocationMocks } from "@angular/common/testing";
-import { RouterTestingHarness } from "@angular/router/testing";
+import { Component } from '@angular/core';
+import {
+  HttpTestingController,
+  provideHttpClientTesting,
+} from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
+import { provideLocationMocks } from '@angular/common/testing';
+import { RouterTestingHarness } from '@angular/router/testing';
+import { userEvent } from '@testing-library/user-event';
+import { screen } from '@testing-library/angular';
 
 @Component({
   selector: 'app-home-link',
@@ -15,28 +20,52 @@ import { RouterTestingHarness } from "@angular/router/testing";
 })
 export class MockHomeLinkComponent {}
 
+@Component({
+  template: ``,
+})
+class MockedHomeComponent {}
+
 describe('Newsletter Component', () => {
   const setup = async () => {
-
+    const guardMock = { confirmed: jest.fn() };
     TestBed.configureTestingModule({
       imports: [NewsletterComponent],
-      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([{
-        path: 'newsletter',
-        component: NewsletterComponent
-      }]), provideLocationMocks()],
-    })
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([
+          { path: '', component: MockedHomeComponent },
+          {
+            canDeactivate: [() => guardMock.confirmed()],
+            path: 'newsletter',
+            component: NewsletterComponent,
+          },
+        ]),
+        provideLocationMocks(),
+      ],
+    });
 
-    const {fixture} = await RouterTestingHarness.create('/newsletter')
+    const { fixture } = await RouterTestingHarness.create('/newsletter');
     fixture.autoDetectChanges();
 
-    const ctrl = TestBed.inject(HttpTestingController)
+    const user = userEvent.setup();
+    const ctrl = TestBed.inject(HttpTestingController);
 
-    return { fixture, ctrl };
+    return { fixture, ctrl, guardMock, user };
   };
 
   it('should instantiate', async () => {
     const { fixture } = await setup();
-    expect(fixture.componentInstance).toBeDefined()
+    expect(fixture.componentInstance).toBeDefined();
+  });
+
+  it('should use the deactive guard', async () => {
+    const { fixture, guardMock } = await setup();
+    const homeLink: HTMLLinkElement = fixture.debugElement.query(
+      By.css('[data-testid=lnk-home'),
+    ).nativeElement;
+    homeLink.click();
+    expect(guardMock.confirmed).toHaveBeenCalled();
   });
 
   it('should not subscribe', async () => {
@@ -46,7 +75,7 @@ describe('Newsletter Component', () => {
     ).nativeElement;
     button.click();
 
-    await fixture.whenStable()
+    await fixture.whenStable();
 
     const message: HTMLParagraphElement = fixture.debugElement.query(
       By.css('[data-testid=p-message]'),
@@ -55,25 +84,25 @@ describe('Newsletter Component', () => {
   });
 
   it('should subscribe', async () => {
-    const { fixture, ctrl } = await setup();
+    const { fixture, ctrl, user } = await setup();
 
-    const input: HTMLInputElement = fixture.debugElement.query(
-      By.css('[data-testid=inp-email]'),
-    ).nativeElement;
-    input.value = 'user@host.com';
-    input.dispatchEvent(new Event('input'));
+    await user.type(
+      screen.getByRole('textbox', {
+        name: /address/i,
+      }),
+      'user@host.com',
+    );
 
-    const button: HTMLButtonElement = fixture.debugElement.query(
-      By.css('[data-testid=btn-subscribe]'),
-    ).nativeElement;
-    button.click();
-    ctrl.expectOne('http://some.host.com/newsletter/subscribe').flush(true)
+    await user.click(
+      screen.getByRole('button', {
+        name: /subscribe/i,
+      }),
+    );
 
-    const message: HTMLParagraphElement = fixture.debugElement.query(
-      By.css('[data-testid=p-message]'),
-    ).nativeElement;
+    ctrl.expectOne('http://some.host.com/newsletter/subscribe').flush(true);
 
     await fixture.whenStable();
-    expect(message.textContent).toBe('Thank you for your subscription');
+    const status = screen.getByRole('status');
+    expect(status.textContent).toBe('Thank you for your subscription');
   });
 });
