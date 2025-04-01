@@ -18,11 +18,12 @@ test.describe('Basics', () => {
 
   test('customers list shows 10 rows', async ({ page }) => {
     await page.getByRole('link', { name: 'Customers' }).click();
-    const tableLocator = page
+    const rowsLocator = page
       .getByRole('table', { name: 'Customers' })
       .getByRole('rowgroup')
-      .last();
-    await expect(tableLocator).toHaveCount(10);
+      .last()
+      .getByRole('row');
+    await expect(rowsLocator).toHaveCount(10);
   });
 
   test('3rd customer is Hugo Brandt; 10th is Jan Janáček', async ({ page }) => {
