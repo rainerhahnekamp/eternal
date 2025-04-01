@@ -6,8 +6,8 @@ test.describe('Authentication', () => {
     await page.goto('');
     await expect(page.getByText('Application is ready')).toBeVisible();
     await page.getByRole('button', { name: 'Sign In' }).click();
-    await page.getByLabel('email').fill('john.list');
-    await page.getByLabel('password').fill('John List');
+    await page.getByRole('textbox', { name: 'email' }).fill('john.list');
+    await page.getByRole('textbox', { name: 'password' }).fill('John List');
     await page.getByRole('button', { name: 'Sign In' }).click();
     await page.getByText('Welcome John List').waitFor();
     await page.context().storageState({ path: storagePath });
