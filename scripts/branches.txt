@@ -3,11 +3,11 @@ workshop/playwright/01-starter/init
 workshop/playwright/01-starter/solution
 workshop/playwright/02-basics/init
 workshop/playwright/02-basics/solution
-workshop/playwright/03-advanced-i/init
-workshop/playwright/03-advanced-i/solution
-workshop/playwright/04-advanced-ii/init
-workshop/playwright/04-advanced-ii/solution
-workshop/playwright/05-network-session-deps/init
-workshop/playwright/05-network-session-deps/solution
+workshop/playwright/03-page-objects-fixtures/init
+workshop/playwright/03-page-objects-fixtures/solution
+workshop/playwright/04-network-session-deps/init
+workshop/playwright/04-network-session-deps/solution
+workshop/playwright/05-advanced/init
+workshop/playwright/05-advanced/solution
 workshop/playwright/06-visual-regression/init
 workshop/playwright/06-visual-regression/solution
