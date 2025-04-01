@@ -4,6 +4,7 @@ const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
 const sheriff = require("@softarc/eslint-plugin-sheriff");
 const unusedImports = require("eslint-plugin-unused-imports");
+const playwright = require("eslint-plugin-playwright");
 
 module.exports = tseslint.config(
   {
@@ -60,6 +61,15 @@ module.exports = tseslint.config(
           argsIgnorePattern: "^_",
         },
       ],
+    },
+  },
+  {
+    ...playwright.configs["flat/recommended"],
+    files: ["tests/**"],
+    rules: {
+      ...playwright.configs["flat/recommended"].rules,
+      // Customize Playwright rules
+      // ...
     },
   },
 );
