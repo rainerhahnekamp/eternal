@@ -10,7 +10,7 @@ test.describe('network', () => {
     await page.goto('');
     await expect(page.getByText('Application is ready')).toBeVisible();
     await page.getByRole('switch', { name: 'Mock Customers' }).click();
-    page.route('https://api.eternal-holidays.net/customer?page=1', (req) =>
+    page.route('https://api.eternal-holidays.net/customer?page=0', (req) =>
       req.fulfill({
         json: {
           content: [
