@@ -6,8 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "playwright test",
     "test:ci": "ng test --source-map=false --browsers=ChromeHeadless --watch=false",
+    "test:dev": "playwright test --ui",
+    "test:debug": "playwright test --project=chromium --debug",
     "lint": "ng lint",
     "verify": "npm run test:ci && npm run lint",
     "websocket:start": "node ./ws-app/app.mjs",
@@ -16,7 +18,6 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-architects/ngrx-toolkit": "^19.0.2",
     "@angular/animations": "^19.2.3",
     "@angular/cdk": "^19.2.6",
     "@angular/common": "^19.2.3",
@@ -33,7 +34,6 @@
     "@ngrx/effects": "^19.0.1",
     "@ngrx/eslint-plugin": "^19.0.1",
     "@ngrx/operators": "^19.0.1",
-    "@ngrx/signals": "^19.0.1",
     "@ngrx/store": "^19.0.1",
     "@ngrx/store-devtools": "^19.0.1",
     "date-fns": "^2.30.0",
@@ -46,6 +46,7 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
+    "@angular-architects/ngrx-toolkit": "^19.0.2",
     "@angular-devkit/build-angular": "^19.2.4",
     "@angular-eslint/schematics": "19.2.1",
     "@angular/cli": "~19.2.4",
@@ -54,6 +55,7 @@
     "@chromatic-com/storybook": "^3.2.6",
     "@commitlint/cli": "^18.4.0",
     "@commitlint/config-conventional": "^18.4.0",
+    "@ngrx/signals": "^19.1.0",
     "@playwright/test": "^1.51.1",
     "@softarc/eslint-plugin-sheriff": "^0.18.0",
     "@softarc/sheriff-core": "^0.18.0",
