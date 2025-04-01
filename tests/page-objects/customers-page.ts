@@ -1,9 +1,11 @@
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 
 export class CustomersPage {
-  constructor(private page: Page) {}
+  rowsLocator: Locator;
 
-  rowsLocator = this.page.getByTestId('row-customer');
+  constructor(private page: Page) {
+    this.rowsLocator = this.page.getByTestId('row-customer');
+  }
 
   rowByName(name: string) {
     return this.page
