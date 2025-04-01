@@ -1,16 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-form-errors',
-  template: ` @if (control) {
+  template: ` @let control = this.control();
+
     @if (control.hasError('required')) {
       <span>This field is mandatory</span>
-    }
-  }`,
+    }`,
   imports: [MatInputModule],
 })
 export class FormErrorsComponent {
-  @Input() control: AbstractControl | undefined;
+  control = input.required<AbstractControl>();
 }
