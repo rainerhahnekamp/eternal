@@ -77,7 +77,7 @@ export const CustomerStore = signalStore(
               tapResponse({
                 next: () => {
                   uiMessage.info('Customer has been updated');
-                  _load({ page: 1 });
+                  _load({ page: 0 });
                   router.navigateByUrl('/customer');
                 },
                 error: () => EMPTY,
@@ -90,7 +90,7 @@ export const CustomerStore = signalStore(
           httpClient.put<Customer[]>(baseUrl, customer).pipe(
             tapResponse({
               next: () => {
-                _load({ page: 1 });
+                _load({ page: 0 });
                 router.navigateByUrl('/customer');
               },
               error: () => EMPTY,
@@ -103,7 +103,7 @@ export const CustomerStore = signalStore(
           httpClient.delete<Customer[]>(`${baseUrl}/${id}`).pipe(
             tapResponse({
               next: () => {
-                _load({ page: 1 });
+                _load({ page: 0 });
                 router.navigateByUrl('/customer');
               },
               error: () => EMPTY,
