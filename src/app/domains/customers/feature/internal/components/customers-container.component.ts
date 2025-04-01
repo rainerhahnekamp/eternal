@@ -29,6 +29,6 @@ export class CustomersContainerComponent {
   }
 
   switchPage(page: number) {
-    this.#customerStore.load(page + 1);
+    this.#customerStore.load(page);
   }
 }
