@@ -1,4 +1,7 @@
 mat-card {
+  mat-card-title {
+    font-weight: normal;
+  }
   max-width: 305px;
 
   mat-card-content {
@@ -84,7 +87,7 @@ mat-card {
     }
 
     .top-left {
-      background: #ed1b24;
+      background: #ed1b5f;
       position: absolute;
       top: 0;
       left: 0;
