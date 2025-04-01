@@ -42,13 +42,18 @@ test.describe('Sequential CRUD', () => {
     await expect.soft(customersPage.rowByName(name)).toBeVisible();
   });
 
-  test('remove Rudi', async ({ page, customersPage, customerPage }) => {
+  test('remove Rudi', async ({
+    page,
+    customersPage,
+    customerPage,
+  }, testInfo) => {
     await customersPage.navigateToPage(name);
     await customersPage.edit(name);
     page.on('dialog', (dialog) => dialog.accept());
     await customerPage.remove();
-    expect(await customersPage.navigateToPage(name)).toThrowError(
-      'Customer could not be found',
-    );
+    const errorMessage = await customersPage
+      .navigateToPage(name)
+      .catch((err) => err.message);
+    expect(errorMessage).toBe('Customer could not be found');
   });
 });
