@@ -20,10 +20,11 @@ import { mapResponse, tapResponse } from '@ngrx/operators';
 import { EMPTY, pipe } from 'rxjs';
 import { Router } from '@angular/router';
 import { MessageService } from '../../../shared/ui-messaging/message/message.service';
+import { withDevtools } from '@angular-architects/ngrx-toolkit';
 
 export const CustomerStore = signalStore(
   { providedIn: 'root' },
-  // withDevtools('customer'),
+  withDevtools('customer'),
   withEntities<Customer>(),
   withState({
     page: 0,
@@ -127,7 +128,7 @@ export const CustomerStore = signalStore(
         ...customer,
         selected: customer.id === state.selectedId(),
       })),
-      pageIndex: state.page() - 1,
+      pageIndex: state.page(),
       length: state.total(),
     })),
   })),

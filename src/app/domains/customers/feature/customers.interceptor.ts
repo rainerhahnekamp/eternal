@@ -113,7 +113,7 @@ function getNextId() {
 function pagedCustomers(
   page: number,
 ): Observable<{ content: Customer[]; total: number }> {
-  const start = (page - 1) * pageSize;
+  const start = page * pageSize;
   const end = start + pageSize;
   return of({
     content: customers.slice(start, end),
