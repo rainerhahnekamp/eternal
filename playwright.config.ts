@@ -41,16 +41,24 @@ export default defineConfig({
       testMatch: '*.setup.ts',
     },
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'john-list',
+      use: { ...devices['Desktop Chrome'], storageState: 'john-list.json' },
       dependencies: ['setup'],
+      testDir: './tests/john-list',
+    },
+    {
+      name: 'unauthenticated',
+      use: { ...devices['Desktop Chrome'] },
+      testDir: './tests/unauthenticated',
     },
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: 'pnpm run start',
-    url: 'http://localhost:4200',
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: [
+    {
+      command: 'pnpm run start',
+      url: 'http://localhost:4200',
+      reuseExistingServer: true,
+    },
+  ],
 });

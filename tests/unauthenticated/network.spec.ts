@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test } from './fixtures/test';
+import { test } from '../fixtures/test';
 
 test.describe('network', () => {
   test('should mock customers request with Isabell Sykora', async ({

@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test } from './fixtures/test';
+import { test } from '../fixtures/test';
 
 test.describe('CRUD for Customers', () => {
   test.beforeEach(async ({ page }) => {
@@ -38,9 +38,7 @@ test.describe('CRUD for Customers', () => {
       page.on('dialog', (dialog) => dialog.accept());
       await customerPage.remove();
       await expect.soft(customersPage.rowsLocator).toHaveCount(10);
-      await expect
-        .soft(customersPage.rowByName('Rudi Huber'))
-        .not.toBeVisible();
+      await expect.soft(customersPage.rowByName('Rudi Huber')).toBeHidden();
     });
   });
 });

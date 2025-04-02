@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { storagePath } from './storage-path';
+import { storagePath } from '../storage-path';
 
 test.describe('Authenticated', () => {
   test.use({ storageState: storagePath });
