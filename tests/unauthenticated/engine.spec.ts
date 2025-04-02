@@ -1,5 +1,5 @@
-import { test } from './fixtures/test';
-import { expect } from './matchers/expect';
+import { test } from '../fixtures/test';
+import { expect } from '../matchers/expect';
 
 test('select customer', async ({ page }) => {
   await page.goto('');

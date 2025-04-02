@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { test } from './fixtures/test';
+import { test } from '../fixtures/test';
 
 test.describe('Basics', () => {
   test.beforeEach(async ({ page }) => {
@@ -75,7 +75,7 @@ test.describe('Basics', () => {
       await customerPage.remove();
 
       await expect(customersPage.rowsLocator).toHaveCount(10);
-      await expect(customersPage.rowByName('Knut Eggen')).not.toBeVisible();
+      await expect(customersPage.rowByName('Knut Eggen')).toBeHidden();
     });
 
     test('select the same country again', async ({
