@@ -50,30 +50,19 @@
       </div>
     </mat-card-content>
     <mat-card-actions class="flex justify-around items-center">
-      @if (holiday().isFavourite) {
-        <button
-          mat-icon-button
-          data-testid="btn-remove-favourite"
-          (click)="removeFavourite.emit(holiday().id)"
-        >
-          <mat-icon title="remove from favourites">favorite</mat-icon>
-        </button>
-      }
       @if (holiday().hasQuiz) {
         <a [routerLink]="['./quiz', holiday().id]" mat-icon-button title="quiz">
           <mat-icon>quiz</mat-icon>
         </a>
       }
-      @if (!holiday().isFavourite) {
-        <button
-          mat-icon-button
-          data-testid="btn-add-favourite"
-          title="add to favourites"
-          (click)="addFavourite.emit(holiday().id)"
-        >
-          <mat-icon>favorite_outlined</mat-icon>
-        </button>
-      }
+      <button
+        mat-icon-button
+        data-testid="btn-add-favourite"
+        title="add to favourites"
+        (click)="addFavourite.emit(holiday().id)"
+      >
+        <mat-icon>favorite_outlined</mat-icon>
+      </button>
       <mat-icon
         data-testid="btn-basket"
         class="cursor-pointer"
