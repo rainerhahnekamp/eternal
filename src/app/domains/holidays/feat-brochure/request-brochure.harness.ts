@@ -2,7 +2,7 @@ import { ComponentHarness } from '@angular/cdk/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
 
-export class RequestInfoComponentHarness extends ComponentHarness {
+export class RequestBrochureHarness extends ComponentHarness {
   static hostSelector = 'app-request-info';
 
   protected getTitle = this.locatorFor('h2');

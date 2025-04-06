@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { HolidaysComponent } from '../feat-overview/holidays.component';
-import { RequestInfoComponent } from '../feat-brochure/request-info.component';
 import { QuizComponent } from '../sub-quiz/quiz.component';
+import { RequestBrochureComponent } from '../feat-brochure/request-brochure.component';
 
 export default [
   {
@@ -12,8 +12,8 @@ export default [
         component: HolidaysComponent,
       },
       {
-        path: 'request-info/:holidayId',
-        component: RequestInfoComponent,
+        path: 'request-brochure/:holidayId',
+        component: RequestBrochureComponent,
       },
       {
         path: 'quiz/:id',

@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-request-info',
-  templateUrl: './request-info.component.html',
+  templateUrl: './request-brochure.component.html',
   imports: [
     ReactiveFormsModule,
     MatFormField,
@@ -23,7 +23,7 @@ import { RouterLink } from '@angular/router';
     MatAnchor,
   ],
 })
-export class RequestInfoComponent {
+export class RequestBrochureComponent {
   #formBuilder = inject(NonNullableFormBuilder);
   #lookuper = inject(AddressLookuper);
 
