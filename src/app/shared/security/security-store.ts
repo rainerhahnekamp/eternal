@@ -40,26 +40,7 @@ export const SecurityStore = signalStore(
 
     return {
       async onInit() {
-        if (isServer) {
-          patchState(store, { user: ANONYMOUS_USER, loaded: true });
-          return;
-        }
-
-        const isLoggedIn = await keycloakService.init();
-        if (isLoggedIn && keycloakService.profile) {
-          const { sub, email, given_name, family_name, token } =
-            keycloakService.profile;
-          const user = {
-            id: sub,
-            email,
-            name: `${given_name} ${family_name}`,
-            anonymous: false,
-            bearer: token,
-          };
-          patchState(store, { user, loaded: true });
-        } else {
-          patchState(store, { user: ANONYMOUS_USER, loaded: true });
-        }
+        patchState(store, { user: ANONYMOUS_USER, loaded: true });
       },
     };
   }),

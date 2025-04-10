@@ -21,7 +21,6 @@ import { EMPTY, pipe } from 'rxjs';
 import { Router } from '@angular/router';
 import { MessageService } from '../../../shared/ui-messaging/message/message.service';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
-
 export const CustomerStore = signalStore(
   { providedIn: 'root' },
   withDevtools('customer'),
