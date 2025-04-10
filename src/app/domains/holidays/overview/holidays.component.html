@@ -1,67 +1,8 @@
 <h2>Choose among our Holidays</h2>
-@if (holidays.hasValue()) {
-  <div class="flex flex-wrap justify-evenly">
-    @for (holiday of holidays.value(); track holiday.id) {
-      <div class="flex flex-wrap justify-evenly">
-        <mat-card
-          data-testid="holiday-card"
-          [class]="{ 'sold-out': holiday.soldOut }"
-          class="my-4 mx-4"
-          [attr.aria-labelledby]="'holiday-card-' + holiday.id"
-          aria-labelledby="holiday-title"
-        >
-          <mat-card-header>
-            <mat-card-title [id]="'holiday-card-' + holiday.id">
-              {{ holiday.title }}
-            </mat-card-title>
-            <mat-card-subtitle class="h-12">{{
-              holiday.teaser
-            }}</mat-card-subtitle>
-          </mat-card-header>
-
-          <mat-card-content>
-            <figure>
-              <img
-                [alt]="holiday.title"
-                [src]="holiday.imageUrl"
-                class="max-w-none"
-              />
-              <div class="badge-overlay">
-                @if (holiday.onSale) {
-                  <span class="top-left badge">On Sale</span>
-                }
-                @if (holiday.soldOut) {
-                  <span class="middle-full badge">Sold out</span>
-                }
-              </div>
-            </figure>
-            <div>
-              <div class="h-20 overflow-hidden">
-                {{ holiday.description }}
-              </div>
-            </div>
-          </mat-card-content>
-          <mat-card-actions class="flex justify-around items-center">
-            @if (holiday.hasQuiz) {
-              <a
-                [routerLink]="['./quiz', holiday.id]"
-                mat-icon-button
-                title="quiz"
-              >
-                <mat-icon>quiz</mat-icon>
-              </a>
-            }
-            <a
-              [routerLink]="['./request-brochure', holiday.id]"
-              data-testid="btn-brochure"
-              mat-icon-button
-              title="Request Brochure"
-            >
-              <mat-icon>info</mat-icon>
-            </a>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-    }
-  </div>
-}
+<div class="flex flex-wrap justify-evenly">
+  @for (holiday of holidays(); track holiday.id) {
+    <div class="flex flex-wrap justify-evenly">
+      <app-holiday-card [holiday]="holiday" />
+    </div>
+  }
+</div>
