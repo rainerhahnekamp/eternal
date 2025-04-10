@@ -1,7 +1,7 @@
 import { httpResource } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { z } from 'zod';
-import { Quiz } from './model';
+import { Quiz } from '../../model/model';
 
 const quizApiSchema = z.object({
   id: z.number(),
@@ -32,15 +32,22 @@ export const parseQuizApi = (response: unknown) => {
 
 @Injectable({ providedIn: 'root' })
 export class QuizService {
-  findById(id: () => number) {
+  findById(id: () => number | undefined) {
     return httpResource(
-      () => ({
-        url: `/holiday/${id()}/quiz`,
-      }),
+      () => {
+        const quizId = id();
+        if (!quizId) {
+          return undefined;
+        }
+
+        return {
+          url: `/holiday/${quizId}/quiz`,
+        };
+      },
       {
         parse: (response) => {
           const quizApi = parseQuizApi(response);
-          return quizApi ? toQuiz(quizApi, id()) : undefined;
+          return quizApi ? toQuiz(quizApi, Number(id())) : undefined;
         },
       },
     );

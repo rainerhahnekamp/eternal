@@ -12,6 +12,8 @@ export const config: SheriffConfig = {
     'src/app/domains/holidays': {
       overview: 'type:feature',
       'overview/<type>': 'type:<type>',
+      quiz: 'type:feature',
+      'quiz/<type>': 'type:<type>',
     },
   }, // apply tags to your modules
   depRules: {
@@ -21,7 +23,7 @@ export const config: SheriffConfig = {
     noTag: 'noTag',
 
     'type:feature': ['type:data', 'type:ui', 'type:model'],
-    'type:data': ['type:model'],
+    'type:data': ['type:model', 'root'],
     'type:ui': ['type:model'],
     'type:model': [],
   },

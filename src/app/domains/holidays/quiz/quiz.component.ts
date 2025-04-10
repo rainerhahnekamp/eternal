@@ -1,71 +1,34 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
+  effect,
   inject,
   input,
   numberAttribute,
+  untracked,
 } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
-import { MatButton } from '@angular/material/button';
-import { assertDefined } from '../../../shared/util/assert-defined';
-import { QuizService } from './quiz.service';
-import { AnswerStatus } from './model';
+import { QuizStore } from './data/quiz.store';
+import { QuizQuestionComponent } from './ui/quiz-question.component';
+import { QuizStatusComponent } from './ui/quiz-status.component';
 
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
-  imports: [MatCardModule, MatButton],
+  imports: [MatCardModule, QuizQuestionComponent, QuizStatusComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizComponent {
   readonly id = input.required({ transform: numberAttribute });
-  protected readonly quiz = inject(QuizService).findById(this.id);
+  protected readonly quizStore = inject(QuizStore);
 
-  status = computed(() => {
-    const status: Record<AnswerStatus, number> = {
-      unanswered: 0,
-      correct: 0,
-      incorrect: 0,
-    };
-
-    const quiz = this.quiz.value();
-    if (!quiz) {
-      return status;
-    }
-
-    for (const question of quiz.questions) {
-      status[question.status]++;
-    }
-
-    return status;
-  });
-
-  protected handleAnswer(questionId: number, choiceId: number) {
-    const quiz = this.quiz.value();
-    assertDefined(quiz);
-
-    const question = quiz.questions.find(
-      (question) => question.id === questionId,
-    );
-    assertDefined(question);
-
-    const questions = quiz.questions.map((question) => {
-      if (question.id === questionId) {
-        const status: AnswerStatus =
-          question.answer === choiceId ? 'correct' : 'incorrect';
-        return {
-          ...question,
-          status,
-        };
-      } else {
-        return question;
-      }
+  constructor() {
+    effect(() => {
+      const id = this.id();
+      untracked(() => {
+        this.quizStore.setId(id);
+      });
     });
-
-    this.quiz.value.update((value) =>
-      value ? { ...value, questions } : value,
-    );
   }
 }
