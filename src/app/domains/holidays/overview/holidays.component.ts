@@ -5,8 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { HolidayService } from './data/holiday.service';
 import { HolidayCardComponent } from './ui/holiday-card.component';
+import { HolidayStore } from './data/holiday-store';
 
 @Component({
   selector: 'app-holidays',
@@ -22,15 +22,15 @@ import { HolidayCardComponent } from './ui/holiday-card.component';
   ],
 })
 export class HolidaysComponent {
-  readonly #holidayService = inject(HolidayService);
+  readonly #holidayStore = inject(HolidayStore);
 
-  protected readonly holidays = this.#holidayService.holidays;
+  protected readonly holidays = this.#holidayStore.holidays;
 
   addFavourite(id: number) {
-    this.#holidayService.addFavourite(id);
+    this.#holidayStore.addFavourite(id);
   }
 
   removeFavourite(id: number) {
-    this.#holidayService.removeFavourite(id);
+    this.#holidayStore.removeFavourite(id);
   }
 }
