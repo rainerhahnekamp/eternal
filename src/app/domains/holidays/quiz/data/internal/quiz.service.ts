@@ -54,7 +54,7 @@ export class QuizService {
   }
 }
 
-function toQuiz(quiz: QuizApi, holidayId: number): Quiz {
+export function toQuiz(quiz: QuizApi, holidayId: number): Quiz {
   return {
     title: quiz.title,
     timeInSeconds: quiz.timeInSeconds,

@@ -1,11 +1,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   inject,
   input,
   numberAttribute,
-  untracked,
 } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
@@ -24,11 +22,6 @@ export class QuizComponent {
   protected readonly quizStore = inject(QuizStore);
 
   constructor() {
-    effect(() => {
-      const id = this.id();
-      untracked(() => {
-        this.quizStore.setId(id);
-      });
-    });
+    this.quizStore.setId(this.id);
   }
 }
