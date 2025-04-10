@@ -34,7 +34,6 @@ import { ErrorHandlerService } from './core/error-handler.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { environment } from '../environments/environment';
 import { customersInterceptor } from './domains/customers/feature/customers.interceptor';
-import { holidaysInterceptor } from './domains/holidays/api/holidays.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -54,7 +53,6 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([
         customersInterceptor,
-        holidaysInterceptor,
         baseUrlInterceptor,
         loadingInterceptor,
         errorInterceptor,
