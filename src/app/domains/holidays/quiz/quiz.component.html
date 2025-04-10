@@ -6,6 +6,7 @@
   <app-quiz-status [status]="quizStore.status()" />
   @for (question of quiz.questions; track question) {
     <app-quiz-question
+      aria-label="question"
       [question]="question"
       (answer)="this.quizStore.handleAnswer(question.id, $event)"
     />
