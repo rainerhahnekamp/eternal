@@ -1,9 +1,6 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import localeDe from '@angular/common/locales/de-AT';
-import { registerLocaleData } from '@angular/common';
-import { appConfig } from './app/app.config';
-import { AppComponent } from './app/app.component';
+import { initFederation } from '@angular-architects/native-federation';
 
-registerLocaleData(localeDe, 'de-AT');
-
-bootstrapApplication(AppComponent, appConfig);
+initFederation()
+  .catch((err) => console.error(err))
+  .then((_) => import('./bootstrap'))
+  .catch((err) => console.error(err));
