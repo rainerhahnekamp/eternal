@@ -80,9 +80,6 @@ importers:
       express:
         specifier: ^4.18.2
         version: 4.21.1
-      lint-staged:
-        specifier: ^15.2.10
-        version: 15.2.10
       quill:
         specifier: ^2.0.2
         version: 2.0.2
@@ -222,6 +219,9 @@ importers:
       keycloak-js:
         specifier: ^26.1.4
         version: 26.1.4
+      lint-staged:
+        specifier: ^15.2.10
+        version: 15.2.10
       postcss:
         specifier: ^8.4.28
         version: 8.4.47
