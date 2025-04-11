@@ -1,7 +1,7 @@
 import { ActivatedRouteSnapshot, Routes } from '@angular/router';
-import { HomeComponent } from './home.component';
 import { inject } from '@angular/core';
 import { Configuration } from './shared/config/configuration';
+import { QuizComponent } from './domains/holidays/sub-quiz/quiz.component';
 
 export const appRoutes: Routes = [
   {
@@ -25,7 +25,7 @@ export const appRoutes: Routes = [
     children: [
       {
         path: '',
-        component: HomeComponent,
+        component: QuizComponent,
       },
       { path: 'home', redirectTo: '' },
       {

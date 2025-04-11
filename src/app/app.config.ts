@@ -3,7 +3,7 @@ import {
   ErrorHandler,
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideRouter } from '@angular/router';
 
 import { appRoutes } from './app.routes';
 import { provideStore } from '@ngrx/store';
@@ -40,7 +40,7 @@ export const appConfig: ApplicationConfig = {
       },
     },
     provideStore(),
-    provideRouter(appRoutes, withComponentInputBinding()),
+    provideRouter(appRoutes),
     provideHttpClient(
       withFetch(),
       withInterceptors([

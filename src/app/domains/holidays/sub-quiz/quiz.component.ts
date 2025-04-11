@@ -3,7 +3,6 @@ import {
   Component,
   inject,
   input,
-  numberAttribute,
 } from '@angular/core';
 
 import { QuizStore } from './data/quiz-store';
@@ -29,7 +28,7 @@ import { QuizQuestionComponent } from './ui/quiz-question.component';
 })
 export class QuizComponent {
   quizStore = inject(QuizStore);
-  id = input.required({ transform: numberAttribute });
+  id = input(2);
 
   constructor() {
     this.quizStore.setId(this.id);
