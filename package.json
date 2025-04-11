@@ -33,7 +33,7 @@
     "@ngrx/effects": "^19.0.1",
     "@ngrx/eslint-plugin": "^19.0.1",
     "@ngrx/operators": "^19.0.1",
-    "@ngrx/signals": "^19.1.0",
+    "@ngrx/signals": "^19.0.1",
     "@ngrx/store": "^19.0.1",
     "@ngrx/store-devtools": "^19.0.1",
     "@softarc/native-federation-node": "^2.0.10",
