@@ -1,7 +1,6 @@
 import {
   ApplicationConfig,
   ErrorHandler,
-  importProvidersFrom,
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
@@ -13,7 +12,6 @@ import {
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { IMAGE_CONFIG } from '@angular/common';
 
@@ -57,7 +55,6 @@ export const appConfig: ApplicationConfig = {
     ...environment.providers,
     ...sharedMasterDataProvider,
     ...sharedUiMessagingProvider,
-    importProvidersFrom([MatDateFnsModule]),
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },
