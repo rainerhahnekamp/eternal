@@ -8,7 +8,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { Configuration } from './shared/config/configuration';
 import { SpecialGreetingComponent } from './core/special-greeting.component';
-import { ChatService } from './chat/chat.service';
 
 @Component({
   selector: 'app-home',
@@ -44,29 +43,7 @@ import { ChatService } from './chat/chat.service';
         data-testid="tgl-run-heartbeat"
         >Heartbeat
       </mat-slide-toggle>
-    </form>
-    <div class="w-72">
-      <button class="my-4" mat-raised-button (click)="enableWebsocket()">
-        Enable Chat
-      </button>
-
-      @switch (chatService.status()) {
-        @case ('failed') {
-          <p
-            class="border border-red-400 rounded bg-red-100 px-4 py-3 text-red-700"
-          >
-            Could not establish connection
-          </p>
-        }
-        @case ('connected') {
-          <p
-            class="border border-green-400 rounded bg-green-100 px-4 py-3 text-green-700"
-          >
-            Connection established
-          </p>
-        }
-      }
-    </div> `,
+    </form>`,
   imports: [
     ReactiveFormsModule,
     MatSlideToggleModule,
@@ -82,7 +59,6 @@ export class HomeComponent implements OnInit {
     pagedCustomers: [true],
     runHeartbeat: [true],
   });
-  protected readonly chatService = inject(ChatService);
 
   mockCustomers = new FormControl(true, {
     nonNullable: true,
@@ -104,9 +80,5 @@ export class HomeComponent implements OnInit {
     this.formGroup.valueChanges.subscribe(() =>
       this.config.updateFeatures(this.formGroup.getRawValue()),
     );
-  }
-
-  enableWebsocket() {
-    this.chatService.connect();
   }
 }

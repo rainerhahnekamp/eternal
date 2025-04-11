@@ -49,7 +49,6 @@ export const appRoutes: Routes = [
         path: 'diary',
         loadChildren: () => import('./domains/diary/diary.routes'),
       },
-      { path: 'chat', loadComponent: () => import('./chat/chat.component') },
       {
         path: 'basket',
         loadComponent: () => import('./basket/basket.component'),
