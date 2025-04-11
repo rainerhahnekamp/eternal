@@ -38,3 +38,5 @@ export class QuizComponent {
     this.quizStore.answer($event.questionId, $event.choiceId);
   }
 }
+
+export default QuizComponent;
