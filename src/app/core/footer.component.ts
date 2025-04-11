@@ -7,14 +7,13 @@ import {
 } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { HeartbeatService } from '../heartbeat.service';
-import { SecurityStore } from '../shared/security/security-store';
 import { Configuration } from '../shared/config/configuration';
 
 @Component({
   selector: 'app-footer',
   template: `
     <footer class="p-2 background-color-toolbar">
-      @if (isHydrated() && securityLoaded()) {
+      @if (isHydrated()) {
         <div
           class="text-xs flex items-center justify-end gap-2 text-grey-500"
           data-testid="hydrated"
@@ -40,7 +39,6 @@ import { Configuration } from '../shared/config/configuration';
 })
 export class FooterComponent {
   readonly isHydrated = signal(false);
-  readonly securityLoaded = inject(SecurityStore).loaded;
   readonly apiReachable = inject(HeartbeatService).status;
   protected readonly config = inject(Configuration);
 

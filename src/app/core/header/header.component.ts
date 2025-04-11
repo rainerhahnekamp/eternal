@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { SecurityStore } from '../../shared/security/security-store';
 
 @Component({
   selector: 'app-header',
@@ -11,14 +10,11 @@ import { SecurityStore } from '../../shared/security/security-store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  readonly #securityStore = inject(SecurityStore);
-  protected readonly user = this.#securityStore.loadedUser;
-
   protected signOut() {
-    this.#securityStore.signOut();
+    void true;
   }
 
   protected signIn() {
-    this.#securityStore.signIn();
+    void true;
   }
 }

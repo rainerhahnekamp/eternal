@@ -2,7 +2,6 @@ import {
   ApplicationConfig,
   ErrorHandler,
   importProvidersFrom,
-  LOCALE_ID,
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
@@ -15,8 +14,6 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { deAT } from 'date-fns/locale';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { IMAGE_CONFIG } from '@angular/common';
 
@@ -61,11 +58,6 @@ export const appConfig: ApplicationConfig = {
     ...sharedMasterDataProvider,
     ...sharedUiMessagingProvider,
     importProvidersFrom([MatDateFnsModule]),
-    {
-      provide: MAT_DATE_LOCALE,
-      useValue: deAT,
-    },
-    { provide: LOCALE_ID, useValue: 'de-AT' },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },

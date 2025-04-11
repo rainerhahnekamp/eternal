@@ -4,25 +4,4 @@
     Unforgettable Holidays
   </h1>
 </a>
-<div class="security">
-  @if (user(); as userValue) {
-    @if (userValue.anonymous) {
-      <button data-testid="btn-sign-in" mat-raised-button (click)="signIn()">
-        Sign In
-      </button>
-    } @else {
-      <div class="flex items-center">
-        <p class="profile" data-testid="p-username">
-          Welcome {{ userValue.name }}
-        </p>
-        <button
-          (click)="signOut()"
-          data-testid="btn-sign-out"
-          mat-raised-button
-        >
-          Sign Out
-        </button>
-      </div>
-    }
-  }
-</div>
+<div class="security"></div>

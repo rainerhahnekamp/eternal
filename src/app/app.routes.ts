@@ -1,10 +1,7 @@
 import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { inject } from '@angular/core';
-import { filter } from 'rxjs/operators';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { Configuration } from './shared/config/configuration';
-import { SecurityStore } from './shared/security/security-store';
 
 export const appRoutes: Routes = [
   {
@@ -23,9 +20,6 @@ export const appRoutes: Routes = [
             mockHolidays: queryParamMap.get('mock-holidays') == '1',
           });
         }
-      },
-      () => {
-        return toObservable(inject(SecurityStore).loaded).pipe(filter(Boolean));
       },
     ],
     children: [
