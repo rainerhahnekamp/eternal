@@ -16,6 +16,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-architects/native-federation": "^19.0.20",
     "@angular/animations": "^19.2.3",
     "@angular/cdk": "^19.2.6",
     "@angular/common": "^19.2.3",
