@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { HolidaysComponent } from '../feat-overview/holidays.component';
-import { QuizComponent } from '../sub-quiz/quiz.component';
 import { RequestBrochureComponent } from '../feat-brochure/request-brochure.component';
+import { loadRemoteModule } from '@angular-architects/native-federation';
 
 export default [
   {
@@ -17,7 +17,11 @@ export default [
       },
       {
         path: 'quiz/:id',
-        component: QuizComponent,
+        loadComponent: () =>
+          loadRemoteModule({
+            remoteEntry: 'http://localhost:4201/remoteEntry.json',
+            exposedModule: 'quiz',
+          }),
       },
     ],
   },
