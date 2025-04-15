@@ -13,7 +13,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { interval, pipe, switchMap } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { isPlatformServer } from '@angular/common';
-import { assertDefined } from '../../../../shared/util/assert-defined';
+import { assertDefined } from '../shared/util/assert-defined';
 
 export const QuizStore = signalStore(
   withState({

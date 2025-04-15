@@ -8,7 +8,6 @@ import { RouterOutlet } from '@angular/router';
   template: ` <div class="m-auto max-w-lg">
     <router-outlet />
   </div>`,
-  styleUrls: ['./app.component.scss'],
   imports: [MatToolbarModule, MatSidenavModule, RouterOutlet],
 })
 export class AppComponent {}

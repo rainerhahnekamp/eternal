@@ -1,6 +1,5 @@
 import {
   ApplicationConfig,
-  ErrorHandler,
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
@@ -12,21 +11,12 @@ import {
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { IMAGE_CONFIG } from '@angular/common';
 
-import { baseUrlInterceptor } from './shared/http/base-url.interceptor';
-import { loadingInterceptor } from './shared/ui-messaging/loader/loading.interceptor';
-import { errorInterceptor } from './shared/http/error.interceptor';
-import { sharedMasterDataProvider } from './shared/master-data/shared-master-data.provider';
-import { sharedUiMessagingProvider } from './shared/ui-messaging/shared-ui-messaging.provider';
 import { Configuration } from './shared/config/configuration';
-import { securityInterceptor } from './shared/security/security-interceptor';
-import { ErrorHandlerService } from './core/error-handler.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { environment } from '../environments/environment';
-import { customersInterceptor } from './domains/customers/feature/customers.interceptor';
-import { holidaysInterceptor } from './domains/holidays/api/holidays.interceptor';
+import { baseUrlInterceptor } from './shared/http/base-url.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -41,25 +31,8 @@ export const appConfig: ApplicationConfig = {
     },
     provideStore(),
     provideRouter(appRoutes),
-    provideHttpClient(
-      withFetch(),
-      withInterceptors([
-        customersInterceptor,
-        holidaysInterceptor,
-        baseUrlInterceptor,
-        loadingInterceptor,
-        errorInterceptor,
-        securityInterceptor,
-      ]),
-    ),
+    provideHttpClient(withFetch(), withInterceptors([baseUrlInterceptor])),
     ...environment.providers,
-    ...sharedMasterDataProvider,
-    ...sharedUiMessagingProvider,
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: { appearance: 'outline' },
-    },
-    { provide: ErrorHandler, useClass: ErrorHandlerService },
     {
       provide: Configuration,
       useValue: new Configuration(environment.baseUrl, true, false),
