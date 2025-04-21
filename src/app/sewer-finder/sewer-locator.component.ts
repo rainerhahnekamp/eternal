@@ -91,7 +91,7 @@ export class SewerLocatorComponent {
       L.marker([value.current.lat, value.current.lon], {
         icon: L.icon({
           iconUrl: 'assets/turtle-icon.png',
-          iconSize: [32, 32],
+          iconSize: [64, 34],
           iconAnchor: [16, 32],
         }),
       })
@@ -104,7 +104,7 @@ export class SewerLocatorComponent {
         const sewerMarker = L.marker([lat, lon], {
           icon: L.icon({
             iconUrl: 'assets/sewer-icon.png',
-            iconSize: [32, 32],
+            iconSize: [64, 33],
             iconAnchor: [16, 32],
           }),
         });
