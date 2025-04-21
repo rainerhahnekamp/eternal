@@ -1,55 +1,38 @@
 import { TestBed } from '@angular/core/testing';
 import { SewerLocator } from './sewer-locator.service';
-import { HttpClient } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import {
   provideExperimentalZonelessChangeDetection,
   ResourceStatus,
 } from '@angular/core';
-import { of } from 'rxjs';
+import {
+  HttpTestingController,
+  provideHttpClientTesting,
+} from '@angular/common/http/testing';
 
 describe('Sewer Locator', () => {
-  let clock: jasmine.Clock;
-
-  beforeEach(() => {
-    clock = jasmine.clock();
-    clock.install();
-  });
-
-  afterEach(() => {
-    clock.uninstall();
-  });
-
   it('should find sewers', async () => {
     expect(true).toBe(true);
-
-    const httpClient = {
-      post: jasmine.createSpy(),
-    };
-
     TestBed.configureTestingModule({
       providers: [
-        { provide: HttpClient, useValue: httpClient },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         provideExperimentalZonelessChangeDetection(),
       ],
     });
     const sewerLocator = TestBed.inject(SewerLocator);
+    const ctrl = TestBed.inject(HttpTestingController);
     const { sewers } = sewerLocator;
     expect(sewers.status()).toBe(ResourceStatus.Idle);
-
-    httpClient.post.and.returnValue(
-      of({
-        elements: [
-          { lat: 46, lon: 16.5 },
-          { lat: 47, lon: 17 },
-        ],
-      }),
-    );
     void sewerLocator.setLocation(46, 16);
-
-    // Could be shortened to await Promise.resolve()
-    const promise = new Promise((resolve) => setTimeout(resolve, 0));
-    clock.tick(0);
-    await promise;
+    TestBed.flushEffects();
+    ctrl.expectOne('https://overpass-api.de/api/interpreter').flush({
+      elements: [
+        { lat: 46, lon: 16.5 },
+        { lat: 47, lon: 17 },
+      ],
+    });
+    await Promise.resolve();
 
     expect(sewers.value()).toEqual({
       current: { lat: 46, lon: 16 },
