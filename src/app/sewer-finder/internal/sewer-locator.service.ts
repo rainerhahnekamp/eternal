@@ -27,8 +27,10 @@ export class SewerLocator {
     sewers: [],
   });
 
-  readonly status = this.#status.asReadonly();
-  readonly value = this.#value.asReadonly();
+  readonly sewers = {
+    status: this.#status.asReadonly(),
+    value: this.#value.asReadonly(),
+  };
 
   async setLocation(lat: number, lon: number) {
     const query = `

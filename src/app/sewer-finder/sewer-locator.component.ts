@@ -26,7 +26,7 @@ import * as L from 'leaflet';
         </button>
       </div>
 
-      @switch (sewerLocator.status()) {
+      @switch (sewers.status()) {
         @case (ResourceStatus.Loading) {
           <div>Scanning city blocks for sewers...</div>
         }
@@ -37,7 +37,7 @@ import * as L from 'leaflet';
           </div>
         }
         @case (ResourceStatus.Resolved) {
-          @let result = sewerLocator.value();
+          @let result = sewers.value();
           @if (result.nearest) {
             <div>
               <h2>Booyakasha! Sewer found!</h2>
@@ -57,7 +57,8 @@ import * as L from 'leaflet';
   imports: [DecimalPipe, MatButtonModule],
 })
 export class SewerLocatorComponent {
-  protected readonly sewerLocator = inject(SewerLocator);
+  readonly #sewerLocator = inject(SewerLocator);
+  protected readonly sewers = this.#sewerLocator.sewers;
   protected map: L.Map | undefined;
 
   protected async locate() {
@@ -65,7 +66,7 @@ export class SewerLocatorComponent {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
 
-    void this.sewerLocator.setLocation(lat, lon);
+    void this.#sewerLocator.setLocation(lat, lon);
   }
 
   #getCurrentPosition(): Promise<GeolocationPosition> {
@@ -76,7 +77,7 @@ export class SewerLocatorComponent {
 
   constructor() {
     effect(() => {
-      const value = this.sewerLocator.value();
+      const value = this.sewers.value();
       if (!value.nearest || !value.current) {
         return;
       }
