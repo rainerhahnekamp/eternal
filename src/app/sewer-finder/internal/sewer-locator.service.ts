@@ -1,74 +1,85 @@
-import { inject, Injectable, ResourceStatus, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, signal } from '@angular/core';
+import { httpResource } from '@angular/common/http';
 import { getDistance } from 'geolib';
-import { lastValueFrom } from 'rxjs';
+import { assertDefined } from '../../shared/util/assert-defined';
 
 interface Node {
   lon: number;
   lat: number;
 }
 
+interface SewerState {
+  current: Node | undefined;
+  minDistance: number;
+  nearest: Node | undefined;
+  sewers: Node[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class SewerLocator {
-  readonly #http = inject(HttpClient);
+  readonly #location = signal<undefined | { lat: number; lon: number }>(
+    undefined,
+  );
 
-  readonly #status = signal<ResourceStatus>(ResourceStatus.Idle);
-  readonly #value = signal<{
-    current: Node | undefined;
-    minDistance: number;
-    nearest: undefined | Node;
-    sewers: Node[];
-  }>({
-    current: undefined,
-    minDistance: 0,
-    nearest: undefined,
-    sewers: [],
-  });
+  setLocation(lat: number, lon: number) {
+    this.#location.set({ lat, lon });
+  }
 
-  readonly sewers = {
-    status: this.#status.asReadonly(),
-    value: this.#value.asReadonly(),
-  };
+  #sewers = httpResource(
+    () => {
+      const location = this.#location();
+      if (!location) {
+        return undefined;
+      }
+      const { lat, lon } = location;
 
-  async setLocation(lat: number, lon: number) {
-    const query = `
+      return {
+        url: 'https://overpass-api.de/api/interpreter',
+        method: 'POST',
+        body: `
       [out:json];
       node["man_made"="manhole"](around:5000,${lat},${lon});
-      out body;
-    `;
+      out body;`,
+      };
+    },
+    {
+      defaultValue: {
+        current: undefined,
+        minDistance: 0,
+        nearest: undefined,
+        sewers: [],
+      } as SewerState,
+      parse: (response: unknown) => {
+        const value = response as { elements: Node[] };
+        const location = this.#location();
+        assertDefined(location);
 
-    this.#status.set(ResourceStatus.Loading);
+        const { lat, lon } = location;
+        let nearest: Node | undefined;
+        let minDistance = Infinity;
 
-    const url = 'https://overpass-api.de/api/interpreter';
-    const result = await lastValueFrom(
-      this.#http.post<{ elements: Node[] }>(url, query, {
-        responseType: 'json',
-      }),
-    );
+        for (const node of value.elements) {
+          const dist = getDistance(
+            { latitude: lat, longitude: lon },
+            { latitude: node.lat, longitude: node.lon },
+          );
+          if (dist < minDistance) {
+            minDistance = dist;
+            nearest = node;
+          }
+        }
 
-    this.#status.set(ResourceStatus.Resolved);
+        return {
+          current: { lat, lon },
+          minDistance,
+          nearest,
+          sewers: value.elements,
+        } as SewerState;
+      },
+    },
+  );
 
-    let nearest: Node | undefined;
-    let minDistance = Infinity;
-
-    for (const node of result.elements) {
-      const dist = getDistance(
-        { latitude: lat, longitude: lon },
-        { latitude: node.lat, longitude: node.lon },
-      );
-      if (dist < minDistance) {
-        minDistance = dist;
-        nearest = node;
-      }
-    }
-
-    this.#value.set({
-      current: { lat, lon },
-      minDistance,
-      nearest,
-      sewers: result.elements,
-    });
-  }
+  sewers = this.#sewers.asReadonly();
 }
