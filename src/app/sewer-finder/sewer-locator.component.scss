@@ -1,0 +1,14 @@
+div.main {
+  max-width: 1280px;
+  margin: auto;
+  margin-top: 10em;
+  flex-direction: column;
+  justify-content: stretch;
+  background: white;
+  padding: 2em;
+}
+
+#map {
+  height: 500px;
+  width: 100%;
+}

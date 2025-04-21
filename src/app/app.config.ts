@@ -19,28 +19,21 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { deAT } from 'date-fns/locale';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { IMAGE_CONFIG } from '@angular/common';
-import {
-  provideClientHydration,
-  withEventReplay,
-} from '@angular/platform-browser';
+
 import { baseUrlInterceptor } from './shared/http/base-url.interceptor';
 import { loadingInterceptor } from './shared/ui-messaging/loader/loading.interceptor';
 import { errorInterceptor } from './shared/http/error.interceptor';
 import { sharedMasterDataProvider } from './shared/master-data/shared-master-data.provider';
 import { sharedUiMessagingProvider } from './shared/ui-messaging/shared-ui-messaging.provider';
 import { Configuration } from './shared/config/configuration';
-import { securityInterceptor } from './shared/security/security-interceptor';
 import { ErrorHandlerService } from './core/error-handler.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { environment } from '../environments/environment';
-import { customersInterceptor } from './domains/customers/feature/customers.interceptor';
-import { holidaysInterceptor } from './domains/holidays/api/holidays.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideAnimationsAsync(),
-    provideClientHydration(withEventReplay()),
     {
       provide: IMAGE_CONFIG,
       useValue: {
@@ -53,12 +46,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withFetch(),
       withInterceptors([
-        customersInterceptor,
-        holidaysInterceptor,
         baseUrlInterceptor,
         loadingInterceptor,
         errorInterceptor,
-        securityInterceptor,
       ]),
     ),
     ...environment.providers,
