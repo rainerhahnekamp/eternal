@@ -58,13 +58,7 @@
         >
           <mat-icon title="remove from favourites">favorite</mat-icon>
         </button>
-      }
-      @if (holiday().hasQuiz) {
-        <a [routerLink]="['./quiz', holiday().id]" mat-icon-button title="quiz">
-          <mat-icon>quiz</mat-icon>
-        </a>
-      }
-      @if (!holiday().isFavourite) {
+      } @else {
         <button
           mat-icon-button
           data-testid="btn-add-favourite"
@@ -73,6 +67,11 @@
         >
           <mat-icon>favorite_outlined</mat-icon>
         </button>
+      }
+      @if (holiday().hasQuiz) {
+        <a [routerLink]="['./quiz', holiday().id]" mat-icon-button title="quiz">
+          <mat-icon>quiz</mat-icon>
+        </a>
       }
       <mat-icon
         data-testid="btn-basket"
@@ -88,13 +87,19 @@
       >
         <mat-icon>info</mat-icon>
       </a>
-      <button
-        (click)="toggleEditing()"
-        mat-icon-button
-        title="Edit Description"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
+      @if (useQuill()) {
+        <button
+          (click)="toggleEditing()"
+          mat-icon-button
+          title="Edit Description"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      } @else {
+        <a [routerLink]="['./edit', holiday().id]">
+          <mat-icon>edit</mat-icon>
+        </a>
+      }
     </mat-card-actions>
   </mat-card>
 </div>

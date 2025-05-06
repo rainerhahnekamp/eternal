@@ -44,6 +44,9 @@ import { ChatService } from './chat/chat.service';
         data-testid="tgl-run-heartbeat"
         >Heartbeat
       </mat-slide-toggle>
+      <mat-slide-toggle formControlName="useQuill" data-testid="tgl-use-quill"
+        >Use Quill
+      </mat-slide-toggle>
     </form>
     <div class="w-72">
       <button class="my-4" mat-raised-button (click)="enableWebsocket()">
@@ -81,6 +84,7 @@ export class HomeComponent implements OnInit {
     mockHolidays: [true],
     pagedCustomers: [true],
     runHeartbeat: [true],
+    useQuill: [false],
   });
   protected readonly chatService = inject(ChatService);
 
@@ -100,6 +104,7 @@ export class HomeComponent implements OnInit {
       mockHolidays: this.config.mockHolidays,
       pagedCustomers: this.config.pagedCustomers,
       runHeartbeat: this.config.runHeartbeat(),
+      useQuill: this.config.useQuill,
     });
     this.formGroup.valueChanges.subscribe(() =>
       this.config.updateFeatures(this.formGroup.getRawValue()),

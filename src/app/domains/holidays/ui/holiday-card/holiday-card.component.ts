@@ -29,6 +29,7 @@ import { QuillComponent } from '../../../../shared/form/quill/quill.component';
 })
 export class HolidayCardComponent {
   holiday = input.required<Holiday & { isFavourite: boolean }>();
+  useQuill = input(false);
   isEditing = signal(false);
   addFavourite = output<number>();
   removeFavourite = output<number>();
