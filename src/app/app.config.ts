@@ -22,6 +22,7 @@ import { IMAGE_CONFIG } from '@angular/common';
 import {
   provideClientHydration,
   withEventReplay,
+  withIncrementalHydration,
 } from '@angular/platform-browser';
 import { baseUrlInterceptor } from './shared/http/base-url.interceptor';
 import { loadingInterceptor } from './shared/ui-messaging/loader/loading.interceptor';
@@ -40,7 +41,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideAnimationsAsync(),
-    provideClientHydration(withEventReplay()),
     {
       provide: IMAGE_CONFIG,
       useValue: {
@@ -50,6 +50,7 @@ export const appConfig: ApplicationConfig = {
     },
     provideStore(),
     provideRouter(appRoutes, withComponentInputBinding()),
+    provideClientHydration(withEventReplay(), withIncrementalHydration()),
     provideHttpClient(
       withFetch(),
       withInterceptors([
