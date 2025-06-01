@@ -3,7 +3,7 @@ import {
   ErrorHandler,
   importProvidersFrom,
   LOCALE_ID,
-  provideExperimentalZonelessChangeDetection,
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
@@ -39,7 +39,7 @@ import { holidaysInterceptor } from './domains/holidays/api/holidays.interceptor
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
     provideAnimationsAsync(),
     {
       provide: IMAGE_CONFIG,

@@ -24,7 +24,7 @@ export class MarkdownComponent {
   readonly markdown = input.required<string>();
 
   protected readonly html = resource({
-    request: this.markdown,
+    params: this.markdown,
     defaultValue: '',
     loader: () => marked.parse(this.markdown(), { async: true }),
   });
