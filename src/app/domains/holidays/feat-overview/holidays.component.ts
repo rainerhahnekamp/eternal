@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { MatButton } from '@angular/material/button';
 import { HolidayCardComponent } from '../ui/holiday-card/holiday-card.component';
-import { HolidayStore } from '../data/holidays-store';
+import { HolidaysStore } from '../data/holidays-store';
 
 @Component({
   selector: 'app-holidays',
@@ -59,26 +59,26 @@ import { HolidayStore } from '../data/holidays-store';
     HolidayCardComponent,
   ],
 })
-export class HolidaysComponent implements OnInit {
-  #holidaysStore = inject(HolidayStore);
+export class HolidaysComponent {
+  readonly #holidaysStore = inject(HolidaysStore);
 
-  protected holidays = this.#holidaysStore.holidaysWithFavourite;
+  protected holidays = this.#holidaysStore.holidays;
   protected search = '';
   protected type = '0';
 
-  ngOnInit(): void {
+  constructor() {
     this.#holidaysStore.load();
   }
 
   addFavourite(id: number) {
-    this.#holidaysStore.addFavourite(id);
+    // this.#holidaysStore.addFavourite(id);
   }
 
   removeFavourite(id: number) {
-    this.#holidaysStore.removeFavourite(id);
+    // this.#holidaysStore.removeFavourite(id);
   }
 
   handleSearch() {
-    this.#holidaysStore.search(this.search, Number(this.type));
+    // this.#holidaysStore.search(this.search, Number(this.type));
   }
 }

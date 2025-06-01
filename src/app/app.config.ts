@@ -19,11 +19,6 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { deAT } from 'date-fns/locale';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { IMAGE_CONFIG } from '@angular/common';
-import {
-  provideClientHydration,
-  withEventReplay,
-  withIncrementalHydration,
-} from '@angular/platform-browser';
 import { baseUrlInterceptor } from './shared/http/base-url.interceptor';
 import { loadingInterceptor } from './shared/ui-messaging/loader/loading.interceptor';
 import { errorInterceptor } from './shared/http/error.interceptor';
@@ -50,7 +45,7 @@ export const appConfig: ApplicationConfig = {
     },
     provideStore(),
     provideRouter(appRoutes, withComponentInputBinding()),
-    provideClientHydration(withEventReplay(), withIncrementalHydration()),
+    // provideClientHydration(withEventReplay(), withIncrementalHydration()),
     provideHttpClient(
       withFetch(),
       withInterceptors([
