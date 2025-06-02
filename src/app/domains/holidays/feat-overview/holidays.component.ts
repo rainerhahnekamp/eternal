@@ -1,4 +1,12 @@
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+  untracked,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,6 +15,15 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { MatButton } from '@angular/material/button';
 import { HolidayCardComponent } from '../ui/holiday-card/holiday-card.component';
 import { HolidaysStore } from '../data/holidays-store';
+import { JsonPipe } from '@angular/common';
+import { derivedFrom } from 'ngxtension/derived-from';
+import { debounce, debounceTime, pipe } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { HolidaySignalStore } from '../data/basic-holiday-store';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { map, tap } from 'rxjs/operators';
+import { injectDispatch } from '@ngrx/signals/events';
+import { holidayEvents } from '../data/holiday-events';
 
 @Component({
   selector: 'app-holidays',
@@ -35,8 +52,12 @@ import { HolidaysStore } from '../data/holidays-store';
           <mat-radio-button value="2">Country</mat-radio-button>
         </mat-radio-group>
         <button color="primary" mat-raised-button>Search</button>
+        <button mat-raised-button (click)="reloadResource()">Reload</button>
       </div>
     </form>
+
+    <p>Anzahl der Holidays: {{ holidaysCount() }}</p>
+
     <div class="flex flex-wrap justify-evenly">
       @for (holiday of holidays(); track holiday.id) {
         <app-holiday-card
@@ -59,16 +80,27 @@ import { HolidaysStore } from '../data/holidays-store';
     HolidayCardComponent,
   ],
 })
-export class HolidaysComponent {
-  readonly #holidaysStore = inject(HolidaysStore);
+export class HolidaysComponent implements OnInit {
+  readonly #holidaysStore = inject(HolidaySignalStore);
+  readonly events = injectDispatch(holidayEvents);
 
   protected holidays = this.#holidaysStore.holidays;
-  protected search = '';
-  protected type = '0';
+
+  protected search = signal('');
+  protected type = signal('0');
+
+  protected searchParams = computed(() => ({
+    query: this.search(),
+    type: this.type(),
+  }));
+
+  protected readonly holidaysCount = computed(() => this.holidays().length);
 
   constructor() {
-    this.#holidaysStore.load();
+    // this.#holidaysStore.load(this.searchParams);
   }
+
+  ngOnInit() {}
 
   addFavourite(id: number) {
     // this.#holidaysStore.addFavourite(id);
@@ -79,6 +111,8 @@ export class HolidaysComponent {
   }
 
   handleSearch() {
-    // this.#holidaysStore.search(this.search, Number(this.type));
+    this.events.load(this.searchParams());
   }
+
+  reloadResource() {}
 }
