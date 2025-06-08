@@ -33,7 +33,6 @@
     "@ngrx/effects": "^19.2.0",
     "@ngrx/eslint-plugin": "^19.2.0",
     "@ngrx/operators": "^19.2.0",
-    "@ngrx/signals": "^19.2.0",
     "@ngrx/store": "^19.2.0",
     "@ngrx/store-devtools": "^19.2.0",
     "date-fns": "^2.30.0",
