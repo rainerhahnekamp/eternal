@@ -1,0 +1,7 @@
+workshop/ngrx-signals/main
+workshop/ngrx-signals/1-basics/init
+workshop/ngrx-signals/1-basics/solution
+workshop/ngrx-signals/2-extensions/init
+workshop/ngrx-signals/2-extensions/solution
+workshop/ngrx-signals/3-resources/init
+workshop/ngrx-signals/3-resources/solution
