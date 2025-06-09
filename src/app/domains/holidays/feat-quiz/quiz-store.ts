@@ -15,11 +15,15 @@ import { withCountdown } from './with-countdown';
 interface QuizState {
   title: string;
   questions: Question[];
+  _timeInSeconds: number;
+  _timeStarted: Date;
 }
 
 const initialState: QuizState = {
   title: '',
   questions: [],
+  _timeInSeconds: 60,
+  _timeStarted: new Date(),
 };
 
 export const QuizStore = signalStore(
@@ -49,6 +53,8 @@ export const QuizStore = signalStore(
           patchState(store, {
             title: quiz.title,
             questions: quiz.questions,
+            _timeInSeconds: quiz.timeInSeconds,
+            _timeStarted: new Date(),
           });
         }),
       ),

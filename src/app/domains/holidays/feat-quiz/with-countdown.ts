@@ -1,6 +1,7 @@
 import {
   patchState,
   signalStoreFeature,
+  type,
   withHooks,
   withMethods,
   withState,
@@ -9,16 +10,13 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tap, interval } from 'rxjs';
 
 export interface CountdownState {
-  _timeInSeconds: number;
-  _timeStarted: Date;
   timeLeft: number;
 }
 
 export function withCountdown(timeInSeconds: number) {
   return signalStoreFeature(
+    type<{ state: { _timeInSeconds: number; _timeStarted: Date } }>(),
     withState<CountdownState>({
-      _timeInSeconds: timeInSeconds,
-      _timeStarted: new Date(),
       timeLeft: 0,
     }),
     withMethods((store) => ({
