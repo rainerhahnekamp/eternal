@@ -1,4 +1,11 @@
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,7 +13,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { MatButton } from '@angular/material/button';
 import { HolidayCard } from './holiday-card/holiday-card';
-import { HolidaysStore } from './holidays-store';
+import { HttpClient } from '@angular/common/http';
+import { Holiday } from './holiday';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-holidays',
@@ -17,7 +26,8 @@ import { HolidaysStore } from './holidays-store';
           <mat-label>Search</mat-label>
           <input
             data-testid="inp-search"
-            [(ngModel)]="search"
+            [ngModel]="search()"
+            (ngModelChange)="search.set($event)"
             matInput
             name="search"
           />
@@ -25,7 +35,8 @@ import { HolidaysStore } from './holidays-store';
         </mat-form-field>
 
         <mat-radio-group
-          [(ngModel)]="type"
+          [ngModel]="type()"
+          (ngModelChange)="type.set($event)"
           name="type"
           color="primary"
           class="mx-4"
@@ -38,7 +49,7 @@ import { HolidaysStore } from './holidays-store';
       </div>
     </form>
     <div class="flex flex-wrap justify-evenly">
-      @for (holiday of holidays(); track holiday.id) {
+      @for (holiday of holidaysWithFavourite(); track holiday.id) {
         <app-holiday-card
           [holiday]="holiday"
           (addFavourite)="addFavourite($event)"
@@ -56,29 +67,64 @@ import { HolidaysStore } from './holidays-store';
     MatRadioGroup,
     MatRadioButton,
     MatButton,
-    HolidayCard,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HolidaysPage {
-  readonly #holidaysStore = inject(HolidaysStore);
+  private readonly httpClient = inject(HttpClient);
+  private readonly baseUrl = '/holiday';
 
-  protected holidays = this.#holidaysStore.holidays;
-  protected search = '';
-  protected type = '0';
+  // State signals
+  protected readonly holidays = signal<Holiday[]>([]);
+  protected readonly favouriteIds = signal<number[]>([]);
+  protected readonly filter = signal({ query: '', type: 0 });
+
+  // UI state as signals
+  protected readonly search = signal('');
+  protected readonly type = signal('0');
+
+  // Computed values
+  protected readonly filteredHolidays = computed(() => {
+    const { query, type } = this.filter();
+    return this.holidays()
+      .filter((holiday) => holiday.title.includes(query))
+      .filter((holiday) => !type || holiday.typeId === type);
+  });
+
+  protected readonly holidaysWithFavourite = computed(() =>
+    this.filteredHolidays().map((holiday) => ({
+      ...holiday,
+      isFavourite: this.favouriteIds().includes(holiday.id),
+    })),
+  );
 
   constructor() {
-    this.#holidaysStore.load();
+    effect(() => {
+      this.#load();
+    });
   }
 
-  addFavourite(id: number) {
-    // this.#holidaysStore.addFavourite(id);
+  async #load(): Promise<void> {
+    const holidays = await lastValueFrom(
+      this.httpClient.get<Holiday[]>(this.baseUrl),
+    );
+    this.holidays.set(holidays);
   }
 
-  removeFavourite(id: number) {
-    // this.#holidaysStore.removeFavourite(id);
+  protected addFavourite(id: number): void {
+    this.favouriteIds.update((ids) => [...ids, id]);
   }
 
-  handleSearch() {
-    // this.#holidaysStore.search(this.search, Number(this.type));
+  protected removeFavourite(id: number): void {
+    this.favouriteIds.update((ids) =>
+      ids.filter((favouriteId) => favouriteId !== id),
+    );
+  }
+
+  protected handleSearch(): void {
+    this.filter.set({
+      query: this.search(),
+      type: Number(this.type()),
+    });
   }
 }

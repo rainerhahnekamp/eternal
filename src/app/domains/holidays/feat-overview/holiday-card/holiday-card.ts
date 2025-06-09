@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   input,
   output,
   signal,
@@ -28,11 +29,14 @@ import { QuillComponent } from '../../../../shared/form/quill/quill.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HolidayCard {
-  holiday = input.required<Holiday & { isFavourite?: boolean }>();
-  useQuill = input(false);
-  isEditing = signal(false);
-  addFavourite = output<number>();
-  removeFavourite = output<number>();
+  readonly holiday = input.required<Holiday & { isFavourite?: boolean }>();
+  protected readonly useQuill = input(false);
+  protected readonly isEditing = signal(false);
+  readonly addFavourite = output<number>();
+  readonly removeFavourite = output<number>();
+  protected readonly isFavouriteEnabled = computed(
+    () => 'isFavourite' in this.holiday(),
+  );
 
   toggleEditing() {
     this.isEditing.update((value) => !value);
