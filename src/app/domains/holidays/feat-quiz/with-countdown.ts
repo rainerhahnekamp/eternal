@@ -9,25 +9,25 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tap, interval } from 'rxjs';
 
 export interface CountdownState {
-  timeInSeconds: number;
-  timeStarted: Date;
+  _timeInSeconds: number;
+  _timeStarted: Date;
   timeLeft: number;
 }
 
 export function withCountdown(timeInSeconds: number) {
   return signalStoreFeature(
     withState<CountdownState>({
-      timeInSeconds,
-      timeStarted: new Date(),
-      timeLeft: timeInSeconds,
+      _timeInSeconds: timeInSeconds,
+      _timeStarted: new Date(),
+      timeLeft: 0,
     }),
     withMethods((store) => ({
-      updateTimeLeft: rxMethod<unknown>(
+      _updateTimeLeft: rxMethod<unknown>(
         tap(() => {
           const timeLeft =
-            store.timeInSeconds() -
+            store._timeInSeconds() -
             Math.floor(
-              (new Date().getTime() - store.timeStarted().getTime()) / 1000,
+              (new Date().getTime() - store._timeStarted().getTime()) / 1000,
             );
           patchState(store, { timeLeft });
         }),
@@ -35,7 +35,7 @@ export function withCountdown(timeInSeconds: number) {
     })),
     withHooks({
       onInit: (store) => {
-        store.updateTimeLeft(interval(1000));
+        store._updateTimeLeft(interval(1000));
       },
     }),
   );
