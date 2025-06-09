@@ -10,20 +10,16 @@ import { inject } from '@angular/core';
 import { AnswerStatus, Question } from './model';
 import { QuizService } from './quiz.service';
 import { pipe, switchMap, tap } from 'rxjs';
-import { withCountdown } from './with-countdown';
+import { updateCountdown, withCountdown } from './with-countdown';
 
 interface QuizState {
   title: string;
   questions: Question[];
-  _timeInSeconds: number;
-  _timeStarted: Date;
 }
 
 const initialState: QuizState = {
   title: '',
   questions: [],
-  _timeInSeconds: 60,
-  _timeStarted: new Date(),
 };
 
 export const QuizStore = signalStore(
@@ -50,12 +46,14 @@ export const QuizStore = signalStore(
       pipe(
         switchMap((id) => quizService.findById(id)),
         tap((quiz) => {
-          patchState(store, {
-            title: quiz.title,
-            questions: quiz.questions,
-            _timeInSeconds: quiz.timeInSeconds,
-            _timeStarted: new Date(),
-          });
+          patchState(
+            store,
+            {
+              title: quiz.title,
+              questions: quiz.questions,
+            },
+            updateCountdown(quiz.timeInSeconds),
+          );
         }),
       ),
     ),
