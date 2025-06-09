@@ -1,7 +1,7 @@
 import { HolidayCard } from './holiday-card';
 
 import { Meta, StoryObj } from '@storybook/angular/';
-import { createHoliday } from '../holiday';
+import { createHoliday } from '../../../model/holiday';
 import { provideLocationMocks } from '@angular/common/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { applicationConfig } from '@storybook/angular';

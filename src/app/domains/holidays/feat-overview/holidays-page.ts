@@ -5,8 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { MatButton } from '@angular/material/button';
-import { HolidayCard } from './holiday-card/holiday-card';
-import { HolidaysStore } from './holidays-store';
+import { HolidayCard } from './ui/holiday-card/holiday-card';
+import { HolidaysStore } from './data/holidays-store';
 
 @Component({
   selector: 'app-holidays',
@@ -62,7 +62,7 @@ import { HolidaysStore } from './holidays-store';
 export class HolidaysPage {
   readonly #holidaysStore = inject(HolidaysStore);
 
-  protected holidays = this.#holidaysStore.holidays;
+  protected holidays = this.#holidaysStore.holidaysWithFavourite;
   protected search = '';
   protected type = '0';
 
@@ -71,14 +71,14 @@ export class HolidaysPage {
   }
 
   addFavourite(id: number) {
-    // this.#holidaysStore.addFavourite(id);
+    this.#holidaysStore.addFavourite(id);
   }
 
   removeFavourite(id: number) {
-    // this.#holidaysStore.removeFavourite(id);
+    this.#holidaysStore.removeFavourite(id);
   }
 
   handleSearch() {
-    // this.#holidaysStore.search(this.search, Number(this.type));
+    this.#holidaysStore.search(this.search, Number(this.type));
   }
 }

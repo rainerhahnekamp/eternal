@@ -8,12 +8,10 @@ import {
 
 import { HttpClient } from '@angular/common/http';
 import { computed, inject } from '@angular/core';
-import { lastValueFrom, pipe } from 'rxjs';
-import { concatMap, filter, tap } from 'rxjs/operators';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { Holiday } from './holiday';
+import { lastValueFrom } from 'rxjs';
+import { Holiday } from '../../model/holiday';
 
-const HolidayStore = signalStore(
+export const HolidaysStore = signalStore(
   { providedIn: 'root' },
   // withDevtools('holidays'),
   withState({
@@ -36,35 +34,18 @@ const HolidayStore = signalStore(
       search(query: string, type: number) {
         patchState(store, { filter: { query, type } });
       },
-      addFavourite: rxMethod<number>(
-        pipe(
-          filter((id) => !store.favouriteIds().includes(id)),
-          concatMap((id) =>
-            httpClient.post<void>(`${baseUrl}/favourite/${id}`, {}).pipe(
-              tap(() => {
-                patchState(store, {
-                  favouriteIds: [...store.favouriteIds(), id],
-                });
-              }),
-            ),
-          ),
-        ),
-      ),
-      removeFavourite: rxMethod<number>(
-        pipe(
-          concatMap((id) =>
-            httpClient.delete(`${baseUrl}/favourite/${id}`).pipe(
-              tap(() =>
-                patchState(store, {
-                  favouriteIds: store
-                    .favouriteIds()
-                    .filter((favouriteId) => favouriteId !== id),
-                }),
-              ),
-            ),
-          ),
-        ),
-      ),
+      addFavourite(id: number) {
+        patchState(store, {
+          favouriteIds: [...store.favouriteIds(), id],
+        });
+      },
+      removeFavourite(id: number) {
+        patchState(store, {
+          favouriteIds: store
+            .favouriteIds()
+            .filter((favouriteId) => favouriteId !== id),
+        });
+      },
     };
   }),
   withComputed((state) => {

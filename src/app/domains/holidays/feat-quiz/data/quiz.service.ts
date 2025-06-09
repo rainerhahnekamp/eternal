@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom, map } from 'rxjs';
-import { Quiz } from './model';
+import { Quiz } from '../model/model';
 
 export interface QuizApi {
   id: number;

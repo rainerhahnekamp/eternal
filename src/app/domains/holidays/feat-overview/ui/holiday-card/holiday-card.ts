@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   input,
   output,
   signal,
@@ -10,8 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NgClass } from '@angular/common';
 import { RouterLinkWithHref } from '@angular/router';
-import { Holiday } from '../holiday';
-import { QuillComponent } from '../../../../shared/form/quill/quill.component';
+import { Holiday } from '../../../model/holiday';
+import { QuillComponent } from '../../../../../shared/form/quill/quill.component';
 
 @Component({
   selector: 'app-holiday-card',
@@ -28,11 +29,14 @@ import { QuillComponent } from '../../../../shared/form/quill/quill.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HolidayCard {
-  holiday = input.required<Holiday & { isFavourite?: boolean }>();
-  useQuill = input(false);
-  isEditing = signal(false);
-  addFavourite = output<number>();
-  removeFavourite = output<number>();
+  readonly holiday = input.required<Holiday & { isFavourite?: boolean }>();
+  protected readonly useQuill = input(false);
+  protected readonly isEditing = signal(false);
+  readonly addFavourite = output<number>();
+  readonly removeFavourite = output<number>();
+  protected readonly isFavouriteEnabled = computed(
+    () => 'isFavourite' in this.holiday(),
+  );
 
   toggleEditing() {
     this.isEditing.update((value) => !value);

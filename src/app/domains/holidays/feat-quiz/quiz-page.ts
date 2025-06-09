@@ -6,9 +6,9 @@ import {
   numberAttribute,
 } from '@angular/core';
 
-import { QuizStore } from './quiz-store';
-import { QuizStatusComponent } from './quiz-status';
-import { QuizQuestion } from './quiz-question';
+import { QuizStore } from './data/quiz-store';
+import { QuizStatusComponent } from './ui/quiz-status';
+import { QuizQuestion } from './ui/quiz-question';
 
 @Component({
   selector: 'app-quiz',
