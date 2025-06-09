@@ -1,36 +1,31 @@
 import {
+  patchState,
   signalStore,
-  withState,
   withComputed,
   withMethods,
-  withHooks,
-  patchState,
+  withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { inject } from '@angular/core';
-import { Question, AnswerStatus } from './model';
+import { AnswerStatus, Question } from './model';
 import { QuizService } from './quiz.service';
-import { interval, tap, switchMap, pipe } from 'rxjs';
+import { pipe, switchMap, tap } from 'rxjs';
+import { withCountdown } from './with-countdown';
 
 interface QuizState {
   title: string;
   questions: Question[];
-  timeInSeconds: number;
-  timeStarted: Date;
-  timeLeft: number;
 }
 
 const initialState: QuizState = {
   title: '',
   questions: [],
-  timeInSeconds: 60,
-  timeStarted: new Date(),
-  timeLeft: 0,
 };
 
 export const QuizStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
+  withCountdown(60),
   withComputed((store) => ({
     status: () => {
       const status: Record<AnswerStatus, number> = {
@@ -54,8 +49,6 @@ export const QuizStore = signalStore(
           patchState(store, {
             title: quiz.title,
             questions: quiz.questions,
-            timeInSeconds: quiz.timeInSeconds,
-            timeStarted: new Date(),
           });
         }),
       ),
@@ -76,21 +69,5 @@ export const QuizStore = signalStore(
         }),
       });
     },
-
-    updateTimeLeft: rxMethod<unknown>(
-      tap(() => {
-        const timeLeft =
-          store.timeInSeconds() -
-          Math.floor(
-            (new Date().getTime() - store.timeStarted().getTime()) / 1000,
-          );
-        patchState(store, { timeLeft });
-      }),
-    ),
   })),
-  withHooks({
-    onInit: (store) => {
-      store.updateTimeLeft(interval(1000));
-    },
-  }),
 );
