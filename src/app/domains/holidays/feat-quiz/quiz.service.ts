@@ -2,18 +2,29 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom, map } from 'rxjs';
 import { Quiz } from './model';
+import z from 'zod';
 
-export interface QuizApi {
-  id: number;
-  title: string;
-  timeInSeconds: number;
-  questions: {
-    id: number;
-    question: string;
-    explanation: string;
-    answers: { id: number; answer: string; isCorrect: boolean }[];
-  }[];
-}
+export const quizApiSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  timeInSeconds: z.number(),
+  questions: z.array(
+    z.object({
+      id: z.number(),
+      question: z.string(),
+      explanation: z.string(),
+      answers: z.array(
+        z.object({
+          id: z.number(),
+          answer: z.string(),
+          isCorrect: z.boolean(),
+        }),
+      ),
+    }),
+  ),
+});
+
+export type QuizApi = z.infer<typeof quizApiSchema>;
 
 @Injectable({ providedIn: 'root' })
 export class QuizService {
@@ -26,7 +37,9 @@ export class QuizService {
   }
 }
 
-function toQuiz(quiz: QuizApi, holidayId: number): Quiz {
+export function toQuiz(data: unknown, holidayId: number): Quiz {
+  const quiz = quizApiSchema.parse(data);
+
   return {
     title: quiz.title,
     timeInSeconds: quiz.timeInSeconds,
