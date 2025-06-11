@@ -5,14 +5,16 @@ import {
   signalMethod,
   signalStore,
   withComputed,
+  withFeature,
   withHooks,
   withMethods,
   withProps,
   withState,
 } from '@ngrx/signals';
 import { AnswerStatus } from './model';
-import { updateCountdown, withCountdown } from './with-countdown';
 import { toQuiz } from './quiz.service';
+import { updateCountdown, withCountdown } from './with-countdown';
+import { withResource } from './with-resource';
 
 export interface QuizState {
   quizId: number;
@@ -26,37 +28,36 @@ export const QuizStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withCountdown(60),
-  withProps(({ quizId }) => {
-    const _resource = httpResource(
-      () => {
-        const id = quizId();
-        if (id === 0) {
-          return undefined;
-        }
+  withFeature(({ quizId }) => {
+    return withResource(
+      httpResource(
+        () => {
+          const id = quizId();
+          if (id === 0) {
+            return undefined;
+          }
 
-        return `/holiday/${id}/quiz`;
-      },
-      {
-        parse: (value) => toQuiz(value, quizId()),
-        defaultValue: {
-          title: '',
-          questions: [],
-          timeInSeconds: 0,
+          return `/holiday/${id}/quiz`;
         },
-      },
+        {
+          parse: (value) => toQuiz(value, quizId()),
+          defaultValue: {
+            title: '',
+            questions: [],
+            timeInSeconds: 0,
+          },
+        },
+      ),
     );
-    return {
-      _resource,
-      resource: _resource.asReadonly(),
-    };
   }),
-  withComputed(({ resource }) => {
-    const questions = computed(() =>
-      resource.hasValue() ? resource.value().questions : [],
-    );
+  withProps((store) => ({
+    questions: computed(() =>
+      store.hasValue() ? store.value().questions : [],
+    ),
+  })),
+  withComputed(({ questions }) => {
     return {
-      questions,
-      status: () => {
+      quizStatus: () => {
         const status: Record<AnswerStatus, number> = {
           unanswered: 0,
           correct: 0,
@@ -76,16 +77,21 @@ export const QuizStore = signalStore(
       const question = store.questions().find((q) => q.id === event.questionId);
       if (!question) return;
 
-      store._resource.update((value) => ({
-        ...value,
-        questions: value.questions.map((q) =>
-          q.id === event.questionId
-            ? {
-                ...q,
-                status: q.answer === event.choiceId ? 'correct' : 'incorrect',
-              }
-            : q,
-        ),
+      patchState(store, ({ value }) => ({
+        value: {
+          ...value,
+          questions: value.questions.map((q) =>
+            q.id === event.questionId
+              ? {
+                  ...q,
+                  status:
+                    q.answer === event.choiceId
+                      ? 'correct'
+                      : ('incorrect' as AnswerStatus),
+                }
+              : q,
+          ),
+        },
       }));
     },
     loadQuiz: signalMethod<number>((quizId) => patchState(store, { quizId })),
@@ -97,11 +103,8 @@ export const QuizStore = signalStore(
           return;
         }
 
-        patchState(
-          store,
-          updateCountdown(store._resource.value().timeInSeconds),
-        );
-      })(store.resource.status);
+        patchState(store, updateCountdown(store.value().timeInSeconds));
+      })(store.status);
     },
   })),
 );

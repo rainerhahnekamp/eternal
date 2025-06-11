@@ -1,27 +1,29 @@
+import { JsonPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
   input,
   numberAttribute,
+  Resource,
 } from '@angular/core';
 import { QuizQuestion } from './quiz-question';
 import { QuizStatusComponent } from './quiz-status';
 import { QuizStore } from './quiz-store';
-import { JsonPipe } from '@angular/common';
+import { Question } from './model';
 
 @Component({
   selector: 'app-quiz',
   template: `
-    @if (store.resource.error()) {
+    @if (store.error()) {
       <p>Error loading quiz</p>
-      <pre>{{ store.resource.error() | json }}</pre>
-    } @else if (store.resource.hasValue()) {
-      @let quiz = store.resource.value();
+      <pre>{{ store.error() | json }}</pre>
+    } @else if (store.hasValue()) {
+      @let quiz = store.value();
       <h2>{{ quiz.title }}</h2>
       <app-quiz-status
         [timeLeft]="store.timeLeft()"
-        [status]="store.status()"
+        [status]="store.quizStatus()"
       />
       @for (question of quiz.questions; track question) {
         <app-quiz-question
@@ -35,7 +37,11 @@ import { JsonPipe } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizPage {
-  protected readonly store = inject(QuizStore);
+  protected readonly store = inject(QuizStore) satisfies Resource<{
+    title: string;
+    questions: Question[];
+    timeInSeconds: number;
+  }>;
 
   readonly id = input.required({ transform: numberAttribute });
 
