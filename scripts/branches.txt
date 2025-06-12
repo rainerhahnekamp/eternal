@@ -7,3 +7,9 @@ workshop/ngrx-signals/3-resources/init
 workshop/ngrx-signals/3-resources/solution
 workshop/ngrx-signals/4-testing/init
 workshop/ngrx-signals/4-testing/solution
+workshop/ngrx-signals/5-events/init
+workshop/ngrx-signals/5-events/solution
+workshop/ngrx-signals/6-deep-dive/init
+workshop/ngrx-signals/6-deep-dive/solution
+workshop/ngrx-signals/7-architecture/init
+workshop/ngrx-signals/7-architecture/solution
