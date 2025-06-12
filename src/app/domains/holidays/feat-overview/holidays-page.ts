@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,10 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { MatButton } from '@angular/material/button';
 import { HolidayCard } from './holiday-card/holiday-card';
-import { HttpClient } from '@angular/common/http';
-import { Holiday } from './holiday';
-import { BehaviorSubject, combineLatest, filter, map } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { injectHolidaysStore } from './holidays-store';
 
 @Component({
   selector: 'app-holidays',
@@ -37,11 +39,16 @@ import { AsyncPipe } from '@angular/common';
           <mat-radio-button value="1">City</mat-radio-button>
           <mat-radio-button value="2">Country</mat-radio-button>
         </mat-radio-group>
-        <button color="primary" mat-raised-button>Search</button>
+        <!--        <button color="primary" mat-raised-button>Search</button>-->
       </div>
     </form>
+    <button (click)="updateFirstname('Joe')" mat-raised-button>
+      Change Firstname
+    </button>
+    {{ prettyUser() }}
+    <p>Current Search: {{ holidaysStore.prettySearch() }}</p>
     <div class="flex flex-wrap justify-evenly">
-      @for (holiday of holidays$ | async; track holiday.id) {
+      @for (holiday of holidaysStore.filteredHolidays(); track holiday.id) {
         <app-holiday-card
           [holiday]="holiday"
           (addFavourite)="addFavourite($event)"
@@ -59,73 +66,46 @@ import { AsyncPipe } from '@angular/common';
     MatRadioGroup,
     MatRadioButton,
     MatButton,
-    AsyncPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HolidaysPage {
-  readonly #httpClient = inject(HttpClient);
-  readonly #baseUrl = '/holiday';
+  protected readonly holidaysStore = injectHolidaysStore();
 
-  // UI state
-  protected query = '';
-  protected type = '0';
-
-  // State
-  readonly #holidays$ = new BehaviorSubject<Holiday[]>([]);
-  readonly favouriteIds$ = new BehaviorSubject<number[]>([]);
-  readonly #search$ = new BehaviorSubject({
-    query: this.query,
-    type: this.type,
-  });
-
-  protected readonly holidays$ = combineLatest([
-    this.#holidays$,
-    this.favouriteIds$,
-    this.#search$,
-  ]).pipe(
-    map(([holidays, favouriteIds, search]) => {
-      return holidays
-        .map((holiday) => ({
-          ...holiday,
-          isFavourite: favouriteIds.includes(holiday.id),
-        }))
-        .filter(
-          (holiday) =>
-            holiday.title
-              .toLowerCase()
-              .startsWith(search.query.toLowerCase()) &&
-            (search.type === '0' || holiday.typeId === Number(search.type)),
-        );
-    }),
-  );
+  // Component state
+  protected query = signal('');
+  protected type = signal('0');
 
   constructor() {
-    this.#load();
-  }
-
-  #load() {
-    this.#httpClient
-      .get<Holiday[]>(this.#baseUrl)
-      .subscribe((holidays) => this.#holidays$.next(holidays));
-  }
-
-  protected addFavourite(id: number): void {
-    this.favouriteIds$.next([...this.favouriteIds$.value, id]);
-  }
-
-  protected removeFavourite(id: number): void {
-    this.favouriteIds$.next(
-      this.favouriteIds$.value.filter((favouriteId) => favouriteId !== id),
+    this.holidaysStore.load(
+      computed(() => ({ query: this.query(), type: this.type() })),
     );
   }
 
-  protected handleSearch(): void {
-    this.#search$.next({
-      query: this.query,
-      type: this.type,
+  user = signal(
+    { firstname: 'John', lastname: 'Doe' },
+    { equal: (user1, user2) => false },
+  );
+  prettyUser = computed(() => {
+    return `${this.user().firstname} ${this.user().lastname}`;
+  });
+
+  updateFirstname(firstname: string): void {
+    this.user.update((user) => {
+      user.firstname = firstname;
+      return user;
     });
   }
 
-  protected readonly filter = filter;
+  protected addFavourite(id: number): void {
+    this.holidaysStore.addFavourite(id);
+  }
+
+  protected removeFavourite(id: number): void {
+    this.holidaysStore.removeFavourite(id);
+  }
+
+  protected handleSearch(): void {
+    console.log('noop');
+  }
 }
