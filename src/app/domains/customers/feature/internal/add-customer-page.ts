@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { CustomerView } from '../../ui/customer/customer-view';
 import { Customer } from '../../model/customer';
 import { selectCountries } from '../../../../shared/master-data/master.reducer';
-import { CustomerStore } from '../../data/customer-store';
+import { injectCustomerEvents } from '../../data/customer-events';
 
 @Component({
   selector: 'app-add-customer',
@@ -16,8 +16,8 @@ import { CustomerStore } from '../../data/customer-store';
   imports: [CustomerView],
 })
 export class AddCustomerPage {
-  readonly #customerStore = inject(CustomerStore);
   readonly #store = inject(Store);
+  readonly #events = injectCustomerEvents();
 
   customer: Customer = {
     id: 0,
@@ -30,6 +30,6 @@ export class AddCustomerPage {
   protected countries = this.#store.selectSignal(selectCountries);
 
   submit(customer: Customer) {
-    this.#customerStore.add(customer);
+    this.#events.add(customer);
   }
 }

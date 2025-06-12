@@ -10,6 +10,7 @@ import { CustomerView } from '../../ui/customer/customer-view';
 import { Customer } from '../../model/customer';
 import { selectCountries } from '../../../../shared/master-data/master.reducer';
 import { CustomerStore } from '../../data/customer-store';
+import { injectCustomerEvents } from '../../data/customer-events';
 
 @Component({
   selector: 'app-edit-customer',
@@ -29,6 +30,7 @@ import { CustomerStore } from '../../data/customer-store';
 export class EditCustomerPage {
   readonly #store = inject(Store);
   readonly #customerStore = inject(CustomerStore);
+  readonly #events = injectCustomerEvents();
 
   readonly id = input.required({ transform: numberAttribute });
   readonly countries = this.#store.selectSignal(selectCountries);
@@ -45,14 +47,14 @@ export class EditCustomerPage {
   });
 
   constructor() {
-    this.#customerStore.select(this.id);
+    this.#events.select(this.id());
   }
 
   submit(customer: Customer) {
-    this.#customerStore.update({ ...customer, id: this.id() });
+    this.#events.update({ ...customer, id: this.id() });
   }
 
   remove() {
-    this.#customerStore.remove(this.id());
+    this.#events.remove(this.id());
   }
 }
