@@ -10,16 +10,18 @@ import { Holiday } from './holiday';
 import { HttpClient } from '@angular/common/http';
 import {
   patchState,
-  signalMethod,
   signalStore,
   withComputed,
+  withFeature,
   withMethods,
-  withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { pipe } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
+import { setAllEntities } from '@ngrx/signals/entities';
+import { withLocalStorageSync } from '../../../shared/ngrx-features/with-local-storage-sync';
+import { HolidayDetail, withHolidaysState } from './store/with-holidays-state';
 
 /** Things to discuss
  * - Private fields except _
@@ -27,53 +29,30 @@ import { tapResponse } from '@ngrx/operators';
  * - Store Dependencies via Component Composition
  */
 
-interface HolidaysState {
-  holidays: Holiday[];
-  favouriteIds: number[];
-  search: { query: string; type: string };
-}
-
-const initialState: HolidaysState = {
-  holidays: [],
-  favouriteIds: [],
-  search: {
-    query: '',
-    type: '0',
-  },
-};
-
 const userSignal = signal(
   { firstname: 'John', lastname: 'Doe' },
   { equal: (user1, user2) => user1.lastname === user2.lastname },
 );
 
-export const HolidaysStore = signalStore(
+let currentKey = 1;
+
+const HolidaysStore = signalStore(
   { providedIn: 'root' },
-  withState(initialState),
-  withState({ user: userSignal }),
+  withHolidaysState(),
+  withComputed((state) => ({ holidays: state.entities })),
+  withMethods((store) => ({
+    getKey() {
+      return ++currentKey;
+    },
+    getKeyForLocalStorage() {
+      return 'holidays';
+    },
+  })),
+  withFeature((store) => withLocalStorageSync(store.getKeyForLocalStorage())),
   withMethods((store) => {
     const httpClient = inject(HttpClient);
 
-    const resetFavourites = signalMethod<number>(() =>
-      patchState(store, { favouriteIds: [] }),
-    );
-
     return {
-      resetFavourites,
-      addFavourite(id: number): void {
-        patchState(store, ({ favouriteIds }) => ({
-          favouriteIds: [...favouriteIds, id],
-        }));
-      },
-
-      removeFavourite(id: number): void {
-        patchState(store, ({ favouriteIds }) => ({
-          favouriteIds: favouriteIds.filter(
-            (favouriteId) => favouriteId !== id,
-          ),
-        }));
-      },
-
       _handleSearch(query: string, type: string): void {
         patchState(store, { search: { query, type } });
       },
@@ -87,7 +66,16 @@ export const HolidaysStore = signalStore(
               .pipe(
                 tapResponse({
                   error: console.error,
-                  next: (holidays) => patchState(store, { holidays }),
+                  next: (holidays) => {
+                    patchState(
+                      store,
+                      setAllEntities(holidays),
+                      setAllEntities([] as HolidayDetail[], {
+                        collection: 'holidayDetail',
+                      }),
+                    );
+                    store.syncToStorage();
+                  },
                 }),
               ),
           ),
@@ -95,6 +83,7 @@ export const HolidaysStore = signalStore(
       ),
     };
   }),
+
   withComputed((state) => ({
     prettySearch: () => {
       console.log('prettySearch running...');
@@ -130,12 +119,12 @@ function storeInjector<T, P extends keyof T>(
   return () => inject(Store);
 }
 
-export const injectHolidaysStore = storeInjector(
-  HolidaysStore,
-  'holidays',
-  'favouriteIds',
-  'user',
-);
+export function provideHolidayStore() {
+  return HolidaysStore;
+}
+
+// export const injectHolidaysStore = storeInjector(HolidaysStore);
+export const injectHolidaysStore = () => inject(HolidaysStore);
 
 @Injectable({ providedIn: 'root' })
 export class _HolidaysStore {

@@ -42,6 +42,7 @@ import { injectHolidaysStore } from './holidays-store';
         <!--        <button color="primary" mat-raised-button>Search</button>-->
       </div>
     </form>
+
     <button (click)="updateFirstname('Joe')" mat-raised-button>
       Change Firstname
     </button>
