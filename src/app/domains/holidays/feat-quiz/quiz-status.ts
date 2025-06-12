@@ -7,11 +7,10 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     } @else if (timeLeft() < 0) {
       <p>Time is up!</p>
     }
-    <p>Status:</p>
-    <p>
+    <section aria-label="quiz-status">
       <span class="text-green-500 pr-4">Correct: {{ status().correct }}</span
       ><span class="text-red-500">Incorrect: {{ status().incorrect }}</span>
-    </p>`,
+    </section>`,
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
