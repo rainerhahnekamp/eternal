@@ -31,6 +31,11 @@ export const sheriffConfig: SheriffConfig = {
         (ngrxModule) => [`ngrx-signals${ngrxModule}`, 'shared'],
       ),
     ),
+    ...Object.fromEntries(
+      ['', '/entities', '/events', '/rxjs-interop', '/testing'].map(
+        (ngrxModule) => [`ngrx-signals${ngrxModule}/src`, 'shared'],
+      ),
+    ),
   },
   depRules: {
     root: ['type:api', 'type:feature'],

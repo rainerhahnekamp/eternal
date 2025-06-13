@@ -14,11 +14,6 @@ import * as L from 'leaflet';
 })
 export class HolidayMap {
   map: L.Map | undefined;
-  #getCurrentPosition(): Promise<GeolocationPosition> {
-    return new Promise((resolve, reject) =>
-      navigator.geolocation.getCurrentPosition(resolve, reject),
-    );
-  }
 
   constructor() {
     const lat = 49.9929;
