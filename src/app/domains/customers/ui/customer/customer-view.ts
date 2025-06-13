@@ -26,9 +26,12 @@ export class CustomerView {
   customer = input.required<Customer>();
 
   formCustomer: Customer | undefined;
-  #formCustomerSync = effect(
-    () => (this.formCustomer = { ...this.customer() }),
-  );
+
+  constructor() {
+    effect(() => (this.formCustomer = { ...this.customer() }), {
+      debugName: 'formCustomerSync',
+    });
+  }
 
   countries = input.required<SelectOptions>();
   showDeleteButton = input.required<boolean>();
