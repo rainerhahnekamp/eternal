@@ -7,10 +7,10 @@ import {
   numberAttribute,
   Resource,
 } from '@angular/core';
-import { QuizQuestion } from './quiz-question';
-import { QuizStatusComponent } from './quiz-status';
-import { QuizStore } from './quiz-store';
-import { Question } from './model';
+import { QuizQuestion } from './ui/quiz-question';
+import { QuizStatusComponent } from './ui/quiz-status';
+import { QuizStore } from './data/quiz-store';
+import { Question } from './model/model';
 
 @Component({
   selector: 'app-quiz',

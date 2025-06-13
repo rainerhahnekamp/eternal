@@ -1,4 +1,5 @@
-import { QuizApi } from '../quiz.service';
+// eslint-disable-next-line @softarc/sheriff/encapsulation
+import { QuizApi } from '../data/internal/quiz.service';
 
 export function createQuiz(holidayId: number): QuizApi {
   return {

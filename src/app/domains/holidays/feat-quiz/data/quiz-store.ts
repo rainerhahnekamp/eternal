@@ -11,10 +11,10 @@ import {
   withProps,
   withState,
 } from '@ngrx/signals';
-import { AnswerStatus } from './model';
-import { toQuiz } from './quiz.service';
-import { updateCountdown, withCountdown } from './with-countdown';
-import { withResource } from './with-resource';
+import { AnswerStatus } from '../model/model';
+import { toQuiz } from './internal/quiz.service';
+import { updateCountdown, withCountdown } from './internal/with-countdown';
+import { withResource } from './internal/with-resource';
 
 export interface QuizState {
   quizId: number;

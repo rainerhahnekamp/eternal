@@ -7,7 +7,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideLocationMocks } from '@angular/common/testing';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
-import { QuizStore } from '../quiz-store';
+import { QuizStore } from '../data/quiz-store';
 import { createQuiz } from './create-quiz';
 import { screen, within } from '@testing-library/angular';
 import { QuizPage } from '../quiz-page';
