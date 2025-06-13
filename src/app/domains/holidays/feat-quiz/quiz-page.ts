@@ -5,9 +5,10 @@ import {
   ChangeDetectionStrategy,
   numberAttribute,
 } from '@angular/core';
-import { QuizStore } from './quiz-store';
-import { QuizStatusComponent } from './quiz-status';
-import { QuizQuestion } from './quiz-question';
+import { QuizStore } from './data/quiz-store';
+import { QuizStatusComponent } from './ui/quiz-status';
+import { QuizQuestion } from './ui/quiz-question';
+import { QuizService } from './data/quiz.service';
 
 @Component({
   selector: 'app-quiz',
@@ -28,6 +29,7 @@ export class QuizPage {
   protected readonly store = inject(QuizStore);
   readonly id = input.required({ transform: numberAttribute });
 
+  quizService = inject(QuizService);
   constructor() {
     this.store.loadQuiz(this.id);
   }

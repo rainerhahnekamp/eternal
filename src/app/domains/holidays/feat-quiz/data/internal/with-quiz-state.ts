@@ -1,5 +1,5 @@
 import { signalStoreFeature, withState } from '@ngrx/signals';
-import { Question } from '../model';
+import { Question } from '../../model/model';
 
 export interface QuizState {
   title: string;

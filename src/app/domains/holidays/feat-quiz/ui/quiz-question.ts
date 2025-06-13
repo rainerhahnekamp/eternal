@@ -7,7 +7,7 @@ import {
 import { MatButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { NgClass } from '@angular/common';
-import { Question } from './model';
+import { Question } from '../model/model';
 
 @Component({
   selector: 'app-quiz-question',

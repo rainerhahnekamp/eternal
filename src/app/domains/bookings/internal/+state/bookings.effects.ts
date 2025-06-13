@@ -8,7 +8,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs/operators';
 import { CustomersClient } from '../../../customers/api/customers-client';
 
-const bookings: Map<number, Booking[]> = new Map<number, Booking[]>();
+export const bookings: Map<number, Booking[]> = new Map<number, Booking[]>();
 bookings.set(1, [
   {
     id: 1,
