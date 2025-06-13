@@ -123,6 +123,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^18.4.0
         version: 18.6.3
+      '@eslint/js':
+        specifier: ^9.28.0
+        version: 9.28.0
       '@playwright/test':
         specifier: ^1.51.1
         version: 1.51.1
@@ -1351,6 +1354,10 @@ packages:
   '@eslint/js@8.57.1':
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@eslint/js@9.28.0':
+    resolution: {integrity: sha512-fnqSjGWd/CoIp4EXIxWVK/sHA6DOHN4+8Ix2cX5ycOY7LG0UY8nHCU5pIp2eaE1Mc7Qd8kHspYNzYXT2ojPLzg==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@hirez_io/auto-spies-core@3.0.0':
     resolution: {integrity: sha512-au7s7/AqPU5CJhv0slVjmZqEv5Uaf2nj7pYFepp5g3B7EocEeNy7bZ74x5RJldHYtW0R8OptV2mZfwaDOfcNCA==}
@@ -7744,6 +7751,8 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.57.1': {}
+
+  '@eslint/js@9.28.0': {}
 
   '@hirez_io/auto-spies-core@3.0.0(rxjs@7.8.1)(typescript@5.8.3)':
     dependencies:
