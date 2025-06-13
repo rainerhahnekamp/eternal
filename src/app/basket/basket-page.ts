@@ -48,10 +48,15 @@ export default class BasketPage {
   protected readonly selectedProductId = signal(0);
   amount = signal(1);
 
-  #resetEffect = effect(() => {
-    this.selectedProductId();
-    untracked(() => this.amount.set(1));
-  });
+  constructor() {
+    effect(
+      () => {
+        this.selectedProductId();
+        untracked(() => this.amount.set(1));
+      },
+      { debugName: 'resetEffect' },
+    );
+  }
 
   readonly #messageService = inject(MessageService);
   readonly #httpClient = inject(HttpClient);
