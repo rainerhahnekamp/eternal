@@ -44,7 +44,7 @@
     "quill": "^2.0.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zod": "^3.24.2",
+    "zod": "^3.25.57",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
@@ -56,6 +56,7 @@
     "@chromatic-com/storybook": "^3.2.6",
     "@commitlint/cli": "^18.4.0",
     "@commitlint/config-conventional": "^18.4.0",
+    "@eslint/js": "^9.28.0",
     "@playwright/test": "^1.51.1",
     "@softarc/eslint-plugin-sheriff": "^0.18.0",
     "@softarc/sheriff-core": "^0.18.0",

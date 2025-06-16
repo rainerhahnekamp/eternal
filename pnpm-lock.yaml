@@ -93,8 +93,8 @@ importers:
         specifier: ^2.3.0
         version: 2.8.1
       zod:
-        specifier: ^3.24.2
-        version: 3.24.2
+        specifier: ^3.25.57
+        version: 3.25.57
       zone.js:
         specifier: ~0.15.0
         version: 0.15.0
@@ -123,6 +123,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^18.4.0
         version: 18.6.3
+      '@eslint/js':
+        specifier: ^9.28.0
+        version: 9.28.0
       '@playwright/test':
         specifier: ^1.51.1
         version: 1.51.1
@@ -1351,6 +1354,10 @@ packages:
   '@eslint/js@8.57.1':
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@eslint/js@9.28.0':
+    resolution: {integrity: sha512-fnqSjGWd/CoIp4EXIxWVK/sHA6DOHN4+8Ix2cX5ycOY7LG0UY8nHCU5pIp2eaE1Mc7Qd8kHspYNzYXT2ojPLzg==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@hirez_io/auto-spies-core@3.0.0':
     resolution: {integrity: sha512-au7s7/AqPU5CJhv0slVjmZqEv5Uaf2nj7pYFepp5g3B7EocEeNy7bZ74x5RJldHYtW0R8OptV2mZfwaDOfcNCA==}
@@ -6338,8 +6345,8 @@ packages:
     resolution: {integrity: sha512-cYVsTjKl8b+FrnidjibDWskAv7UKOfcwaVZdp/it9n1s9fU3IkgDbhdIRKCW4JDsAlECJY0ytoVPT3sK6kideA==}
     engines: {node: '>=18'}
 
-  zod@3.24.2:
-    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
+  zod@3.25.57:
+    resolution: {integrity: sha512-6tgzLuwVST5oLUxXTmBqoinKMd3JeesgbgseXeFasKKj8Q1FCZrHnbqJOyiEvr4cVAlbug+CgIsmJ8cl/pU5FA==}
 
   zone.js@0.15.0:
     resolution: {integrity: sha512-9oxn0IIjbCZkJ67L+LkhYWRyAy7axphb3VgE2MBDlOqnmHMPWGYMxJxBYFueFq/JGY2GMwS0rU+UCLunEmy5UA==}
@@ -7744,6 +7751,8 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.57.1': {}
+
+  '@eslint/js@9.28.0': {}
 
   '@hirez_io/auto-spies-core@3.0.0(rxjs@7.8.1)(typescript@5.8.3)':
     dependencies:
@@ -13077,6 +13086,6 @@ snapshots:
 
   yoctocolors-cjs@2.1.2: {}
 
-  zod@3.24.2: {}
+  zod@3.25.57: {}
 
   zone.js@0.15.0: {}
