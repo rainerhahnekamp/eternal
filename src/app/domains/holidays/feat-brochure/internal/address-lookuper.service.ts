@@ -1,29 +1,22 @@
-import { httpResource } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { z } from 'zod';
+import { map, Observable } from 'rxjs';
 
 const addressResponseSchema = z.array(z.unknown());
 
 @Injectable({ providedIn: 'root' })
 export class AddressLookuper {
-  lookup(query: () => string) {
-    return httpResource(
-      () => {
-        if (!query()) {
-          return undefined;
-        }
+  readonly #httpClient = inject(HttpClient);
 
-        return {
-          url: `https://nominatim.openstreetmap.org/search.php`,
-          params: { format: 'jsonv2', q: query() },
-        };
-      },
-      {
-        parse: (response) => {
-          const result = addressResponseSchema.safeParse(response);
-          return result.success ? result.data.length > 0 : false;
+  lookup(query: string): Observable<boolean> {
+    return this.#httpClient
+      .get<unknown[]>(`https://nominatim.openstreetmap.org/search.php`, {
+        params: {
+          format: 'jsonv2',
+          q: query,
         },
-      },
-    );
+      })
+      .pipe(map((addresses) => addresses.length > 0));
   }
 }

@@ -1,4 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  numberAttribute,
+  OnInit,
+} from '@angular/core';
 import {
   AbstractControl,
   NonNullableFormBuilder,
@@ -11,6 +17,9 @@ import { MatInput } from '@angular/material/input';
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { isValidAddress } from './internal/is-valid-address';
+import { map, Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-request-info',
@@ -25,20 +34,24 @@ import { isValidAddress } from './internal/is-valid-address';
     MatHint,
     RouterLink,
     MatAnchor,
+    AsyncPipe,
   ],
 })
-export class RequestBrochurePage {
+export class RequestBrochurePage implements OnInit {
   readonly #formBuilder = inject(NonNullableFormBuilder);
-  readonly #address = signal('');
-  readonly #isExistingAddress = inject(AddressLookuper).lookup(this.#address);
-  protected readonly lookupResult = computed(() => {
-    const isExistingAddress = this.#isExistingAddress.value();
-    return isExistingAddress === undefined
-      ? ''
-      : isExistingAddress
-        ? 'Brochure sent'
-        : 'Address not found';
-  });
+  readonly lookuper = inject(AddressLookuper);
+  readonly address$ = new Subject<string>();
+
+  readonly lookupResult$ = this.address$.pipe(
+    switchMap((query) => this.lookuper.lookup(query)),
+    map((isValid) => (isValid ? 'Brochure sent' : 'Address not found')),
+  );
+
+  id = input.required({ transform: numberAttribute });
+
+  ngOnInit() {
+    console.log('RequestBrochurePage initialized with id:', this.id());
+  }
 
   formGroup = this.#formBuilder.group({
     address: [
@@ -53,6 +66,6 @@ export class RequestBrochurePage {
       return;
     }
 
-    this.#address.set(this.formGroup.getRawValue().address);
+    this.address$.next(this.formGroup.getRawValue().address);
   }
 }

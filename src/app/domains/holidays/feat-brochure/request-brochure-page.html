@@ -26,7 +26,7 @@
     </button>
   </div>
 </form>
-@if (lookupResult(); as message) {
+@if (lookupResult$ | async; as message) {
   <p data-testid="lookup-result" aria-live="assertive" role="status">
     {{ message }}
   </p>

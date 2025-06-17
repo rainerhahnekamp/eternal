@@ -1,72 +1,85 @@
 import { TestBed } from '@angular/core/testing';
 import { AddressLookuper } from './address-lookuper.service';
-import { provideZonelessChangeDetection } from '@angular/core';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
-import {
-  HttpTestingController,
-  provideHttpClientTesting,
-} from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { TestScheduler } from 'rxjs/testing';
 
-describe('Address Lookuper', () => {
-  xit('should find an address via spy', async () => {
-    const httpClient = {
-      request: jasmine.createSpy(),
-    };
-    TestBed.configureTestingModule({
-      providers: [
-        provideZonelessChangeDetection(),
-        {
-          provide: HttpClient,
-          useValue: httpClient,
-        },
-      ],
-    });
-    const lookuper = TestBed.inject(AddressLookuper);
-
-    const res = TestBed.runInInjectionContext(() =>
-      lookuper.lookup(() => 'Domgasse 5'),
-    );
-    expect(res.status()).toBe('loading');
-    await new Promise((resolve) => setTimeout(resolve));
-
-    httpClient.request.and.returnValue(of([]).pipe(delay(0)));
-    await new Promise((resolve) => setTimeout(resolve));
-
-    expect(res.status()).toBe('resolved');
-  });
-
-  for (const { name, response, value } of [
-    { name: 'find the address', response: [true], value: true },
-    { name: 'find not the address', response: [], value: false },
+describe('AddressLookuper', () => {
+  for (const { isValid, addresses } of [
+    { isValid: true, addresses: [{}] },
+    { isValid: false, addresses: [] },
   ]) {
-    it(name, async () => {
+    it(`should return ${isValid} for ${addresses}`, async () => {
+      // const clock = jasmine.clock().install();
+      const mockHttpClient = {
+        get: jasmine.createSpy().and.returnValue(of(addresses).pipe(delay(0))),
+      };
       TestBed.configureTestingModule({
-        providers: [
-          provideZonelessChangeDetection(),
-          provideHttpClient(),
-          provideHttpClientTesting(),
-        ],
+        providers: [{ provide: HttpClient, useValue: mockHttpClient }],
       });
-      const lookuper = TestBed.inject(AddressLookuper);
-      const ctrl = TestBed.inject(HttpTestingController);
 
-      const res = TestBed.runInInjectionContext(() =>
-        lookuper.lookup(() => 'Domgasse 5'),
-      );
-      expect(res.status()).toBe('loading');
+      const service = TestBed.inject(AddressLookuper);
+
+      let addressExists: boolean | undefined = undefined;
+
+      service
+        .lookup('Schillerstrasse 1')
+        .subscribe((value) => (addressExists = value));
+
       await new Promise((resolve) => setTimeout(resolve));
+      // Alternative
+      // await Promise.resolve();
+      // clock.tick(0);
 
-      ctrl
-        .expectOne(
-          'https://nominatim.openstreetmap.org/search.php?format=jsonv2&q=Domgasse%205',
-        )
-        .flush(response);
-      await new Promise((resolve) => setTimeout(resolve));
-
-      expect(res.status()).toBe('resolved');
-      expect(res.value()).toBe(value);
+      expect(addressExists as unknown as boolean).toBe(isValid);
+      // clock.uninstall();
     });
   }
+
+  it('should verify that the HTTP client is called with the correct URL and parameters', () => {
+    const mockHttpClient = {
+      get: jasmine.createSpy().and.returnValue(of([])),
+    };
+    TestBed.configureTestingModule({
+      providers: [{ provide: HttpClient, useValue: mockHttpClient }],
+    });
+
+    const service = TestBed.inject(AddressLookuper);
+    service.lookup('Schillerstrasse 1');
+
+    expect(mockHttpClient.get).toHaveBeenCalledWith(
+      'https://nominatim.openstreetmap.org/search.php',
+      {
+        params: {
+          format: 'jsonv2',
+          q: 'Schillerstrasse 1',
+        },
+      },
+    );
+  });
+
+  it('should test with RxJS marble testing', () => {
+    const testScheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
+
+    testScheduler.run(({ cold, expectObservable }) => {
+      const httpClientMock = {
+        get: jasmine.createSpy().and.returnValue(
+          cold('500ms (a|)', {
+            a: [{ name: 'Schillerstrasse 1' }],
+          }),
+        ),
+      };
+
+      TestBed.configureTestingModule({
+        providers: [{ provide: HttpClient, useValue: httpClientMock }],
+      });
+
+      const service = TestBed.inject(AddressLookuper);
+      const result$ = service.lookup('Schillerstrasse 1');
+      expectObservable(result$).toBe('500ms (a|)', { a: true });
+    });
+  });
 });
