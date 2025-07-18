@@ -1,7 +1,7 @@
 import { httpResource } from '@angular/common/http';
-import { Injectable, isSignal, Signal } from '@angular/core';
-import { Quiz, quizSchema } from '../model/model';
+import { Injectable } from '@angular/core';
 import { z } from 'zod';
+import { Quiz } from '../model/model';
 
 const quizApiSchema = z.object({
   id: z.number(),
