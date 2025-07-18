@@ -1,20 +1,32 @@
-export type AnswerStatus = 'unanswered' | 'correct' | 'incorrect';
+import { z } from 'zod';
 
-export interface Question {
-  id: number;
-  holidayId: number;
-  question: string;
-  answer: number;
-  choices: { id: number; text: string }[];
-  explanation: string;
-  status: AnswerStatus;
-}
+export const answerStatusSchema = z.enum([
+  'unanswered',
+  'correct',
+  'incorrect',
+]);
 
-export interface Quiz {
-  title: string;
-  questions: Question[];
-  timeInSeconds: number;
-}
+export type AnswerStatus = z.infer<typeof answerStatusSchema>;
+
+export const questionSchema = z.object({
+  id: z.number(),
+  holidayId: z.number(),
+  question: z.string(),
+  answer: z.number(),
+  choices: z.array(z.object({ id: z.number(), text: z.string() })),
+  explanation: z.string(),
+  status: answerStatusSchema,
+});
+
+export type Question = z.infer<typeof questionSchema>;
+
+export const quizSchema = z.object({
+  title: z.string(),
+  questions: z.array(questionSchema),
+  timeInSeconds: z.number(),
+});
+
+export type Quiz = z.infer<typeof quizSchema>;
 
 let currentId = 1;
 

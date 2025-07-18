@@ -1,27 +1,58 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { firstValueFrom, map } from 'rxjs';
-import { Quiz } from '../model/model';
+import { httpResource } from '@angular/common/http';
+import { Injectable, isSignal, Signal } from '@angular/core';
+import { Quiz, quizSchema } from '../model/model';
+import { z } from 'zod';
 
-export interface QuizApi {
-  id: number;
-  title: string;
-  timeInSeconds: number;
-  questions: {
-    id: number;
-    question: string;
-    explanation: string;
-    answers: { id: number; answer: string; isCorrect: boolean }[];
-  }[];
+const quizApiSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  timeInSeconds: z.number(),
+  questions: z.array(
+    z.object({
+      id: z.number(),
+      question: z.string(),
+      explanation: z.string(),
+      answers: z.array(
+        z.object({
+          id: z.number(),
+          answer: z.string(),
+          isCorrect: z.boolean(),
+        }),
+      ),
+    }),
+  ),
+});
+
+type QuizApi = z.infer<typeof quizApiSchema>;
+
+function getFromValueOrFunction<T>(
+  valueOrFunction: T | (() => T | undefined),
+): T | undefined {
+  if (typeof valueOrFunction === 'function') {
+    return (valueOrFunction as () => T | undefined)();
+  } else {
+    return valueOrFunction;
+  }
 }
 
 @Injectable({ providedIn: 'root' })
 export class QuizService {
-  readonly #httpClient = inject(HttpClient);
+  findById(id: number | (() => number | undefined)) {
+    return httpResource(
+      () => {
+        const value = getFromValueOrFunction(id);
+        if (value === undefined) {
+          return undefined;
+        }
 
-  findById(id: number): Promise<Quiz> {
-    return firstValueFrom(
-      this.#httpClient.get<QuizApi>(`/holiday/${id}/quiz`).pipe(map(toQuiz)),
+        return {
+          url: `/holiday/${value}/quiz`,
+        };
+      },
+      {
+        parse: (quiz) =>
+          toQuiz(quizApiSchema.parse(quiz), getFromValueOrFunction(id)!),
+      },
     );
   }
 }

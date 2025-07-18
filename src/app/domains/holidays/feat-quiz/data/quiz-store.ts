@@ -1,51 +1,60 @@
+import { isPlatformServer } from '@angular/common';
+import { computed, inject, PLATFORM_ID } from '@angular/core';
 import {
   patchState,
+  signalMethod,
   signalStore,
   withComputed,
   withHooks,
   withMethods,
+  withProps,
   withState,
 } from '@ngrx/signals';
-import { AnswerStatus, Question } from '../model/model';
-import { QuizService } from './quiz.service';
-import { computed, inject, PLATFORM_ID } from '@angular/core';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { interval, pipe, switchMap } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { isPlatformServer } from '@angular/common';
+import { interval } from 'rxjs';
 import { assertDefined } from '../../../../shared/util/assert-defined';
+import { AnswerStatus } from '../model/model';
+import { QuizService } from './quiz.service';
 
 export const QuizStore = signalStore(
   withState({
-    title: '',
-    questions: [] as Question[],
-    timeInSeconds: 60,
+    holidayId: 0,
     timeStarted: new Date(),
     timeLeft: 0,
   }),
 
-  withMethods((store) => {
+  withProps((store) => {
     const quizService = inject(QuizService);
     return {
-      setId: rxMethod<number>(
-        pipe(
-          switchMap((holidayId) => quizService.findById(holidayId)),
-          tap((quiz) => patchState(store, quiz)),
-        ),
-      ),
+      _resource: quizService.findById(() => store.holidayId() || undefined),
+    };
+  }),
 
-      updateTime: rxMethod(
-        pipe(
-          tap(() =>
-            patchState(store, {
-              timeLeft:
-                store.timeInSeconds() -
-                Math.floor(
-                  (new Date().getTime() - store.timeStarted().getTime()) / 1000,
-                ),
-            }),
-          ),
-        ),
+  withComputed((store) => ({
+    questions: computed(
+      () =>
+        store._resource.hasValue() ? store._resource.value().questions : [],
+      { debugName: 'questions' },
+    ),
+    timeInSeconds: computed(() =>
+      store._resource.hasValue() ? store._resource.value().timeInSeconds : 0,
+    ),
+    title: computed(() =>
+      store._resource.hasValue() ? store._resource.value().title : '',
+    ),
+  })),
+
+  withMethods((store) => {
+    return {
+      setId: signalMethod<number>((id) => patchState(store, { holidayId: id })),
+
+      updateTime: signalMethod(() =>
+        patchState(store, {
+          timeLeft:
+            store.timeInSeconds() -
+            Math.floor(
+              (new Date().getTime() - store.timeStarted().getTime()) / 1000,
+            ),
+        }),
       ),
 
       answer(questionId: number, choiceId: number) {
@@ -54,20 +63,27 @@ export const QuizStore = signalStore(
           .find((question) => question.id === questionId);
         assertDefined(question);
 
-        patchState(store, (quiz) => ({
-          questions: quiz.questions.map((question) => {
-            if (question.id === questionId) {
-              const status: AnswerStatus =
-                question.answer === choiceId ? 'correct' : 'incorrect';
-              return {
-                ...question,
-                status,
-              };
-            } else {
-              return question;
-            }
-          }),
-        }));
+        store._resource.value.update((quiz) => {
+          if (!quiz) {
+            return quiz;
+          }
+
+          return {
+            ...quiz,
+            questions: quiz.questions.map((question) => {
+              if (question.id === questionId) {
+                const status: AnswerStatus =
+                  question.answer === choiceId ? 'correct' : 'incorrect';
+                return {
+                  ...question,
+                  status,
+                };
+              } else {
+                return question;
+              }
+            }),
+          };
+        });
       },
     };
   }),
