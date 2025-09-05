@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
-import { MatButton } from '@angular/material/button';
-import { HolidayCard } from './ui/holiday-card/holiday-card';
 import { HolidaysStore } from './data/holidays-store';
+import { HolidayCard } from './ui/holiday-card/holiday-card';
 
 @Component({
   selector: 'app-holidays',
