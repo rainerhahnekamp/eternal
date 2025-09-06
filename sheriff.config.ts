@@ -43,11 +43,11 @@ export const sheriffConfig: SheriffConfig = {
       ({ from, to }) => {
         const toTags = to.split(':');
         const isToSharedDomain =
-          toTags.length > 2 && ['data', 'ui', 'model'].includes(toTags[2]);
+          toTags.length > 2 && ['data', 'ui', 'model', 'api'].includes(toTags[2]);
 
         const fromTags = from.split(':');
         const isFromFeature =
-          fromTags.length > 2 && !['data', 'ui', 'model'].includes(fromTags[2]);
+          fromTags.length > 2 && !['data', 'ui', 'model', 'api'].includes(fromTags[2]);
 
         const isSameDomain = toTags[1] === fromTags[1];
 
@@ -57,8 +57,8 @@ export const sheriffConfig: SheriffConfig = {
         const toTags = to.split(':');
         const fromTags = from.split(':');
 
-        const isToSharedDomain = ['data', 'ui', 'model'].includes(toTags[2]);
-        const isFromSharedDomain = ['data', 'ui', 'model'].includes(
+        const isToSharedDomain = ['data', 'ui', 'model', 'api'].includes(toTags[2]);
+        const isFromSharedDomain = ['data', 'ui', 'model', 'api'].includes(
           fromTags[2],
         );
 
