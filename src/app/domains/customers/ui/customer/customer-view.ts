@@ -8,7 +8,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { Customer } from '../../model/customer';
 import { SelectOptions } from '../../../../shared/form/select-options';
 import { assertDefined } from '../../../../shared/util/assert-defined';
+// ✅
+import { CustomersApi } from '../../feature/api/customers-api';
+// ✅
+import { CustomersStore } from '../../feature/data/store';
+// ✅
+import { CustomersClient } from '../../api/customers-client';
 
+const api = CustomersApi
+const data = CustomersStore
+const client = CustomersClient
 @Component({
   selector: 'app-customer',
   templateUrl: './customer-view.html',
