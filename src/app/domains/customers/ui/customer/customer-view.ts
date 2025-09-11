@@ -14,10 +14,13 @@ import { CustomersApi } from '../../feature/api/customers-api';
 import { CustomersStore } from '../../feature/data/store';
 // ✅
 import { CustomersClient } from '../../api/customers-client';
+// ✅
+import { CustomerStore } from '../../data/customer-store';
 
 const api = CustomersApi
 const data = CustomersStore
 const client = CustomersClient
+const domainData = CustomerStore
 @Component({
   selector: 'app-customer',
   templateUrl: './customer-view.html',
