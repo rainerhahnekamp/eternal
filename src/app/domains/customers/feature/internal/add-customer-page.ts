@@ -4,22 +4,7 @@ import { CustomerView } from '../../ui/customer/customer-view';
 import { Customer } from '../../model/customer';
 import { selectCountries } from '../../../../shared/master-data/master.reducer';
 import { CustomerStore } from '../../data/customer-store';
-// ✅
-import { CustomersApi } from '../api/customers-api';
-// ✅
-import { CustomersStore } from '../data/store';
-// ✅
-import { model } from '../model/model';
-// ✅
-import { UI } from '../ui/ui';
-// ✅
-import { CustomersClient } from '../../api/customers-client';
 
-const api = CustomersApi
-const data = CustomersStore
-const m = model
-const ui = UI
-const client = CustomersClient
 
 @Component({
   selector: 'app-add-customer',

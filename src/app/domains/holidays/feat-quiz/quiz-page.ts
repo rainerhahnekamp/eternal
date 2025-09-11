@@ -5,49 +5,11 @@ import {
   input,
   numberAttribute,
 } from '@angular/core';
-// ✅ correct
 import { QuizStore } from './data/quiz-store';
-// ✅ correct
 import { QuizStatusComponent } from './ui/quiz-status';
-// ✅ correct
 import { QuizQuestion } from './ui/quiz-question';
-// ✅ correct
-import { AnswerStatus } from './model/model';
-// ✅ correct
-import { createHoliday } from '../model/holiday';
-// ❌ This should be allowed
-import { HolidayApi } from '../api/holiday.api';
-// ✅ correct
-import { QuizApi } from './api/quiz.api';
-// ✅ correct
-import { createCustomer } from '../../customers/model/customer';
-// ✅ correct
-import { BlinkerDirective } from '../../../shared/ui/blinker.directive';
-// ✅ correct
-import { SharedModel } from '../../../shared/model/shared.model';
-// ✅ correct
-import { domainUi } from '../ui/ui';
 
-const q:AnswerStatus = 'correct';
-const h = createHoliday()
-const api = HolidayApi
-const quizApi = QuizApi
-const customer = createCustomer()
-const sharedModel:SharedModel = {}
-const domainUI = domainUi
-/**
- * Cases
- * ./model
- * ./ui
- * .data
- * ./api
- *
- * ../api
- * ../model
- * ../ui
- *
- * shared
- */
+
 
 @Component({
   selector: 'app-quiz',
@@ -62,7 +24,7 @@ const domainUI = domainUi
         (answer)="handleAnswer($event)"
       ></app-quiz-question>
     }`,
-  imports: [QuizStatusComponent, QuizQuestion, BlinkerDirective],
+  imports: [QuizStatusComponent, QuizQuestion,],
   providers: [QuizStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
