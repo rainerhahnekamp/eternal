@@ -7,18 +7,7 @@ import {
 import { MatButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { NgClass } from '@angular/common';
-import { AnswerStatus, Question } from '../model/model';
-// ✅ correct
-import { QuizApi } from '../api/quiz.api';
-import { createHoliday } from '../../model/holiday';
-// ✅ correct
-import { HolidayApi } from '../../api/holiday.api';
-
-
-const quizApi = QuizApi
-const holidayApi = HolidayApi
-const a:AnswerStatus = 'incorrect';
-const h = createHoliday()
+import { Question } from '../model/model';
 
 @Component({
   selector: 'app-quiz-question',
