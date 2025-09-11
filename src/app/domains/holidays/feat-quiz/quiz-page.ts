@@ -5,10 +5,11 @@ import {
   input,
   numberAttribute,
 } from '@angular/core';
-
 import { QuizStore } from './data/quiz-store';
 import { QuizStatusComponent } from './ui/quiz-status';
 import { QuizQuestion } from './ui/quiz-question';
+
+
 
 @Component({
   selector: 'app-quiz',
@@ -23,7 +24,7 @@ import { QuizQuestion } from './ui/quiz-question';
         (answer)="handleAnswer($event)"
       ></app-quiz-question>
     }`,
-  imports: [QuizStatusComponent, QuizQuestion],
+  imports: [QuizStatusComponent, QuizQuestion,],
   providers: [QuizStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
