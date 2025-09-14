@@ -68,6 +68,9 @@ importers:
       '@ngrx/store-devtools':
         specifier: ^20.0.1
         version: 20.0.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@ngrx/store@20.0.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(rxjs@7.8.1)
+      '@testronaut/core':
+        specifier: ^0.0.2
+        version: 0.0.2
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0
@@ -169,8 +172,8 @@ importers:
         specifier: ^14.5.1
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@testronaut/angular':
-        specifier: ^0.0.1
-        version: 0.0.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser-dynamic@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@20.2.1)(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.2.1(@angular/animations@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))))(@testronaut/core@0.0.1)(typescript@5.8.3)
+        specifier: ^0.0.2
+        version: 0.0.2(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser-dynamic@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@20.2.1)(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.2.1(@angular/animations@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))))(@testronaut/core@0.0.2)(typescript@5.8.3)
       '@types/express':
         specifier: ^4.17.17
         version: 4.17.21
@@ -2906,16 +2909,16 @@ packages:
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
 
-  '@testronaut/angular@0.0.1':
-    resolution: {integrity: sha512-LFvfhEimdUEIFHVVxaY+74Lzs0bEWfPLxhvhVE6HErOtUy8kWq8XQrr86/+CWAInQXrAT38uES1t66fgFB//og==}
+  '@testronaut/angular@0.0.2':
+    resolution: {integrity: sha512-d/314Qly/ndkg+GNOhWLHwTiKNCm2djwiZPelq+LvYrRamLdugQ5fMmIbIFE82PKD6c/zx6JntRsGLBK3SGucQ==}
     peerDependencies:
       '@angular/core': ^19.0.0
       '@angular/platform-browser-dynamic': ^19.0.0
       '@testronaut/core': 0.0.1
       typescript: ~5.6.0
 
-  '@testronaut/core@0.0.1':
-    resolution: {integrity: sha512-qTKcHKfaivXcXShWwuba10mpAXZsqzRoT6Tqa0hyRgEz/Mh8lIuBGpZYjbFnGisnSBQCYxxXWDOgePJJLucNQQ==}
+  '@testronaut/core@0.0.2':
+    resolution: {integrity: sha512-6MqG0PenzDPRwlzJGGC8a0b5RwlVz/alrU8aPsxp7Og+TlCTF/NUS6H9kRpsHse4kkgDxJMnYXyTIq7D1peh4g==}
 
   '@tufjs/canonical-json@2.0.0':
     resolution: {integrity: sha512-yVtV8zsdo8qFHe+/3kw81dSLyF7D576A5cCFCi4X7B39tWT7SekaEFUnvnWJHz+9qO7qJTah1JbrDjWKqFtdWA==}
@@ -10055,14 +10058,14 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.0
 
-  '@testronaut/angular@0.0.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser-dynamic@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@20.2.1)(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.2.1(@angular/animations@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))))(@testronaut/core@0.0.1)(typescript@5.8.3)':
+  '@testronaut/angular@0.0.2(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser-dynamic@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@20.2.1)(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.2.1(@angular/animations@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))))(@testronaut/core@0.0.2)(typescript@5.8.3)':
     dependencies:
       '@angular/core': 20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0)
       '@angular/platform-browser-dynamic': 20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@20.2.1)(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.2.1(@angular/animations@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0)))
-      '@testronaut/core': 0.0.1
+      '@testronaut/core': 0.0.2
       typescript: 5.8.3
 
-  '@testronaut/core@0.0.1':
+  '@testronaut/core@0.0.2':
     dependencies:
       '@playwright/test': 1.51.1
       typescript: 5.6.3
