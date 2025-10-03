@@ -68,9 +68,6 @@ importers:
       '@ngrx/store-devtools':
         specifier: ^20.0.1
         version: 20.0.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@ngrx/store@20.0.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(rxjs@7.8.1)
-      '@testronaut/core':
-        specifier: ^0.0.2
-        version: 0.0.2
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0
@@ -136,11 +133,11 @@ importers:
         specifier: ^1.51.1
         version: 1.51.1
       '@softarc/eslint-plugin-sheriff':
-        specifier: ^0.19.1
-        version: 0.19.1(@softarc/sheriff-core@0.19.1(typescript@5.8.3))(@typescript-eslint/utils@8.37.0(eslint@9.31.0(jiti@1.21.6))(typescript@5.8.3))(eslint@9.31.0(jiti@1.21.6))
+        specifier: ^0.19.6
+        version: 0.19.6(@softarc/sheriff-core@0.19.6(typescript@5.8.3))(@typescript-eslint/utils@8.37.0(eslint@9.31.0(jiti@1.21.6))(typescript@5.8.3))(eslint@9.31.0(jiti@1.21.6))
       '@softarc/sheriff-core':
-        specifier: ^0.19.1
-        version: 0.19.1(typescript@5.8.3)
+        specifier: ^0.19.6
+        version: 0.19.6(typescript@5.8.3)
       '@storybook/addon-essentials':
         specifier: ^8.6.9
         version: 8.6.9(@types/react@18.3.12)(storybook@8.6.9(prettier@3.3.3))(webpack-sources@3.2.3)
@@ -171,9 +168,6 @@ importers:
       '@testing-library/user-event':
         specifier: ^14.5.1
         version: 14.5.2(@testing-library/dom@10.4.0)
-      '@testronaut/angular':
-        specifier: ^0.0.2
-        version: 0.0.2(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser-dynamic@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@20.2.1)(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.2.1(@angular/animations@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))))(@testronaut/core@0.0.2)(typescript@5.8.3)
       '@types/express':
         specifier: ^4.17.17
         version: 4.17.21
@@ -2687,15 +2681,15 @@ packages:
   '@socket.io/component-emitter@3.1.2':
     resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
 
-  '@softarc/eslint-plugin-sheriff@0.19.1':
-    resolution: {integrity: sha512-Pxm2j79HVf8RTGf04yuARlvc9dZrkQ/TOCzjQpQu1I45hjtiUsK2+rdguoEfkMyMzKqCpY13Z7S/Iy2iCbTw4Q==}
+  '@softarc/eslint-plugin-sheriff@0.19.6':
+    resolution: {integrity: sha512-PPP4TKSFLOvFhfckS0M7L2PMqK6qw7Q8LiYGd3H64V/jHc7cVLfogMS4mjc/I2+7wbAr374qJg0A+uJ5VkXbCQ==}
     peerDependencies:
-      '@softarc/sheriff-core': 0.19.1
+      '@softarc/sheriff-core': 0.19.6
       '@typescript-eslint/utils': ^5.48.2 || ^6.0.0 || ^7.0.0 || ^8.0.0-alpha.20
       eslint: ^8.0.0 || ^9.0.0
 
-  '@softarc/sheriff-core@0.19.1':
-    resolution: {integrity: sha512-SnDsFHwHp5ecwE6aT+von+hGkbC1zKDeuDz6xnYzQmzSLHxln6qxB12gtlx7GIysPD/W7wbeDGfsJQ25sek2bg==}
+  '@softarc/sheriff-core@0.19.6':
+    resolution: {integrity: sha512-KACxHG9sS7kNWgnnBODzdr14kMLMrJVlQKc+tViUP03p2fRwNhESOA49bz51Yn7dro1mbtMmmFjICLmZSJDZZA==}
     hasBin: true
     peerDependencies:
       typescript: '>=4.8'
@@ -2908,17 +2902,6 @@ packages:
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
-
-  '@testronaut/angular@0.0.2':
-    resolution: {integrity: sha512-d/314Qly/ndkg+GNOhWLHwTiKNCm2djwiZPelq+LvYrRamLdugQ5fMmIbIFE82PKD6c/zx6JntRsGLBK3SGucQ==}
-    peerDependencies:
-      '@angular/core': ^19.0.0
-      '@angular/platform-browser-dynamic': ^19.0.0
-      '@testronaut/core': 0.0.1
-      typescript: ~5.6.0
-
-  '@testronaut/core@0.0.2':
-    resolution: {integrity: sha512-6MqG0PenzDPRwlzJGGC8a0b5RwlVz/alrU8aPsxp7Og+TlCTF/NUS6H9kRpsHse4kkgDxJMnYXyTIq7D1peh4g==}
 
   '@tufjs/canonical-json@2.0.0':
     resolution: {integrity: sha512-yVtV8zsdo8qFHe+/3kw81dSLyF7D576A5cCFCi4X7B39tWT7SekaEFUnvnWJHz+9qO7qJTah1JbrDjWKqFtdWA==}
@@ -6788,11 +6771,6 @@ packages:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <5.9.0'
 
-  typescript@5.6.3:
-    resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
-    engines: {node: '>=14.17'}
-    hasBin: true
-
   typescript@5.8.3:
     resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
     engines: {node: '>=14.17'}
@@ -9740,13 +9718,13 @@ snapshots:
 
   '@socket.io/component-emitter@3.1.2': {}
 
-  '@softarc/eslint-plugin-sheriff@0.19.1(@softarc/sheriff-core@0.19.1(typescript@5.8.3))(@typescript-eslint/utils@8.37.0(eslint@9.31.0(jiti@1.21.6))(typescript@5.8.3))(eslint@9.31.0(jiti@1.21.6))':
+  '@softarc/eslint-plugin-sheriff@0.19.6(@softarc/sheriff-core@0.19.6(typescript@5.8.3))(@typescript-eslint/utils@8.37.0(eslint@9.31.0(jiti@1.21.6))(typescript@5.8.3))(eslint@9.31.0(jiti@1.21.6))':
     dependencies:
-      '@softarc/sheriff-core': 0.19.1(typescript@5.8.3)
+      '@softarc/sheriff-core': 0.19.6(typescript@5.8.3)
       '@typescript-eslint/utils': 8.37.0(eslint@9.31.0(jiti@1.21.6))(typescript@5.8.3)
       eslint: 9.31.0(jiti@1.21.6)
 
-  '@softarc/sheriff-core@0.19.1(typescript@5.8.3)':
+  '@softarc/sheriff-core@0.19.6(typescript@5.8.3)':
     dependencies:
       typescript: 5.8.3
 
@@ -10057,18 +10035,6 @@ snapshots:
   '@testing-library/user-event@14.5.2(@testing-library/dom@10.4.0)':
     dependencies:
       '@testing-library/dom': 10.4.0
-
-  '@testronaut/angular@0.0.2(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser-dynamic@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@20.2.1)(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.2.1(@angular/animations@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))))(@testronaut/core@0.0.2)(typescript@5.8.3)':
-    dependencies:
-      '@angular/core': 20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0)
-      '@angular/platform-browser-dynamic': 20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@20.2.1)(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.2.1(@angular/animations@20.2.1(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.2.1(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.2.1(@angular/compiler@20.2.1)(rxjs@7.8.1)(zone.js@0.15.0)))
-      '@testronaut/core': 0.0.2
-      typescript: 5.8.3
-
-  '@testronaut/core@0.0.2':
-    dependencies:
-      '@playwright/test': 1.51.1
-      typescript: 5.6.3
 
   '@tufjs/canonical-json@2.0.0': {}
 
@@ -14470,8 +14436,6 @@ snapshots:
       typescript: 5.8.3
     transitivePeerDependencies:
       - supports-color
-
-  typescript@5.6.3: {}
 
   typescript@5.8.3: {}
 

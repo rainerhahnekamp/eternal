@@ -31,6 +31,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { environment } from '../environments/environment';
 import { customersInterceptor } from './domains/customers/feature/customers.interceptor';
 import { holidaysInterceptor } from './domains/holidays/api/holidays.interceptor';
+import {
+  provideClientHydration,
+  withEventReplay,
+  withIncrementalHydration,
+} from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -45,7 +50,7 @@ export const appConfig: ApplicationConfig = {
     },
     provideStore(),
     provideRouter(appRoutes, withComponentInputBinding()),
-    // provideClientHydration(withEventReplay(), withIncrementalHydration()),
+    provideClientHydration(withEventReplay(), withIncrementalHydration()),
     provideHttpClient(
       withFetch(),
       withInterceptors([
