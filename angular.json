@@ -31,12 +31,7 @@
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -64,6 +59,14 @@
                   "with": "src/environments/environment.development.ts"
                 }
               ]
+            },
+            "testronaut": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "browser": "testronaut/main.ts",
+              "index": "testronaut/index.html",
+              "tsConfig": "testronaut/tsconfig.json"
             }
           },
           "defaultConfiguration": "production"
@@ -76,6 +79,10 @@
             },
             "development": {
               "buildTarget": "eternal:build:development"
+            },
+            "testronaut": {
+              "buildTarget": "eternal:build:testronaut",
+              "prebundle": false
             }
           },
           "defaultConfiguration": "development"
