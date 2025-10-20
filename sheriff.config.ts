@@ -9,41 +9,69 @@ export const sheriffConfig: SheriffConfig = {
   enableBarrelLess: true,
   modules: {
     'src/app': {
-      'shared/<shared>': ['shared', 'shared:<shared>'],
+      'shared/<shared>': ['shared'],
+
       domains: {
-        diary: ['domain:diary', 'type:feature'],
-        bookings: ['domain:bookings', 'type:feature'],
+        '<domain>': ['domain:<domain>', 'type:feature'],
         '<domain>/api': ['domain:<domain>:api', 'type:api'],
-        '<domain>/feat-<name>': ['domain:<domain>', 'type:feature'],
-        '<domain>/<type>': ['domain:<domain>', 'type:<type>'],
+        '<domain>/ui': ['domain:<domain>:ui', 'type:ui'],
+        '<domain>/data': ['domain:<domain>:data', 'type:data'],
+        '<domain>/model': ['domain:<domain>:model', 'type:model'],
+
+        '<domain>/feat-<feat>': ['domain:<domain>:<feat>', 'type:feature'],
+        '<domain>/feat-<feat>/api': ['domain:<domain>:<feat>', 'type:api'],
+        '<domain>/feat-<feat>/data': ['domain:<domain>:<feat>', 'type:data'],
+        '<domain>/feat-<feat>/ui': ['domain:<domain>:<feat>', 'type:ui'],
+        '<domain>/feat-<feat>/model': ['domain:<domain>:<feat>', 'type:model'],
       },
     },
+    'ngrx-signals': ['shared'],
+    ...Object.fromEntries(
+      ['', '/entities', '/events', '/rxjs-interop', '/testing'].map(
+        (ngrxModule) => [`ngrx-signals${ngrxModule}`, 'shared'],
+      ),
+    ),
   },
   depRules: {
-    root: [...['type:api', 'type:feature'], 'shared'],
+    root: ['type:api', 'type:feature'],
+    '*': 'shared',
     'domain:*': [
       sameTag, // domain:bookings -> domain:bookings
-      'shared',
-      ({ from, to }) => from.startsWith(to), // domain:bookings:api -> domain:bookings
+      ({ from, to }) => to.startsWith(from), // domain:bookings -> domain:bookings:feature,
+      ({ from, to }) =>
+        from.endsWith(':api') && to.startsWith(from.slice(0, -4)), // domain:customers:api -> domain:customers:*
+      ({ from, to }) => {
+        const toTags = to.split(':');
+        const isToSharedDomain =
+          toTags.length > 2 && ['data', 'ui', 'model'].includes(toTags[2]);
+
+        const fromTags = from.split(':');
+        const isFromFeature =
+          fromTags.length > 2 && !['data', 'ui', 'model'].includes(fromTags[2]);
+
+        const isSameDomain = toTags[1] === fromTags[1];
+
+        return isSameDomain && isFromFeature && isToSharedDomain;
+      }, // domain:holidays:feat-overview -> domain:holidays:data
+      ({ from, to }) => {
+        const toTags = to.split(':');
+        const fromTags = from.split(':');
+
+        const isToSharedDomain = ['data', 'ui', 'model'].includes(toTags[2]);
+        const isFromSharedDomain = ['data', 'ui', 'model'].includes(
+          fromTags[2],
+        );
+
+        const isSameDomain = toTags[1] === fromTags[1];
+
+        return isSameDomain && isFromSharedDomain && isToSharedDomain;
+      }, // domain:holidays:feature -> domain:holidays:data
     ],
-    'type:api': [({ to }) => to.startsWith('type'), 'shared:config'],
-    'type:feature': [
-      ...['type:api', 'type:data', 'type:ui', 'type:model'],
-      'shared:config',
-      'shared:form',
-      'shared:master-data',
-      'shared:testing',
-      'shared:ui-messaging',
-      'shared:util',
-    ],
-    'type:data': ['type:model', 'shared:config', 'shared:ui-messaging'],
-    'type:ui': ['type:model', 'shared:form', 'shared:ui'],
+    'type:api': [({ to }) => to.startsWith('type')],
+    'type:feature': ({ to }) => to.startsWith('type:'),
+    'type:data': ['type:model'],
+    'type:ui': ['type:model'],
     'type:model': noDependencies,
-    shared: 'shared',
-    'shared:http': ['shared:config', 'shared:ui-messaging'],
-    'shared:ngrx-utils': 'shared:util',
-    'shared:security': 'shared:http',
-    'shared:ui-messaging': 'shared:http',
     ...api('bookings', 'customers'),
   },
 };
