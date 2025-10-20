@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { QuizStatusComponent } from './quiz-status';
 import { inputBinding, provideZonelessChangeDetection } from '@angular/core';
 import { screen } from '@testing-library/angular';
+import { describe, it, expect } from 'vitest';
 
 describe('Quiz Status', () => {
   it('should show the time left', async () => {

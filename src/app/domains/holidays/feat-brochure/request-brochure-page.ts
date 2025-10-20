@@ -1,16 +1,17 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   AbstractControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { AddressLookuper } from './internal/address-lookuper.service';
 import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { isValidAddress } from './internal/is-valid-address';
+import { map, Subject } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-request-info',
@@ -25,22 +26,21 @@ import { isValidAddress } from './internal/is-valid-address';
     MatHint,
     RouterLink,
     MatAnchor,
+    AsyncPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestBrochurePage {
   readonly #formBuilder = inject(NonNullableFormBuilder);
-  readonly #address = signal('');
-  readonly #isExistingAddress = inject(AddressLookuper).lookup(this.#address);
-  protected readonly lookupResult = computed(() => {
-    const isExistingAddress = this.#isExistingAddress.value();
-    return isExistingAddress === undefined
-      ? ''
-      : isExistingAddress
-        ? 'Brochure sent'
-        : 'Address not found';
-  });
+  readonly #address$ = new Subject<string>();
 
-  formGroup = this.#formBuilder.group({
+  protected readonly message$ = this.#address$.pipe(
+    map((isExistingAddress) =>
+      isExistingAddress ? 'Brochure sent' : 'Address not found',
+    ),
+  );
+
+  protected readonly formGroup = this.#formBuilder.group({
     address: [
       '',
       (ac: AbstractControl) =>
@@ -53,6 +53,6 @@ export class RequestBrochurePage {
       return;
     }
 
-    this.#address.set(this.formGroup.getRawValue().address);
+    this.#address$.next(this.formGroup.getRawValue().address);
   }
 }
