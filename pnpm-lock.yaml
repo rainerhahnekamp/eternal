@@ -116,7 +116,7 @@ importers:
         version: 20.3.6(@angular/compiler@20.3.6)(typescript@5.8.3)
       '@axe-core/playwright':
         specifier: ^4.10.1
-        version: 4.10.1(playwright-core@1.51.1)
+        version: 4.10.1(playwright-core@1.56.1)
       '@chromatic-com/storybook':
         specifier: ^3.2.6
         version: 3.2.6(react@18.3.1)(storybook@8.6.9(prettier@3.3.3))
@@ -243,6 +243,9 @@ importers:
       ng-mocks:
         specifier: ^14.14.0
         version: 14.14.0(551eef79d8467d7735a13f717579310e)
+      playwright-webkit:
+        specifier: ^1.56.1
+        version: 1.56.1
       postcss:
         specifier: ^8.4.28
         version: 8.4.47
@@ -6125,6 +6128,16 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
+  playwright-core@1.56.1:
+    resolution: {integrity: sha512-hutraynyn31F+Bifme+Ps9Vq59hKuUCz7H1kDOcBs+2oGguKkWTU50bBWrtz34OUWmIwpBTWDxaRPXrIXkgvmQ==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  playwright-webkit@1.56.1:
+    resolution: {integrity: sha512-o+0xBhr6BM024k1GAvfuWt69NpqZr/UPH5igxWjzIkt0XUw8/qNBk5ghrZ9gN9kahxvoilO0+aGQrbpn4XDKMw==}
+    engines: {node: '>=18'}
+    hasBin: true
+
   playwright@1.51.1:
     resolution: {integrity: sha512-kkx+MB2KQRkyxjYPc3a0wLZZoDczmppyGJIvQ43l+aZihkaVvmu/21kiyaHeHjiFxjxNNFnUncKmcGIyOojsaw==}
     engines: {node: '>=18'}
@@ -8233,10 +8246,10 @@ snapshots:
     optionalDependencies:
       '@angular/platform-server': 20.3.6(@angular/common@20.3.6(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@20.3.6)(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.3.6(@angular/animations@20.3.6(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.3.6(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
 
-  '@axe-core/playwright@4.10.1(playwright-core@1.51.1)':
+  '@axe-core/playwright@4.10.1(playwright-core@1.56.1)':
     dependencies:
       axe-core: 4.10.3
-      playwright-core: 1.51.1
+      playwright-core: 1.56.1
 
   '@babel/code-frame@7.26.2':
     dependencies:
@@ -14130,6 +14143,12 @@ snapshots:
   pkce-challenge@5.0.0: {}
 
   playwright-core@1.51.1: {}
+
+  playwright-core@1.56.1: {}
+
+  playwright-webkit@1.56.1:
+    dependencies:
+      playwright-core: 1.56.1
 
   playwright@1.51.1:
     dependencies:

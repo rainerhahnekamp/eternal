@@ -99,6 +99,7 @@
     "keycloak-js": "^26.1.4",
     "lint-staged": "^15.5.2",
     "ng-mocks": "^14.14.0",
+    "playwright-webkit": "^1.56.1",
     "postcss": "^8.4.28",
     "prettier": "^3.2.4",
     "storybook": "^8.6.9",
