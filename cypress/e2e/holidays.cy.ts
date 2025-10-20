@@ -12,7 +12,7 @@ describe('Holidays', () => {
       .should('have.text', 'Holidays')
       .and('have.class', 'mat-mdc-raised-button')
       .and('have.attr', 'href', '/holidays')
-      .and('have.css', 'color', 'rgb(0, 0, 0)');
+      .and('have.css', 'color', 'rgba(0, 0, 0, 0.87)');
   });
 
   it('should verify the holidays link with explicit assertions', () => {
@@ -20,7 +20,7 @@ describe('Holidays', () => {
       expect($button).to.have.text('Holidays');
       expect($button).to.have.class('mat-mdc-raised-button');
       expect($button).to.have.attr('href', '/holidays');
-      expect($button).to.have.css('color', 'rgb(0, 0, 0)');
+      expect($button).to.have.css('color', 'rgba(0, 0, 0, 0.87)');
     });
   });
 
@@ -29,8 +29,8 @@ describe('Holidays', () => {
     cy.contains('[data-testid=holiday-card]', 'Firenze')
       .find('[data-testid=btn-brochure]')
       .click();
-    cy.testid('ri-address').type('Domgasse 5');
-    cy.testid('ri-search').click();
-    cy.testid('ri-message').should('contain.text', 'Brochure sent');
+    cy.testid('address').type('Domgasse 5');
+    cy.testid('btn-search').click();
+    cy.testid('lookup-result').should('contain.text', 'Brochure sent');
   });
 });
