@@ -162,6 +162,9 @@ importers:
       '@testing-library/angular':
         specifier: ^18.1.0
         version: 18.1.0(caf16b731fd0b685cdef340389ddd093)
+      '@testing-library/cypress':
+        specifier: ^10.1.0
+        version: 10.1.0(cypress@15.5.0)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -2806,6 +2809,12 @@ packages:
       '@angular/platform-browser': '>= 20.0.0'
       '@angular/router': '>= 20.0.0'
       '@testing-library/dom': ^10.0.0
+
+  '@testing-library/cypress@10.1.0':
+    resolution: {integrity: sha512-tNkNtYRqPQh71xXKuMizr146zlellawUfDth7A/urYU4J66g0VGZ063YsS0gqS79Z58u1G/uo9UxN05qvKXMag==}
+    engines: {node: '>=12', npm: '>=6'}
+    peerDependencies:
+      cypress: ^12.0.0 || ^13.0.0 || ^14.0.0 || ^15.0.0
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -10402,6 +10411,12 @@ snapshots:
       '@angular/router': 20.3.6(@angular/common@20.3.6(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.3.6(@angular/animations@20.3.6(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.3.6(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
       '@testing-library/dom': 10.4.0
       tslib: 2.8.1
+
+  '@testing-library/cypress@10.1.0(cypress@15.5.0)':
+    dependencies:
+      '@babel/runtime': 7.27.1
+      '@testing-library/dom': 10.4.0
+      cypress: 15.5.0
 
   '@testing-library/dom@10.4.0':
     dependencies:
