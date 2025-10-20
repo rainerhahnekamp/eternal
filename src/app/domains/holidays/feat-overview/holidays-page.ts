@@ -8,6 +8,24 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { HolidaysStore } from './data/holidays-store';
 import { HolidayCard } from './ui/holiday-card/holiday-card';
 
+import { createHoliday } from '../model/holiday';
+import { concat, concatMap, filter, first, map, of, pipe } from 'rxjs';
+import { ImagesLoadedService } from '../../../shared/ui/images-loaded.service';
+import { delay } from 'rxjs/operators';
+import { derivedFrom } from 'ngxtension/derived-from';
+
+const hiddenVienna = {
+  ...createHoliday({
+    id: -1,
+    title: 'Hidden Vienna',
+    teaser: 'Secret Holiday Unlocked',
+    imageUrl: 'https://api.eternal-holidays.net/assets/vienna.jpg',
+    description:
+      'Congratulations, your patience paid off. You have discovered our Easter egg.',
+  }),
+  isFavourite: false,
+};
+
 @Component({
   selector: 'app-holidays',
   template: `<h2>Choose among our Holidays</h2>
@@ -61,8 +79,28 @@ import { HolidayCard } from './ui/holiday-card/holiday-card';
 })
 export class HolidaysPage {
   readonly #holidaysStore = inject(HolidaysStore);
+  readonly #imagesLoadedService = inject(ImagesLoadedService);
 
-  protected holidays = this.#holidaysStore.holidaysWithFavourite;
+  holidays = derivedFrom(
+    [this.#holidaysStore.holidaysWithFavourite],
+    pipe(
+      concatMap(([holidays]) => {
+        return holidays.length
+          ? concat(
+              of(holidays),
+              this.#imagesLoadedService.loaded$.pipe(
+                filter(Boolean),
+                map(() => [...holidays, hiddenVienna]),
+                delay(1000),
+                first(),
+              ),
+            )
+          : of(holidays);
+      }),
+    ),
+    { initialValue: [] },
+  );
+
   protected search = '';
   protected type = '0';
 
