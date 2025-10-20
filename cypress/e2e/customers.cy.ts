@@ -28,7 +28,7 @@ describe('Customers', () => {
     cy.testid('opt-country').contains('USA').click();
     cy.testid('inp-birthdate').type('12.10.1995');
     cy.testid('btn-submit').click();
-    cy.testid('btn-customers-next').click();
+    cy.findByRole('button', { name: 'Next page' }).click();
 
     cy.testid('row-customer').should('contain.text', 'Tom Lincoln');
   });
