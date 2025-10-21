@@ -3,8 +3,8 @@ const eslint = require("@eslint/js");
 const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
 const sheriff = require("@softarc/eslint-plugin-sheriff");
-const prettier = require("eslint-plugin-prettier/recommended");
 const unusedImports = require("eslint-plugin-unused-imports");
+const playwright = require("eslint-plugin-playwright");
 
 module.exports = tseslint.config(
   {
@@ -17,6 +17,7 @@ module.exports = tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
+      "@angular-eslint/component-class-suffix": "off",
       "@angular-eslint/directive-selector": [
         "error",
         {
@@ -44,7 +45,7 @@ module.exports = tseslint.config(
     rules: {},
   },
   {
-    files: ["**/*.ts"],
+    files: ["src/app**/*.ts"],
     extends: [sheriff.configs.all],
   },
   {
@@ -63,5 +64,13 @@ module.exports = tseslint.config(
       ],
     },
   },
-  prettier,
+  {
+    ...playwright.configs["flat/recommended"],
+    files: ["tests/**"],
+    rules: {
+      ...playwright.configs["flat/recommended"].rules,
+      // Customize Playwright rules
+      // ...
+    },
+  },
 );

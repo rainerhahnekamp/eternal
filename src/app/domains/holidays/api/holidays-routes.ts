@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
-import { HolidaysComponent } from '../feat-overview/holidays.component';
-import { RequestInfoComponent } from '../feat-brochure/request-info.component';
-import { QuizComponent } from '../feat-quiz/quiz.component';
+import { QuizPage } from '../feat-quiz/quiz-page';
+import { RequestBrochurePage } from '../feat-brochure/request-brochure-page';
+import { EditHolidayPage } from '../feat-edit/edit-holiday-page';
+import { HolidaysPage } from '../feat-overview/holidays-page';
 
 export default [
   {
@@ -9,15 +10,19 @@ export default [
     children: [
       {
         path: '',
-        component: HolidaysComponent,
+        component: HolidaysPage,
       },
       {
-        path: 'request-info/:holidayId',
-        component: RequestInfoComponent,
+        path: 'request-brochure/:holidayId',
+        component: RequestBrochurePage,
       },
       {
         path: 'quiz/:id',
-        component: QuizComponent,
+        component: QuizPage,
+      },
+      {
+        path: 'edit/:id',
+        component: EditHolidayPage,
       },
     ],
   },
