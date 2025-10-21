@@ -1,4 +1,5 @@
 it('rename Latitia to Laetitia', () => {
+  let a = 0;
   cy.visit('');
 
   cy.findByTestId('btn-customers').click();
@@ -15,11 +16,8 @@ it('rename Latitia to Laetitia', () => {
         .filter((name) => name.startsWith('Latitia'));
 
       expect(names).to.have.length(1);
+      a = $nameCells.length;
     });
-  // TODO
-  // cy.get('[data-testid=row-customer]')
-  //   .should('', 'Latitia')
-  //   .and('have.length', 1);
   cy.contains('[data-testid=row-customer]', 'Latitia')
     .find('[data-testid=btn-edit]')
     .click();
@@ -31,4 +29,11 @@ it('rename Latitia to Laetitia', () => {
     .contains('Laetitia')
     .should('be.visible');
   cy.get('[data-testid=row-customer]').should('contain.text', 'Laetitia'); // Implicit Assertion
+
+  cy.wrap(a).should(() => {
+    console.log('a: ', a);
+    if (!a) {
+      throw new Error('A has not been set');
+    }
+  });
 });
