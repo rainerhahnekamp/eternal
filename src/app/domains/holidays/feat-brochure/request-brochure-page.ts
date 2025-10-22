@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import {
   AbstractControl,
   NonNullableFormBuilder,
@@ -10,8 +16,7 @@ import { MatInput } from '@angular/material/input';
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { isValidAddress } from './internal/is-valid-address';
-import { map, Subject } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AddressLookuper } from './internal/address-lookuper.service';
 
 @Component({
   selector: 'app-request-info',
@@ -26,19 +31,23 @@ import { AsyncPipe } from '@angular/common';
     MatHint,
     RouterLink,
     MatAnchor,
-    AsyncPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestBrochurePage {
   readonly #formBuilder = inject(NonNullableFormBuilder);
-  readonly #address$ = new Subject<string>();
+  readonly #address = signal('');
+  readonly #lookupResource = inject(AddressLookuper).lookup(this.#address);
 
-  protected readonly message$ = this.#address$.pipe(
-    map((isExistingAddress) =>
-      isExistingAddress ? 'Brochure sent' : 'Address not found',
-    ),
-  );
+  protected readonly message = computed(() => {
+    if (this.#lookupResource.hasValue()) {
+      return this.#lookupResource.value()
+        ? 'Brochure sent'
+        : 'Address not found';
+    }
+
+    return '';
+  });
 
   protected readonly formGroup = this.#formBuilder.group({
     address: [
@@ -53,6 +62,6 @@ export class RequestBrochurePage {
       return;
     }
 
-    this.#address$.next(this.formGroup.getRawValue().address);
+    this.#address.set(this.formGroup.getRawValue().address);
   }
 }

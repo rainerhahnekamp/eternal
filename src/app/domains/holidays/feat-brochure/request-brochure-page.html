@@ -1,3 +1,5 @@
+@let message = this.message();
+
 <h2>Request a Brochure</h2>
 <p>
   Please fill in your address and below and we will send you a brochure with
@@ -26,7 +28,7 @@
     </button>
   </div>
 </form>
-@let message = message$ | async;
+
 @if (message) {
   <p data-testid="lookup-result" aria-live="assertive" role="status">
     {{ message }}
