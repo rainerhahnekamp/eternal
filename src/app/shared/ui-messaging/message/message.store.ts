@@ -1,14 +1,19 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 import { Message } from './message';
+import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
-@Injectable({ providedIn: 'root' })
-export class MessageStore {
-  #messages$ = new Subject<Message>();
-
-  messages$ = this.#messages$.asObservable();
-
-  add(message: Message) {
-    this.#messages$.next(message);
-  }
-}
+export const MessageStore = signalStore(
+  { providedIn: 'root' },
+  withState({ messages: [] as Message[] }),
+  withMethods((store) => ({
+    add(message: Message) {
+      patchState(store, ({ messages }) => ({
+        messages: [...messages, message],
+      }));
+    },
+    remove(message: Message) {
+      patchState(store, ({ messages }) => ({
+        messages: messages.filter((m) => message !== m),
+      }));
+    },
+  })),
+);

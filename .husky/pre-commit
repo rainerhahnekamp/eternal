@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx ng lint
+pnpm ng lint
+pnpm lint-staged
