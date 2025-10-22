@@ -26,8 +26,8 @@ describe('Holidays', () => {
 
   it('should request brochure for Firenze', () => {
     cy.testid('btn-holidays').click();
-    cy.contains('[data-testid=holiday-card]', 'Firenze')
-      .find('[data-testid=btn-brochure]')
+    cy.contains('[data-testid.ts=holiday-card]', 'Firenze')
+      .find('[data-testid.ts=btn-brochure]')
       .click();
     cy.testid('address').type('Domgasse 5');
     cy.testid('btn-search').click();

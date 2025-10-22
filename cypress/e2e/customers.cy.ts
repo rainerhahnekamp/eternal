@@ -10,8 +10,8 @@ describe('Customers', () => {
 
   it('should rename Latitia to Laetitia', () => {
     cy.testid('btn-customers').click();
-    cy.contains('[data-testid=row-customer]', 'Latitia')
-      .find('[data-testid=btn-edit]')
+    cy.contains('[data-testid.ts=row-customer]', 'Latitia')
+      .find('[data-testid.ts=btn-edit]')
       .click();
     cy.testid('inp-firstname').clear().type('Laetitia');
     cy.testid('btn-submit').click();

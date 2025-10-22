@@ -11,3 +11,7 @@ it('should test Newsletter', () => {
 
   fixture.detectChanges();
 });
+
+it('should just work', () => {
+  expect(true).toBe(true);
+});

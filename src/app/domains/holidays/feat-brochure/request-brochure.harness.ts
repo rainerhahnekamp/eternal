@@ -8,9 +8,9 @@ export class RequestBrochureHarness extends ComponentHarness {
   protected getTitle = this.locatorFor('h2');
   protected getInput = this.locatorFor(MatInputHarness);
   protected getButton = this.locatorFor(
-    MatButtonHarness.with({ selector: '[data-testid=btn-search]' }),
+    MatButtonHarness.with({ selector: '[data-testid.ts=btn-search]' }),
   );
-  protected getLookupResult = this.locatorFor('[data-testid=lookup-result]');
+  protected getLookupResult = this.locatorFor('[data-testid.ts=lookup-result]');
 
   async search(): Promise<void> {
     const button = await this.getButton();

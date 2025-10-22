@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   NonNullableFormBuilder,
@@ -14,6 +14,27 @@ import { ChatClient } from './chat/chat-client';
   selector: 'app-home',
   template: `<h2 data-testid="greeting">Welcome to Eternal</h2>
     <app-special-greeting />
+
+    <div>
+      <!--      @if (isClicked()) {-->
+      <!--        <button mat-raised-button (click)="toggleClicked()">Unclick Me</button>-->
+      <!--      } @else {-->
+      <!--        <button mat-raised-button (click)="toggleClicked()">Click Me</button>-->
+      <!--      }-->
+      <button mat-raised-button (click)="toggleClicked()">
+        {{ buttonLabel() }}
+      </button>
+    </div>
+
+    <h3>Numbers</h3>
+    <ul>
+      @for (entry of numberList(); track entry) {
+        <li data-testid="number">
+          <span>{{ entry }}</span>
+        </li>
+      }
+    </ul>
+
     <p data-testid="txt-greeting-1">
       Eternal is an imaginary travel agency and is used as training application
       for Angular developers.
@@ -109,9 +130,22 @@ export class HomePage implements OnInit {
     this.formGroup.valueChanges.subscribe(() =>
       this.config.updateFeatures(this.formGroup.getRawValue()),
     );
+
+    setTimeout(() => this.numberList.set([1, 2]), 2000);
   }
 
   enableWebsocket() {
     this.chatService.connect();
   }
+
+  protected readonly isClicked = signal(false);
+  protected readonly buttonLabel = computed(() =>
+    this.isClicked() ? 'Unclick Me' : 'Click Me',
+  );
+
+  protected toggleClicked() {
+    this.isClicked.update((value) => !value);
+  }
+
+  numberList = signal([1]);
 }
