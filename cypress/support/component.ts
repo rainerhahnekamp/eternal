@@ -1,5 +1,6 @@
 import { mount } from 'cypress/angular';
 import Chainable = Cypress.Chainable;
+import '@testing-library/cypress/add-commands';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace Cypress {
