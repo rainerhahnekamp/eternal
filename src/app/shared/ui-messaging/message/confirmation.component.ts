@@ -17,7 +17,6 @@ export interface ConfirmationData {
     <div mat-dialog-actions>
       <button mat-button mat-dialog-close>OK</button>
     </div>`,
-  standalone: true,
   imports: [MatDialogModule, MatButtonModule],
 })
 export class ConfirmationComponent {

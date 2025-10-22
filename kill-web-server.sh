@@ -1,0 +1,1 @@
+bash -lc 'pids=$(lsof -tiTCP:7357 -sTCP:LISTEN); if [ -n "$pids" ]; then echo "Killing PIDs: $pids"; kill $pids; sleep 0.5; still=$(lsof -tiTCP:7357 -sTCP:LISTEN); if [ -n "$still" ]; then echo "Force killing PIDs: $still"; kill -9 $still; fi; else echo "No process is listening on port 7357."; fi; lsof -nP -iTCP:7357 -sTCP:LISTEN || true'
