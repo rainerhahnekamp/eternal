@@ -111,7 +111,7 @@ export class Customers {
     );
 
     return cy.get('@button').then(($button) => {
-      const isDisabled = $button.prop('disabled');
+      const isDisabled = $button.attr('aria-disabled');
       if (!isDisabled) {
         return cy.get('@firstCustomerName').then((firstName) => {
           const name = firstName.text();

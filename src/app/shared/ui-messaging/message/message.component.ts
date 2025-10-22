@@ -1,9 +1,8 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component } from '@angular/core';
-import { Message } from './message';
+import { Component, effect, inject } from '@angular/core';
 import { MessageStore } from './message.store';
 import { MatIconModule } from '@angular/material/icon';
-import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-message',
@@ -21,8 +20,7 @@ import { NgClass, NgForOf, NgIf } from '@angular/common';
       }
     `,
   ],
-  standalone: true,
-  imports: [MatIconModule, NgClass, NgForOf, NgIf],
+  imports: [MatIconModule, NgClass],
   animations: [
     trigger('myTrigger', [
       transition(':enter', [
@@ -40,14 +38,19 @@ export class MessageComponent {
   flag = true;
   state = 'fadeInFlash';
 
-  constructor(messageStore: MessageStore) {
-    messageStore.messages$.subscribe((message) => {
-      this.messages.push(message);
-      setTimeout(
-        () => (this.messages = this.messages.filter((m) => m !== message)),
-        3000,
-      );
-    });
+  protected readonly messageStore = inject(MessageStore);
+
+  constructor() {
+    effect(
+      () => {
+        const messages = this.messageStore.messages();
+        setTimeout(() => {
+          for (const message of messages) {
+            this.messageStore.remove(message);
+          }
+        }, 3000);
+      },
+      { debugName: 'messageCleanup' },
+    );
   }
-  messages: Message[] = [];
 }
