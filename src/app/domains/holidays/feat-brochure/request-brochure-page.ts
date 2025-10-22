@@ -2,7 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
+  input,
   signal,
 } from '@angular/core';
 import {
@@ -36,8 +38,13 @@ import { AddressLookuper } from './internal/address-lookuper.service';
 })
 export class RequestBrochurePage {
   readonly #formBuilder = inject(NonNullableFormBuilder);
+  readonly address = input('');
   readonly #address = signal('');
   readonly #lookupResource = inject(AddressLookuper).lookup(this.#address);
+
+  constructor() {
+    effect(() => this.formGroup.patchValue({ address: this.address() }));
+  }
 
   protected readonly message = computed(() => {
     if (this.#lookupResource.hasValue()) {
