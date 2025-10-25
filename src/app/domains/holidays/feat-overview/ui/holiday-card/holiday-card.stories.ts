@@ -3,9 +3,8 @@ import { HolidayCard } from './holiday-card';
 import { Meta, StoryObj } from '@storybook/angular/';
 import { createHoliday } from '../../../model/holiday';
 import { provideLocationMocks } from '@angular/common/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { applicationConfig } from '@storybook/angular';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 const meta: Meta<HolidayCard> = {
@@ -14,8 +13,7 @@ const meta: Meta<HolidayCard> = {
   decorators: [
     applicationConfig({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
-        provideNoopAnimations(),
+        provideZonelessChangeDetection(),
         provideLocationMocks(),
         provideRouter([]),
       ],

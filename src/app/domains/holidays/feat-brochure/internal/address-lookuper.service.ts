@@ -49,8 +49,16 @@ export class AddressLookuper implements IAddressLookuper {
 
   getLookupResource(query: () => string) {
     return rxResource({
-      params: query,
-      stream: ({ params }) => this.#nominatimService.query(params),
+      params: () => {
+        if (query() === '') {
+          return undefined;
+        }
+
+        return query();
+      },
+      stream: ({ params }) => {
+        return this.#nominatimService.query(params);
+      },
     });
   }
 

@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnInit,
+} from '@angular/core';
 import {
   AbstractControl,
   NonNullableFormBuilder,
@@ -10,8 +16,8 @@ import { MatInput } from '@angular/material/input';
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { isValidAddress } from './internal/is-valid-address';
-import { map, Subject } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AddressLookuper } from './internal/address-lookuper.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-request-info',
@@ -26,19 +32,11 @@ import { AsyncPipe } from '@angular/common';
     MatHint,
     RouterLink,
     MatAnchor,
-    AsyncPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RequestBrochurePage {
+export class RequestBrochurePage implements OnInit {
   readonly #formBuilder = inject(NonNullableFormBuilder);
-  readonly #address$ = new Subject<string>();
-
-  protected readonly message$ = this.#address$.pipe(
-    map((isExistingAddress) =>
-      isExistingAddress ? 'Brochure sent' : 'Address not found',
-    ),
-  );
 
   protected readonly formGroup = this.#formBuilder.group({
     address: [
@@ -47,12 +45,39 @@ export class RequestBrochurePage {
         isValidAddress(ac.value) ? null : { invalidAddress: true },
     ],
   });
+  // readonly #address = signal('');
+  readonly #address = toSignal(this.formGroup.controls.address.valueChanges, {
+    initialValue: '',
+  });
+  readonly #addressLookuper = inject(AddressLookuper);
+  readonly lookupResource = this.#addressLookuper.getLookupResource(
+    this.#address,
+  );
+
+  // ngOnInit() {
+  // Doesn't work because no injection context
+  // this.#addressLookuper.getLookupResource(() => 'Domgasse 5');
+  // }
+
+  protected readonly message = computed(() => {
+    if (this.#address() === '') {
+      return '';
+    }
+
+    if (this.lookupResource.hasValue()) {
+      return this.lookupResource.value()
+        ? 'Brochure sent'
+        : 'Address not found';
+    }
+
+    return '';
+  });
 
   async search() {
     if (this.formGroup.invalid) {
       return;
     }
 
-    this.#address$.next(this.formGroup.getRawValue().address);
+    // this.#address.set(this.formGroup.getRawValue().address);
   }
 }

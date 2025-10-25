@@ -1,4 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -9,10 +15,20 @@ import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { FormErrorsComponent } from '../shared/form/form-errors.component';
+import { NewsletterClient } from './newsletter-client';
+import { HomeLink } from './home-link';
 
 @Component({
   selector: 'app-newsletter',
-  template: `<h2>Newsletter</h2>
+  /**
+   * 1. Handled DOM Event
+   * 2. Signal
+   * 3. async pipe
+   * 4. cdr.markForCheck(), cdr.detectChanges()
+   */
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `<h2>{{ title() }}</h2>
+    <app-home-link />
     <form (ngSubmit)="handleSubmit()" [formGroup]="formGroup">
       <div class="flex flex-col max-w-fit items-center">
         <mat-form-field>
@@ -27,8 +43,9 @@ import { FormErrorsComponent } from '../shared/form/form-errors.component';
         </button>
       </div>
     </form>
-
-    <p data-testid="p-message">{{ message() }}</p>`,
+    @if (message()) {
+      <p role="status" data-testid="p-message">{{ message() }}</p>
+    }`,
   imports: [
     ReactiveFormsModule,
     MatLabel,
@@ -38,6 +55,7 @@ import { FormErrorsComponent } from '../shared/form/form-errors.component';
     MatIcon,
     MatButton,
     FormErrorsComponent,
+    HomeLink,
   ],
 })
 export default class NewsletterPage {
@@ -45,10 +63,15 @@ export default class NewsletterPage {
   formGroup = inject(NonNullableFormBuilder).group({
     email: ['', Validators.required],
   });
+  newsletterClient = inject(NewsletterClient);
+
+  title = input('');
 
   handleSubmit() {
     if (this.formGroup.valid) {
-      this.message.set('Thank you for your subscription');
+      this.newsletterClient
+        .send(this.formGroup.getRawValue().email)
+        .subscribe(() => this.message.set('Thank you for your subscription'));
     } else {
       this.message.set('Please provide an email');
     }

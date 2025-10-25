@@ -26,7 +26,7 @@
     </button>
   </div>
 </form>
-@let message = message$ | async;
+@let message = this.message();
 @if (message) {
   <p data-testid="lookup-result" aria-live="assertive" role="status">
     {{ message }}
