@@ -94,16 +94,14 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.scss"
-            ],
-            "scripts": []
+            "runner": "vitest",
+            "browsers": ["chromiumheadless"],
+            "buildTarget": "::development",
+            "providersFile": "src/test-providers.ts",
+            "setupFiles": ["src/test-setup.ts"]
           }
         },
         "lint": {
