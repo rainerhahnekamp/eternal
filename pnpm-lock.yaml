@@ -116,7 +116,7 @@ importers:
         version: 20.3.6(@angular/compiler@20.3.6)(typescript@5.8.3)
       '@axe-core/playwright':
         specifier: ^4.10.1
-        version: 4.10.1(playwright-core@1.51.1)
+        version: 4.10.1(playwright-core@1.56.1)
       '@chromatic-com/storybook':
         specifier: ^3.2.6
         version: 3.2.6(react@18.3.1)(storybook@8.6.9(prettier@3.3.3))
@@ -130,8 +130,8 @@ importers:
         specifier: ^9.28.0
         version: 9.28.0
       '@playwright/test':
-        specifier: ^1.51.1
-        version: 1.51.1
+        specifier: ^1.56.1
+        version: 1.56.1
       '@softarc/eslint-plugin-sheriff':
         specifier: ^0.19.6
         version: 0.19.6(@softarc/sheriff-core@0.19.6(typescript@5.8.3))(@typescript-eslint/utils@8.37.0(eslint@9.31.0(jiti@1.21.6))(typescript@5.8.3))(eslint@9.31.0(jiti@1.21.6))
@@ -188,7 +188,7 @@ importers:
         version: 8.37.0(eslint@9.31.0(jiti@1.21.6))(typescript@5.8.3)
       '@vitest/browser':
         specifier: ^3.2.4
-        version: 3.2.4(playwright@1.51.1)(vite@7.1.5(@types/node@18.19.63)(jiti@1.21.6)(less@4.3.0)(sass@1.90.0)(terser@5.39.1)(yaml@2.7.1))(vitest@3.2.4)
+        version: 3.2.4(playwright@1.56.1)(vite@7.1.5(@types/node@18.19.63)(jiti@1.21.6)(less@4.3.0)(sass@1.90.0)(terser@5.39.1)(yaml@2.7.1))(vitest@3.2.4)
       angular-eslint:
         specifier: ^20.4.0
         version: 20.4.0(chokidar@4.0.1)(eslint@9.31.0(jiti@1.21.6))(typescript-eslint@8.37.0(eslint@9.31.0(jiti@1.21.6))(typescript@5.8.3))(typescript@5.8.3)
@@ -2343,8 +2343,8 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@playwright/test@1.51.1':
-    resolution: {integrity: sha512-nM+kEaTSAoVlXmMPH10017vn3FSiFqr/bh4fKg9vmAdMfd9SDqRZNvPSiAHADc/itWak+qPvMPZQOPwCBW7k7Q==}
+  '@playwright/test@1.56.1':
+    resolution: {integrity: sha512-vSMYtL/zOcFpvJCW71Q/OEGQb7KYBPAdKh35WNSkaZA75JlAO8ED8UN6GUNTm3drWomcbcqRPFqQbLae8yBTdg==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -5835,13 +5835,13 @@ packages:
     resolution: {integrity: sha512-ueGLflrrnvwB3xuo/uGob5pd5FN7l0MsLf0Z87o/UQmRtwjvfylfc9MurIxRAWywCYTgrvpXBcqjV4OfCYGCIQ==}
     engines: {node: '>=16.20.0'}
 
-  playwright-core@1.51.1:
-    resolution: {integrity: sha512-/crRMj8+j/Nq5s8QcvegseuyeZPxpQCZb6HNk3Sos3BlZyAknRjoyJPFWkpNn8v0+P3WiwqFF8P+zQo4eqiNuw==}
+  playwright-core@1.56.1:
+    resolution: {integrity: sha512-hutraynyn31F+Bifme+Ps9Vq59hKuUCz7H1kDOcBs+2oGguKkWTU50bBWrtz34OUWmIwpBTWDxaRPXrIXkgvmQ==}
     engines: {node: '>=18'}
     hasBin: true
 
-  playwright@1.51.1:
-    resolution: {integrity: sha512-kkx+MB2KQRkyxjYPc3a0wLZZoDczmppyGJIvQ43l+aZihkaVvmu/21kiyaHeHjiFxjxNNFnUncKmcGIyOojsaw==}
+  playwright@1.56.1:
+    resolution: {integrity: sha512-aFi5B0WovBHTEvpM3DzXTUaeN6eN0qWnTkKx4NQaH4Wvcmc153PdaY2UBdSYKaGYw+UyWXSVyxDUg5DoPEttjw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -7877,10 +7877,10 @@ snapshots:
     optionalDependencies:
       '@angular/platform-server': 20.3.6(@angular/common@20.3.6(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@20.3.6)(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.3.6(@angular/animations@20.3.6(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.3.6(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.6(@angular/compiler@20.3.6)(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
 
-  '@axe-core/playwright@4.10.1(playwright-core@1.51.1)':
+  '@axe-core/playwright@4.10.1(playwright-core@1.56.1)':
     dependencies:
       axe-core: 4.10.3
-      playwright-core: 1.51.1
+      playwright-core: 1.56.1
 
   '@babel/code-frame@7.26.2':
     dependencies:
@@ -9561,9 +9561,9 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@playwright/test@1.51.1':
+  '@playwright/test@1.56.1':
     dependencies:
-      playwright: 1.51.1
+      playwright: 1.56.1
 
   '@polka/url@1.0.0-next.29': {}
 
@@ -10330,7 +10330,7 @@ snapshots:
     dependencies:
       vite: 7.1.5(@types/node@18.19.63)(jiti@1.21.6)(less@4.3.0)(sass@1.90.0)(terser@5.39.1)(yaml@2.7.1)
 
-  '@vitest/browser@3.2.4(playwright@1.51.1)(vite@7.1.5(@types/node@18.19.63)(jiti@1.21.6)(less@4.3.0)(sass@1.90.0)(terser@5.39.1)(yaml@2.7.1))(vitest@3.2.4)':
+  '@vitest/browser@3.2.4(playwright@1.56.1)(vite@7.1.5(@types/node@18.19.63)(jiti@1.21.6)(less@4.3.0)(sass@1.90.0)(terser@5.39.1)(yaml@2.7.1))(vitest@3.2.4)':
     dependencies:
       '@testing-library/dom': 10.4.0
       '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.0)
@@ -10342,7 +10342,7 @@ snapshots:
       vitest: 3.2.4(@types/node@18.19.63)(@vitest/browser@3.2.4)(jiti@1.21.6)(less@4.3.0)(sass@1.90.0)(terser@5.39.1)(yaml@2.7.1)
       ws: 8.18.3
     optionalDependencies:
-      playwright: 1.51.1
+      playwright: 1.56.1
     transitivePeerDependencies:
       - bufferutil
       - msw
@@ -13432,11 +13432,11 @@ snapshots:
 
   pkce-challenge@5.0.0: {}
 
-  playwright-core@1.51.1: {}
+  playwright-core@1.56.1: {}
 
-  playwright@1.51.1:
+  playwright@1.56.1:
     dependencies:
-      playwright-core: 1.51.1
+      playwright-core: 1.56.1
     optionalDependencies:
       fsevents: 2.3.2
 
@@ -14745,7 +14745,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 18.19.63
-      '@vitest/browser': 3.2.4(playwright@1.51.1)(vite@7.1.5(@types/node@18.19.63)(jiti@1.21.6)(less@4.3.0)(sass@1.90.0)(terser@5.39.1)(yaml@2.7.1))(vitest@3.2.4)
+      '@vitest/browser': 3.2.4(playwright@1.56.1)(vite@7.1.5(@types/node@18.19.63)(jiti@1.21.6)(less@4.3.0)(sass@1.90.0)(terser@5.39.1)(yaml@2.7.1))(vitest@3.2.4)
     transitivePeerDependencies:
       - jiti
       - less

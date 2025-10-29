@@ -58,7 +58,7 @@
     "@commitlint/cli": "^18.4.0",
     "@commitlint/config-conventional": "^18.4.0",
     "@eslint/js": "^9.28.0",
-    "@playwright/test": "^1.51.1",
+    "@playwright/test": "^1.56.1",
     "@softarc/eslint-plugin-sheriff": "^0.19.6",
     "@softarc/sheriff-core": "^0.19.6",
     "@storybook/addon-essentials": "^8.6.9",
