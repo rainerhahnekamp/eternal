@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { parseAddress } from './parse-address';
+import { ADDRESS_SUPPLIER } from './address-supplier';
 
 @Injectable({ providedIn: 'root' })
 export class AddressLookuper {
   #counter = 0;
-  constructor(public addressesSupplier: () => string[]) {}
+  #addressesSupplier = inject(ADDRESS_SUPPLIER);
 
   get counter(): number {
     return this.#counter;
@@ -13,6 +14,6 @@ export class AddressLookuper {
   lookup(query: string): boolean {
     parseAddress(query);
     this.#counter++;
-    return this.addressesSupplier().some((address) => address.includes(query));
+    return this.#addressesSupplier.some((address) => address.includes(query));
   }
 }

@@ -5,6 +5,7 @@ export interface ConfigurationFeatures {
   mockCustomers: boolean;
   pagedCustomers: boolean;
   runHeartbeat: boolean;
+  useQuill: boolean;
 }
 
 export class Configuration {
@@ -13,6 +14,7 @@ export class Configuration {
   #mockHolidays: boolean;
   #runHeartbeat = signal(true);
   #pagedCustomers: boolean;
+  #useQuill: boolean;
 
   #storageKey = 'eternal-configuration';
 
@@ -22,6 +24,7 @@ export class Configuration {
     mockHolidays = true,
     pagedCustomers = true,
     runHeartbeat = false,
+    useQuill = false,
   ) {
     this.#baseUrl = baseUrl;
     const values = { mockCustomers, mockHolidays, pagedCustomers };
@@ -30,6 +33,7 @@ export class Configuration {
     this.#mockHolidays = values.mockHolidays;
     this.#pagedCustomers = values.pagedCustomers;
     this.#runHeartbeat.set(runHeartbeat);
+    this.#useQuill = useQuill;
   }
 
   get baseUrl() {
@@ -49,14 +53,24 @@ export class Configuration {
     return this.#runHeartbeat.asReadonly();
   }
 
+  get useQuill() {
+    return this.#useQuill;
+  }
+
   updateFeatures(configurationFeatures: Partial<ConfigurationFeatures>) {
-    const { mockHolidays, mockCustomers, pagedCustomers, runHeartbeat } =
-      configurationFeatures;
+    const {
+      mockHolidays,
+      mockCustomers,
+      pagedCustomers,
+      runHeartbeat,
+      useQuill,
+    } = configurationFeatures;
 
     this.#mockHolidays = mockHolidays ?? this.#mockHolidays;
     this.#mockCustomers = mockCustomers ?? this.#mockCustomers;
     this.#pagedCustomers = pagedCustomers ?? this.#pagedCustomers;
     this.#runHeartbeat.set(runHeartbeat ?? this.#runHeartbeat());
+    this.#useQuill = useQuill ?? this.#useQuill;
 
     localStorage.setItem(
       this.#storageKey,
