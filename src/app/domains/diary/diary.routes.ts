@@ -7,7 +7,7 @@ import {
   diaryReducer,
 } from './internal/diaries/+state/diary.reducer';
 import { DiaryEffects } from './internal/diaries/+state/diary.effects';
-import { DiariesComponent } from './internal/diaries/diaries.component';
+import { DiariesPage } from './internal/diaries/daries-page.component';
 
 export default [
   {
@@ -18,6 +18,6 @@ export default [
         EffectsModule.forFeature([DiaryEffects]),
       ),
     ],
-    component: DiariesComponent,
+    component: DiariesPage,
   },
 ] satisfies Routes;

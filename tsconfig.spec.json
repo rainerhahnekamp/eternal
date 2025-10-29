@@ -4,7 +4,8 @@
   "compilerOptions": {
     "target": "es2016",
     "outDir": "./out-tsc/spec",
-    "types": ["jest"]
+    "types": [""]
   },
-  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
+  "files": ["src/test-setup.ts"],
+  "include": ["src/**/*.spec.ts", "src/test-providers.ts", "src/**/*.d.ts"]
 }
