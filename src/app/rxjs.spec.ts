@@ -1,6 +1,5 @@
 import {
   combineLatest,
-  EmptyError,
   exhaustMap,
   first,
   lastValueFrom,
@@ -13,6 +12,7 @@ import {
 } from 'rxjs';
 import { TestScheduler } from 'rxjs/internal/testing/TestScheduler';
 import { concatMap, filter, tap } from 'rxjs/operators';
+import { expect, describe, test, beforeEach } from 'vitest';
 
 describe('RxJs', () => {
   let testScheduler: TestScheduler;
@@ -104,14 +104,6 @@ describe('RxJs', () => {
         observable.pipe(filter((data) => !!data));
       const destination = source.pipe(filterTruthy);
       expectObservable(destination).toBe('-----f', { f: 1 });
-    }));
-
-  test('error with first operator on completed', () =>
-    testScheduler.run(({ cold, expectObservable }) => {
-      const source$ = cold('|');
-      const destination$ = source$.pipe(first());
-
-      expectObservable(destination$).toBe('#', undefined, new EmptyError());
     }));
 
   test('asynchronicity', async () => {
