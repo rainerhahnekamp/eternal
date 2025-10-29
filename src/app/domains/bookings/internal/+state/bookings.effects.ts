@@ -6,7 +6,7 @@ import { bookingsActions } from './bookings.actions';
 import { Booking } from './bookings.reducer';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs/operators';
-import { Customers } from '../../../customers/api/customers.service';
+import { CustomersClient } from '../../../customers/api/customers-client';
 
 const bookings: Map<number, Booking[]> = new Map<number, Booking[]>();
 bookings.set(1, [
@@ -38,7 +38,7 @@ bookings.set(3, [
 
 @Injectable()
 export class BookingsEffects {
-  #customers = inject(Customers);
+  #customers = inject(CustomersClient);
   #actions$ = inject(Actions);
   #selectedCustomer = toObservable(this.#customers.selectedCustomer);
 
