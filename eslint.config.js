@@ -16,6 +16,7 @@ module.exports = tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
+      "@angular-eslint/component-class-suffix": "off",
       "@angular-eslint/directive-selector": [
         "error",
         {
@@ -43,7 +44,7 @@ module.exports = tseslint.config(
     rules: {},
   },
   {
-    files: ["**/*.ts"],
+    files: ["src/app**/*.ts"],
     extends: [sheriff.configs.all],
   },
   {
