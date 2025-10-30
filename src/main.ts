@@ -3,8 +3,6 @@ import localeDe from '@angular/common/locales/de-AT';
 import { registerLocaleData } from '@angular/common';
 import { appConfig } from './app/app-config';
 import { App } from './app/app';
-import { enableProfiling } from '@angular/core';
 
-enableProfiling();
 registerLocaleData(localeDe, 'de-AT');
 void bootstrapApplication(App, appConfig);

@@ -1,0 +1,8 @@
+<script lang="ts">
+const title = signal("");
+const httpClient = inject(HttpClient);
+</script>
+
+<template>
+  <h1>Hallo from {{ title() }}</h1>
+</template>

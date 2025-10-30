@@ -1,19 +1,47 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, ResourceRef } from '@angular/core';
 import { parseAddress } from './parse-address';
-import { ADDRESS_SUPPLIER } from './address-supplier';
+import { map, Observable } from 'rxjs';
+import { HttpClient, httpResource } from '@angular/common/http';
+
+export interface IAddressLookuper {
+  getLookupResource(query: string): ResourceRef<boolean | undefined>;
+  lookup(query: string): Observable<boolean>;
+}
 
 @Injectable({ providedIn: 'root' })
-export class AddressLookuper {
+export class AddressLookuper implements IAddressLookuper {
   #counter = 0;
-  #addressesSupplier = inject(ADDRESS_SUPPLIER);
+  #httpClient = inject(HttpClient);
 
   get counter(): number {
     return this.#counter;
   }
 
-  lookup(query: string): boolean {
+  getLookupResource(query: string) {
+    return httpResource(
+      () => ({
+        url: 'https://nominatim.openstreetmap.org/search.php',
+        params: { q: query, format: 'jsonv2' },
+      }),
+      {
+        parse: (response: unknown) => {
+          if (Array.isArray(response)) {
+            return response.length > 0;
+          } else {
+            return false;
+          }
+        },
+      },
+    );
+  }
+
+  lookup(query: string): Observable<boolean> {
     parseAddress(query);
     this.#counter++;
-    return this.#addressesSupplier.some((address) => address.includes(query));
+    return this.#httpClient
+      .get<
+        unknown[]
+      >('https://nominatim.openstreetmap.org/search.php', { params: { format: 'jsonv2', q: query } })
+      .pipe(map((response) => response.length > 0));
   }
 }
