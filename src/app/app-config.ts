@@ -39,8 +39,6 @@ import {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZonelessChangeDetection(),
-    provideAnimationsAsync(),
     {
       provide: IMAGE_CONFIG,
       useValue: {
