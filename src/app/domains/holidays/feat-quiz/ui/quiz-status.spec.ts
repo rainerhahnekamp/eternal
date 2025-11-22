@@ -18,7 +18,7 @@ describe('Quiz Status', () => {
   });
 
   it('should show the time left via new outputs', async () => {
-    const fixture = TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       providers: [provideZonelessChangeDetection()],
     }).createComponent(QuizStatusComponent, {
       bindings: [

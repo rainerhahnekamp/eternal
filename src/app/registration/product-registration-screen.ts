@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RegistrationStore } from './registration-store';
 import { form, required, Field } from '@angular/forms/signals';
 import { ProductSelectionCard } from './product-selection-card';
+import { Router } from '@angular/router';
 
 type ProductType = 'newsletter' | 'eternal-journal';
 
@@ -57,17 +58,22 @@ type ProductType = 'newsletter' | 'eternal-journal';
       </div>
 
       <div class="flex justify-center gap-4 mt-8">
+        <button mat-button color="primary" (click)="skip()" class="px-8 py-2">
+          Skip and continue
+        </button>
+
         <button
           mat-raised-button
           color="primary"
           [disabled]="productGroup === 'none'"
           (click)="continue()"
-          class="px-8 py-2"
+          [class]="{
+            'px-8': true,
+            'py-2': true,
+            invisible: productForm.productGroup().value() === 'none',
+          }"
         >
           Continue
-        </button>
-        <button mat-button color="primary" (click)="skip()" class="px-8 py-2">
-          Skip and Sign Up
         </button>
       </div>
     </div>
@@ -82,6 +88,7 @@ type ProductType = 'newsletter' | 'eternal-journal';
 })
 export class ProductRegistrationScreen {
   readonly #registrationStore = inject(RegistrationStore);
+  readonly #router = inject(Router);
 
   formData = linkedSignal(() => ({
     productGroup: this.#registrationStore.productGroup(),
@@ -96,7 +103,7 @@ export class ProductRegistrationScreen {
   }
 
   protected continue() {
-    // TODO: Navigate to customer registration screen
+    this.#router.navigate(['/registration/customer']);
   }
 
   protected skip() {

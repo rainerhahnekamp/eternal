@@ -62,7 +62,7 @@ export const appRoutes: Routes = [
       },
       {
         path: 'registration',
-        loadChildren: () => import('./registration'),
+        loadChildren: () => import('./registration/registration-routes'),
       },
     ],
   },

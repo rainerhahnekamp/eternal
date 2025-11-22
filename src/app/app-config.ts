@@ -3,12 +3,10 @@ import {
   ErrorHandler,
   importProvidersFrom,
   LOCALE_ID,
-  provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
-import { appRoutes } from './app-routes';
-import { provideStore } from '@ngrx/store';
+import { IMAGE_CONFIG } from '@angular/common';
 import {
   provideHttpClient,
   withFetch,
@@ -16,26 +14,26 @@ import {
 } from '@angular/common/http';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { deAT } from 'date-fns/locale';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { IMAGE_CONFIG } from '@angular/common';
-import { baseUrlInterceptor } from './shared/http/base-url.interceptor';
-import { loadingInterceptor } from './shared/ui-messaging/loader/loading.interceptor';
-import { errorInterceptor } from './shared/http/error.interceptor';
-import { sharedMasterDataProvider } from './shared/master-data/shared-master-data.provider';
-import { sharedUiMessagingProvider } from './shared/ui-messaging/shared-ui-messaging.provider';
-import { Configuration } from './shared/config/configuration';
-import { securityInterceptor } from './shared/security/security-interceptor';
-import { DefaultErrorHandler } from './core/default-error-handler';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { environment } from '../environments/environment';
-import { customersInterceptor } from './domains/customers/feature/customers.interceptor';
-import { holidaysInterceptor } from './domains/holidays/api/holidays.interceptor';
 import {
   provideClientHydration,
   withEventReplay,
   withIncrementalHydration,
 } from '@angular/platform-browser';
+import { provideStore } from '@ngrx/store';
+import { deAT } from 'date-fns/locale';
+import { environment } from '../environments/environment';
+import { appRoutes } from './app-routes';
+import { DefaultErrorHandler } from './core/default-error-handler';
+import { customersInterceptor } from './domains/customers/feature/customers.interceptor';
+import { holidaysInterceptor } from './domains/holidays/api/holidays.interceptor';
+import { Configuration } from './shared/config/configuration';
+import { baseUrlInterceptor } from './shared/http/base-url.interceptor';
+import { errorInterceptor } from './shared/http/error.interceptor';
+import { sharedMasterDataProvider } from './shared/master-data/shared-master-data.provider';
+import { securityInterceptor } from './shared/security/security-interceptor';
+import { loadingInterceptor } from './shared/ui-messaging/loader/loading.interceptor';
+import { sharedUiMessagingProvider } from './shared/ui-messaging/shared-ui-messaging.provider';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -4,14 +4,20 @@ import {
   inject,
   linkedSignal,
 } from '@angular/core';
-import { RegistrationStore } from './registration-store';
-import { required } from '@angular/forms/signals';
-import { form } from '@angular/forms/signals';
-import { Field } from '@angular/forms/signals';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
+import {
+  email,
+  Field,
+  form,
+  minLength,
+  required,
+} from '@angular/forms/signals';
 import { MatButton } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { validateSameValue } from '../shared/form/validate-same-value';
+import { RegistrationStore } from './registration-store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-registration',
@@ -20,7 +26,7 @@ import { MatButton } from '@angular/material/button';
       <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">
         Customer Registration
       </h1>
-      <form class="flex flex-col gap-4" disabled>
+      <div class="flex flex-col gap-4" disabled>
         <div class="grid grid-cols-2 gap-4">
           <mat-form-field class="w-full" disabled>
             <mat-label>First Name</mat-label>
@@ -32,6 +38,12 @@ import { MatButton } from '@angular/material/button';
             />
             <mat-icon matPrefix>person</mat-icon>
             <mat-hint>Your given name</mat-hint>
+            @for (
+              error of customerForm.firstname().errors();
+              track error.message
+            ) {
+              <mat-error>{{ error.message }}</mat-error>
+            }
           </mat-form-field>
 
           <mat-form-field class="w-full" disabled>
@@ -44,6 +56,9 @@ import { MatButton } from '@angular/material/button';
             />
             <mat-icon matPrefix>badge</mat-icon>
             <mat-hint>Your family name</mat-hint>
+            @for (error of customerForm.name().errors(); track error.message) {
+              <mat-error>{{ error.message }}</mat-error>
+            }
           </mat-form-field>
         </div>
 
@@ -57,6 +72,9 @@ import { MatButton } from '@angular/material/button';
           />
           <mat-icon matPrefix>email</mat-icon>
           <mat-hint>We'll never share your email</mat-hint>
+          @for (error of customerForm.email().errors(); track error.message) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
         </mat-form-field>
 
         <div class="grid grid-cols-2 gap-4">
@@ -70,6 +88,12 @@ import { MatButton } from '@angular/material/button';
             />
             <mat-icon matPrefix>lock</mat-icon>
             <mat-hint>At least 8 characters recommended</mat-hint>
+            @for (
+              error of customerForm.password().errors();
+              track error.message
+            ) {
+              <mat-error>{{ error.message }}</mat-error>
+            }
           </mat-form-field>
 
           <mat-form-field class="w-full" disabled>
@@ -81,6 +105,12 @@ import { MatButton } from '@angular/material/button';
               placeholder="Re-enter your password"
             />
             <mat-icon matPrefix>lock_outline</mat-icon>
+            @for (
+              error of customerForm.passwordConfirmation().errors();
+              track error.message
+            ) {
+              <mat-error>{{ error.message }}</mat-error>
+            }
           </mat-form-field>
         </div>
 
@@ -89,13 +119,17 @@ import { MatButton } from '@angular/material/button';
           <button
             mat-raised-button
             color="primary"
-            type="submit"
-            class="px-8 py-2"
+            [class]="{
+              'px-8': true,
+              'py-2': true,
+              invisible: customerForm().invalid(),
+            }"
+            (click)="continue()"
           >
             Continue
           </button>
         </div>
-      </form>
+      </div>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -109,14 +143,26 @@ import { MatButton } from '@angular/material/button';
 })
 export class CustomerRegistrationScreen {
   readonly #registrationStore = inject(RegistrationStore);
+  readonly #router = inject(Router);
 
   readonly formData = linkedSignal(this.#registrationStore.customer);
 
   readonly customerForm = form(this.formData, (path) => {
-    required(path.firstname);
-    required(path.name);
-    required(path.email);
-    required(path.password);
-    required(path.passwordConfirmation);
+    required(path.firstname, { message: 'First name is required' });
+    required(path.name, { message: 'Last name is required' });
+    email(path.email, { message: 'Invalid email address' });
+    minLength(path.password, 8, {
+      message: 'Password must be at least 8 characters long',
+    });
+
+    validateSameValue(
+      path.password,
+      path.passwordConfirmation,
+      'Passwords do not match',
+    );
   });
+
+  protected continue() {
+    this.#router.navigate(['/registration/address']);
+  }
 }
