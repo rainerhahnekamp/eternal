@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   linkedSignal,
+  signal,
 } from '@angular/core';
 import {
   email,
@@ -17,7 +18,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { validateSameValue } from '../shared/form/validate-same-value';
 import { RegistrationStore } from './registration-store';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-registration',
@@ -26,9 +26,9 @@ import { Router } from '@angular/router';
       <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">
         Customer Registration
       </h1>
-      <div class="flex flex-col gap-4" disabled>
+      <div class="flex flex-col gap-4">
         <div class="grid grid-cols-2 gap-4">
-          <mat-form-field class="w-full" disabled>
+          <mat-form-field class="w-full">
             <mat-label>First Name</mat-label>
             <input
               type="text"
@@ -46,7 +46,7 @@ import { Router } from '@angular/router';
             }
           </mat-form-field>
 
-          <mat-form-field class="w-full" disabled>
+          <mat-form-field class="w-full">
             <mat-label>Last Name</mat-label>
             <input
               type="text"
@@ -62,7 +62,7 @@ import { Router } from '@angular/router';
           </mat-form-field>
         </div>
 
-        <mat-form-field class="w-full" disabled>
+        <mat-form-field class="w-full">
           <mat-label>Email Address</mat-label>
           <input
             type="email"
@@ -78,7 +78,7 @@ import { Router } from '@angular/router';
         </mat-form-field>
 
         <div class="grid grid-cols-2 gap-4">
-          <mat-form-field class="w-full" disabled>
+          <mat-form-field class="w-full">
             <mat-label>Password</mat-label>
             <input
               type="password"
@@ -96,7 +96,7 @@ import { Router } from '@angular/router';
             }
           </mat-form-field>
 
-          <mat-form-field class="w-full" disabled>
+          <mat-form-field class="w-full">
             <mat-label>Confirm Password</mat-label>
             <input
               type="password"
@@ -130,6 +130,8 @@ import { Router } from '@angular/router';
           </button>
         </div>
       </div>
+
+      <p role="status" aria-live="assertive">{{ message() }}</p>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -143,7 +145,8 @@ import { Router } from '@angular/router';
 })
 export class CustomerRegistrationScreen {
   readonly #registrationStore = inject(RegistrationStore);
-  readonly #router = inject(Router);
+
+  readonly message = signal('');
 
   readonly formData = linkedSignal(this.#registrationStore.customer);
 
@@ -163,6 +166,6 @@ export class CustomerRegistrationScreen {
   });
 
   protected continue() {
-    this.#router.navigate(['/registration/address']);
+    this.message.set('Thanks for registering!');
   }
 }
