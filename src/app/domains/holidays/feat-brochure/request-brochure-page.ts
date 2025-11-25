@@ -1,23 +1,31 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
-  AbstractControl,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AddressLookuper } from './internal/address-lookuper.service';
+import {
+  MatError,
+  MatFormField,
+  MatHint,
+  MatLabel,
+} from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { isValidAddress } from './internal/is-valid-address';
-import { map, Subject } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { Field, form, submit, validate } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-request-info',
   templateUrl: './request-brochure-page.html',
   imports: [
     ReactiveFormsModule,
+    MatError,
     MatFormField,
     MatIcon,
     MatLabel,
@@ -26,33 +34,34 @@ import { AsyncPipe } from '@angular/common';
     MatHint,
     RouterLink,
     MatAnchor,
-    AsyncPipe,
+    Field,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestBrochurePage {
-  readonly #formBuilder = inject(NonNullableFormBuilder);
-  readonly #address$ = new Subject<string>();
-
-  protected readonly message$ = this.#address$.pipe(
-    map((isExistingAddress) =>
-      isExistingAddress ? 'Brochure sent' : 'Address not found',
-    ),
-  );
-
-  protected readonly formGroup = this.#formBuilder.group({
-    address: [
-      '',
-      (ac: AbstractControl) =>
-        isValidAddress(ac.value) ? null : { invalidAddress: true },
-    ],
+  readonly #address = signal('');
+  readonly #isExistingAddress = inject(AddressLookuper).lookup(this.#address);
+  protected readonly lookupResult = computed(() => {
+    const isExistingAddress = this.#isExistingAddress.value();
+    return isExistingAddress === undefined
+      ? ''
+      : isExistingAddress
+        ? 'Brochure sent'
+        : 'Address not found';
   });
 
-  async search() {
-    if (this.formGroup.invalid) {
-      return;
-    }
+  addressForm = form(signal({ address: '' }), (path) => {
+    validate(path.address, ({ field }) => {
+      return isValidAddress(field().value())
+        ? null
+        : { kind: 'invalidAddress', message: 'Address is invalid' };
+    });
+  });
 
-    this.#address$.next(this.formGroup.getRawValue().address);
+  search(event: Event) {
+    event.preventDefault();
+    void submit(this.addressForm, async () =>
+      this.#address.set(this.addressForm.address().value()),
+    );
   }
 }
