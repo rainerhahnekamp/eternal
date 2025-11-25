@@ -60,6 +60,10 @@ export const appRoutes: Routes = [
         path: 'basket',
         loadComponent: () => import('./basket/basket-page'),
       },
+      {
+        path: 'registration',
+        loadChildren: () => import('./registration/registration-routes'),
+      },
     ],
   },
 ];

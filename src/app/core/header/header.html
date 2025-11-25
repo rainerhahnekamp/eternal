@@ -1,12 +1,15 @@
 <a class="home" routerLink="/">
   <h1>
-    <img alt="Eternal" src="/assets/logo.png" />
+    <img alt="Eternal" src="/logo.png" />
     Unforgettable Holidays
   </h1>
 </a>
 <div class="security">
   @if (user(); as userValue) {
     @if (userValue.anonymous) {
+      <a mat-raised-button routerLink="/registration/product-selection"
+        >Sign Up</a
+      >
       <button data-testid="btn-sign-in" mat-raised-button (click)="signIn()">
         Sign In
       </button>
