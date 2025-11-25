@@ -2,10 +2,10 @@ import { CustomerPage } from '../page-objects/customer-page';
 import { CustomersPage } from '../page-objects/customers-page';
 import { test } from '@playwright/test';
 
-export type CustomersFixtures = {
+export interface CustomersFixtures {
   customersPage: CustomersPage;
   customerPage: CustomerPage;
-};
+}
 
 export const customersFixtures = test.extend<CustomersFixtures>({
   async customersPage({ page }, use) {
