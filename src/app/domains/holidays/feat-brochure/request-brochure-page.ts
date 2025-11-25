@@ -2,11 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  inject,
   signal,
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AddressLookuper } from './internal/address-lookuper.service';
 import {
   MatError,
   MatFormField,
@@ -40,7 +38,7 @@ import { Field, form, submit, validate } from '@angular/forms/signals';
 })
 export class RequestBrochurePage {
   readonly #address = signal('');
-  readonly #isExistingAddress = inject(AddressLookuper).lookup(this.#address);
+  readonly #isExistingAddress = { value: () => true };
   protected readonly lookupResult = computed(() => {
     const isExistingAddress = this.#isExistingAddress.value();
     return isExistingAddress === undefined
