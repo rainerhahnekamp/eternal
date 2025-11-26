@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@angular-architects/ngrx-toolkit':
-        specifier: ^20.4.2
-        version: 20.4.2(@angular/common@21.0.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(@ngrx/signals@20.1.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@ngrx/store@20.1.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(rxjs@7.8.1)
+        specifier: ^20.5.0
+        version: 20.5.0(@angular/common@21.0.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(@ngrx/signals@20.1.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@ngrx/store@20.1.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(rxjs@7.8.1)
       '@angular/animations':
         specifier: ^21.0.0
         version: 21.0.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))
@@ -310,8 +310,8 @@ packages:
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
 
-  '@angular-architects/ngrx-toolkit@20.4.2':
-    resolution: {integrity: sha512-Nqe6sKN1pUozds9+EE53i2G8PeMZfc4Ki6ba/FOzEtJMQ1/MhDRm3utJ/ox9KwSPoWPxDNdj8oILUVvrm1e8yw==}
+  '@angular-architects/ngrx-toolkit@20.5.0':
+    resolution: {integrity: sha512-Jh/OLTq0A9PXmCBfxbWcCM/A45GZAH+CZ+MxwlHbE73grufgEKunusrmwc7Zx16uC10GfahqvxGpwokVuoMgCg==}
     peerDependencies:
       '@angular/common': ^20.0.0
       '@angular/core': ^20.0.0
@@ -7488,7 +7488,7 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.12
       '@jridgewell/trace-mapping': 0.3.29
 
-  '@angular-architects/ngrx-toolkit@20.4.2(@angular/common@21.0.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(@ngrx/signals@20.1.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@ngrx/store@20.1.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(rxjs@7.8.1)':
+  '@angular-architects/ngrx-toolkit@20.5.0(@angular/common@21.0.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(@ngrx/signals@20.1.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@ngrx/store@20.1.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(rxjs@7.8.1)':
     dependencies:
       '@angular/common': 21.0.0(@angular/core@21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
       '@angular/core': 21.0.0(@angular/compiler@21.0.0)(rxjs@7.8.1)(zone.js@0.15.0)
