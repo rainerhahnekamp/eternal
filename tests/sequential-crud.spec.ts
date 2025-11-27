@@ -1,14 +1,5 @@
-import { expect, test as base } from '@playwright/test';
-import { shellFixtures, ShellFixtures } from './fixtures/shell.fixtures';
-import {
-  customersFixtures,
-  CustomersFixtures,
-} from './fixtures/customer.fixtures';
-
-const test = base.extend<ShellFixtures & CustomersFixtures>({
-  ...shellFixtures,
-  ...customersFixtures,
-});
+import { expect } from '@playwright/test';
+import { test } from './fixtures';
 
 test.describe('Sequential CRUD', () => {
   test.describe.configure({ mode: 'serial' });

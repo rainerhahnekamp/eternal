@@ -1,20 +1,17 @@
-@let message = this.message();
-
 <h2>Request a Brochure</h2>
 <p>
   Please fill in your address and below and we will send you a brochure with
   more information.
 </p>
-<form
-  (ngSubmit)="search()"
-  [formGroup]="formGroup"
-  class="flex flex-col w-fit items-center"
->
+<form (submit)="search($event)" class="flex flex-col w-fit items-center">
   <mat-form-field>
     <mat-label>Address</mat-label>
-    <input data-testid="address" formControlName="address" matInput />
+    <input data-testid="address" [field]="addressForm.address" matInput />
     <mat-icon matSuffix>location_on</mat-icon>
     <mat-hint>Please enter your address</mat-hint>
+    @for (error of addressForm.address().errors(); track error.message) {
+      <mat-error>{{ error.message }}</mat-error>
+    }
   </mat-form-field>
   <div class="my-4 flex gap-x-4">
     <a mat-raised-button routerLink="../../" type="Button">Cancel</a>
@@ -29,8 +26,8 @@
   </div>
 </form>
 
-@if (message) {
+@if (brochureSent()) {
   <p data-testid="lookup-result" aria-live="assertive" role="status">
-    {{ message }}
+    Brochure sent
   </p>
 }

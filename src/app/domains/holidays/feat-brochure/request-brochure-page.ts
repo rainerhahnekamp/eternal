@@ -1,24 +1,29 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
-  effect,
   inject,
-  input,
   signal,
 } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import {
-  AbstractControl,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
+  MatError,
+  MatFormField,
+  MatHint,
+  MatLabel,
+} from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { isValidAddress } from './internal/is-valid-address';
 import { AddressLookuper } from './internal/address-lookuper.service';
+import {
+  Field,
+  form,
+  submit,
+  validate,
+  validateAsync,
+} from '@angular/forms/signals';
 
 @Component({
   selector: 'app-request-info',
@@ -33,42 +38,34 @@ import { AddressLookuper } from './internal/address-lookuper.service';
     MatHint,
     RouterLink,
     MatAnchor,
+    Field,
+    MatError,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestBrochurePage {
-  readonly #formBuilder = inject(NonNullableFormBuilder);
-  readonly address = input('');
-  readonly #address = signal('');
-  readonly #lookupResource = inject(AddressLookuper).lookup(this.#address);
+  readonly #formModel = signal({ address: '' });
+  protected readonly brochureSent = signal(false);
+  addressForm = form(this.#formModel, (path) => {
+    validate(path.address, ({ value }) => {
+      return isValidAddress(value())
+        ? undefined
+        : { kind: 'invalidAddress', message: 'Address is invalid' };
+    });
 
-  constructor() {
-    effect(() => this.formGroup.patchValue({ address: this.address() }));
-  }
-
-  protected readonly message = computed(() => {
-    if (this.#lookupResource.hasValue()) {
-      return this.#lookupResource.value()
-        ? 'Brochure sent'
-        : 'Address not found';
-    }
-
-    return '';
+    validateAsync(path.address, {
+      params: ({ value }) => value(),
+      factory: (query) => inject(AddressLookuper).lookup(() => query() || ''),
+      onSuccess: () => undefined,
+      onError: () => ({
+        kind: 'unknownAddress',
+        error: 'Address not found',
+      }),
+    });
   });
 
-  protected readonly formGroup = this.#formBuilder.group({
-    address: [
-      '',
-      (ac: AbstractControl) =>
-        isValidAddress(ac.value) ? null : { invalidAddress: true },
-    ],
-  });
-
-  async search() {
-    if (this.formGroup.invalid) {
-      return;
-    }
-
-    this.#address.set(this.formGroup.getRawValue().address);
+  search(event: Event) {
+    event.preventDefault();
+    void submit(this.addressForm, async () => this.brochureSent.set(true));
   }
 }
