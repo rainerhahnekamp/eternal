@@ -59,7 +59,7 @@ describe('Address Lookuper', () => {
       });
       const lookuper = TestBed.inject(AddressLookuper);
       const lookuperFake = TestBed.inject(AddressLookuperFake);
-      lookuperFake.resolveToValueForNextCall(expected);
+      lookuperFake.setResponseForQuery(query, expected);
 
       const validResource = TestBed.runInInjectionContext(() =>
         lookuper.lookup(() => query),

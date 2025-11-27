@@ -3,26 +3,30 @@ import { Injectable, Provider, resource, ResourceRef } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class AddressLookuperFake implements IAddressLookuper {
-  #nextValue = undefined as boolean | undefined;
+  #responses = {} as Record<string, boolean>;
 
-  resolveToValueForNextCall(value: boolean) {
-    this.#nextValue = value;
+  setResponseForQuery(query: string, response: boolean) {
+    this.#responses[query] = response;
   }
 
   lookup(query: () => string): ResourceRef<boolean | undefined> {
     return resource({
       params: query,
-      loader: () => {
+      loader: ({ params: query }) => {
         const promise = new Promise<boolean>((resolve) => {
-          if (this.#nextValue === undefined) {
-            const msg = 'Fake as called without having a next value ready';
+          if (query === undefined) {
+            return undefined;
+          }
+          const response = this.#responses[query];
+
+          if (response === undefined) {
+            const msg = `AddressLookuper called with unknown query: ${query}`;
             console.error(msg);
             throw new Error(msg);
           }
-          resolve(this.#nextValue);
+          resolve(response);
         });
 
-        this.#nextValue = undefined;
         return promise;
       },
     });
