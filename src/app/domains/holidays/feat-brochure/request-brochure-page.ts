@@ -56,10 +56,13 @@ export class RequestBrochurePage {
     validateAsync(path.address, {
       params: ({ value }) => value(),
       factory: (query) => inject(AddressLookuper).lookup(() => query() || ''),
-      onSuccess: () => undefined,
+      onSuccess: (result: boolean) =>
+        result
+          ? undefined
+          : { kind: 'unknownAddress', message: 'Address not found' },
       onError: () => ({
         kind: 'unknownAddress',
-        error: 'Address not found',
+        message: 'Address not found',
       }),
     });
   });
