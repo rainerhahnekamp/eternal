@@ -17,7 +17,7 @@ export function withProps<
       StateSignals<Input['state']> &
         Input['props'] &
         Input['methods'] &
-        WritableStateSource<Prettify<Input['state']>>
+        WritableStateSource<Input['state']>
     >,
   ) => Props,
 ): SignalStoreFeature<Input, { state: {}; props: Props; methods: {} }> {
@@ -28,7 +28,9 @@ export function withProps<
       ...store.props,
       ...store.methods,
     });
-    assertUniqueStoreMembers(store, Reflect.ownKeys(props));
+    if (typeof ngDevMode !== 'undefined' && ngDevMode) {
+      assertUniqueStoreMembers(store, Reflect.ownKeys(props));
+    }
 
     return {
       ...store,

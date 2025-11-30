@@ -8,42 +8,46 @@ import { Prettify } from './ts-helpers';
 import { withProps } from './with-props';
 
 type ComputedResult<
-  ComputedSignals extends Record<
+  ComputedDictionary extends Record<
     string | symbol,
     Signal<unknown> | (() => unknown)
   >,
 > = {
-  [P in keyof ComputedSignals]: ComputedSignals[P] extends () => infer V
-    ? Signal<V>
-    : ComputedSignals[P];
+  [P in keyof ComputedDictionary]: ComputedDictionary[P] extends Signal<unknown>
+    ? ComputedDictionary[P]
+    : ComputedDictionary[P] extends () => infer V
+      ? Signal<V>
+      : never;
 };
 
 export function withComputed<
   Input extends SignalStoreFeatureResult,
-  ComputedSignals extends Record<
+  ComputedDictionary extends Record<
     string | symbol,
     Signal<unknown> | (() => unknown)
   >,
 >(
-  signalsFactory: (
-    store: Prettify<StateSignals<Input['state']> & Input['props']>,
-  ) => ComputedSignals,
+  computedFactory: (
+    store: Prettify<
+      StateSignals<Input['state']> & Input['props'] & Input['methods']
+    >,
+  ) => ComputedDictionary,
 ): SignalStoreFeature<
   Input,
-  { state: {}; props: ComputedResult<ComputedSignals>; methods: {} }
+  { state: {}; props: ComputedResult<ComputedDictionary>; methods: {} }
 > {
   return withProps((store) => {
-    const signals = signalsFactory(store);
-    const stateKeys = Reflect.ownKeys(signals);
+    const computedResult = computedFactory(store);
+    const computedResultKeys = Reflect.ownKeys(computedResult);
 
-    return stateKeys.reduce((prev, key) => {
-      const signalOrFunction = signals[key];
+    return computedResultKeys.reduce((prev, key) => {
+      const signalOrComputation = computedResult[key];
       return {
         ...prev,
-        [key]: isSignal(signalOrFunction)
-          ? signalOrFunction
-          : computed(signalOrFunction),
+        [key]: isSignal(signalOrComputation)
+          ? signalOrComputation
+          : computed(signalOrComputation),
       };
-    }, {} as ComputedResult<ComputedSignals>);
+    }, {} as ComputedResult<ComputedDictionary>);
   });
 }

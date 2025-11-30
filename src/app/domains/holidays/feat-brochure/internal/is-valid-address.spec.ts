@@ -1,4 +1,5 @@
 import { isValidAddress } from './is-valid-address';
+import { describe, it, expect } from 'vitest';
 
 describe('isValidAddress', () => {
   for (const address of [
