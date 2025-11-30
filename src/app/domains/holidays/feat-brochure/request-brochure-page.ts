@@ -1,22 +1,31 @@
-import { Component, computed, inject, signal } from '@angular/core';
 import {
-  AbstractControl,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-} from '@angular/forms';
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AddressLookuper } from './internal/address-lookuper.service';
-import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
+import {
+  MatError,
+  MatFormField,
+  MatHint,
+  MatLabel,
+} from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { isValidAddress } from './internal/is-valid-address';
+import { Field, form, submit, validate } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-request-info',
   templateUrl: './request-brochure-page.html',
   imports: [
     ReactiveFormsModule,
+    MatError,
     MatFormField,
     MatIcon,
     MatLabel,
@@ -25,10 +34,11 @@ import { isValidAddress } from './internal/is-valid-address';
     MatHint,
     RouterLink,
     MatAnchor,
+    Field,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestBrochurePage {
-  readonly #formBuilder = inject(NonNullableFormBuilder);
   readonly #address = signal('');
   readonly #isExistingAddress = inject(AddressLookuper).lookup(this.#address);
   protected readonly lookupResult = computed(() => {
@@ -40,19 +50,18 @@ export class RequestBrochurePage {
         : 'Address not found';
   });
 
-  formGroup = this.#formBuilder.group({
-    address: [
-      '',
-      (ac: AbstractControl) =>
-        isValidAddress(ac.value) ? null : { invalidAddress: true },
-    ],
+  addressForm = form(signal({ address: '' }), (path) => {
+    validate(path.address, ({ field }) => {
+      return isValidAddress(field().value())
+        ? null
+        : { kind: 'invalidAddress', message: 'Address is invalid' };
+    });
   });
 
-  async search() {
-    if (this.formGroup.invalid) {
-      return;
-    }
-
-    this.#address.set(this.formGroup.getRawValue().address);
+  search(event: Event) {
+    event.preventDefault();
+    void submit(this.addressForm, async () =>
+      this.#address.set(this.addressForm.address().value()),
+    );
   }
 }
