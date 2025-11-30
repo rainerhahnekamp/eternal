@@ -8,28 +8,19 @@ import {
   untracked,
   WritableSignal,
 } from '@angular/core';
-import { Prettify } from './ts-helpers';
-
-declare const ngDevMode: unknown;
 
 const STATE_WATCHERS = new WeakMap<object, Array<StateWatcher<any>>>();
 
-export const STATE_SOURCE = Symbol('STATE_SOURCE');
+export const STATE_SOURCE = Symbol(
+  typeof ngDevMode !== 'undefined' && ngDevMode ? 'STATE_SOURCE' : '',
+);
 
 export type WritableStateSource<State extends object> = {
-  [STATE_SOURCE]: {
-    [Property in keyof State]: WritableSignal<State[Property]>;
-  };
+  [STATE_SOURCE]: { [K in keyof State]: WritableSignal<State[K]> };
 };
 
 export type StateSource<State extends object> = {
-  [STATE_SOURCE]: { [Property in keyof State]: Signal<State[Property]> };
-};
-
-export type StateResult<StateInput extends object> = {
-  [K in keyof StateInput]: StateInput[K] extends WritableSignal<infer V>
-    ? V
-    : StateInput[K];
+  [STATE_SOURCE]: { [K in keyof State]: Signal<State[K]> };
 };
 
 export type PartialStateUpdater<State extends object> = (
@@ -41,14 +32,14 @@ export type StateWatcher<State extends object> = (
 ) => void;
 
 export function isWritableSignal(
-  signal: unknown,
-): signal is WritableSignal<unknown> {
+  value: unknown,
+): value is WritableSignal<unknown> {
   return (
-    isSignal(signal) &&
-    'set' in signal &&
-    'update' in signal &&
-    typeof signal.set === 'function' &&
-    typeof signal.update === 'function'
+    isSignal(value) &&
+    'set' in value &&
+    'update' in value &&
+    typeof value.set === 'function' &&
+    typeof value.update === 'function'
   );
 }
 
@@ -64,8 +55,7 @@ export function isWritableStateSource<State extends object>(
 export function patchState<State extends object>(
   stateSource: WritableStateSource<State>,
   ...updaters: Array<
-    | Partial<Prettify<NoInfer<State>>>
-    | PartialStateUpdater<Prettify<NoInfer<State>>>
+    Partial<NoInfer<State>> | PartialStateUpdater<NoInfer<State>>
   >
 ): void {
   const currentState = untracked(() => getState(stateSource));
@@ -79,23 +69,22 @@ export function patchState<State extends object>(
 
   const signals = stateSource[STATE_SOURCE];
   const stateKeys = Reflect.ownKeys(stateSource[STATE_SOURCE]);
+
   for (const key of Reflect.ownKeys(newState)) {
-    if (!stateKeys.includes(key)) {
-      if (typeof ngDevMode !== 'undefined' && ngDevMode) {
-        console.warn(
-          '@ngrx/signals: Skipping update for unknown property in state source.',
-          `Property: ${String(key)}`,
-        );
+    if (stateKeys.includes(key)) {
+      const signalKey = key as keyof State;
+      if (currentState[signalKey] !== newState[signalKey]) {
+        signals[signalKey].set(newState[signalKey]);
       }
-      continue;
+    } else if (typeof ngDevMode !== 'undefined' && ngDevMode) {
+      console.warn(
+        `@ngrx/signals: patchState was called with an unknown state slice '${String(
+          key,
+        )}'.`,
+        'Ensure that all state properties are explicitly defined in the initial state.',
+        'Updates to properties not present in the initial state will be ignored.',
+      );
     }
-    const signalKey = key as keyof State;
-
-    if (currentState[signalKey] === newState[signalKey]) {
-      continue;
-    }
-
-    signals[signalKey].set(newState[signalKey]);
   }
 
   notifyWatchers(stateSource);
@@ -121,7 +110,7 @@ export function watchState<State extends object>(
   watcher: StateWatcher<State>,
   config?: { injector?: Injector },
 ): { destroy(): void } {
-  if (!config?.injector) {
+  if (typeof ngDevMode !== 'undefined' && ngDevMode && !config?.injector) {
     assertInInjectionContext(watchState);
   }
 
