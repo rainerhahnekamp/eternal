@@ -1,12 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButton } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
-import { HolidaysStore } from './data/holidays-store';
-import { HolidayCard } from './ui/holiday-card/holiday-card';
+import { MatButton } from '@angular/material/button';
+import { HolidayCard } from './holiday-card/holiday-card';
+import { HttpClient } from '@angular/common/http';
+import { Holiday } from './holiday';
+import { BehaviorSubject, combineLatest, filter, map } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-holidays',
@@ -17,7 +20,7 @@ import { HolidayCard } from './ui/holiday-card/holiday-card';
           <mat-label>Search</mat-label>
           <input
             data-testid="inp-search"
-            [(ngModel)]="search"
+            [(ngModel)]="query"
             matInput
             name="search"
           />
@@ -38,7 +41,7 @@ import { HolidayCard } from './ui/holiday-card/holiday-card';
       </div>
     </form>
     <div class="flex flex-wrap justify-evenly">
-      @for (holiday of holidays(); track holiday.id) {
+      @for (holiday of holidays$ | async; track holiday.id) {
         <app-holiday-card
           [holiday]="holiday"
           (addFavourite)="addFavourite($event)"
@@ -56,29 +59,73 @@ import { HolidayCard } from './ui/holiday-card/holiday-card';
     MatRadioGroup,
     MatRadioButton,
     MatButton,
-    HolidayCard,
+    AsyncPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HolidaysPage {
-  readonly #holidaysStore = inject(HolidaysStore);
+  readonly #httpClient = inject(HttpClient);
+  readonly #baseUrl = '/holiday';
 
-  protected holidays = this.#holidaysStore.holidaysWithFavourite;
-  protected search = '';
+  // UI state
+  protected query = '';
   protected type = '0';
 
+  // State
+  readonly #holidays$ = new BehaviorSubject<Holiday[]>([]);
+  readonly favouriteIds$ = new BehaviorSubject<number[]>([]);
+  readonly #search$ = new BehaviorSubject({
+    query: this.query,
+    type: this.type,
+  });
+
+  protected readonly holidays$ = combineLatest([
+    this.#holidays$,
+    this.favouriteIds$,
+    this.#search$,
+  ]).pipe(
+    map(([holidays, favouriteIds, search]) => {
+      return holidays
+        .map((holiday) => ({
+          ...holiday,
+          isFavourite: favouriteIds.includes(holiday.id),
+        }))
+        .filter(
+          (holiday) =>
+            holiday.title
+              .toLowerCase()
+              .startsWith(search.query.toLowerCase()) &&
+            (search.type === '0' || holiday.typeId === Number(search.type)),
+        );
+    }),
+  );
+
   constructor() {
-    this.#holidaysStore.load();
+    this.#load();
   }
 
-  addFavourite(id: number) {
-    this.#holidaysStore.addFavourite(id);
+  #load() {
+    this.#httpClient
+      .get<Holiday[]>(this.#baseUrl)
+      .subscribe((holidays) => this.#holidays$.next(holidays));
   }
 
-  removeFavourite(id: number) {
-    this.#holidaysStore.removeFavourite(id);
+  protected addFavourite(id: number): void {
+    this.favouriteIds$.next([...this.favouriteIds$.value, id]);
   }
 
-  handleSearch() {
-    this.#holidaysStore.search(this.search, Number(this.type));
+  protected removeFavourite(id: number): void {
+    this.favouriteIds$.next(
+      this.favouriteIds$.value.filter((favouriteId) => favouriteId !== id),
+    );
   }
+
+  protected handleSearch(): void {
+    this.#search$.next({
+      query: this.query,
+      type: this.type,
+    });
+  }
+
+  protected readonly filter = filter;
 }

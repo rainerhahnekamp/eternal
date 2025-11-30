@@ -1,7 +1,7 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { of } from 'rxjs';
-import { createHoliday, Holiday } from '../model/holiday';
+import { createHoliday, Holiday } from '../feat-overview/holiday';
 import { Configuration } from '../../../shared/config/configuration';
 
 export const holidays: Holiday[] = [
