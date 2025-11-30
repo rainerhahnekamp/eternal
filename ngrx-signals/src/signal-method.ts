@@ -5,15 +5,11 @@ import {
   EffectRef,
   inject,
   Injector,
-  isSignal,
-  Signal,
   untracked,
 } from '@angular/core';
 
-declare const ngDevMode: unknown;
-
 export type SignalMethod<Input> = ((
-  input: Input | Signal<Input>,
+  input: Input | (() => Input),
   config?: { injector?: Injector },
 ) => EffectRef) &
   EffectRef;
@@ -22,7 +18,7 @@ export function signalMethod<Input>(
   processingFn: (value: Input) => void,
   config?: { injector?: Injector },
 ): SignalMethod<Input> {
-  if (!config?.injector) {
+  if (typeof ngDevMode !== 'undefined' && ngDevMode && !config?.injector) {
     assertInInjectionContext(signalMethod);
   }
 
@@ -30,10 +26,10 @@ export function signalMethod<Input>(
   const sourceInjector = config?.injector ?? inject(Injector);
 
   const signalMethodFn = (
-    input: Input | Signal<Input>,
+    input: Input | (() => Input),
     config?: { injector?: Injector },
   ): EffectRef => {
-    if (isSignal(input)) {
+    if (isReactiveComputation(input)) {
       const callerInjector = getCallerInjector();
       if (
         typeof ngDevMode !== 'undefined' &&
@@ -89,4 +85,8 @@ function getCallerInjector(): Injector | undefined {
   } catch {
     return undefined;
   }
+}
+
+function isReactiveComputation<T>(value: T | (() => T)): value is () => T {
+  return typeof value === 'function';
 }
