@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  effect,
   inject,
   input,
   numberAttribute,
@@ -47,7 +48,7 @@ export class EditCustomerPage {
   });
 
   constructor() {
-    this.#events.select(this.id());
+    effect(() => this.#events.select(this.id()));
   }
 
   submit(customer: Customer) {
