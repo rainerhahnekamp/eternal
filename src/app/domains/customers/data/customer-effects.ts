@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { mapResponse, tapResponse } from '@ngrx/operators';
 import { patchState, signalStoreFeature } from '@ngrx/signals';
 import { removeAllEntities } from '@ngrx/signals/entities';
-import { Events, withEffects } from '@ngrx/signals/events';
+import { Events, withEventHandlers } from '@ngrx/signals/events';
 import { EMPTY, concatMap, switchMap, tap } from 'rxjs';
 import { Configuration } from '../../../shared/config/configuration';
 import { MessageService } from '../../../shared/ui-messaging/message/message.service';
@@ -13,7 +13,7 @@ import { customerEvents } from './customer-events';
 
 export function withCustomerEffects() {
   return signalStoreFeature(
-    withEffects((store) => {
+    withEventHandlers((store) => {
       const events = inject(Events);
       const httpClient = inject(HttpClient);
       const baseUrl = '/customer';

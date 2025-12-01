@@ -1,9 +1,9 @@
 import { Resource, ResourceRef } from '@angular/core';
 import {
   signalStoreFeature,
+  withLinkedState,
   withMethods,
   withProps,
-  withState,
 } from '@ngrx/signals';
 
 export function withResource<T>(resource: ResourceRef<T>) {
@@ -12,9 +12,9 @@ export function withResource<T>(resource: ResourceRef<T>) {
   }
 
   return signalStoreFeature(
-    withState({
+    withLinkedState(() => ({
       value: resource.value,
-    }),
+    })),
     withProps(() => ({
       status: resource.status,
       error: resource.error,
