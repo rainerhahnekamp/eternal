@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,15 +13,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { MatButton } from '@angular/material/button';
 import { HolidayCard } from './holiday-card/holiday-card';
-import { HttpClient } from '@angular/common/http';
-import { Holiday } from './holiday';
-import { BehaviorSubject, combineLatest, filter, map } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { HolidayStore } from './holiday-store';
+import { patchState } from '@ngrx/signals';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-holidays',
   template: `<h2>Choose among our Holidays</h2>
-    <form (ngSubmit)="handleSearch()">
+    <form>
       <div class="flex items-baseline">
         <mat-form-field>
           <mat-label>Search</mat-label>
@@ -37,15 +43,16 @@ import { AsyncPipe } from '@angular/common';
           <mat-radio-button value="1">City</mat-radio-button>
           <mat-radio-button value="2">Country</mat-radio-button>
         </mat-radio-group>
-        <button color="primary" mat-raised-button>Search</button>
+        <!--        <button color="primary" mat-raised-button>Search</button>-->
       </div>
     </form>
+
     <div class="flex flex-wrap justify-evenly">
-      @for (holiday of holidays$ | async; track holiday.id) {
+      @for (holiday of holidayStore.holidays(); track holiday.id) {
         <app-holiday-card
           [holiday]="holiday"
-          (addFavourite)="addFavourite($event)"
-          (removeFavourite)="removeFavourite($event)"
+          (addFavourite)="holidayStore.addFavourite($event)"
+          (removeFavourite)="holidayStore.removeFavourite($event)"
         >
         </app-holiday-card>
       }
@@ -58,74 +65,21 @@ import { AsyncPipe } from '@angular/common';
     MatInputModule,
     MatRadioGroup,
     MatRadioButton,
-    MatButton,
-    AsyncPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HolidaysPage {
-  readonly #httpClient = inject(HttpClient);
-  readonly #baseUrl = '/holiday';
+  protected readonly holidayStore = inject(HolidayStore);
+  country = input.required<string>();
 
   // UI state
-  protected query = '';
-  protected type = '0';
-
-  // State
-  readonly #holidays$ = new BehaviorSubject<Holiday[]>([]);
-  readonly favouriteIds$ = new BehaviorSubject<number[]>([]);
-  readonly #search$ = new BehaviorSubject({
-    query: this.query,
-    type: this.type,
-  });
-
-  protected readonly holidays$ = combineLatest([
-    this.#holidays$,
-    this.favouriteIds$,
-    this.#search$,
-  ]).pipe(
-    map(([holidays, favouriteIds, search]) => {
-      return holidays
-        .map((holiday) => ({
-          ...holiday,
-          isFavourite: favouriteIds.includes(holiday.id),
-        }))
-        .filter(
-          (holiday) =>
-            holiday.title
-              .toLowerCase()
-              .startsWith(search.query.toLowerCase()) &&
-            (search.type === '0' || holiday.typeId === Number(search.type)),
-        );
-    }),
-  );
+  protected query = signal('');
+  protected type = signal('0');
 
   constructor() {
-    this.#load();
+    this.holidayStore.handleSearch(() => ({
+      query: this.query(),
+      type: Number(this.type()),
+    }));
   }
-
-  #load() {
-    this.#httpClient
-      .get<Holiday[]>(this.#baseUrl)
-      .subscribe((holidays) => this.#holidays$.next(holidays));
-  }
-
-  protected addFavourite(id: number): void {
-    this.favouriteIds$.next([...this.favouriteIds$.value, id]);
-  }
-
-  protected removeFavourite(id: number): void {
-    this.favouriteIds$.next(
-      this.favouriteIds$.value.filter((favouriteId) => favouriteId !== id),
-    );
-  }
-
-  protected handleSearch(): void {
-    this.#search$.next({
-      query: this.query,
-      type: this.type,
-    });
-  }
-
-  protected readonly filter = filter;
 }
