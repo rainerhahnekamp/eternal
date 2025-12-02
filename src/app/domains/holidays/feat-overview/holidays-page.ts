@@ -16,6 +16,9 @@ import { HolidayCard } from './holiday-card/holiday-card';
 import { HolidayStore } from './holiday-store';
 import { patchState } from '@ngrx/signals';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { httpResource } from '@angular/common/http';
+import { Holiday, toHolidays } from './holiday';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-holidays',
@@ -47,6 +50,15 @@ import { toObservable } from '@angular/core/rxjs-interop';
       </div>
     </form>
 
+    @if (holidays.hasValue()) {
+      <pre>{{ holidays.value() | json }}</pre>
+    } @else if (holidays.isLoading()) {
+      <p>Loading...</p>
+    } @else if (holidays.error()) {
+      <p>We have an error</p>
+      <pre>{{ holidays.error() | json }}</pre>
+    }
+
     <div class="flex flex-wrap justify-evenly">
       @for (holiday of holidayStore.holidays(); track holiday.id) {
         <app-holiday-card
@@ -65,10 +77,23 @@ import { toObservable } from '@angular/core/rxjs-interop';
     MatInputModule,
     MatRadioGroup,
     MatRadioButton,
+    JsonPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HolidaysPage {
+  protected readonly holidays = httpResource(
+    () => ({
+      url: '/holiday',
+      params: {
+        query: this.query(),
+      },
+    }),
+    {
+      parse: toHolidays,
+    },
+  );
+
   protected readonly holidayStore = inject(HolidayStore);
   country = input.required<string>();
 

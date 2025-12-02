@@ -1,16 +1,33 @@
-export interface Holiday {
-  id: number;
-  title: string;
-  teaser: string;
-  description: string;
-  imageUrl: string;
-  typeId: number;
-  durationInDays: number;
-  minCount: number;
-  maxCount: number;
-  soldOut: boolean;
-  onSale: boolean;
-  hasQuiz: boolean;
+import { z } from 'zod';
+
+export const holidaySchema = z.object({
+  id: z.number().int().nonnegative().min(20),
+  title: z.string().min(1),
+  teaser: z.string().min(1),
+  description: z.string().min(1),
+  imageUrl: z.string().min(1),
+  typeId: z.number().int().nonnegative(),
+  durationInDays: z.number().int().positive(),
+  minCount: z.number().int().nonnegative(),
+  maxCount: z.number().int().nonnegative(),
+  soldOut: z.boolean(),
+  onSale: z.boolean(),
+  hasQuiz: z.boolean(),
+});
+
+export type Holiday = z.infer<typeof holidaySchema>;
+
+export function toHoliday(data: unknown) {
+  const parseResult = holidaySchema.safeParse(data);
+  if (parseResult.success) {
+    return parseResult.data;
+  } else {
+    return undefined;
+  }
+}
+
+export function toHolidays(data: unknown) {
+  return z.array(holidaySchema).parse(data);
 }
 
 let id = 1;

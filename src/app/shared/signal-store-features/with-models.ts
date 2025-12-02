@@ -2,20 +2,37 @@ import {
   signalStore,
   signalStoreFeature,
   type,
+  withComputed,
   withState,
 } from '@ngrx/signals';
 import { Holiday } from '../../domains/holidays/feat-overview/holiday';
-import { Provider } from '@angular/core';
 
-export function withModels<Type extends { id: number }, Name extends string>(
-  type: Type,
+type ModelComputed<Model extends { id: number }, Name extends string> = {
+  [Key in Name]: () => Model[];
+};
+
+type ModelState<Model extends { id: number }, Name extends string> = {
+  [Key in Name as `${Name}Map`]: Record<number, Model>;
+} & {
+  [Key in Name as `${Name}Ids`]: number[];
+};
+
+export function withModels<Model extends { id: number }, Name extends string>(
+  model: Model,
   name: Name,
 ) {
-  const state = {
-    [name + 'Map']: {},
-  } as {
-    [Key in Name as `${Key}Map`]: Record<number, Type>;
-  };
-
-  return signalStoreFeature(withState(state));
+  return signalStoreFeature(
+    withState({
+      [name + 'Map']: {},
+      [name + 'Ids']: [],
+    } as ModelState<Model, Name>),
+    withComputed(() => {
+      return {
+        [name]: () => [] as Model[],
+      } as ModelComputed<Model, Name>;
+    }),
+  );
 }
+
+const HolidaysStore = signalStore(withModels(type<Holiday>(), 'holidays'));
+const store = new HolidaysStore();
