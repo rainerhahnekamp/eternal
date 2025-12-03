@@ -11,11 +11,10 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { AnswerStatus } from '../model';
 import { CountdownState, updateCountdown } from '../with-countdown';
-import { withQuizComputed } from './with-quiz-computed';
 
 export function withQuizLogic<_>() {
   return signalStoreFeature(
-    withQuizComputed(),
+    type<{ state: QuizState & CountdownState }>(),
     withMethods((store, quizService = inject(QuizService)) => ({
       loadQuiz: rxMethod<number>(
         pipe(

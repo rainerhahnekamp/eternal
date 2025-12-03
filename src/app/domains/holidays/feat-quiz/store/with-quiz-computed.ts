@@ -1,10 +1,10 @@
 import { signalStoreFeature, type, withComputed } from '@ngrx/signals';
-import { QuizState, withQuizState } from './with-quiz-state';
+import { QuizState } from './with-quiz-state';
 import { AnswerStatus } from '../model';
 
 export function withQuizComputed<_>() {
   return signalStoreFeature(
-    withQuizState(),
+    type<{ state: QuizState }>(),
     withComputed((store) => ({
       status: () => {
         const status: Record<AnswerStatus, number> = {

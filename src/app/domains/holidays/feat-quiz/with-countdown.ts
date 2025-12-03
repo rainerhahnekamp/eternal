@@ -22,7 +22,7 @@ export function updateCountdown(timeInSeconds: number) {
   };
 }
 
-export function withCountdown(timeInSeconds: number) {
+export function withCountdown<_>(timeInSeconds: number) {
   return signalStoreFeature(
     withState<CountdownState>({
       timeLeft: 0,

@@ -1,6 +1,5 @@
 import { signalStoreFeature, withState } from '@ngrx/signals';
 import { Question } from '../model';
-import { withCountdown } from '../with-countdown';
 
 export interface QuizState {
   title: string;
@@ -13,5 +12,5 @@ const initialState: QuizState = {
 };
 
 export function withQuizState<_>() {
-  return signalStoreFeature(withCountdown(60), withState(initialState));
+  return signalStoreFeature(withState(initialState));
 }
