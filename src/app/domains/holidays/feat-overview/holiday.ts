@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const holidaySchema = z.object({
-  id: z.number().int().nonnegative().min(20),
+  id: z.number().int().nonnegative(),
   title: z.string().min(1),
   teaser: z.string().min(1),
   description: z.string().min(1),
@@ -26,8 +26,8 @@ export function toHoliday(data: unknown) {
   }
 }
 
-export function toHolidays(data: unknown) {
-  return z.array(holidaySchema).parse(data);
+export function toHolidays(response: unknown) {
+  return z.array(holidaySchema).parse(response);
 }
 
 let id = 1;

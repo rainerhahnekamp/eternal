@@ -21,10 +21,17 @@ import { EMPTY, pipe } from 'rxjs';
 import { Router } from '@angular/router';
 import { MessageService } from '../../../shared/ui-messaging/message/message.service';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
+import {
+  Events,
+  on,
+  withEventHandlers,
+  withReducer,
+} from '@ngrx/signals/events';
+import { customerEvents } from './customer-events';
 
 export const CustomerStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('customer'),
+  // withDevtools('customer'),
   withEntities<Customer>(),
   withState({
     page: 0,
@@ -39,36 +46,7 @@ export const CustomerStore = signalStore(
     const uiMessage = inject(MessageService);
     const baseUrl = '/customer';
 
-    const _load = rxMethod<{ page: number; callback?: () => void }>(
-      pipe(
-        tap(() =>
-          patchState(store, { status: 'loading' }, removeAllEntities()),
-        ),
-        switchMap(({ page, callback }) =>
-          httpClient
-            .get<{ content: Customer[]; total: number }>(baseUrl, {
-              params: new HttpParams().set(
-                'page',
-                config.pagedCustomers ? page : 0,
-              ),
-            })
-            .pipe(
-              mapResponse({
-                next: ({ content, total }) =>
-                  patchState(store, setAllEntities(content), { total, page }),
-                error: () => EMPTY,
-              }),
-              tap(() => (callback ? callback() : {})),
-              tap(() => patchState(store, { status: 'loaded' })),
-            ),
-        ),
-      ),
-    );
-
     return {
-      load(page: number, callback?: () => void) {
-        _load({ page, callback });
-      },
       add: rxMethod<Customer>(
         concatMap((customer) =>
           httpClient
@@ -77,7 +55,7 @@ export const CustomerStore = signalStore(
               tapResponse({
                 next: () => {
                   uiMessage.info('Customer has been updated');
-                  _load({ page: 0 });
+                  // _load({ page: 0 });
                   router.navigateByUrl('/customer');
                 },
                 error: () => EMPTY,
@@ -90,7 +68,7 @@ export const CustomerStore = signalStore(
           httpClient.put<Customer[]>(baseUrl, customer).pipe(
             tapResponse({
               next: () => {
-                _load({ page: 0 });
+                // _load({ page: 0 });
                 router.navigateByUrl('/customer');
               },
               error: () => EMPTY,
@@ -103,7 +81,7 @@ export const CustomerStore = signalStore(
           httpClient.delete<Customer[]>(`${baseUrl}/${id}`).pipe(
             tapResponse({
               next: () => {
-                _load({ page: 0 });
+                // _load({ page: 0 });
                 router.navigateByUrl('/customer');
               },
               error: () => EMPTY,
@@ -132,4 +110,37 @@ export const CustomerStore = signalStore(
       length: state.total(),
     })),
   })),
+  withEventHandlers(
+    (
+      _,
+      events = inject(Events),
+      httpClient = inject(HttpClient),
+      baseUrl = '/customer',
+    ) => [
+      events.on(customerEvents.load).pipe(
+        switchMap(({ payload: page }) =>
+          httpClient
+            .get<{ content: Customer[]; total: number }>(baseUrl, {
+              params: new HttpParams().set('page', page),
+            })
+            .pipe(
+              mapResponse({
+                next: (payload) => customerEvents.loaded(payload),
+                error: () => EMPTY,
+              }),
+            ),
+        ),
+      ),
+    ],
+  ),
+  withReducer(
+    on(customerEvents.load, () => ({ status: 'loading' as const })),
+    on(customerEvents.loaded, ({ payload }) => [
+      {
+        status: 'loaded' as const,
+        total: payload.total,
+      },
+      setAllEntities(payload.content),
+    ]),
+  ),
 );

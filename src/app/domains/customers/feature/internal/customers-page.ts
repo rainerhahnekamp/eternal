@@ -4,6 +4,8 @@ import {
   CustomersViewModel,
 } from '../../ui/customers/customers-view';
 import { CustomerStore } from '../../data/customer-store';
+import { injectDispatch } from '@ngrx/signals/events';
+import { customerEvents } from '../../data/customer-events';
 
 @Component({
   selector: 'app-customers-container',
@@ -17,6 +19,7 @@ import { CustomerStore } from '../../data/customer-store';
 })
 export class CustomersPage {
   readonly #customerStore = inject(CustomerStore);
+  readonly customersDispatcher = injectDispatch(customerEvents);
 
   pagedCustomer: Signal<CustomersViewModel> = this.#customerStore.pagedCustomer;
 
@@ -29,6 +32,6 @@ export class CustomersPage {
   }
 
   switchPage(page: number) {
-    this.#customerStore.load(page);
+    this.customersDispatcher.load(page);
   }
 }

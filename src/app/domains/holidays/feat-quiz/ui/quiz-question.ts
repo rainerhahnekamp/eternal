@@ -1,13 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   input,
   output,
 } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { NgClass } from '@angular/common';
-import { Question } from './model';
+import { Question } from '../model/model';
+import { QuizStore } from '../data/quiz-store';
 
 @Component({
   selector: 'app-quiz-question',
@@ -24,7 +26,10 @@ import { Question } from './model';
           <button
             mat-raised-button
             (click)="
-              answer.emit({ questionId: question().id, choiceId: choice.id })
+              quizStore.handleAnswer({
+                questionId: question().id,
+                choiceId: choice.id,
+              })
             "
           >
             {{ choice.text }}
@@ -59,6 +64,6 @@ import { Question } from './model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizQuestion {
+  quizStore = inject(QuizStore);
   question = input.required<Question>();
-  answer = output<{ questionId: number; choiceId: number }>();
 }

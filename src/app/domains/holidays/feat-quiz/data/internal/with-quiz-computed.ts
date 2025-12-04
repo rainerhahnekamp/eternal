@@ -1,6 +1,6 @@
 import { signalStoreFeature, type, withComputed } from '@ngrx/signals';
 import { QuizState } from './with-quiz-state';
-import { AnswerStatus } from '../model';
+import { AnswerStatus } from '../../model/model';
 
 export function withQuizComputed<_>() {
   return signalStoreFeature(

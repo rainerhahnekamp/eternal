@@ -5,12 +5,12 @@ import {
   withMethods,
 } from '@ngrx/signals';
 import { QuizState } from './with-quiz-state';
-import { QuizService } from '../quiz.service';
+import { QuizService } from './quiz.service';
 import { inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
-import { AnswerStatus } from '../model';
-import { CountdownState, updateCountdown } from '../with-countdown';
+import { AnswerStatus } from '../../model/model';
+import { CountdownState, updateCountdown } from './with-countdown';
 
 export function withQuizLogic<_>() {
   return signalStoreFeature(

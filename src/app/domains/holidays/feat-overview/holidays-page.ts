@@ -50,14 +50,9 @@ import { JsonPipe } from '@angular/common';
       </div>
     </form>
 
-    @if (holidays.hasValue()) {
-      <pre>{{ holidays.value() | json }}</pre>
-    } @else if (holidays.isLoading()) {
-      <p>Loading...</p>
-    } @else if (holidays.error()) {
-      <p>We have an error</p>
-      <pre>{{ holidays.error() | json }}</pre>
-    }
+    <button mat-raised-button (click)="emptyHolidays()">Empty Holidays</button>
+
+    <p>Status of the Holidays: {{ holidayStore.status() }}</p>
 
     <div class="flex flex-wrap justify-evenly">
       @for (holiday of holidayStore.holidays(); track holiday.id) {
@@ -77,23 +72,11 @@ import { JsonPipe } from '@angular/common';
     MatInputModule,
     MatRadioGroup,
     MatRadioButton,
-    JsonPipe,
+    MatButton,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HolidaysPage {
-  protected readonly holidays = httpResource(
-    () => ({
-      url: '/holiday',
-      params: {
-        query: this.query(),
-      },
-    }),
-    {
-      parse: toHolidays,
-    },
-  );
-
   protected readonly holidayStore = inject(HolidayStore);
   country = input.required<string>();
 
@@ -102,9 +85,14 @@ export class HolidaysPage {
   protected type = signal('0');
 
   constructor() {
+    const value = this.holidayStore.value;
     this.holidayStore.handleSearch(() => ({
       query: this.query(),
       type: Number(this.type()),
     }));
+  }
+
+  protected emptyHolidays() {
+    this.holidayStore.emptyHolidays();
   }
 }

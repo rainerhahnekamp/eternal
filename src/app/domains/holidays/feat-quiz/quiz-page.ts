@@ -5,20 +5,17 @@ import {
   ChangeDetectionStrategy,
   numberAttribute,
 } from '@angular/core';
-import { QuizStore } from './quiz-store';
-import { QuizStatusComponent } from './quiz-status';
-import { QuizQuestion } from './quiz-question';
+import { QuizStore } from './data/quiz-store';
+import { QuizStatusComponent } from './ui/quiz-status';
+import { QuizQuestion } from './ui/quiz-question';
 
 @Component({
   selector: 'app-quiz',
   template: `
     <h2>{{ store.title() }}</h2>
-    <app-quiz-status [timeLeft]="store.timeLeft()" [status]="store.status()" />
+    <app-quiz-status />
     @for (question of store.questions(); track question) {
-      <app-quiz-question
-        [question]="question"
-        (answer)="store.handleAnswer($event)"
-      ></app-quiz-question>
+      <app-quiz-question [question]="question"></app-quiz-question>
     }
   `,
   imports: [QuizStatusComponent, QuizQuestion],
