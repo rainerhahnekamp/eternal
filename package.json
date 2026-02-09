@@ -59,7 +59,7 @@
     "@commitlint/cli": "^18.4.0",
     "@commitlint/config-conventional": "^18.4.0",
     "@ngrx/eslint-plugin": "^21.0.1",
-    "@playwright/test": "^1.56.1",
+    "@playwright/test": "^1.58.2",
     "@softarc/eslint-plugin-sheriff": "^0.19.6",
     "@softarc/sheriff-core": "^0.19.6",
     "@storybook/addon-docs": "^10.0.8",
