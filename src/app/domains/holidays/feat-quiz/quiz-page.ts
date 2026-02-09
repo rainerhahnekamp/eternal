@@ -17,6 +17,7 @@ import { QuizQuestion } from './ui/quiz-question';
       [timeLeft]="quizStore.timeLeft()"
       [status]="quizStore.status()"
     />
+
     @for (question of quizStore.questions(); track question) {
       <app-quiz-question
         [question]="question"

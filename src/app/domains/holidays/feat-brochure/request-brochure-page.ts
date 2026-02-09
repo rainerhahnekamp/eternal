@@ -15,8 +15,8 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { FormField, form, submit, validate } from '@angular/forms/signals';
 import { isValidAddress } from './internal/is-valid-address';
-import { Field, form, submit, validate } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-request-info',
@@ -32,7 +32,7 @@ import { Field, form, submit, validate } from '@angular/forms/signals';
     MatHint,
     RouterLink,
     MatAnchor,
-    Field,
+    FormField,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -48,9 +48,11 @@ export class RequestBrochurePage {
         : 'Address not found';
   });
 
-  addressForm = form(signal({ address: '' }), (path) => {
-    validate(path.address, ({ field }) => {
-      return isValidAddress(field().value())
+  readonly #addressModel = signal({ address: '' });
+
+  addressForm = form(this.#addressModel, (path) => {
+    validate(path.address, (ctx) => {
+      return isValidAddress(ctx.value())
         ? null
         : { kind: 'invalidAddress', message: 'Address is invalid' };
     });
