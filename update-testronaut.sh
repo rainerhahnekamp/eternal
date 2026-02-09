@@ -1,1 +1,0 @@
-pnpm ng add @testronaut/angular@latest --registry=http://localhost:4873 -y
