@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import {
   email,
-  Field,
   form,
+  FormField,
   minLength,
   required,
 } from '@angular/forms/signals';
@@ -33,7 +33,7 @@ import { RegistrationStore } from './registration-store';
             <input
               type="text"
               matInput
-              [field]="customerForm.firstname"
+              [formField]="customerForm.firstname"
               placeholder="Enter your first name"
             />
             <mat-icon matPrefix>person</mat-icon>
@@ -51,7 +51,7 @@ import { RegistrationStore } from './registration-store';
             <input
               type="text"
               matInput
-              [field]="customerForm.name"
+              [formField]="customerForm.name"
               placeholder="Enter your last name"
             />
             <mat-icon matPrefix>badge</mat-icon>
@@ -67,7 +67,7 @@ import { RegistrationStore } from './registration-store';
           <input
             type="email"
             matInput
-            [field]="customerForm.email"
+            [formField]="customerForm.email"
             placeholder="example@domain.com"
           />
           <mat-icon matPrefix>email</mat-icon>
@@ -83,7 +83,7 @@ import { RegistrationStore } from './registration-store';
             <input
               type="password"
               matInput
-              [field]="customerForm.password"
+              [formField]="customerForm.password"
               placeholder="Create a secure password"
             />
             <mat-icon matPrefix>lock</mat-icon>
@@ -101,7 +101,7 @@ import { RegistrationStore } from './registration-store';
             <input
               type="password"
               matInput
-              [field]="customerForm.passwordConfirmation"
+              [formField]="customerForm.passwordConfirmation"
               placeholder="Re-enter your password"
             />
             <mat-icon matPrefix>lock_outline</mat-icon>
@@ -136,11 +136,12 @@ import { RegistrationStore } from './registration-store';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    Field,
+    FormField,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
     MatButton,
+    FormField,
   ],
 })
 export class CustomerRegistrationScreen {
