@@ -6,7 +6,7 @@
 <form class="flex flex-col w-fit items-center" (submit)="search($event)">
   <mat-form-field>
     <mat-label>Address</mat-label>
-    <input data-testid="address" [field]="addressForm.address" matInput />
+    <input data-testid="address" [formField]="addressForm.address" matInput />
     <mat-icon matSuffix>location_on</mat-icon>
     <mat-hint>Please enter your address</mat-hint>
     @for (error of addressForm.address().errors(); track error.message) {
