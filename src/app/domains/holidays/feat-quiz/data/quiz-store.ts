@@ -72,11 +72,9 @@ export const QuizStore = signalStore(
             ...quiz,
             questions: quiz.questions.map((question) => {
               if (question.id === questionId) {
-                const status: AnswerStatus =
-                  question.answer === choiceId ? 'correct' : 'incorrect';
                 return {
                   ...question,
-                  status,
+                  givenAnswer: choiceId,
                 };
               } else {
                 return question;
@@ -98,7 +96,15 @@ export const QuizStore = signalStore(
         };
 
         for (const question of state.questions()) {
-          status[question.status]++;
+          if (question.givenAnswer) {
+            status[
+              question.givenAnswer === question.correctAnswer
+                ? 'correct'
+                : 'incorrect'
+            ]++;
+          } else {
+            status['unanswered']++;
+          }
         }
 
         return status;

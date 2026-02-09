@@ -7,7 +7,7 @@ import {
 import { RegistrationStore } from './registration-store';
 import { required } from '@angular/forms/signals';
 import { form } from '@angular/forms/signals';
-import { Field } from '@angular/forms/signals';
+import { FormField } from '@angular/forms/signals';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,7 +22,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         Address Registration
       </h1>
       <form class="flex flex-col gap-4" disabled>
-        <mat-checkbox [field]="addressForm.separateBillingAddress" disabled>
+        <mat-checkbox [formField]="addressForm.separateBillingAddress" disabled>
           Billing address is different from shipping address
         </mat-checkbox>
 
@@ -40,7 +40,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
                 <input
                   type="text"
                   matInput
-                  [field]="addressForm.street"
+                  [formField]="addressForm.street"
                   placeholder="Enter street name"
                 />
                 <mat-hint>Street name</mat-hint>
@@ -51,7 +51,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
                 <input
                   type="text"
                   matInput
-                  [field]="addressForm.streetNumber"
+                  [formField]="addressForm.streetNumber"
                   placeholder="No."
                 />
                 <mat-hint>Number</mat-hint>
@@ -64,7 +64,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
                 <input
                   type="text"
                   matInput
-                  [field]="addressForm.zip"
+                  [formField]="addressForm.zip"
                   placeholder="12345"
                 />
                 <mat-hint>Postal code</mat-hint>
@@ -75,7 +75,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
                 <input
                   type="text"
                   matInput
-                  [field]="addressForm.city"
+                  [formField]="addressForm.city"
                   placeholder="Enter city name"
                 />
                 <mat-icon matPrefix>location_city</mat-icon>
@@ -88,7 +88,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
               <input
                 type="text"
                 matInput
-                [field]="addressForm.country"
+                [formField]="addressForm.country"
                 placeholder="Enter country name"
               />
               <mat-icon matPrefix>public</mat-icon>
@@ -107,7 +107,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
                   <input
                     type="text"
                     matInput
-                    [field]="billingAddress.street"
+                    [formField]="billingAddress.street"
                     placeholder="Enter street name"
                   />
                   <mat-hint>Street name</mat-hint>
@@ -118,7 +118,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
                   <input
                     type="text"
                     matInput
-                    [field]="billingAddress.streetNumber"
+                    [formField]="billingAddress.streetNumber"
                     placeholder="No."
                   />
                   <mat-hint>Number</mat-hint>
@@ -131,7 +131,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
                   <input
                     type="text"
                     matInput
-                    [field]="billingAddress.zip"
+                    [formField]="billingAddress.zip"
                     placeholder="12345"
                   />
                   <mat-hint>Postal code</mat-hint>
@@ -142,7 +142,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
                   <input
                     type="text"
                     matInput
-                    [field]="billingAddress.city"
+                    [formField]="billingAddress.city"
                     placeholder="Enter city name"
                   />
                   <mat-icon matPrefix>location_city</mat-icon>
@@ -155,7 +155,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
                 <input
                   type="text"
                   matInput
-                  [field]="billingAddress.country"
+                  [formField]="billingAddress.country"
                   placeholder="Enter country name"
                 />
                 <mat-icon matPrefix>public</mat-icon>
@@ -167,7 +167,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
                 <input
                   type="text"
                   matInput
-                  [field]="billingAddress.vatNumber"
+                  [formField]="billingAddress.vatNumber"
                   placeholder="Enter VAT number"
                 />
                 <mat-icon matPrefix>description</mat-icon>
@@ -193,7 +193,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    Field,
+    FormField,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
