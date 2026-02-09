@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { describe, it, expect } from 'vitest';
 import { CustomerRegistrationScreen } from './customer-registration-screen';
 import { userEvent, page } from 'vitest/browser';
 

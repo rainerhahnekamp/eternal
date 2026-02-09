@@ -3,7 +3,7 @@ import { MatButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RegistrationStore } from './registration-store';
-import { form, required, Field } from '@angular/forms/signals';
+import { form, required, FormField } from '@angular/forms/signals';
 import { ProductSelectionCard } from './product-selection-card';
 import { Router } from '@angular/router';
 
@@ -20,7 +20,7 @@ type ProductType = 'newsletter' | 'eternal-journal';
 
       <div class="flex flex-col md:flex-row gap-6 mb-8">
         <app-product-selection-card
-          [field]="productForm.productGroup"
+          [formField]="productForm.productGroup"
           productGroup="newsletter"
           title="Newsletter"
           subtitle="Free Account"
@@ -38,7 +38,7 @@ type ProductType = 'newsletter' | 'eternal-journal';
         </app-product-selection-card>
 
         <app-product-selection-card
-          [field]="productForm.productGroup"
+          [formField]="productForm.productGroup"
           productGroup="eternal-journal"
           title="Eternal Journal"
           subtitle="Monthly Subscription"
@@ -83,7 +83,7 @@ type ProductType = 'newsletter' | 'eternal-journal';
     MatCardModule,
     MatIconModule,
     ProductSelectionCard,
-    Field,
+    FormField,
   ],
 })
 export class ProductRegistrationScreen {
