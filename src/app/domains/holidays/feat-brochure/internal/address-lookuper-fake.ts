@@ -15,8 +15,7 @@ export class AddressLookuperFake implements IAddressLookuper {
       loader: () => {
         const promise = new Promise<boolean>((resolve) => {
           if (this.#nextValue === undefined) {
-            const msg = 'Fake as called without having a next value ready';
-            console.error(msg);
+            const msg = 'Fake was called without having a next value ready';
             throw new Error(msg);
           }
           resolve(this.#nextValue);
