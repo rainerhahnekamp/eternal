@@ -101,56 +101,54 @@ describe('Request Info with Testing Library', () => {
       );
     });
   });
+});
 
-  describe('Component Test in full browser mode', () => {
-    const setup = async () => {
-      TestBed.configureTestingModule({
-        providers: [
-          provideAddressLookuperFake(),
-          provideRouter([]),
-          {
-            provide: Configuration,
-            useValue: { baseUrl: 'http://localhost:4200' },
-          },
-        ],
-      }).createComponent(RequestBrochurePage);
+describe('Full Browser Mode', () => {
+  const setup = async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideAddressLookuperFake(),
+        provideRouter([]),
+        {
+          provide: Configuration,
+          useValue: { baseUrl: 'http://localhost:4200' },
+        },
+      ],
+    }).createComponent(RequestBrochurePage);
 
-      const lookuperFake = TestBed.inject(AddressLookuperFake);
-      return lookuperFake;
-    };
+    const lookuperFake = TestBed.inject(AddressLookuperFake);
+    return lookuperFake;
+  };
 
-    it('should instantiate', async () => {
-      await setup();
+  it('should instantiate', async () => {
+    await setup();
 
-      await expect
-        .element(page.getByRole('heading', { level: 2 }))
-        .toHaveTextContent('Request a Brochure');
-    });
-
-    for (const { isValid, message } of [
-      { isValid: true, message: 'Brochure sent' },
-      { isValid: false, message: 'Address not found' },
-    ]) {
-      it(`should show ${message} for resource being ${isValid}`, async () => {
-        const lookuperFake = await setup();
-
-        lookuperFake.setResponseForQuery('Domgasse 5', isValid);
-        await user.type(
-          page.getByRole('textbox', { name: 'Address' }),
-          'Domgasse 5',
-        );
-        await user.click(page.getByRole('button', { name: 'Send' }));
-
-        if (isValid) {
-          await expect
-            .element(page.getByRole('status'))
-            .toHaveTextContent(message);
-        } else {
-          await expect
-            .element(page.getByText('Address not found'))
-            .toBeVisible();
-        }
-      });
-    }
+    await expect
+      .element(page.getByRole('heading', { level: 2 }))
+      .toHaveTextContent('Request a Brochure');
   });
+
+  for (const { isValid, message } of [
+    { isValid: true, message: 'Brochure sent' },
+    { isValid: false, message: 'Address not found' },
+  ]) {
+    it(`should show ${isValid ? 'work' : 'fail'}`, async () => {
+      const lookuperFake = await setup();
+
+      lookuperFake.setResponseForQuery('Domgasse 5', isValid);
+      await user.type(
+        page.getByRole('textbox', { name: 'Address' }),
+        'Domgasse 5',
+      );
+      await user.click(page.getByRole('button', { name: 'Send' }));
+
+      if (isValid) {
+        await expect
+          .element(page.getByRole('status'))
+          .toHaveTextContent(message);
+      } else {
+        await expect.element(page.getByText('Address no found')).toBeVisible();
+      }
+    });
+  }
 });

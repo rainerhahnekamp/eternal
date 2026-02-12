@@ -13,8 +13,10 @@ export default defineConfig(({ mode }) => ({
     // environment: 'jsdom',
     include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     reporters: ["default"],
+    testTimeout: 5000,
     // Vitest browser config
     browser: {
+      trace: "on",
       enabled: true,
       headless: true,
       provider: playwright(),
