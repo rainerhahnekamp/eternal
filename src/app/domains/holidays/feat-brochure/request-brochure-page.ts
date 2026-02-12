@@ -18,7 +18,7 @@ import { RouterLink } from '@angular/router';
 import { isValidAddress } from './internal/is-valid-address';
 import { AddressLookuper } from './internal/address-lookuper.service';
 import {
-  Field,
+  FormField,
   form,
   submit,
   validate,
@@ -38,7 +38,7 @@ import {
     MatHint,
     RouterLink,
     MatAnchor,
-    Field,
+    FormField,
     MatError,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
