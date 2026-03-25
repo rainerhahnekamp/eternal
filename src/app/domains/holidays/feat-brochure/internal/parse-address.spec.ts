@@ -1,4 +1,5 @@
 import { parseAddress } from './parse-address';
+import { describe, it, expect } from 'vitest';
 
 describe('parseAddress', () => {
   it('should provide a parse method', () => {

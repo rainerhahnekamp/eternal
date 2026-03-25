@@ -1,28 +1,28 @@
 import { Routes } from '@angular/router';
-import { dataGuard } from './internal/services/data.guard';
-import { CustomersRootComponent } from './internal/components/customers-root/customers-root.component';
-import { CustomersContainerComponent } from './internal/components/customers-container.component';
-import { AddCustomerComponent } from './internal/components/add-customer.component';
-import { EditCustomerComponent } from './internal/components/edit-customer.component';
+import { dataGuard } from './internal/data.guard';
+import { CustomersRootPage } from './internal/customers-root-page';
+import { CustomersPage } from './internal/customers-page';
+import { AddCustomerPage } from './internal/add-customer-page';
+import { EditCustomerPage } from './internal/edit-customer-page';
 
 export default [
   {
     path: '',
     canActivate: [dataGuard],
-    component: CustomersRootComponent,
+    component: CustomersRootPage,
     children: [
       {
         path: '',
-        component: CustomersContainerComponent,
+        component: CustomersPage,
       },
       {
         path: 'new',
-        component: AddCustomerComponent,
+        component: AddCustomerPage,
         data: { mode: 'new' },
       },
       {
         path: ':id',
-        component: EditCustomerComponent,
+        component: EditCustomerPage,
         data: { mode: 'edit' },
       },
     ],

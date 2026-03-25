@@ -1,14 +1,5 @@
-import { expect, test as base } from '@playwright/test';
-import {
-  CustomersFixtures,
-  customersFixtures,
-} from './fixtures/customer.fixtures';
-import { shellFixtures, ShellFixtures } from './fixtures/shell.fixtures';
-
-const test = base.extend<ShellFixtures & CustomersFixtures>({
-  ...shellFixtures,
-  ...customersFixtures,
-});
+import { expect } from '@playwright/test';
+import { test } from './fixtures';
 
 test.describe('CRUD for Customers', () => {
   test.beforeEach(async ({ page }) => {

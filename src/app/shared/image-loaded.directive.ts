@@ -8,7 +8,11 @@ import { ImagesLoadedService } from './images-loaded.service';
 })
 export class ImageLoadedDirective {
   imagesLoadedService = inject(ImagesLoadedService);
-  constructor(el: ElementRef) {
-    this.imagesLoadedService.register(el.nativeElement as HTMLImageElement);
+
+  readonly #el = inject(ElementRef);
+  constructor() {
+    this.imagesLoadedService.register(
+      this.#el.nativeElement as HTMLImageElement,
+    );
   }
 }

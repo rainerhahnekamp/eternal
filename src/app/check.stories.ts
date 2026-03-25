@@ -4,7 +4,6 @@ import {
   effect,
   Input,
   OnChanges,
-  provideExperimentalZonelessChangeDetection,
   signal,
 } from '@angular/core';
 import { applicationConfig, Meta, StoryObj } from '@storybook/angular';
@@ -73,10 +72,7 @@ const meta: Meta<SliderComponent> = {
   component: SliderComponent,
   decorators: [
     applicationConfig({
-      providers: [
-        provideExperimentalZonelessChangeDetection(),
-        { provide: ActivatedRoute, useValue: undefined },
-      ],
+      providers: [{ provide: ActivatedRoute, useValue: undefined }],
     }),
   ],
 };

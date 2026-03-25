@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { afterNextRender, Component, inject, Injectable } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -19,7 +19,10 @@ export class CookieConfirmerDialogComponent {}
 
 @Injectable()
 export class CookieConfirmer {
-  constructor(public dialog: MatDialog) {
-    this.dialog.open(CookieConfirmerDialogComponent, { width: '250px' });
+  readonly #dialog = inject(MatDialog);
+  constructor() {
+    afterNextRender(() => {
+      this.#dialog.open(CookieConfirmerDialogComponent, { width: '250px' });
+    });
   }
 }
