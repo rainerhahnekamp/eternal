@@ -9,6 +9,7 @@ import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { FormErrorsComponent } from '../shared/form/form-errors.component';
+import { HomeLinkComponent } from "./home-link";
 
 @Component({
   selector: 'app-newsletter',
@@ -26,6 +27,8 @@ import { FormErrorsComponent } from '../shared/form/form-errors.component';
           Subscribe
         </button>
       </div>
+
+      <app-home-link/>
     </form>
 
     <p data-testid="p-message">{{ message() }}</p>`,
@@ -38,6 +41,7 @@ import { FormErrorsComponent } from '../shared/form/form-errors.component';
     MatIcon,
     MatButton,
     FormErrorsComponent,
+    HomeLinkComponent
   ],
 })
 export default class NewsletterPage {
@@ -48,9 +52,9 @@ export default class NewsletterPage {
 
   handleSubmit() {
     if (this.formGroup.valid) {
-      this.message.set('Thank you for your subscription');
+      this.message.set('Thank you for your subscription')
     } else {
-      this.message.set('Please provide an email');
+      setTimeout(() => this.message.set('Please provide an email'))
     }
   }
 }

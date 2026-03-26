@@ -3,7 +3,7 @@
   Please fill in your address and below and we will send you a brochure with
   more information.
 </p>
-<form class="flex flex-col w-fit items-center" (submit)="search($event)">
+<form (submit)="search($event)" class="flex flex-col w-fit items-center">
   <mat-form-field>
     <mat-label>Address</mat-label>
     <input data-testid="address" [formField]="addressForm.address" matInput />
@@ -25,8 +25,9 @@
     </button>
   </div>
 </form>
-@if (lookupResult(); as message) {
+
+@if (brochureSent()) {
   <p data-testid="lookup-result" aria-live="assertive" role="status">
-    {{ message }}
+    Brochure sent
   </p>
 }
