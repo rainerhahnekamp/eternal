@@ -5,6 +5,7 @@ import { withLastUpdated } from '../../../../../shared/signal-store-features/wit
 import { withLocalStorage } from '../../../../../shared/signal-store-features/with-local-storage';
 import { withUser } from '../../../../../shared/signal-store-features/with-user';
 import { SignalStoreFeatureType } from '../../../../../shared/util/signal-store-feature-type';
+import { Holiday } from '../../../model/holiday';
 import { HolidaysStoreState } from '../model';
 
 export type HolidaysStoreBaseFeature = SignalStoreFeatureType<
@@ -13,7 +14,7 @@ export type HolidaysStoreBaseFeature = SignalStoreFeatureType<
 
 export function withHolidaysStoreBase() {
   return signalStoreFeature(
-    withState<HolidaysStoreState>({
+    withState<HolidaysStoreState & { _holidays: Holiday[] }>({
       _holidays: [],
       isLoaded: false,
       filter: { query: '', type: 0 },
