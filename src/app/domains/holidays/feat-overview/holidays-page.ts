@@ -1,16 +1,17 @@
 import { Component, inject, linkedSignal } from '@angular/core';
+import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { MatButton } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { HolidaysStore } from './data/holidays-store';
 import { HolidayCard } from './ui/holiday-card/holiday-card';
-import { form, FormRoot, FormField } from '@angular/forms/signals';
 import { HolidaysToolbar } from './ui/holidays-toolbar';
 
 @Component({
   selector: 'app-holidays',
   template: `<h2>Choose among our Holidays</h2>
+    <p>{{ holidaysStore.username() }}</p>
     <app-holidays-toolbar
       [lastUpdatedName]="holidaysStore.lastUpdatedName()"
       (saveForOffline)="holidaysStore.syncToStorage()"

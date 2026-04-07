@@ -1,8 +1,8 @@
-export function addProfilerProxy(
-  fn: (...args: unknown[]) => void,
+export function addProfilerProxy<FN extends Function>(
+  fn: FN,
   name: string,
-) {
-  new Proxy(fn, {
+): FN {
+  return new Proxy(fn, {
     apply(target, thisArg, argArray: unknown[]) {
       const startedAt = performance.now();
 

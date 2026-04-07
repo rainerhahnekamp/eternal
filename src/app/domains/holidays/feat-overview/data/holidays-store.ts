@@ -16,6 +16,8 @@ import {
 } from '../../../../shared/signal-store-features/with-favourites';
 import { withLastUpdated } from '../../../../shared/signal-store-features/with-last-updated';
 import { withLocalStorage } from '../../../../shared/signal-store-features/with-local-storage';
+import { withProfiler } from '../../../../shared/signal-store-features/with-profiler';
+import { withUser } from '../../../../shared/signal-store-features/with-user';
 import { skipSameValues } from '../../../../shared/util/skip-same-values';
 import { Holiday } from '../../model/holiday';
 import { HolidayFilter } from '../model/model';
@@ -52,7 +54,10 @@ export const HolidaysStore = signalStore(
       patchState(store, removeFavourite(id));
     },
   })),
+
+  withUser(),
   withComputed((state) => ({
+    username: () => `${state.user.firstname()} ${state.user.lastname()}`,
     holidays: () => {
       const { query, type } = state.filter();
       return state
@@ -65,8 +70,10 @@ export const HolidaysStore = signalStore(
         }));
     },
   })),
+  withProfiler(),
   withHooks((store) => ({
     onInit() {
+      store.setUser('Rainer Hahnekamp');
       if (!store.isLoaded()) {
         store._load();
       }
