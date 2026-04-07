@@ -25,14 +25,15 @@ import { HolidayClient } from './holiday-client';
 
 export const HolidaysStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('holidays'),
   withState({
     _holidays: new Array<Holiday>(),
     isLoaded: false,
     filter: { query: '', type: 0 } as HolidayFilter,
   }),
+  withDevtools('holidays'),
   withFavourites(),
   withLocalStorage('holidays', 'Holidays'),
+  withUser(),
   withFeature(({ _holidays, filter, _favouriteIds }) =>
     withLastUpdated(() => ({ _holidays, filter, _favouriteIds })),
   ),
@@ -54,8 +55,6 @@ export const HolidaysStore = signalStore(
       patchState(store, removeFavourite(id));
     },
   })),
-
-  withUser(),
   withComputed((state) => ({
     username: () => `${state.user.firstname()} ${state.user.lastname()}`,
     holidays: () => {
