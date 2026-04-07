@@ -20,7 +20,7 @@ export type HolidaysStoreBaseFeature = SignalStoreFeatureType<
 
 export function withHolidaysStoreBase() {
   return signalStoreFeature(
-    withCollection('_holidays', type<Holiday>()),
+    withCollection('_holidays', type<Holiday>(), true),
     withState<HolidaysStoreState>({
       isLoaded: false,
       filter: { query: '', type: 0 },
