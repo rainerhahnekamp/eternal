@@ -7,6 +7,11 @@ import {
   withMethods,
 } from '@ngrx/signals';
 import { MessageService } from '../ui-messaging/message/message.service';
+import { SignalStoreFeatureType } from '../util/signal-store-feature-type';
+
+export type LocalStorageFeature = SignalStoreFeatureType<
+  typeof withLocalStorage
+>;
 
 export function withLocalStorage(
   storageKey: string,

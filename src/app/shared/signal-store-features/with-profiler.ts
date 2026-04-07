@@ -4,6 +4,9 @@ import {
   SignalStoreFeatureResult,
 } from '@ngrx/signals';
 import { addProfilerProxy } from '../util/add-profiler-proxy';
+import { SignalStoreFeatureType } from '../util/signal-store-feature-type';
+
+export type ProfilerFeature = SignalStoreFeatureType<typeof withProfiler>;
 
 export function withProfiler<
   Input extends SignalStoreFeatureResult,

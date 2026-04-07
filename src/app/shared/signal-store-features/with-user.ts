@@ -5,6 +5,9 @@ import {
   SignalStoreFeatureResult,
   withState,
 } from '@ngrx/signals';
+import { SignalStoreFeatureType } from '../util/signal-store-feature-type';
+
+export type UserFeature = SignalStoreFeatureType<typeof withUser>;
 
 export function withUser<
   Input extends SignalStoreFeatureResult,

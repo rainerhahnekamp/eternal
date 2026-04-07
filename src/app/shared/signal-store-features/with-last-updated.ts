@@ -7,6 +7,9 @@ import {
   withState,
 } from '@ngrx/signals';
 import { timer } from 'rxjs';
+import { SignalStoreFeatureType } from '../util/signal-store-feature-type';
+
+export type LastUpdatedFeature = SignalStoreFeatureType<typeof withLastUpdated>;
 
 export function withLastUpdated(trackingSignal: () => void, interval = 1_000) {
   return signalStoreFeature(
