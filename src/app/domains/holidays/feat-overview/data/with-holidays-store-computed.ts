@@ -1,4 +1,5 @@
 import { signalStoreFeature, type, withComputed } from '@ngrx/signals';
+import { getFavouriteIds } from '../../../../shared/signal-store-features/with-favourites';
 import { HolidaysStoreBaseFeature } from './with-holidays-store-base';
 
 export function withHolidaysStoreComputed() {
@@ -14,7 +15,7 @@ export function withHolidaysStoreComputed() {
           .filter((holiday) => !type || holiday.typeId === type)
           .map((holiday) => ({
             ...holiday,
-            isFavourite: state._favouriteIds().includes(holiday.id),
+            isFavourite: getFavouriteIds(state)().includes(holiday.id),
           }));
       },
     })),

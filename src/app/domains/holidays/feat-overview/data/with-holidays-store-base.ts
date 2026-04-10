@@ -2,11 +2,15 @@ import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import {
   signalStoreFeature,
   type,
+  withComputed,
   withFeature,
   withState,
 } from '@ngrx/signals';
 import { withCollection } from '../../../../shared/signal-store-features/with-collection';
-import { withFavourites } from '../../../../shared/signal-store-features/with-favourites';
+import {
+  getFavouriteIds,
+  withFavourites,
+} from '../../../../shared/signal-store-features/with-favourites';
 import { withLastUpdated } from '../../../../shared/signal-store-features/with-last-updated';
 import { withLocalStorage } from '../../../../shared/signal-store-features/with-local-storage';
 import { withUser } from '../../../../shared/signal-store-features/with-user';
@@ -29,8 +33,15 @@ export function withHolidaysStoreBase() {
     withFavourites(),
     withLocalStorage('holidays', 'Holidays'),
     withUser(),
-    withFeature(({ _holidays, filter, _favouriteIds }) =>
-      withLastUpdated(() => ({ _holidays, filter, _favouriteIds })),
+    withComputed((state) => ({
+      _favouriteIds: getFavouriteIds(state),
+    })),
+    withFeature((store) =>
+      withLastUpdated(() => ({
+        _holidays: store._holidays(),
+        filter: store.filter(),
+        favouriteIds: store._favouriteIds(),
+      })),
     ),
   );
 }
