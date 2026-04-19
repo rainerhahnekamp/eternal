@@ -60,5 +60,5 @@ module.exports = tseslint.config(
       ],
     },
   },
-  prettier,
+  prettier
 );

@@ -5,7 +5,7 @@ import {
   input,
   numberAttribute,
 } from '@angular/core';
-import { AsyncPipe, NgIf } from '@angular/common';
+
 import { Store } from '@ngrx/store';
 import { CustomerComponent } from '../../../ui/customer/customer.component';
 import { Customer } from '../../../model/customer';
@@ -26,7 +26,7 @@ import { CustomerStore } from '../../../data/customer-store.service';
     }
   `,
   standalone: true,
-  imports: [CustomerComponent, NgIf, AsyncPipe],
+  imports: [CustomerComponent],
 })
 export class EditCustomerComponent {
   readonly #store = inject(Store);

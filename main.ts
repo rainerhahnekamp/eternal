@@ -1,16 +1,10 @@
-import { input } from '@angular/core';
-
-class Foo {
-  id = 1;
-  vName = 'Fritz';
+export class Person {
+  id = 0;
+  name = 'Hugo';
 }
 
-new Foo();
-
-class MyComponent {
-  readonly id1 = 1;
-  readonly id2 = input.required<number>();
-  readonly id3 = input.required<number>();
-  readonly id4 = input.required<number>();
-  readonly name = input('');
+class food {
+  id = 0;
+  name = 'Bear';
+  price = 0.5;
 }
