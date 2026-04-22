@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test.describe('Basics', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('');
-    await expect(page.getByText('Application is ready')).toBeVisible();
+    await page.getByText('Application is ready').waitFor();
   });
 
   test('header is Unforgettable Holidays', async ({ page }) => {
@@ -27,7 +27,6 @@ test.describe('Basics', () => {
   }) => {
     await page.getByTestId('btn-customers').click();
     const nameLocator = page.getByTestId('row-customer').getByTestId('name');
-
     await expect(nameLocator.nth(2)).toHaveText('Hugo Brandt');
     await expect(nameLocator.nth(9)).toHaveText('Jan Janáček');
   });

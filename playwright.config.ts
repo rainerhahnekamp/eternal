@@ -9,7 +9,7 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+export default defineConfig<{ userTypes: string[] }>({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -35,6 +35,47 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      // testDir: './tests/parallel'
+    },
+    {
+      name: 'chromium-sequential',
+      use: { ...devices['Desktop Chrome'] },
+      fullyParallel: false,
+      workers: 1,
+      // testDir: './tests/sequential',
+      testMatch: '*.spec-seq.ts',
+    },
+    {
+      name: 'login',
+      use: { ...devices['Desktop Chrome'] },
+      testDir: './tests/login',
+    },
+    {
+      name: 'admin',
+      use: { ...devices['Desktop Chrome'], storageState: 'admin.json' },
+      testDir: './tests/admin',
+      dependencies: ['login'],
+    },
+    {
+      name: 'anonymous',
+      use: { ...devices['Desktop Chrome'], storageState: 'anonymous.json' },
+      testDir: './tests/anonymous',
+      dependencies: ['login'],
+    },
+    {
+      name: 'default-user',
+      use: { ...devices['Desktop Chrome'], storageState: 'default-user.json' },
+      testDir: './tests/default-user',
+      dependencies: ['login'],
+    },
+    {
+      name: 'all-users',
+      use: {
+        ...devices['Desktop Chrome'],
+        userTypes: [''],
+      },
+      testDir: './tests/all-users',
+      dependencies: ['login'],
     },
 
     /* Test against mobile viewports. */
@@ -54,7 +95,7 @@ export default defineConfig({
     // },
     // {
     //   name: 'Google Chrome',
-    //   use: { ..devices['Desktop Chrome'], channel: 'chrome' },
+    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
   ],
 
