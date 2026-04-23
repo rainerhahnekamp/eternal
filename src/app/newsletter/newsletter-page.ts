@@ -1,56 +1,70 @@
 import { Component, inject, signal } from '@angular/core';
-import {
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { MatIcon } from '@angular/material/icon';
+import { form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { MatButton } from '@angular/material/button';
-import { FormErrorsComponent } from '../shared/form/form-errors.component';
+import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { NewsletterClient } from './newsletter-client';
 
 @Component({
   selector: 'app-newsletter',
   template: `<h2>Newsletter</h2>
-    <form (ngSubmit)="handleSubmit()" [formGroup]="formGroup">
+    <form [formRoot]="newsletterForm">
       <div class="flex flex-col max-w-fit items-center">
         <mat-form-field>
           <mat-label>Address</mat-label>
-          <input data-testid="inp-email" formControlName="email" matInput />
+          <input
+            data-testid="inp-email"
+            [formField]="newsletterForm.email"
+            matInput
+          />
           <mat-icon matSuffix>location_on</mat-icon>
           <mat-hint>Please enter your email</mat-hint>
         </mat-form-field>
-        <app-form-errors [control]="formGroup.controls.email" />
+        <!-- <app-form-errors [control]="formGroup.controls.email" /> -->
         <button mat-raised-button data-testid="btn-subscribe" class="my-4">
           Subscribe
         </button>
       </div>
     </form>
 
-    <p data-testid="p-message">{{ message() }}</p>`,
+    <p data-testid="p-message" aria-live="assertive" role="status">
+      {{ message() }}
+    </p>`,
   imports: [
-    ReactiveFormsModule,
+    FormField,
+    FormRoot,
     MatLabel,
     MatHint,
     MatFormField,
     MatInput,
     MatIcon,
     MatButton,
-    FormErrorsComponent,
   ],
 })
 export default class NewsletterPage {
   message = signal('');
-  formGroup = inject(NonNullableFormBuilder).group({
-    email: ['', Validators.required],
+
+  model = signal({
+    email: '',
   });
 
-  handleSubmit() {
-    if (this.formGroup.valid) {
-      this.message.set('Thank you for your subscription');
-    } else {
-      this.message.set('Please provide an email');
-    }
-  }
+  newsletterForm = form(
+    this.model,
+    (path) => {
+      required(path.email);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.newsletterClient.send(this.model().email).subscribe(() => {
+            this.message.set('Thank you for your subscription');
+          });
+        },
+        onInvalid: () => this.message.set('Please provide an email'),
+      },
+    },
+  );
+
+  private readonly newsletterClient = inject(NewsletterClient);
 }

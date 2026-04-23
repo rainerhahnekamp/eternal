@@ -2,8 +2,8 @@
 import { defineConfig } from "vite";
 
 import angular from "@analogjs/vite-plugin-angular";
-import viteTsConfigPaths from "vite-tsconfig-paths";
 import { playwright } from "@vitest/browser-playwright";
+import viteTsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(({ mode }) => ({
   plugins: [angular(), viteTsConfigPaths()],
@@ -13,9 +13,11 @@ export default defineConfig(({ mode }) => ({
     // environment: 'jsdom',
     include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     reporters: ["default"],
+    testTimeout: 5000,
     // Vitest browser config
     browser: {
       enabled: true,
+      trace: "on",
       headless: true,
       provider: playwright(),
       instances: [{ browser: "chromium" }],
