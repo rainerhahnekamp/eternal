@@ -57,3 +57,4 @@ session.json
 
 *storybook.log
 .vitest-attachments/
+storybook-static

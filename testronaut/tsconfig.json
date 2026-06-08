@@ -6,13 +6,5 @@
     "moduleResolution": "bundler"
   },
   "files": ["main.ts"],
-  "include": ["**/*.ts", "../src/**/*.ts"],
-  "angularCompilerOptions": {
-    "extendedDiagnostics": {
-      "checks": {
-        "nullishCoalescingNotNullable": "suppress",
-        "optionalChainNotNullable": "suppress"
-      }
-    }
-  }
+  "include": ["**/*.ts"]
 }
