@@ -65,6 +65,9 @@ importers:
       '@ngrx/store-devtools':
         specifier: ^21.1.0
         version: 21.1.0(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(@ngrx/store@21.1.0(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(rxjs@7.8.1)
+      '@playwright/cli':
+        specifier: ^0.1.13
+        version: 0.1.13
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0
@@ -119,7 +122,7 @@ importers:
         version: 22.0.0(@angular/compiler@22.0.0)(typescript@6.0.3)
       '@axe-core/playwright':
         specifier: ^4.10.1
-        version: 4.10.1(playwright-core@1.58.2)
+        version: 4.10.1(playwright-core@1.61.0-alpha-1778188671000)
       '@chromatic-com/storybook':
         specifier: ^4.1.3
         version: 4.1.3(storybook@10.0.8(@testing-library/dom@10.4.0)(prettier@3.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@7.3.0(@types/node@20.19.25)(jiti@1.21.6)(less@4.3.0)(sass@1.99.0)(terser@5.39.1)(yaml@2.7.1)))
@@ -133,8 +136,8 @@ importers:
         specifier: ^21.1.0
         version: 21.1.0(@typescript-eslint/utils@8.48.0(eslint@9.39.1(jiti@1.21.6))(typescript@6.0.3))(eslint@9.39.1(jiti@1.21.6))(typescript-eslint@8.48.0(eslint@9.39.1(jiti@1.21.6))(typescript@6.0.3))(typescript@6.0.3)
       '@playwright/test':
-        specifier: ^1.58.2
-        version: 1.58.2
+        specifier: ^1.60.0
+        version: 1.60.0
       '@softarc/eslint-plugin-sheriff':
         specifier: ^0.19.6
         version: 0.19.6(@softarc/sheriff-core@0.19.6(typescript@6.0.3))(@typescript-eslint/utils@8.48.0(eslint@9.39.1(jiti@1.21.6))(typescript@6.0.3))(eslint@9.39.1(jiti@1.21.6))
@@ -155,10 +158,10 @@ importers:
         version: 10.0.8(1f7d6600ca3a9c939b156a27ff971841)
       '@testronaut/angular':
         specifier: ^0.0.11
-        version: 0.0.11(@angular/compiler@22.0.0)(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@22.0.0(@angular/animations@22.0.0(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@22.0.0(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0)))(@testronaut/core@0.0.11(@playwright/test@1.58.2))
+        version: 0.0.11(@angular/compiler@22.0.0)(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@22.0.0(@angular/animations@22.0.0(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@22.0.0(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0)))(@testronaut/core@0.0.11(@playwright/test@1.60.0))
       '@testronaut/core':
         specifier: ^0.0.11
-        version: 0.0.11(@playwright/test@1.58.2)
+        version: 0.0.11(@playwright/test@1.60.0)
       '@types/express':
         specifier: ^5.0.1
         version: 5.0.5
@@ -173,7 +176,7 @@ importers:
         version: 4.1.1(vite@7.3.0(@types/node@20.19.25)(jiti@1.21.6)(less@4.3.0)(sass@1.99.0)(terser@5.39.1)(yaml@2.7.1))(vitest@4.1.1)
       '@vitest/browser-playwright':
         specifier: ^4.1.1
-        version: 4.1.1(playwright@1.58.2)(vite@7.3.0(@types/node@20.19.25)(jiti@1.21.6)(less@4.3.0)(sass@1.99.0)(terser@5.39.1)(yaml@2.7.1))(vitest@4.1.1)
+        version: 4.1.1(playwright@1.61.0-alpha-1778188671000)(vite@7.3.0(@types/node@20.19.25)(jiti@1.21.6)(less@4.3.0)(sass@1.99.0)(terser@5.39.1)(yaml@2.7.1))(vitest@4.1.1)
       '@vitest/coverage-v8':
         specifier: ^4.1.1
         version: 4.1.1(@vitest/browser@4.1.1(vite@7.3.0(@types/node@20.19.25)(jiti@1.21.6)(less@4.3.0)(sass@1.99.0)(terser@5.39.1)(yaml@2.7.1))(vitest@4.1.1))(vitest@4.1.1)
@@ -3050,8 +3053,13 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@playwright/test@1.58.2':
-    resolution: {integrity: sha512-akea+6bHYBBfA9uQqSYmlJXn61cTa+jbO87xVLCWbTqbWadRVmhxlXATaOjOgcBaWU4ePo0wB41KMFv3o35IXA==}
+  '@playwright/cli@0.1.13':
+    resolution: {integrity: sha512-ntG80HgWp9y5HUDApoucNXx1Ny6YlCaRJdGpZZeY43Oh8Q+Iivs0hlEcGhnW/bEwsTkw72JxxlzEMOLwH42a9g==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  '@playwright/test@1.60.0':
+    resolution: {integrity: sha512-O71yZIbAh/PxDMNGns37GHBIfrVkEVyn+AXyIa5dOTfb4/xNvRWV+Vv/NMbNCtODB/pO7vLlF2OTmMVLhmr7Ag==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -6589,13 +6597,23 @@ packages:
     resolution: {integrity: sha512-ueGLflrrnvwB3xuo/uGob5pd5FN7l0MsLf0Z87o/UQmRtwjvfylfc9MurIxRAWywCYTgrvpXBcqjV4OfCYGCIQ==}
     engines: {node: '>=16.20.0'}
 
-  playwright-core@1.58.2:
-    resolution: {integrity: sha512-yZkEtftgwS8CsfYo7nm0KE8jsvm6i/PTgVtB8DL726wNf6H2IMsDuxCpJj59KDaxCtSnrWan2AeDqM7JBaultg==}
+  playwright-core@1.60.0:
+    resolution: {integrity: sha512-9bW6zvX/m0lEbgTKJ6YppOKx8H3VOPBMOCFh2irXFOT4BbHgrx5hPjwJYLT40Lu+4qtD36qKc/Hn56StUW57IA==}
     engines: {node: '>=18'}
     hasBin: true
 
-  playwright@1.58.2:
-    resolution: {integrity: sha512-vA30H8Nvkq/cPBnNw4Q8TWz1EJyqgpuinBcHET0YVJVFldr8JDNiU9LaWAE1KqSkRYazuaBhTpB5ZzShOezQ6A==}
+  playwright-core@1.61.0-alpha-1778188671000:
+    resolution: {integrity: sha512-nsw2Crz0uZS3IRHiEcOXUt+RaKB/Hna+GAD4oD6cPqCHfJfW77cJdgktC0jzp3Ndyv23EJI3bcWSqFIiqSNE5A==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  playwright@1.60.0:
+    resolution: {integrity: sha512-hheHdokM8cdqCb0lcE3s+zT4t4W+vvjpGxsZlDnikarzx8tSzMebh3UiFtgqwFwnTnjYQcsyMF8ei2mCO/tpeA==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  playwright@1.61.0-alpha-1778188671000:
+    resolution: {integrity: sha512-A6fFc7ExLRmvm0ZHqCyY2uHXSvEdpb8W+/HyIPK4ecRqNil8Mc1Vig1WFYoqk82x3+U9Qb571fQE95wgKqIQ1g==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -8736,10 +8754,10 @@ snapshots:
 
   '@asamuzakjp/nwsapi@2.3.9': {}
 
-  '@axe-core/playwright@4.10.1(playwright-core@1.58.2)':
+  '@axe-core/playwright@4.10.1(playwright-core@1.61.0-alpha-1778188671000)':
     dependencies:
       axe-core: 4.10.3
-      playwright-core: 1.58.2
+      playwright-core: 1.61.0-alpha-1778188671000
 
   '@babel/code-frame@7.26.2':
     dependencies:
@@ -10749,9 +10767,14 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@playwright/test@1.58.2':
+  '@playwright/cli@0.1.13':
     dependencies:
-      playwright: 1.58.2
+      playwright: 1.61.0-alpha-1778188671000
+      playwright-core: 1.61.0-alpha-1778188671000
+
+  '@playwright/test@1.60.0':
+    dependencies:
+      playwright: 1.60.0
 
   '@polka/url@1.0.0-next.29': {}
 
@@ -11151,17 +11174,17 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.0
 
-  '@testronaut/angular@0.0.11(@angular/compiler@22.0.0)(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@22.0.0(@angular/animations@22.0.0(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@22.0.0(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0)))(@testronaut/core@0.0.11(@playwright/test@1.58.2))':
+  '@testronaut/angular@0.0.11(@angular/compiler@22.0.0)(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@22.0.0(@angular/animations@22.0.0(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@22.0.0(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0)))(@testronaut/core@0.0.11(@playwright/test@1.60.0))':
     dependencies:
       '@angular/compiler': 22.0.0
       '@angular/core': 22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0)
       '@angular/platform-browser': 22.0.0(@angular/animations@22.0.0(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@22.0.0(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@22.0.0(@angular/compiler@22.0.0)(rxjs@7.8.1)(zone.js@0.15.0))
-      '@testronaut/core': 0.0.11(@playwright/test@1.58.2)
+      '@testronaut/core': 0.0.11(@playwright/test@1.60.0)
       typescript: 5.9.3
 
-  '@testronaut/core@0.0.11(@playwright/test@1.58.2)':
+  '@testronaut/core@0.0.11(@playwright/test@1.60.0)':
     dependencies:
-      '@playwright/test': 1.58.2
+      '@playwright/test': 1.60.0
       typescript: 5.9.3
 
   '@ts-morph/common@0.22.0':
@@ -11489,11 +11512,11 @@ snapshots:
     dependencies:
       vite: 7.3.2(@types/node@20.19.25)(jiti@1.21.6)(less@4.3.0)(sass@1.99.0)(terser@5.39.1)(yaml@2.7.1)
 
-  '@vitest/browser-playwright@4.1.1(playwright@1.58.2)(vite@7.3.0(@types/node@20.19.25)(jiti@1.21.6)(less@4.3.0)(sass@1.99.0)(terser@5.39.1)(yaml@2.7.1))(vitest@4.1.1)':
+  '@vitest/browser-playwright@4.1.1(playwright@1.61.0-alpha-1778188671000)(vite@7.3.0(@types/node@20.19.25)(jiti@1.21.6)(less@4.3.0)(sass@1.99.0)(terser@5.39.1)(yaml@2.7.1))(vitest@4.1.1)':
     dependencies:
       '@vitest/browser': 4.1.1(vite@7.3.0(@types/node@20.19.25)(jiti@1.21.6)(less@4.3.0)(sass@1.99.0)(terser@5.39.1)(yaml@2.7.1))(vitest@4.1.1)
       '@vitest/mocker': 4.1.1(vite@7.3.0(@types/node@20.19.25)(jiti@1.21.6)(less@4.3.0)(sass@1.99.0)(terser@5.39.1)(yaml@2.7.1))
-      playwright: 1.58.2
+      playwright: 1.61.0-alpha-1778188671000
       tinyrainbow: 3.0.3
       vitest: 4.1.1(@types/node@20.19.25)(@vitest/browser-playwright@4.1.1)(jsdom@27.2.0)(vite@7.3.0(@types/node@20.19.25)(jiti@1.21.6)(less@4.3.0)(sass@1.99.0)(terser@5.39.1)(yaml@2.7.1))
     transitivePeerDependencies:
@@ -14680,11 +14703,19 @@ snapshots:
 
   pkce-challenge@5.0.0: {}
 
-  playwright-core@1.58.2: {}
+  playwright-core@1.60.0: {}
 
-  playwright@1.58.2:
+  playwright-core@1.61.0-alpha-1778188671000: {}
+
+  playwright@1.60.0:
     dependencies:
-      playwright-core: 1.58.2
+      playwright-core: 1.60.0
+    optionalDependencies:
+      fsevents: 2.3.2
+
+  playwright@1.61.0-alpha-1778188671000:
+    dependencies:
+      playwright-core: 1.61.0-alpha-1778188671000
     optionalDependencies:
       fsevents: 2.3.2
 
@@ -15996,7 +16027,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 20.19.25
-      '@vitest/browser-playwright': 4.1.1(playwright@1.58.2)(vite@7.3.0(@types/node@20.19.25)(jiti@1.21.6)(less@4.3.0)(sass@1.99.0)(terser@5.39.1)(yaml@2.7.1))(vitest@4.1.1)
+      '@vitest/browser-playwright': 4.1.1(playwright@1.61.0-alpha-1778188671000)(vite@7.3.0(@types/node@20.19.25)(jiti@1.21.6)(less@4.3.0)(sass@1.99.0)(terser@5.39.1)(yaml@2.7.1))(vitest@4.1.1)
       jsdom: 27.2.0
     transitivePeerDependencies:
       - msw
