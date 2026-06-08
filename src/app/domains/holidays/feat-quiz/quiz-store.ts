@@ -11,8 +11,8 @@ import {
   withState,
 } from '@ngrx/signals';
 import { interval } from 'rxjs';
-import { assertDefined } from '../../../../shared/util/assert-defined';
-import { AnswerStatus } from '../model/model';
+import { assertDefined } from '../../../shared/util/assert-defined';
+import { AnswerStatus } from './model';
 import { QuizService } from './quiz.service';
 
 export const QuizStore = signalStore(
