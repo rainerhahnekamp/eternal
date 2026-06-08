@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { QuizStore } from './quiz-store';
 
 @Component({
   selector: 'app-quiz-status',
@@ -16,6 +17,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizStatusComponent {
-  timeLeft = input.required<number>();
-  status = input.required<{ correct: number; incorrect: number }>();
+  private readonly quizStore = inject(QuizStore);
+
+  timeLeft = this.quizStore.timeLeft;
+  status = this.quizStore.status;
 }

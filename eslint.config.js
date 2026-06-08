@@ -1,15 +1,16 @@
 // @ts-check
-const eslint = require("@eslint/js");
 const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
 const sheriff = require("@softarc/eslint-plugin-sheriff");
 const unusedImports = require("eslint-plugin-unused-imports");
+/** @type {import("eslint-plugin-playwright").default} */
+const playwright = require("eslint-plugin-playwright");
+const storybook = require("eslint-plugin-storybook");
 
 module.exports = tseslint.config(
   {
     files: ["**/*.ts"],
     extends: [
-      eslint.configs.recommended,
       ...tseslint.configs.recommended,
       ...tseslint.configs.stylistic,
       ...angular.configs.tsRecommended,
@@ -44,8 +45,12 @@ module.exports = tseslint.config(
     rules: {},
   },
   {
-    files: ["src/app**/*.ts"],
+    files: ["src/app/**/*.ts"],
     extends: [sheriff.configs.all],
+  },
+  {
+    files: ["tests/**"],
+    extends: [playwright.configs["flat/recommended"]],
   },
   {
     plugins: { "unused-imports": unusedImports },
@@ -63,4 +68,5 @@ module.exports = tseslint.config(
       ],
     },
   },
+  storybook.configs["flat/recommended"],
 );
