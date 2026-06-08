@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -25,37 +24,39 @@ import { AddressLookuper } from './internal/address-lookuper.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestBrochurePage {
-  private readonly isExistingAddress = { value: () => true };
-
-  protected readonly brochureSent = computed(() => {
-    const isExistingAddress = this.isExistingAddress.value();
-    return isExistingAddress === undefined
-      ? ''
-      : isExistingAddress
-        ? 'Brochure sent'
-        : 'Address not found';
-  });
+  protected readonly brochureSent = signal('');
 
   private readonly addressModel = signal({ address: '', count: 1 });
 
-  protected readonly addressForm = form(this.addressModel, (path) => {
-    validate(path.address, (ctx) => {
-      return isValidAddress(ctx.value())
-        ? null
-        : { kind: 'invalidAddress', message: 'Address is invalid' };
-    });
+  protected readonly addressForm = form(
+    this.addressModel,
+    (path) => {
+      validate(path.address, (ctx) => {
+        return isValidAddress(ctx.value())
+          ? null
+          : { kind: 'invalidAddress', message: 'Address is invalid' };
+      });
 
-    validateAsync(path.address, {
-      params: ({ value }) => value(),
-      factory: (query) => inject(AddressLookuper).lookup(() => query() || ''),
-      onSuccess: (result: boolean) =>
-        result
-          ? undefined
-          : { kind: 'unknownAddress', message: 'Address not found' },
-      onError: () => ({
-        kind: 'unknownAddress',
-        message: 'Address not found',
-      }),
-    });
-  });
+      validateAsync(path.address, {
+        params: ({ value }) => value(),
+        factory: (query) => inject(AddressLookuper).lookup(() => query() || ''),
+        onSuccess: (result: boolean) =>
+          result
+            ? undefined
+            : { kind: 'unknownAddress', message: 'Address not found' },
+        onError: () => ({
+          kind: 'unknownAddress',
+          message: 'Address not found',
+        }),
+      });
+    },
+    {
+      submission: {
+        action: async () => {
+          this.brochureSent.set('Brochure sent');
+        },
+        ignoreValidators: 'none',
+      },
+    },
+  );
 }
