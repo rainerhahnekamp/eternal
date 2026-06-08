@@ -1,5 +1,5 @@
 import { httpResource } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { z } from 'zod';
 import { Quiz } from './model';
 
@@ -35,7 +35,7 @@ function getFromValueOrFunction<T>(
   }
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class QuizService {
   findById(id: number | (() => number | undefined)) {
     return httpResource(
