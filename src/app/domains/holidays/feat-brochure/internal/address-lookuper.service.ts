@@ -1,8 +1,8 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { parseAddress } from './parse-address';
 import { ADDRESS_SUPPLIER } from './address-supplier';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class AddressLookuper {
   #counter = 0;
   #addressesSupplier = inject(ADDRESS_SUPPLIER);

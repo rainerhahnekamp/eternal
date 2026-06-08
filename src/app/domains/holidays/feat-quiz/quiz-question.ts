@@ -1,14 +1,15 @@
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
-  output,
 } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Question } from '../model/model';
+import { MatCardModule } from '@angular/material/card';
+import { Question } from './model';
+import { QuizStore } from './quiz-store';
 
 @Component({
   selector: 'app-quiz-question',
@@ -39,9 +40,7 @@ import { Question } from '../model/model';
               [value]="choice.id"
               [checked]="question().givenAnswer === choice.id"
               [disabled]="question().givenAnswer !== undefined"
-              (change)="
-                answer.emit({ questionId: question().id, choiceId: choice.id })
-              "
+              (change)="quizStore.answer(question().id, choice.id)"
               class="sr-only"
             />
             {{ choice.text }}
@@ -127,7 +126,7 @@ import { Question } from '../model/model';
   ],
 })
 export class QuizQuestion {
+  protected readonly quizStore = inject(QuizStore);
   public readonly question = input.required<Question>();
-  public readonly answer = output<{ questionId: number; choiceId: number }>();
   protected readonly id = computed(() => `question-${this.question().id}`);
 }
