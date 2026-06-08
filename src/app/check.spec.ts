@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import NewsletterPage from './newsletter/newsletterPage';
+import NewsletterPage from './newsletter/newsletter-page';
 import { it, expect } from 'vitest';
 
 it('jest should work', () => {

@@ -56,3 +56,4 @@ session.json
 /playwright/.cache/
 
 *storybook.log
+.vitest-attachments/
