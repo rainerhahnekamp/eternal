@@ -67,12 +67,12 @@
               ]
             },
             "testronaut": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true,
               "browser": "testronaut/main.ts",
               "index": "testronaut/index.html",
-              "tsConfig": "testronaut/tsconfig.json"
+              "tsConfig": "testronaut/tsconfig.json",
+              "sourceMap": true,
+              "optimization": false,
+              "extractLicenses": false
             }
           },
           "defaultConfiguration": "production"
@@ -113,7 +113,8 @@
           "options": {
             "configDir": ".storybook",
             "browserTarget": "eternal:build",
-            "compodoc": false,
+            "compodoc": true,
+            "compodocArgs": ["-e", "json", "-d", "."],
             "port": 6006
           }
         },
@@ -122,7 +123,8 @@
           "options": {
             "configDir": ".storybook",
             "browserTarget": "eternal:build",
-            "compodoc": false,
+            "compodoc": true,
+            "compodocArgs": ["-e", "json", "-d", "."],
             "outputDir": "storybook-static"
           }
         }
