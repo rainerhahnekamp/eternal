@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { distinctUntilChanged, Subject } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class ImagesLoadedService {
   runningId = 0;
   loadingImages = new Set<number>();
