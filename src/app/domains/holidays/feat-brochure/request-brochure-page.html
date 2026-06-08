@@ -3,16 +3,12 @@
   Please fill in your address and below and we will send you a brochure with
   more information.
 </p>
-<form class="flex flex-col w-fit items-center" (submit)="search($event)">
-  <mat-form-field>
-    <mat-label>Address</mat-label>
-    <input data-testid="address" [formField]="addressForm.address" matInput />
-    <mat-icon matSuffix>location_on</mat-icon>
-    <mat-hint>Please enter your address</mat-hint>
-    @for (error of addressForm.address().errors(); track error.message) {
-      <mat-error>{{ error.message }}</mat-error>
-    }
-  </mat-form-field>
+<form class="flex flex-col w-fit items-center" [formRoot]="addressForm">
+  <app-text-field
+    [fieldTree]="addressForm.address"
+    label="Address"
+    placeholder="Please enter your address"
+  />
   <div class="my-4 flex gap-x-4">
     <a mat-raised-button routerLink="../../" type="Button">Cancel</a>
     <button
@@ -20,6 +16,7 @@
       data-testid="btn-search"
       mat-raised-button
       type="submit"
+      [disabled]="addressForm().invalid()"
     >
       Send
     </button>

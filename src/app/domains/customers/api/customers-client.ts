@@ -1,8 +1,8 @@
-import { inject, Injectable, Signal } from '@angular/core';
+import { inject, Service, Signal } from '@angular/core';
 import { Customer } from '../model/customer';
 import { CustomerStore } from '../data/customer-store';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class CustomersClient {
   #customersStore = inject(CustomerStore);
   get selectedCustomer(): Signal<Customer | undefined> {

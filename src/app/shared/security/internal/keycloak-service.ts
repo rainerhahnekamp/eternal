@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import Keycloak from 'keycloak-js';
 
 export interface UserProfile {
@@ -9,7 +9,7 @@ export interface UserProfile {
   token: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class KeycloakService {
   #keycloak: Keycloak | undefined;
   #profile: UserProfile | undefined;
