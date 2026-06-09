@@ -1,9 +1,9 @@
 import { Booking, bookingsFeature } from './bookings.reducer';
-import { inject, Injectable, Signal } from '@angular/core';
+import { inject, Service, Signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { bookingsActions } from './bookings.actions';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class BookingsStore {
   #store = inject(Store);
 
