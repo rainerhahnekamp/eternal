@@ -1,9 +1,9 @@
 import { HttpClient, httpResource } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { Holiday, parseHolidays } from '../../model/holiday';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class HolidayClient {
   readonly #httpClient = inject(HttpClient);
   readonly #baseUrl = '/holiday';

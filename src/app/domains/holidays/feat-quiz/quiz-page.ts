@@ -6,23 +6,17 @@ import {
   numberAttribute,
 } from '@angular/core';
 
-import { QuizStore } from './data/quiz-store';
-import { QuizStatusComponent } from './ui/quiz-status';
-import { QuizQuestion } from './ui/quiz-question';
+import { QuizQuestion } from './quiz-question';
+import { QuizStatusComponent } from './quiz-status';
+import { QuizStore } from './quiz-store';
 
 @Component({
   selector: 'app-quiz',
   template: ` <h2>{{ quizStore.title() }}</h2>
-    <app-quiz-status
-      [timeLeft]="quizStore.timeLeft()"
-      [status]="quizStore.status()"
-    />
+    <app-quiz-status />
 
     @for (question of quizStore.questions(); track question) {
-      <app-quiz-question
-        [question]="question"
-        (answer)="handleAnswer($event)"
-      ></app-quiz-question>
+      <app-quiz-question [question]="question" />
     }`,
   imports: [QuizStatusComponent, QuizQuestion],
   providers: [QuizStore],
@@ -34,9 +28,5 @@ export class QuizPage {
 
   constructor() {
     this.quizStore.setId(this.id);
-  }
-
-  handleAnswer($event: { questionId: number; choiceId: number }) {
-    this.quizStore.answer($event.questionId, $event.choiceId);
   }
 }

@@ -1,10 +1,4 @@
-import {
-  ApplicationRef,
-  inject,
-  Injectable,
-  NgZone,
-  signal,
-} from '@angular/core';
+import { ApplicationRef, inject, Service, NgZone, signal } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { getWsConnect } from './web-socket-client';
@@ -18,7 +12,7 @@ export interface Message {
   sent: Date;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class ChatClient {
   #status = signal<'not connected' | 'connected' | 'failed'>('not connected');
   status = this.#status.asReadonly();
