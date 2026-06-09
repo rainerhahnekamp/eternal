@@ -43,7 +43,7 @@ test.describe('Basics', () => {
     await page.getByTestId('btn-submit').click();
 
     await expect(
-      page.locator('data-testid=row-customer', {
+      page.getByTestId('row-customer').filter({
         hasText: 'Nicholas Dimou',
       }),
     ).toBeVisible();
@@ -53,7 +53,8 @@ test.describe('Basics', () => {
     await page.getByTestId('btn-customers').click();
 
     await page
-      .locator('[data-testid=row-customer]', { hasText: 'Latitia' })
+      .getByTestId('row-customer')
+      .filter({ hasText: 'Latitia' })
       .getByTestId('btn-edit')
       .click();
     await page.getByTestId('inp-firstname').fill('Laetitia');
@@ -63,7 +64,7 @@ test.describe('Basics', () => {
     await page.getByTestId('btn-submit').click();
 
     await expect(
-      page.locator('data-testid=row-customer', {
+      page.getByTestId('row-customer').filter({
         hasText: 'Bellitissa-Wagner',
       }),
     ).toBeVisible();
@@ -73,7 +74,8 @@ test.describe('Basics', () => {
     await page.getByTestId('btn-customers').click();
 
     await page
-      .locator('[data-testid=row-customer]', { hasText: 'Knut Eggen' })
+      .getByTestId('row-customer')
+      .filter({ hasText: 'Knut Eggen' })
       .getByTestId('btn-edit')
       .click();
     page.on('dialog', (dialog) => dialog.accept());
@@ -83,8 +85,8 @@ test.describe('Basics', () => {
     await expect(locator).toHaveCount(10);
 
     await expect(
-      page.locator('data-testid=row-customer', { hasText: 'Knut Eggen' }),
-    ).not.toBeVisible();
+      page.getByTestId('row-customer').filter({ hasText: 'Knut Eggen' }),
+    ).not.toBeAttached();
   });
 
   test('select the same country again', async ({ page }) => {
@@ -96,7 +98,7 @@ test.describe('Basics', () => {
       .getByTestId('btn-edit')
       .click();
     await page.getByTestId('sel-country').click();
-    await page.locator('data-testid=opt-country >> text=Austria').click();
+    await page.getByTestId('opt-country').getByText('Austria').click();
 
     await page.getByTestId('btn-submit').click();
   });
@@ -110,7 +112,7 @@ test.describe('Basics', () => {
         .click();
       await page.getByLabel('Address').fill('Domgasse 5');
       await page.getByRole('button', { name: 'Send' }).click();
-      await page.getByRole('status');
+      await expect(page.getByRole('status')).toBeVisible();
     });
 
     test('should rename Latitia to Laetitia', async ({ page }) => {
