@@ -64,6 +64,7 @@
     "@compodoc/compodoc": "^1.2.1",
     "@ngrx/eslint-plugin": "^21.1.0",
     "@playwright/test": "^1.60.0",
+    "playwright": "1.60.0",
     "@softarc/eslint-plugin-sheriff": "^0.19.6",
     "@softarc/sheriff-core": "^0.19.6",
     "@storybook/addon-docs": "^10.4.2",
