@@ -179,7 +179,7 @@ importers:
         version: 4.1.1(vite@7.3.0(@types/node@20.19.25)(jiti@2.7.0)(less@4.6.4)(sass@1.99.0)(terser@5.46.2)(yaml@2.9.0))(vitest@4.1.1)
       '@vitest/browser-playwright':
         specifier: ^4.1.1
-        version: 4.1.1(playwright@1.61.0-alpha-1778188671000)(vite@7.3.0(@types/node@20.19.25)(jiti@2.7.0)(less@4.6.4)(sass@1.99.0)(terser@5.46.2)(yaml@2.9.0))(vitest@4.1.1)
+        version: 4.1.1(playwright@1.60.0)(vite@7.3.0(@types/node@20.19.25)(jiti@2.7.0)(less@4.6.4)(sass@1.99.0)(terser@5.46.2)(yaml@2.9.0))(vitest@4.1.1)
       '@vitest/coverage-v8':
         specifier: ^4.1.1
         version: 4.1.1(@vitest/browser@4.1.1(vite@7.3.0(@types/node@20.19.25)(jiti@2.7.0)(less@4.6.4)(sass@1.99.0)(terser@5.46.2)(yaml@2.9.0))(vitest@4.1.1))(vitest@4.1.1)
@@ -219,6 +219,9 @@ importers:
       ng-mocks:
         specifier: ^14.15.3
         version: 14.15.3(6058cc8f7c37d993d602fb79a2addd22)
+      playwright:
+        specifier: 1.60.0
+        version: 1.60.0
       postcss:
         specifier: ^8.4.28
         version: 8.4.47
@@ -13055,11 +13058,11 @@ snapshots:
     dependencies:
       vite: 7.3.2(@types/node@20.19.25)(jiti@2.7.0)(less@4.6.4)(sass@1.99.0)(terser@5.46.2)(yaml@2.9.0)
 
-  '@vitest/browser-playwright@4.1.1(playwright@1.61.0-alpha-1778188671000)(vite@7.3.0(@types/node@20.19.25)(jiti@2.7.0)(less@4.6.4)(sass@1.99.0)(terser@5.46.2)(yaml@2.9.0))(vitest@4.1.1)':
+  '@vitest/browser-playwright@4.1.1(playwright@1.60.0)(vite@7.3.0(@types/node@20.19.25)(jiti@2.7.0)(less@4.6.4)(sass@1.99.0)(terser@5.46.2)(yaml@2.9.0))(vitest@4.1.1)':
     dependencies:
       '@vitest/browser': 4.1.1(vite@7.3.0(@types/node@20.19.25)(jiti@2.7.0)(less@4.6.4)(sass@1.99.0)(terser@5.46.2)(yaml@2.9.0))(vitest@4.1.1)
       '@vitest/mocker': 4.1.1(vite@7.3.0(@types/node@20.19.25)(jiti@2.7.0)(less@4.6.4)(sass@1.99.0)(terser@5.46.2)(yaml@2.9.0))
-      playwright: 1.61.0-alpha-1778188671000
+      playwright: 1.60.0
       tinyrainbow: 3.0.3
       vitest: 4.1.1(@types/node@20.19.25)(@vitest/browser-playwright@4.1.1)(jsdom@27.2.0)(vite@7.3.0(@types/node@20.19.25)(jiti@2.7.0)(less@4.6.4)(sass@1.99.0)(terser@5.46.2)(yaml@2.9.0))
     transitivePeerDependencies:
@@ -18227,7 +18230,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 20.19.25
-      '@vitest/browser-playwright': 4.1.1(playwright@1.61.0-alpha-1778188671000)(vite@7.3.0(@types/node@20.19.25)(jiti@2.7.0)(less@4.6.4)(sass@1.99.0)(terser@5.46.2)(yaml@2.9.0))(vitest@4.1.1)
+      '@vitest/browser-playwright': 4.1.1(playwright@1.60.0)(vite@7.3.0(@types/node@20.19.25)(jiti@2.7.0)(less@4.6.4)(sass@1.99.0)(terser@5.46.2)(yaml@2.9.0))(vitest@4.1.1)
       jsdom: 27.2.0
     transitivePeerDependencies:
       - msw
