@@ -4,71 +4,59 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import {
-  MatError,
-  MatFormField,
-  MatHint,
-  MatLabel,
-} from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
-import { MatInput } from '@angular/material/input';
+
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { isValidAddress } from './internal/is-valid-address';
-import { AddressLookuper } from './internal/address-lookuper.service';
 import {
-  FormField,
   form,
-  submit,
   validate,
+  FormRoot,
   validateAsync,
 } from '@angular/forms/signals';
+import { isValidAddress } from './internal/is-valid-address';
+import { TextFieldComponent } from '../../../shared/form/text-field';
+import { AddressLookuper } from './internal/address-lookuper.service';
 
 @Component({
   selector: 'app-request-info',
   templateUrl: './request-brochure-page.html',
-  imports: [
-    ReactiveFormsModule,
-    MatFormField,
-    MatIcon,
-    MatLabel,
-    MatInput,
-    MatButton,
-    MatHint,
-    RouterLink,
-    MatAnchor,
-    FormField,
-    MatError,
-  ],
+  imports: [FormRoot, MatButton, RouterLink, MatAnchor, TextFieldComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestBrochurePage {
-  readonly #formModel = signal({ address: '' });
-  protected readonly brochureSent = signal(false);
-  addressForm = form(this.#formModel, (path) => {
-    validate(path.address, ({ value }) => {
-      return isValidAddress(value())
-        ? undefined
-        : { kind: 'invalidAddress', message: 'Address is invalid' };
-    });
+  protected readonly brochureSent = signal('');
 
-    validateAsync(path.address, {
-      params: ({ value }) => value(),
-      factory: (query) => inject(AddressLookuper).lookup(() => query() || ''),
-      onSuccess: (result: boolean) =>
-        result
-          ? undefined
-          : { kind: 'unknownAddress', message: 'Address not found' },
-      onError: () => ({
-        kind: 'unknownAddress',
-        message: 'Address not found',
-      }),
-    });
-  });
+  private readonly addressModel = signal({ address: '', count: 1 });
 
-  search(event: Event) {
-    event.preventDefault();
-    void submit(this.addressForm, async () => this.brochureSent.set(true));
-  }
+  protected readonly addressForm = form(
+    this.addressModel,
+    (path) => {
+      validate(path.address, (ctx) => {
+        return isValidAddress(ctx.value())
+          ? null
+          : { kind: 'invalidAddress', message: 'Address is invalid' };
+      });
+
+      validateAsync(path.address, {
+        params: ({ value }) => value(),
+        factory: (query) => inject(AddressLookuper).lookup(() => query() || ''),
+        onSuccess: (result: boolean) =>
+          result
+            ? undefined
+            : { kind: 'unknownAddress', message: 'Address not found' },
+        onError: () => ({
+          kind: 'unknownAddress',
+          message: 'Address not found',
+        }),
+      });
+    },
+    {
+      submission: {
+        action: async () => {
+          this.brochureSent.set('Brochure sent');
+        },
+        ignoreValidators: 'none',
+      },
+    },
+  );
 }

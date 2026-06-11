@@ -1,10 +1,10 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { MessageStore } from './message.store';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from './confirmation.component';
 import { map, Observable } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class MessageService {
   #messageStore = inject(MessageStore);
   #dialog = inject(MatDialog);

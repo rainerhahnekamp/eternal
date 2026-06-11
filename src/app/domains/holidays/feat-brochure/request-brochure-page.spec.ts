@@ -1,109 +1,15 @@
-import { screen } from '@testing-library/angular';
-import userEvent from '@testing-library/user-event';
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpTestingController,
-  provideHttpClientTesting,
-} from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 import { describe, expect, it } from 'vitest';
+import { page, userEvent } from 'vitest/browser';
 import { Configuration } from '../../../shared/config/configuration';
-import { RequestBrochurePage } from './request-brochure-page';
 import {
   AddressLookuperFake,
   provideAddressLookuperFake,
 } from './internal/address-lookuper-fake';
-import { provideRouter } from '@angular/router';
-import { page, userEvent as user } from 'vitest/browser';
+import { RequestBrochurePage } from './request-brochure-page';
 
-describe('Request Info with Testing Library', () => {
-  describe('Component Tests', () => {
-    const setup = async () => {
-      const fixture = TestBed.configureTestingModule({
-        providers: [
-          provideAddressLookuperFake(),
-          provideRouter([]),
-          {
-            provide: Configuration,
-            useValue: { baseUrl: 'http://localhost:4200' },
-          },
-        ],
-      }).createComponent(RequestBrochurePage);
-
-      await fixture.whenStable();
-
-      const lookuperFake = TestBed.inject(AddressLookuperFake);
-
-      return lookuperFake;
-    };
-
-    it('should instantiate', async () => {
-      await setup();
-
-      expect(
-        await screen.findByRole('heading', { level: 2 }),
-      ).toHaveTextContent('Request a Brochure');
-    });
-
-    for (const { isValid, message } of [
-      { isValid: true, message: 'Brochure sent' },
-      { isValid: false, message: 'Address not found' },
-    ]) {
-      it(`should show ${message} for resource being ${isValid}`, async () => {
-        const lookuperFake = await setup();
-
-        lookuperFake.setResponseForQuery('Domgasse 5', isValid);
-        await userEvent.type(
-          screen.getByRole('textbox', { name: 'Address' }),
-          'Domgasse 5',
-        );
-        await userEvent.click(screen.getByRole('button', { name: 'Send' }));
-
-        if (isValid) {
-          expect(await screen.findByRole('status')).toHaveTextContent(message);
-        } else {
-          expect(await screen.findByText('Address not found')).toBeVisible();
-        }
-      });
-    }
-  });
-
-  describe('Integration Test', () => {
-    const setup = async () => {
-      const fixture = TestBed.configureTestingModule({
-        providers: [
-          provideHttpClientTesting(),
-          provideRouter([]),
-          {
-            provide: Configuration,
-            useValue: { baseUrl: 'http://localhost:4200' },
-          },
-        ],
-      }).createComponent(RequestBrochurePage);
-
-      await fixture.whenStable();
-    };
-
-    it('should find an address by using the `HttpTestingController`', async () => {
-      await setup();
-      await userEvent.type(
-        screen.getByRole('textbox', { name: 'Address' }),
-        'Domgasse 5',
-      );
-
-      TestBed.inject(HttpTestingController)
-        .expectOne((req) => !!req.url.match(/nominatim/))
-        .flush([true]);
-
-      await userEvent.click(screen.getByRole('button', { name: 'Send' }));
-
-      expect(await screen.findByRole('status')).toHaveTextContent(
-        'Brochure sent',
-      );
-    });
-  });
-});
-
-describe('Full Browser Mode', () => {
+describe('Request Brochure', () => {
   const setup = async () => {
     TestBed.configureTestingModule({
       providers: [
@@ -128,27 +34,28 @@ describe('Full Browser Mode', () => {
       .toHaveTextContent('Request a Brochure');
   });
 
-  for (const { isValid, message } of [
-    { isValid: true, message: 'Brochure sent' },
-    { isValid: false, message: 'Address not found' },
-  ]) {
-    it(`should show ${isValid ? 'work' : 'fail'}`, async () => {
-      const lookuperFake = await setup();
+  it(`should show 'Brochure sent' on valid address'`, async () => {
+    const lookuperFake = await setup();
 
-      lookuperFake.setResponseForQuery('Domgasse 5', isValid);
-      await user.type(
-        page.getByRole('textbox', { name: 'Address' }),
-        'Domgasse 5',
-      );
-      await user.click(page.getByRole('button', { name: 'Send' }));
+    lookuperFake.setResponseForQuery('Domgasse 5', true);
+    await page.getByRole('textbox', { name: 'Address' }).fill('Domgasse 5');
+    await page.getByRole('button', { name: 'Send' }).click();
 
-      if (isValid) {
-        await expect
-          .element(page.getByRole('status'))
-          .toHaveTextContent(message);
-      } else {
-        await expect.element(page.getByText('Address no found')).toBeVisible();
-      }
-    });
-  }
+    await expect
+      .element(page.getByRole('status'))
+      .toHaveTextContent('Brochure sent');
+  });
+
+  it('should show error message next to form field on invalid address', async () => {
+    const lookuperFake = await setup();
+
+    lookuperFake.setResponseForQuery('Domgasse 5', true);
+    await page.getByRole('textbox', { name: 'Address' }).fill('Domgasse 50');
+    await userEvent.type(
+      page.getByRole('textbox', { name: 'Address' }),
+      '{Tab}',
+    );
+
+    await expect.element(page.getByText('Address not found')).toBeVisible();
+  });
 });

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, NgZone, PLATFORM_ID, signal } from '@angular/core';
+import { inject, Service, NgZone, PLATFORM_ID, signal } from '@angular/core';
 import {
   catchError,
   combineLatest,
@@ -18,7 +18,7 @@ import { SILENT_LOAD_CONTEXT } from './shared/http/silent-load.context';
 import { ANONYMOUS_CONTEXT } from './shared/http/anonymous.context';
 import { Configuration } from './shared/config/configuration';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class Heartbeat {
   readonly #isServer = isPlatformServer(inject(PLATFORM_ID));
   readonly #httpClient = inject(HttpClient);
