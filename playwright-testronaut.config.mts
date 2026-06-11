@@ -1,42 +1,31 @@
-import {
-  defineConfig,
-  devices,
-  withTestronautAngular,
-} from "@testronaut/angular";
-import { fileURLToPath } from "node:url";
+import { defineConfig, devices } from "@playwright/test";
+import { withTestronautAngular } from "@testronaut/angular";
 
-const __filename = fileURLToPath(import.meta.url);
+/**
+ * Read environment variables from file.
+ * https://github.com/motdotla/dotenv
+ */
+// require('dotenv').config();
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig(
+const config = defineConfig(
   withTestronautAngular({
-    configPath: __filename,
+    configPath: import.meta.filename,
     testServer: {
       command:
-        "pnpm exec ng serve --configuration testronaut --live-reload false --port {port}",
+        "pnpm exec ng serve eternal --configuration testronaut --port {port} --live-reload false",
     },
   }),
-  /* Overriding all timeouts just for the fun of HAL shutdown sequence. */
   {
-    timeout: 15_000,
-    expect: {
-      timeout: 15_000,
-    },
-    use: {
-      actionTimeout: 15_000,
-    },
-  },
-  {
-    use: {
-      trace: "on-first-retry",
-    },
-    /* Configure projects for major browsers */
     projects: [
-      { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-      { name: "firefox", use: { ...devices["Desktop Firefox"] } },
-      { name: "webkit", use: { ...devices["Desktop Safari"] } },
+      {
+        name: "chromium",
+        use: { ...devices["Desktop Chrome"] },
+      },
     ],
   },
 );
+
+export default config;

@@ -1,4 +1,4 @@
-import { Injectable, ResourceRef } from '@angular/core';
+import { ResourceRef, Service } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { z } from 'zod';
 
@@ -8,7 +8,7 @@ export interface IAddressLookuper {
   lookup(query: () => string): ResourceRef<boolean | undefined>;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class AddressLookuper implements AddressLookuper {
   #counter = 0;
 
