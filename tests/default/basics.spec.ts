@@ -1,4 +1,6 @@
-import { expect, test } from '@playwright/test';
+import { expect as hardExpect, test } from '@playwright/test';
+
+const expect = hardExpect.configure({ soft: true });
 
 test.describe('Basics', () => {
   test.beforeEach(async ({ page }) => {
@@ -29,6 +31,8 @@ test.describe('Basics', () => {
     const nameLocator = page.getByTestId('row-customer').getByTestId('name');
 
     await expect(nameLocator.nth(2)).toHaveText('Hugo Brandt');
+    await expect(nameLocator.nth(3)).toHaveText('Johan Driekamp');
+    await expect(nameLocator.nth(4)).toHaveText('Knut Eggen');
     await expect(nameLocator.nth(9)).toHaveText('Jan Janáček');
   });
 
