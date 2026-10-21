@@ -1,0 +1,9 @@
+{
+  "/__pangular/**": {
+    "target": "http://localhost:9999",
+    "pathRewrite": {
+      "^/__pangular": ""
+    },
+    "ws": true
+  }
+}

@@ -5,4 +5,11 @@ import { appConfig } from './app/app-config';
 import { App } from './app/app';
 
 registerLocaleData(localeDe, 'de-AT');
-void bootstrapApplication(App, appConfig);
+void bootstrapApplication(App, appConfig)
+  .then(() => {
+    if (typeof ngDevMode === 'undefined' || ngDevMode) {
+      return import('@pangular-inspector/devtools/overlay');
+    }
+    return undefined;
+  })
+  .catch((error) => console.error(error));

@@ -12,7 +12,10 @@
     "verify": "npm run test:ci && npm run lint",
     "websocket:start": "node ./ws-app/app.mjs",
     "storybook": "ng run eternal:storybook",
-    "build-storybook": "ng run eternal:build-storybook"
+    "build-storybook": "ng run eternal:build-storybook",
+    "start:inspector": "ng serve --no-hmr --port 4210 --proxy-config proxy.pangular.json",
+    "inspector": "pangular dev --port 9999",
+    "inspector:mcp": "pangular mcp"
   },
   "private": true,
   "dependencies": {
@@ -97,7 +100,8 @@
     "typescript-eslint": "^8.48.0",
     "vite": "^7.3.0",
     "vite-tsconfig-paths": "^6.1.0",
-    "vitest": "^4.0.13"
+    "vitest": "^4.0.13",
+    "@pangular-inspector/devtools": "^0.0.7"
   },
   "eslintConfig": {
     "extends": [
